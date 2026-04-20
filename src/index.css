@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cosmic-950 text-slate-100 font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255, 194, 102, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(227, 66, 52, 0.08) 0%, transparent 40%),
+      radial-gradient(ellipse at center, #140b2e 0%, #0a0618 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-saffron-500 to-vermilion-500 px-6 py-3 font-semibold text-cosmic-950 shadow-lg shadow-saffron-500/20 transition hover:shadow-saffron-500/40 hover:brightness-110 active:brightness-95;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 font-medium text-slate-100 transition hover:bg-white/10;
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-slate-100 placeholder:text-slate-400 outline-none transition focus:border-saffron-500/60 focus:ring-2 focus:ring-saffron-500/20;
+  }
+  .section-title {
+    @apply text-3xl md:text-4xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-saffron-400 to-vermilion-500;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-saffron-400 via-saffron-500 to-vermilion-500;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0618;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 194, 102, 0.25);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 194, 102, 0.45);
+}
