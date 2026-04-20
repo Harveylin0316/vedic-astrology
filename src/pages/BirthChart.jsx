@@ -1,7 +1,32 @@
 import { useState } from 'react'
-import { Sparkles, Calendar, Clock, MapPin, Globe, AlertCircle, Sun, Moon, ArrowUpRight } from 'lucide-react'
+import {
+  Sparkles,
+  Calendar,
+  Clock,
+  MapPin,
+  Globe,
+  AlertCircle,
+  Sun,
+  Moon,
+  ArrowUpRight,
+  Gem,
+  Flame,
+  Mountain,
+  Wind,
+  Droplets,
+  ScrollText
+} from 'lucide-react'
 import { computeVedicChart, formatDegrees } from '../utils/vedicCalc.js'
 import ChartWheel from '../components/ChartWheel.jsx'
+import {
+  lagnaReadings,
+  sunReadings,
+  moonReadings,
+  nakshatraReadings,
+  getElementBalance,
+  getRemedyForRashi,
+  normalizeNakshatraName
+} from '../data/interpretations.js'
 
 const defaultForm = {
   date: '1990-01-01',
@@ -12,9 +37,18 @@ const defaultForm = {
   city: '台北, 台灣'
 }
 
+const elementIcon = {
+  fire: Flame,
+  earth: Mountain,
+  air: Wind,
+  water: Droplets
+}
+
 export default function BirthChart() {
   const [form, setForm] = useState(defaultForm)
   const [chart, setChart] = useState(null)
+  const [submittedCity, setSubmittedCity] = useState('')
+  const [submittedStamp, setSubmittedStamp] = useState('')
   const [error, setError] = useState('')
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
@@ -36,24 +70,44 @@ export default function BirthChart() {
         lon: parseFloat(form.lon)
       })
       setChart(result)
+      setSubmittedCity(form.city)
+      setSubmittedStamp(`${form.date} ${form.time}`)
     } catch (err) {
       setError('計算失敗：請檢查輸入格式。')
       console.error(err)
     }
   }
 
+  const lagnaReading = chart ? lagnaReadings[chart.ascendant.rashi.name] : null
+  const sunReading = chart ? sunReadings[chart.sun.rashi.name] : null
+  const moonReading = chart ? moonReadings[chart.moon.rashi.name] : null
+  const nakshatraReading = chart
+    ? nakshatraReadings[normalizeNakshatraName(chart.moon.nakshatra.name)]
+    : null
+  const elementBalance = chart
+    ? getElementBalance({
+        sunRashi: chart.sun.rashi.name,
+        moonRashi: chart.moon.rashi.name,
+        lagnaRashi: chart.ascendant.rashi.name
+      })
+    : null
+  const remedy = chart ? getRemedyForRashi(chart.moon.rashi.name) : null
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
       <div className="text-center mb-10">
         <h1 className="section-title">吠陀命盤 Kundali</h1>
         <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
-          以 Lahiri ayanamsha 計算 sidereal 恆星黃道上的太陽、月亮、Lagna 上升點。
+          以 Lahiri ayanamsha 計算 sidereal 恆星黃道上的太陽、月亮、Lagna 上升點，並給出完整解讀。
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[400px_1fr]">
         {/* Form */}
-        <form onSubmit={handleCompute} className="glass-panel p-6 space-y-5 h-fit lg:sticky lg:top-6">
+        <form
+          onSubmit={handleCompute}
+          className="glass-panel p-6 space-y-5 h-fit lg:sticky lg:top-6"
+        >
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
               <Calendar className="h-4 w-4 text-saffron-400" />
@@ -140,11 +194,11 @@ export default function BirthChart() {
 
           <button type="submit" className="btn-primary w-full">
             <Sparkles className="h-4 w-4" />
-            計算命盤
+            計算命盤與解讀
           </button>
 
           <p className="text-xs text-slate-500 leading-relaxed">
-            註：此計算採用簡化演算法，作為教學與自我探索之用。如需高精度命盤，請諮詢專業 Jyotishi 並使用 Swiss Ephemeris。
+            註：採用簡化演算法，作為教學與自我探索之用。如需高精度命盤，請諮詢專業 Jyotishi。
           </p>
         </form>
 
@@ -153,22 +207,24 @@ export default function BirthChart() {
           {!chart ? (
             <div className="glass-panel p-12 text-center text-slate-500">
               <Sparkles className="h-10 w-10 mx-auto text-saffron-400/40 mb-3" />
-              <div>填入資料後，你的命盤將顯示於此。</div>
+              <div>填入資料後，你的命盤與解讀將顯示於此。</div>
             </div>
           ) : (
             <>
+              {/* Header */}
               <div className="glass-panel p-6">
                 <div className="text-xs uppercase tracking-widest text-slate-400 mb-1">
                   Your Kundali
                 </div>
                 <h2 className="font-serif text-2xl">
-                  {form.city} · {form.date} {form.time}
+                  {submittedCity} · {submittedStamp}
                 </h2>
                 <div className="text-sm text-slate-400 mt-1">
                   Ayanamsha (Lahiri) {chart.ayanamsha.toFixed(4)}°
                 </div>
               </div>
 
+              {/* Chart + Badges */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="glass-panel p-6">
                   <ChartWheel chart={chart} />
@@ -199,6 +255,112 @@ export default function BirthChart() {
                 </div>
               </div>
 
+              {/* Readings */}
+              <ReadingCard
+                icon={<ArrowUpRight className="h-5 w-5" />}
+                badge={`上升 · ${chart.ascendant.rashi.chinese}`}
+                title={lagnaReading?.headline}
+                body={lagnaReading?.body}
+                strengths={lagnaReading?.strengths}
+                challenges={lagnaReading?.challenges}
+              />
+
+              <ReadingCard
+                icon={<Sun className="h-5 w-5" />}
+                badge={`太陽 · ${chart.sun.rashi.chinese}`}
+                title={sunReading?.theme}
+                body={sunReading?.body}
+              />
+
+              <ReadingCard
+                icon={<Moon className="h-5 w-5" />}
+                badge={`月亮 · ${chart.moon.rashi.chinese}`}
+                title={moonReading?.theme}
+                body={moonReading?.body}
+                highlight
+              />
+
+              {nakshatraReading && (
+                <ReadingCard
+                  icon={<Sparkles className="h-5 w-5" />}
+                  badge={`月宿 · ${chart.moon.nakshatra.name}・Pada ${chart.moon.nakshatra.pada}`}
+                  title={nakshatraReading.theme}
+                  body={nakshatraReading.body}
+                />
+              )}
+
+              {/* Element balance */}
+              {elementBalance && (
+                <div className="glass-panel p-6">
+                  <div className="flex items-center gap-2 text-sm text-saffron-400 mb-3">
+                    <ScrollText className="h-4 w-4" />
+                    元素平衡
+                  </div>
+                  <div className="grid grid-cols-4 gap-3 mb-5">
+                    {['fire', 'earth', 'air', 'water'].map((el) => {
+                      const Icon = elementIcon[el]
+                      const count = elementBalance.counts[el]
+                      const isDominant = elementBalance.dominant === el
+                      return (
+                        <div
+                          key={el}
+                          className={`rounded-xl border p-3 text-center ${
+                            isDominant
+                              ? 'border-saffron-500/40 bg-saffron-500/10'
+                              : count === 0
+                              ? 'border-white/5 bg-white/[0.02] opacity-50'
+                              : 'border-white/10 bg-white/5'
+                          }`}
+                        >
+                          <Icon className="h-5 w-5 mx-auto text-saffron-400" />
+                          <div className="text-xs text-slate-400 mt-1.5">
+                            {{ fire: '火', earth: '土', air: '風', water: '水' }[el]}
+                          </div>
+                          <div className="font-serif text-lg">{count}</div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <div className="space-y-2 text-sm leading-relaxed">
+                    <div>
+                      <span className="text-saffron-400 font-medium">
+                        主導元素：{elementBalance.dominantInfo.name}
+                      </span>
+                      <span className="text-slate-400">（{elementBalance.dominantInfo.nature}）</span>
+                    </div>
+                    <p className="text-slate-300">{elementBalance.dominantInfo.advice}</p>
+                    {elementBalance.missing.length > 0 && (
+                      <p className="text-slate-400 text-xs pt-2 border-t border-white/5">
+                        缺失元素：
+                        {elementBalance.missingInfo.map((m) => m.name).join('、')}
+                        ——適合刻意補足。
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Remedy */}
+              {remedy && (
+                <div className="glass-panel p-6">
+                  <div className="flex items-center gap-2 text-sm text-saffron-400 mb-3">
+                    <Gem className="h-4 w-4" />
+                    能量建議（基於你的月亮守護星 {remedy.ruler}）
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <Remedy label="對應寶石" value={remedy.gem} />
+                    <Remedy label="主管金屬" value={remedy.metal} />
+                    <Remedy label="主管日" value={remedy.day} />
+                    <Remedy label="建議曼陀羅" value={remedy.mantra} />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-4 leading-relaxed">
+                    專注方向：{remedy.focus}。
+                    吠陀傳統建議在主管日進行冥想、穿戴寶石或持誦曼陀羅，以平衡該行星能量。
+                  </p>
+                </div>
+              )}
+
+              {/* Houses */}
               <div className="glass-panel p-6">
                 <h3 className="font-serif text-xl mb-4">12 宮位 · Bhavas</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -255,6 +417,67 @@ function PlanetBadge({ icon, label, rashi, degree, nakshatra, highlight }) {
           <div className="text-xs text-slate-500 mt-0.5">{nakshatra.trait}</div>
         </div>
       )}
+    </div>
+  )
+}
+
+function ReadingCard({ icon, badge, title, body, strengths, challenges, highlight }) {
+  if (!title && !body) return null
+  return (
+    <div
+      className={`glass-panel p-6 ${
+        highlight ? 'border-saffron-500/40 bg-saffron-500/5' : ''
+      }`}
+    >
+      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-2">
+        {icon}
+        {badge}
+      </div>
+      <h3 className="font-serif text-2xl gradient-text">{title}</h3>
+      <p className="mt-3 text-slate-300 leading-relaxed">{body}</p>
+      {(strengths?.length || challenges?.length) && (
+        <div className="grid sm:grid-cols-2 gap-3 mt-4">
+          {strengths?.length > 0 && (
+            <div className="rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-3">
+              <div className="text-xs text-saffron-400 mb-1.5">優勢</div>
+              <div className="flex flex-wrap gap-1.5">
+                {strengths.map((s) => (
+                  <span
+                    key={s}
+                    className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {challenges?.length > 0 && (
+            <div className="rounded-xl border border-vermilion-500/20 bg-vermilion-500/5 p-3">
+              <div className="text-xs text-vermilion-500 mb-1.5">課題</div>
+              <div className="flex flex-wrap gap-1.5">
+                {challenges.map((c) => (
+                  <span
+                    key={c}
+                    className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs"
+                  >
+                    {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Remedy({ label, value }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+      <div className="text-xs text-slate-500">{label}</div>
+      <div className="mt-0.5 text-slate-200 text-sm font-medium">{value}</div>
     </div>
   )
 }

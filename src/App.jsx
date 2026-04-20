@@ -6,7 +6,6 @@ import Home from './pages/Home.jsx'
 import BirthChart from './pages/BirthChart.jsx'
 import Nakshatras from './pages/Nakshatras.jsx'
 import Planets from './pages/Planets.jsx'
-import AIReading from './pages/AIReading.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 export default function App() {
@@ -20,7 +19,6 @@ export default function App() {
           <Route path="/birth-chart" element={<BirthChart />} />
           <Route path="/nakshatras" element={<Nakshatras />} />
           <Route path="/planets" element={<Planets />} />
-          <Route path="/ai-reading" element={<AIReading />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

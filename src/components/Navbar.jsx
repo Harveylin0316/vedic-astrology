@@ -3,10 +3,9 @@ import { NavLink, Link } from 'react-router-dom'
 import { Sun, Menu, X, Sparkles } from 'lucide-react'
 
 const links = [
-  { to: '/birth-chart', label: '命盤計算' },
+  { to: '/birth-chart', label: '命盤與解讀' },
   { to: '/nakshatras', label: 'Nakshatra' },
-  { to: '/planets', label: '九大行星' },
-  { to: '/ai-reading', label: 'AI 解讀' }
+  { to: '/planets', label: '九大行星' }
 ]
 
 export default function Navbar() {
@@ -43,7 +42,7 @@ export default function Navbar() {
               {l.label}
             </NavLink>
           ))}
-          <Link to="/ai-reading" className="btn-primary ml-3 py-2 px-4 text-sm">
+          <Link to="/birth-chart" className="btn-primary ml-3 py-2 px-4 text-sm">
             <Sparkles className="h-4 w-4" />
             開始解讀
           </Link>

@@ -1,18 +1,8 @@
 [build]
   command = "npm run build"
   publish = "dist"
-  functions = "netlify/functions"
 
-[functions]
-  node_bundler = "esbuild"
-
-# Front-end calls /api/chat → Netlify Function
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
-# SPA fallback (after the /api rule so it doesn't swallow function calls)
+# SPA fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"

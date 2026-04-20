@@ -1,19 +1,17 @@
 import { Link } from 'react-router-dom'
-import {
-  Sparkles,
-  Compass,
-  Moon,
-  Orbit,
-  MessageCircleHeart,
-  ArrowRight,
-  Star
-} from 'lucide-react'
+import { Sparkles, Compass, Moon, Orbit, Gem, ArrowRight, Star } from 'lucide-react'
 
 const features = [
   {
     icon: Compass,
     title: '排吠陀命盤',
     desc: '以 Lahiri ayanamsha 計算 sidereal 上升星座、太陽與月亮位置。',
+    to: '/birth-chart'
+  },
+  {
+    icon: Gem,
+    title: '個人解讀',
+    desc: '根據你的 Lagna、太陽、月亮與 Nakshatra，給出詳細的性格與能量解讀。',
     to: '/birth-chart'
   },
   {
@@ -27,12 +25,6 @@ const features = [
     title: '九大行星 Navagraha',
     desc: '從 Surya 到 Ketu，理解 9 個 Graha 的本質、吉凶與象徵意義。',
     to: '/planets'
-  },
-  {
-    icon: MessageCircleHeart,
-    title: 'AI 個人解讀',
-    desc: '用 Claude 即時解讀你的命盤，獲得細緻的人生指引與行運提示。',
-    to: '/ai-reading'
   }
 ]
 
@@ -69,9 +61,9 @@ export default function Home() {
                 開始排命盤
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/ai-reading" className="btn-ghost">
+              <Link to="/nakshatras" className="btn-ghost">
                 <Sparkles className="h-4 w-4" />
-                AI 解讀
+                探索 Nakshatra
               </Link>
             </div>
           </div>
@@ -189,7 +181,7 @@ export default function Home() {
         <div className="text-center mb-12">
           <h2 className="section-title">開啟你的星象之旅</h2>
           <p className="mt-3 text-slate-400 max-w-2xl mx-auto">
-            四個核心功能，由古老原理與現代 AI 共同編織。
+            四個核心功能，由古老吠陀智慧編織而成。
           </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -246,7 +238,7 @@ export default function Home() {
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <h2 className="section-title">讓星辰為你指路</h2>
         <p className="mt-4 text-slate-400 max-w-2xl mx-auto">
-          只需填入出生日期、時間與地點，AI 將以吠陀占星的智慧為你繪製個人星圖。
+          只需填入出生日期、時間與地點，立刻獲得你的吠陀命盤與完整解讀。
         </p>
         <div className="mt-8">
           <Link to="/birth-chart" className="btn-primary">
