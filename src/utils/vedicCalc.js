@@ -98,14 +98,12 @@ export function tropicalAscendant(jd, latitudeDeg, longitudeDeg) {
   return norm360(asc)
 }
 
-// Compute a complete simplified Vedic chart snapshot.
-// Params: year, month, day, hour, minute in LOCAL time. tzOffset in hours from UTC.
-// lat/lon in degrees (+N, +E). Returns rich object for UI rendering.
+// Compute a complete Vedic + Tropical chart snapshot.
+// Returns BOTH Tropical (西方 user-facing) and Sidereal (吠陀 Raman-compliant)
+// zodiac placements for Sun, Moon, Ascendant.
 export function computeVedicChart({ year, month, day, hour, minute, tzOffset, lat, lon }) {
-  // Convert local to UT
   const utHour = hour - tzOffset + minute / 60
   const jd = julianDay(year, month, day, utHour, 0, 0)
-
   const ayan = lahiriAyanamsha(jd)
 
   const sunTrop = sunTropicalLongitude(jd)
@@ -116,43 +114,59 @@ export function computeVedicChart({ year, month, day, hour, minute, tzOffset, la
   const moonSid = norm360(moonTrop - ayan)
   const ascSid = norm360(ascTrop - ayan)
 
-  const sunRashi = getRashiByIndex(Math.floor(sunSid / 30))
-  const moonRashi = getRashiByIndex(Math.floor(moonSid / 30))
-  const ascRashi = getRashiByIndex(Math.floor(ascSid / 30))
+  const makePos = (longitude) => ({
+    longitude,
+    rashi: getRashiByIndex(Math.floor(longitude / 30)),
+    degreeInSign: longitude % 30
+  })
 
   const moonNakshatra = getNakshatraByLongitude(moonSid)
   const sunNakshatra = getNakshatraByLongitude(sunSid)
 
-  // 12 house cusps — equal house system from ascendant
+  // Equal house system from sidereal ascendant (Raman-standard)
   const houses = rashis.map((_, i) => {
     const rashiIdx = (Math.floor(ascSid / 30) + i) % 12
-    return {
-      house: i + 1,
-      rashi: getRashiByIndex(rashiIdx)
-    }
+    return { house: i + 1, rashi: getRashiByIndex(rashiIdx) }
   })
 
   return {
     jd,
     ayanamsha: ayan,
+
+    // Tropical — familiar Western signs (for personality readings)
+    tropical: {
+      sun: makePos(sunTrop),
+      moon: makePos(moonTrop),
+      ascendant: makePos(ascTrop)
+    },
+
+    // Sidereal — traditional Vedic (for Nakshatra, Dasha, houses)
+    sidereal: {
+      sun: { ...makePos(sunSid), nakshatra: sunNakshatra },
+      moon: { ...makePos(moonSid), nakshatra: moonNakshatra },
+      ascendant: makePos(ascSid),
+      houses
+    },
+
+    // Legacy keys (backward compat - sidereal-based)
     sun: {
       tropical: sunTrop,
       sidereal: sunSid,
-      rashi: sunRashi,
+      rashi: getRashiByIndex(Math.floor(sunSid / 30)),
       nakshatra: sunNakshatra,
       degreeInSign: sunSid % 30
     },
     moon: {
       tropical: moonTrop,
       sidereal: moonSid,
-      rashi: moonRashi,
+      rashi: getRashiByIndex(Math.floor(moonSid / 30)),
       nakshatra: moonNakshatra,
       degreeInSign: moonSid % 30
     },
     ascendant: {
       tropical: ascTrop,
       sidereal: ascSid,
-      rashi: ascRashi,
+      rashi: getRashiByIndex(Math.floor(ascSid / 30)),
       degreeInSign: ascSid % 30
     },
     houses,
@@ -231,6 +245,40 @@ export function getCurrentDasha(periods, now = new Date()) {
     ...periods[idx],
     next: periods[idx + 1] || null,
     yearsRemaining: (periods[idx].end - now) / (365.25 * 24 * 60 * 60 * 1000)
+  }
+}
+
+// ═════════════════════════════════════════════════════════════
+// Antardasha (Bhukti) — sub-periods within a Mahadasha
+// Per Raman: antardasha length = (MD_years × AD_years) / 120
+// Antardasha order starts with the Mahadasha planet, then follows
+// standard Vimshottari order.
+// ═════════════════════════════════════════════════════════════
+export function computeAntardashas(mahadasha) {
+  if (!mahadasha) return []
+  const startIdx = DASHA_ORDER.indexOf(mahadasha.lord)
+  const totalYears = mahadasha.years
+  const periods = []
+  let t = new Date(mahadasha.start)
+  for (let i = 0; i < 9; i++) {
+    const lord = DASHA_ORDER[(startIdx + i) % 9]
+    const years = (DASHA_YEARS[lord] * totalYears) / 120
+    const end = addYears(t, years)
+    periods.push({ lord, start: new Date(t), end, years })
+    t = end
+  }
+  // Clip last antardasha to exact mahadasha end to avoid float drift
+  periods[periods.length - 1].end = new Date(mahadasha.end)
+  return periods
+}
+
+export function getCurrentAntardasha(antardashas, now = new Date()) {
+  const idx = antardashas.findIndex((p) => now >= p.start && now < p.end)
+  if (idx === -1) return null
+  return {
+    ...antardashas[idx],
+    next: antardashas[idx + 1] || null,
+    yearsRemaining: (antardashas[idx].end - now) / (365.25 * 24 * 60 * 60 * 1000)
   }
 }
 

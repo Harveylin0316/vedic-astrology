@@ -27,7 +27,14 @@ import {
   CircleDot,
   Telescope
 } from 'lucide-react'
-import { computeVedicChart, formatDegrees, computeVimshottariDasha, getCurrentDasha } from '../utils/vedicCalc.js'
+import {
+  computeVedicChart,
+  formatDegrees,
+  computeVimshottariDasha,
+  getCurrentDasha,
+  computeAntardashas,
+  getCurrentAntardasha
+} from '../utils/vedicCalc.js'
 import ChartWheel from '../components/ChartWheel.jsx'
 import {
   lagnaReadings,
@@ -41,6 +48,7 @@ import {
   getRemedyForRashi,
   getKeywords,
   getPersonalitySummary,
+  getDashaEventsForAge,
   normalizeNakshatraName
 } from '../data/interpretations.js'
 
@@ -86,27 +94,33 @@ export default function BirthChart() {
     }
   }
 
-  // Derived data
-  const lagna = chart ? lagnaReadings[chart.ascendant.rashi.name] : null
-  const moon = chart ? moonReadings[chart.moon.rashi.name] : null
-  const sun = chart ? sunReadings[chart.sun.rashi.name] : null
+  // Raman-framework 混合策略：
+  // • 西方 Tropical 用於「性格解讀」— 用戶熟悉的星座
+  // • 吠陀 Sidereal 用於「運勢預測」— Nakshatra + Dasha (Vedic 獨有)
+  const tropLagnaName = chart ? chart.tropical.ascendant.rashi.name : null
+  const tropMoonName = chart ? chart.tropical.moon.rashi.name : null
+  const tropSunName = chart ? chart.tropical.sun.rashi.name : null
+
+  const lagna = chart ? lagnaReadings[tropLagnaName] : null
+  const moon = chart ? moonReadings[tropMoonName] : null
+  const sun = chart ? sunReadings[tropSunName] : null
   const nakshatra = chart
-    ? nakshatraReadings[normalizeNakshatraName(chart.moon.nakshatra.name)]
+    ? nakshatraReadings[normalizeNakshatraName(chart.sidereal.moon.nakshatra.name)]
     : null
-  const lucky = chart ? luckySystem[chart.moon.rashi.name] : null
-  const match = chart ? compatibility[chart.moon.rashi.name] : null
-  const remedy = chart ? getRemedyForRashi(chart.moon.rashi.name) : null
+  const lucky = chart ? luckySystem[tropMoonName] : null
+  const match = chart ? compatibility[tropMoonName] : null
+  const remedy = chart ? getRemedyForRashi(tropMoonName) : null
   const elementBalance = chart
     ? getElementBalance({
-        sunRashi: chart.sun.rashi.name,
-        moonRashi: chart.moon.rashi.name,
-        lagnaRashi: chart.ascendant.rashi.name
+        sunRashi: tropSunName,
+        moonRashi: tropMoonName,
+        lagnaRashi: tropLagnaName
       })
     : null
 
   const dashaPeriods = chart
     ? computeVimshottariDasha({
-        moonSidereal: chart.moon.sidereal,
+        moonSidereal: chart.sidereal.moon.longitude,
         birthYear: chart._input.year,
         birthMonth: chart._input.month,
         birthDay: chart._input.day,
@@ -117,6 +131,14 @@ export default function BirthChart() {
   const currentDasha = dashaPeriods ? getCurrentDasha(dashaPeriods) : null
   const currentDashaReading = currentDasha ? dashaReadings[currentDasha.lord] : null
   const nextDashaReading = currentDasha?.next ? dashaReadings[currentDasha.next.lord] : null
+
+  // Antardasha (sub-periods) within current Mahadasha — Raman 法
+  const antardashas = currentDasha ? computeAntardashas(currentDasha) : []
+  const currentAD = antardashas.length ? getCurrentAntardasha(antardashas) : null
+  const currentADReading = currentAD ? dashaReadings[currentAD.lord] : null
+  const upcomingADs = currentAD
+    ? antardashas.filter((a) => a.start > new Date()).slice(0, 3)
+    : []
 
   // Split periods into past / present / future with age calculation
   const birthDateObj = chart
@@ -131,18 +153,18 @@ export default function BirthChart() {
 
   const keywords = chart
     ? getKeywords({
-        lagna: chart.ascendant.rashi.name,
-        moon: chart.moon.rashi.name,
-        sun: chart.sun.rashi.name,
-        nakshatra: normalizeNakshatraName(chart.moon.nakshatra.name)
+        lagna: tropLagnaName,
+        moon: tropMoonName,
+        sun: tropSunName,
+        nakshatra: normalizeNakshatraName(chart.sidereal.moon.nakshatra.name)
       })
     : null
 
   const personality = chart
     ? getPersonalitySummary({
-        lagna: chart.ascendant.rashi.name,
-        moon: chart.moon.rashi.name,
-        sun: chart.sun.rashi.name
+        lagna: tropLagnaName,
+        moon: tropMoonName,
+        sun: tropSunName
       })
     : null
 
@@ -215,7 +237,7 @@ export default function BirthChart() {
             <WelcomePanel />
           ) : (
             <>
-              {/* ① Summary Hero */}
+              {/* ① Summary Hero — 西方主顯 + 吠陀副顯 */}
               <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30">
                 <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">你的命盤關鍵字</div>
                 <h2 className="font-serif text-3xl md:text-4xl gradient-text leading-tight">
@@ -229,19 +251,45 @@ export default function BirthChart() {
                   ))}
                 </div>
                 <div className="mt-5 text-sm text-slate-400">
-                  {submittedCity} · {submittedStamp} · Ayanamsha {chart.ayanamsha.toFixed(2)}°
+                  {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
                 </div>
               </div>
 
-              {/* ② Chart + Badges */}
+              {/* ① -b 雙系統對照說明 */}
+              <div className="glass-panel p-5 bg-white/[0.02] border-white/10">
+                <div className="text-xs uppercase tracking-widest text-slate-400 mb-3">Tropical（西方）vs Sidereal（吠陀）· 兩套系統並列</div>
+                <div className="grid md:grid-cols-2 gap-3 text-sm">
+                  <div className="rounded-xl border border-sky-500/20 bg-sky-500/5 p-3">
+                    <div className="text-sky-400 font-medium mb-2">🌐 西方 Tropical（主要，用於性格）</div>
+                    <div className="space-y-1 text-slate-200">
+                      <div>⬆️ 上升：<span className="text-sky-300">{chart.tropical.ascendant.rashi.chinese} {chart.tropical.ascendant.rashi.symbol}</span> · {formatDegrees(chart.tropical.ascendant.degreeInSign)}</div>
+                      <div>🌞 太陽：<span className="text-sky-300">{chart.tropical.sun.rashi.chinese} {chart.tropical.sun.rashi.symbol}</span> · {formatDegrees(chart.tropical.sun.degreeInSign)}</div>
+                      <div>🌙 月亮：<span className="text-sky-300">{chart.tropical.moon.rashi.chinese} {chart.tropical.moon.rashi.symbol}</span> · {formatDegrees(chart.tropical.moon.degreeInSign)}</div>
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-3">
+                    <div className="text-saffron-400 font-medium mb-2">🕉️ 吠陀 Sidereal（用於運勢預測）</div>
+                    <div className="space-y-1 text-slate-200">
+                      <div>⬆️ Lagna：<span className="text-saffron-300">{chart.sidereal.ascendant.rashi.chinese} {chart.sidereal.ascendant.rashi.symbol}</span> · {formatDegrees(chart.sidereal.ascendant.degreeInSign)}</div>
+                      <div>🌞 Surya：<span className="text-saffron-300">{chart.sidereal.sun.rashi.chinese} {chart.sidereal.sun.rashi.symbol}</span> · {formatDegrees(chart.sidereal.sun.degreeInSign)}</div>
+                      <div>🌙 Chandra：<span className="text-saffron-300">{chart.sidereal.moon.rashi.chinese} {chart.sidereal.moon.rashi.symbol}</span> · {formatDegrees(chart.sidereal.moon.degreeInSign)} · {chart.sidereal.moon.nakshatra.name} Pada {chart.sidereal.moon.nakshatra.pada}</div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-500 mt-3 leading-relaxed">
+                  💡 兩套系統差 ~{chart.ayanamsha.toFixed(1)}°（歲差 Ayanamsha）。本站把你<strong className="text-sky-400">熟悉的西方星座</strong>用於性格解讀（「準不準」的基礎），把吠陀獨有的<strong className="text-saffron-400"> Nakshatra 月宿 + Vimshottari 大運</strong>用於人生運勢預測 — 兩者互補，這是現代吠陀大師 Raman 派的整合路線。
+                </p>
+              </div>
+
+              {/* ② Chart + Badges（西方星座為主） */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="glass-panel p-6">
                   <ChartWheel chart={chart} />
                 </div>
                 <div className="space-y-4">
-                  <PlanetBadge icon={<ArrowUpRight className="h-5 w-5" />} label="上升 Lagna" rashi={chart.ascendant.rashi} degree={chart.ascendant.degreeInSign} />
-                  <PlanetBadge icon={<Sun className="h-5 w-5" />} label="太陽 Surya" rashi={chart.sun.rashi} degree={chart.sun.degreeInSign} nakshatra={chart.sun.nakshatra} />
-                  <PlanetBadge icon={<Moon className="h-5 w-5" />} label="月亮 Chandra" rashi={chart.moon.rashi} degree={chart.moon.degreeInSign} nakshatra={chart.moon.nakshatra} highlight />
+                  <PlanetBadge icon={<ArrowUpRight className="h-5 w-5" />} label="上升 Rising" rashi={chart.tropical.ascendant.rashi} degree={chart.tropical.ascendant.degreeInSign} sideLabel={`吠陀 ${chart.sidereal.ascendant.rashi.chinese}`} />
+                  <PlanetBadge icon={<Sun className="h-5 w-5" />} label="太陽 Sun" rashi={chart.tropical.sun.rashi} degree={chart.tropical.sun.degreeInSign} sideLabel={`吠陀 ${chart.sidereal.sun.rashi.chinese}`} />
+                  <PlanetBadge icon={<Moon className="h-5 w-5" />} label="月亮 Moon" rashi={chart.tropical.moon.rashi} degree={chart.tropical.moon.degreeInSign} nakshatra={chart.sidereal.moon.nakshatra} sideLabel={`吠陀 ${chart.sidereal.moon.rashi.chinese}`} highlight />
                 </div>
               </div>
 
@@ -373,17 +421,18 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ⑦-1 PAST 過去運勢 */}
+              {/* ⑦-1 PAST 過去運勢（按年齡過濾事件） */}
               {pastPeriods.length > 0 && (
                 <Section icon={<History className="h-4 w-4" />} badge="過去運勢 · 你走過的大運" title="你這輩子經歷過的人生階段">
                   <p className="text-sm text-slate-400 mb-4">
-                    吠陀占星用 Vimshottari 120 年週期，看出你在每個年齡段被哪顆星帶著。回頭看看，那些日子是不是都被命中了？
+                    Vimshottari Dasha 的 120 年週期，看出你在每個年齡段被哪顆星帶著。每張卡顯示的事件都按你當時的年齡段過濾。
                   </p>
                   <div className="space-y-3">
                     {pastPeriods.map((p, i) => {
                       const r = dashaReadings[p.lord]
                       const ageStart = ageOf(p.start)
                       const ageEnd = ageOf(p.end)
+                      const events = getDashaEventsForAge(p.lord, Math.max(0, ageStart), ageEnd)
                       return (
                         <DashaTimelineCard
                           key={i}
@@ -392,7 +441,7 @@ export default function BirthChart() {
                           name={r.name}
                           nickname={r.nickname}
                           theme={r.theme}
-                          typicalEvents={r.typicalEvents}
+                          typicalEvents={events}
                           tone="past"
                         />
                       )
@@ -401,17 +450,20 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ⑦-2 PRESENT 現在運勢（詳細） */}
+              {/* ⑦-2 PRESENT 現在運勢 + Antardasha */}
               {currentDasha && currentDashaReading && (
-                <Section icon={<CircleDot className="h-4 w-4" />} badge="現在運勢 · 目前大運" title={`你現在正在走：${currentDashaReading.name}（${currentDashaReading.nickname}）`} highlight>
+                <Section icon={<CircleDot className="h-4 w-4" />} badge="現在運勢 · 目前大運 + 小運" title={`你現在正在走：${currentDashaReading.name}（${currentDashaReading.nickname}）`} highlight>
                   <div className="grid md:grid-cols-4 gap-3 mb-5">
                     <DashaStat label="目前年齡" value={`${ageOf(now).toFixed(0)} 歲`} />
                     <DashaStat label="大運主題" value={currentDashaReading.theme} />
                     <DashaStat label="此大運共" value={`${currentDashaReading.years} 年`} />
                     <DashaStat label="還剩" value={`約 ${currentDasha.yearsRemaining.toFixed(1)} 年`} accent />
                   </div>
-                  <p className="text-slate-200 leading-relaxed text-base mb-5 border-l-2 border-saffron-500/60 pl-4">
+                  <p className="text-slate-200 leading-relaxed text-base mb-2 border-l-2 border-saffron-500/60 pl-4">
                     {currentDashaReading.vibe}
+                  </p>
+                  <p className="text-xs text-slate-500 mb-5 pl-4">
+                    <span className="text-saffron-400">Karaka（自然徵象）：</span> {currentDashaReading.karaka}
                   </p>
                   <div className="grid md:grid-cols-2 gap-3">
                     <InfoCard label="💼 事業運" body={currentDashaReading.career} />
@@ -419,32 +471,82 @@ export default function BirthChart() {
                     <InfoCard label="💰 財運" body={currentDashaReading.money} />
                     <InfoCard label="🏥 健康運" body={currentDashaReading.health} />
                   </div>
+
+                  {/* 當下年齡對應的事件 */}
                   <div className="mt-4 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-4">
-                    <div className="text-sm text-saffron-400 font-medium mb-2">📌 這段期間常見的人生事件</div>
+                    <div className="text-sm text-saffron-400 font-medium mb-2">📌 你這個年齡在此大運常見的事件</div>
                     <div className="flex flex-wrap gap-1.5">
-                      {currentDashaReading.typicalEvents.map((e) => (
+                      {getDashaEventsForAge(currentDasha.lord, ageOf(now), ageOf(now) + 0.1).map((e) => (
                         <span key={e} className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs">{e}</span>
                       ))}
                     </div>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-3 mt-3">
+
+                  {/* Antardasha — Raman 預測關鍵 */}
+                  {currentAD && currentADReading && (
+                    <div className="mt-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-emerald-400 mb-3">
+                        🔍 Antardasha 小運（Raman 法則：細到月的預測）
+                      </div>
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <span className="font-serif text-xl text-emerald-300">
+                          {currentDasha.lord} / {currentAD.lord}
+                        </span>
+                        <span className="text-sm text-slate-400">
+                          {currentDashaReading.nickname} 中的{currentADReading.nickname}子階段
+                        </span>
+                      </div>
+                      <div className="text-sm text-slate-300 mt-2 leading-relaxed">
+                        {currentAD.start.toLocaleDateString('zh-TW')} ~ {currentAD.end.toLocaleDateString('zh-TW')}
+                        <span className="text-slate-500"> · 約 {(currentAD.years * 12).toFixed(0)} 個月 · 剩 {(currentAD.yearsRemaining * 12).toFixed(1)} 個月</span>
+                      </div>
+                      <p className="text-sm text-slate-300 mt-3 leading-relaxed">
+                        <span className="text-slate-400">重點主題 → </span>
+                        {currentAD.lord === currentDasha.lord ? '同主題深化、加倍。' : `${currentADReading.theme.split('·')[0]}的議題會在${currentDashaReading.theme.split('·')[0]}的大框架下浮現。`}
+                      </p>
+                      {upcomingADs.length > 0 && (
+                        <div className="mt-4 pt-4 border-t border-emerald-500/20">
+                          <div className="text-xs text-slate-400 mb-2">接下來 3 個小運：</div>
+                          <div className="space-y-1.5">
+                            {upcomingADs.map((ad, i) => {
+                              const ar = dashaReadings[ad.lord]
+                              return (
+                                <div key={i} className="text-sm flex items-center justify-between gap-3">
+                                  <span className="text-slate-200">
+                                    {currentDasha.lord} / <span className="text-emerald-300">{ad.lord}</span>
+                                    <span className="text-slate-500 ml-2 text-xs">{ar.nickname}</span>
+                                  </span>
+                                  <span className="text-xs text-slate-500">
+                                    {ad.start.toLocaleDateString('zh-TW')} ({(ad.years * 12).toFixed(0)} 個月)
+                                  </span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="grid md:grid-cols-2 gap-3 mt-4">
                     <TagCard icon={<TrendingUp className="h-4 w-4 text-emerald-400" />} title="這段時間適合做的事" tags={currentDashaReading.goodFor} tone="good" />
                     <TagCard icon={<ShieldAlert className="h-4 w-4 text-vermilion-500" />} title="需要特別注意的事" tags={currentDashaReading.watchOut} tone="bad" />
                   </div>
                 </Section>
               )}
 
-              {/* ⑦-3 FUTURE 未來運勢 */}
+              {/* ⑦-3 FUTURE 未來運勢（按年齡過濾事件） */}
               {futurePeriods.length > 0 && (
                 <Section icon={<Telescope className="h-4 w-4" />} badge="未來運勢 · 接下來的大運" title="你未來 50 年的人生地圖">
                   <p className="text-sm text-slate-400 mb-4">
-                    每個大運切換點就是人生的「翻頁時刻」。事先知道，你就能做好準備 — 該衝的衝、該收的收。
+                    每個大運切換點就是人生的「翻頁時刻」。事件顯示會根據你那時候的年齡自動調整 — 童年看不到結婚、80 歲不會出現考大學。
                   </p>
                   <div className="space-y-3">
                     {futurePeriods.map((p, i) => {
                       const r = dashaReadings[p.lord]
                       const ageStart = ageOf(p.start)
                       const ageEnd = ageOf(p.end)
+                      const events = getDashaEventsForAge(p.lord, ageStart, ageEnd)
                       return (
                         <DashaTimelineCard
                           key={i}
@@ -457,7 +559,7 @@ export default function BirthChart() {
                           career={r.career}
                           love={r.love}
                           money={r.money}
-                          typicalEvents={r.typicalEvents}
+                          typicalEvents={events}
                           tone="future"
                           turningPoint={i === 0}
                         />
@@ -577,7 +679,7 @@ function WelcomePanel() {
   )
 }
 
-function PlanetBadge({ icon, label, rashi, degree, nakshatra, highlight }) {
+function PlanetBadge({ icon, label, rashi, degree, nakshatra, sideLabel, highlight }) {
   return (
     <div className={`rounded-2xl border p-5 ${highlight ? 'border-saffron-500/40 bg-saffron-500/5' : 'border-white/10 bg-white/5'}`}>
       <div className="flex items-center justify-between">
@@ -588,9 +690,12 @@ function PlanetBadge({ icon, label, rashi, degree, nakshatra, highlight }) {
       </div>
       <div className="mt-3 font-serif text-xl">{rashi.chinese} · {rashi.name}</div>
       <div className="text-sm text-slate-400 mt-1">{formatDegrees(degree)} · 守護 {rashi.rulerChinese}</div>
+      {sideLabel && (
+        <div className="mt-1 text-xs text-slate-500">{sideLabel}</div>
+      )}
       {nakshatra && (
         <div className="mt-3 pt-3 border-t border-white/10 text-sm">
-          <div className="text-xs text-slate-400">Nakshatra</div>
+          <div className="text-xs text-slate-400">Nakshatra 月宿</div>
           <div className="font-medium text-saffron-400">{nakshatra.name} · Pada {nakshatra.pada}</div>
           <div className="text-xs text-slate-500 mt-0.5">{nakshatra.trait}</div>
         </div>
