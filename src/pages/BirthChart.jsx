@@ -40,6 +40,7 @@ import {
   getElementBalance,
   getRemedyForRashi,
   getKeywords,
+  getPersonalitySummary,
   normalizeNakshatraName
 } from '../data/interpretations.js'
 
@@ -134,6 +135,14 @@ export default function BirthChart() {
         moon: chart.moon.rashi.name,
         sun: chart.sun.rashi.name,
         nakshatra: normalizeNakshatraName(chart.moon.nakshatra.name)
+      })
+    : null
+
+  const personality = chart
+    ? getPersonalitySummary({
+        lagna: chart.ascendant.rashi.name,
+        moon: chart.moon.rashi.name,
+        sun: chart.sun.rashi.name
       })
     : null
 
@@ -236,7 +245,56 @@ export default function BirthChart() {
                 </div>
               </div>
 
-              {/* ③ Personality — 第一印象 vs 真實的你 */}
+              {/* ③ 個性優缺點 — 最快「准不准」的判斷 */}
+              {personality && (
+                <Section
+                  icon={<Sparkle className="h-4 w-4" />}
+                  badge="個性優缺點 · 最快 10 秒測準度"
+                  title="來看看你中了幾條 👀"
+                  highlight
+                >
+                  <p className="text-sm text-slate-400 mb-4">
+                    這些是把你 <span className="text-saffron-400">上升 + 太陽 + 月亮</span> 三個核心星位加總之後的綜合個性。看看朋友是不是就是這樣形容你的？
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-xl">👍</span>
+                        <div className="text-sm font-medium text-emerald-400">朋友會私下誇你的點</div>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {personality.strengths.map((s) => (
+                          <span key={s} className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 text-xs text-slate-100">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4 text-xs text-slate-400 pt-3 border-t border-white/5">
+                        共 {personality.strengths.length} 個優點特徵 · 中越多越準
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-vermilion-500/30 bg-vermilion-500/5 p-5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-xl">😅</span>
+                        <div className="text-sm font-medium text-vermilion-500">朋友私下吐槽你的點</div>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {personality.weaknesses.map((w) => (
+                          <span key={w} className="rounded-full bg-vermilion-500/10 border border-vermilion-500/30 px-3 py-1 text-xs text-slate-100">
+                            {w}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4 text-xs text-slate-400 pt-3 border-t border-white/5">
+                        共 {personality.weaknesses.length} 個地雷 · 中越多越該修
+                      </div>
+                    </div>
+                  </div>
+                </Section>
+              )}
+
+              {/* ④ Personality — 第一印象 vs 真實的你 */}
               {lagna && (
                 <Section icon={<Sparkle className="h-4 w-4" />} badge={`上升 · ${chart.ascendant.rashi.chinese}`} title={lagna.tagline}>
                   <div className="grid md:grid-cols-2 gap-4">
