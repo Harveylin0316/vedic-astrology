@@ -805,14 +805,65 @@ export default function BirthChart() {
               {/* ⑫ Houses */}
               <Section icon={<MapPin className="h-4 w-4" />} badge="12 宮位 · 吠陀人生地圖" title="你的 Bhavas（12 宮位）">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {chart.sidereal.houses.map((h) => (
-                    <div key={h.house} className="rounded-xl border border-white/10 bg-white/5 p-3">
-                      <div className="text-xs text-slate-400">第 {h.house} 宮</div>
-                      <div className="font-serif text-lg">{h.rashi.symbol} {h.rashi.chinese}</div>
-                      <div className="text-xs text-slate-500">{h.rashi.name}</div>
-                    </div>
-                  ))}
+                  {chart.sidereal.houses.map((h) => {
+                    const grahasHere = Object.entries(chart.sidereal.grahas)
+                      .filter(([, g]) => g.house === h.house)
+                      .map(([name]) => name)
+                    return (
+                      <div key={h.house} className="rounded-xl border border-white/10 bg-white/5 p-3">
+                        <div className="text-xs text-slate-400">第 {h.house} 宮</div>
+                        <div className="font-serif text-lg">{h.rashi.symbol} {h.rashi.chinese}</div>
+                        <div className="text-xs text-slate-500">{h.rashi.name}</div>
+                        {grahasHere.length > 0 && (
+                          <div className="mt-2 pt-2 border-t border-white/5 flex flex-wrap gap-1">
+                            {grahasHere.map((g) => (
+                              <span key={g} className="text-[10px] rounded bg-saffron-500/20 text-saffron-300 px-1.5 py-0.5">
+                                {g}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
+              </Section>
+
+              {/* ⑬ 9 Grahas Table */}
+              <Section icon={<Sparkles className="h-4 w-4" />} badge="九大行星 Navagraha · 全部落點" title="你命盤裡所有行星的位置">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-white/10 text-xs uppercase text-slate-400">
+                        <th className="text-left py-2 px-2">行星</th>
+                        <th className="text-left py-2 px-2">星座 Rashi</th>
+                        <th className="text-left py-2 px-2">度數</th>
+                        <th className="text-left py-2 px-2">月宿 Nakshatra</th>
+                        <th className="text-left py-2 px-2">宮位</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(chart.sidereal.grahas).map(([name, g]) => (
+                        <tr key={name} className="border-b border-white/5 hover:bg-white/[0.02]">
+                          <td className="py-2 px-2 font-medium text-saffron-400">{name}</td>
+                          <td className="py-2 px-2">
+                            <span className="text-base">{g.rashi.symbol}</span>
+                            <span className="ml-1 text-slate-200">{g.rashi.chinese}</span>
+                          </td>
+                          <td className="py-2 px-2 text-slate-400 text-xs">{formatDegrees(g.degreeInSign)}</td>
+                          <td className="py-2 px-2 text-xs">
+                            <span className="text-slate-200">{g.nakshatra.name}</span>
+                            <span className="text-slate-500 ml-1">P{g.nakshatra.pada}</span>
+                          </td>
+                          <td className="py-2 px-2 text-slate-400">第 {g.house} 宮</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                  💡 這是你命盤的完整行星佈局。後續的進階解讀（Yoga、大運、衝突點）都會依這張表計算。
+                </p>
               </Section>
             </>
           )}
