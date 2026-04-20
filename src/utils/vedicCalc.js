@@ -72,6 +72,143 @@ export function moonTropicalLongitude(jd) {
   return norm360(lon)
 }
 
+// ═════════════════════════════════════════════════════════════
+// Classical planets (Mars, Mercury, Jupiter, Venus, Saturn)
+// Based on Paul Schlyter's simplified Keplerian elements
+// http://stjarnhimlen.se/comp/tutorial.html
+// Accuracy: ~1-2° (enough for rashi / house determination)
+// ═════════════════════════════════════════════════════════════
+
+const PLANET_ELEMENTS = {
+  Mercury: {
+    N: [48.3313, 3.24587e-5],
+    i: [7.0047, 5.0e-8],
+    w: [29.1241, 1.01444e-5],
+    a: 0.387098,
+    e: [0.205635, 5.59e-10],
+    M: [168.6562, 4.0923344368]
+  },
+  Venus: {
+    N: [76.6799, 2.4659e-5],
+    i: [3.3946, 2.75e-8],
+    w: [54.891, 1.38374e-5],
+    a: 0.72333,
+    e: [0.006773, -1.302e-9],
+    M: [48.0052, 1.6021302244]
+  },
+  Mars: {
+    N: [49.5574, 2.11081e-5],
+    i: [1.8497, -1.78e-8],
+    w: [286.5016, 2.92961e-5],
+    a: 1.523688,
+    e: [0.093405, 2.516e-9],
+    M: [18.6021, 0.5240207766]
+  },
+  Jupiter: {
+    N: [100.4542, 2.76854e-5],
+    i: [1.303, -1.557e-7],
+    w: [273.8777, 1.64505e-5],
+    a: 5.20256,
+    e: [0.048498, 4.469e-9],
+    M: [19.895, 0.0830853001]
+  },
+  Saturn: {
+    N: [113.6634, 2.3898e-5],
+    i: [2.4886, -1.081e-7],
+    w: [339.3939, 2.97661e-5],
+    a: 9.55475,
+    e: [0.055546, -9.499e-9],
+    M: [316.967, 0.0334442282]
+  }
+}
+
+// Days from Schlyter epoch (2000 Jan 0.0 = JD 2451543.5)
+function daysFromSchlyter(jd) {
+  return jd - 2451543.5
+}
+
+// Solve Kepler's equation M = E - e*sin(E) by iteration
+function solveKepler(M, e) {
+  const m = M * DEG
+  let E = m + e * Math.sin(m) * (1 + e * Math.cos(m))
+  for (let i = 0; i < 5; i++) {
+    const delta = (E - e * Math.sin(E) - m) / (1 - e * Math.cos(E))
+    E -= delta
+    if (Math.abs(delta) < 1e-7) break
+  }
+  return E / DEG
+}
+
+// Compute heliocentric ecliptic coordinates of a planet
+function heliocentricPosition(planet, d) {
+  const el = PLANET_ELEMENTS[planet]
+  const N = norm360(el.N[0] + el.N[1] * d)
+  const i = el.i[0] + el.i[1] * d
+  const w = norm360(el.w[0] + el.w[1] * d)
+  const a = el.a
+  const e = el.e[0] + el.e[1] * d
+  const M = norm360(el.M[0] + el.M[1] * d)
+
+  const E = solveKepler(M, e)
+  const eRad = E * DEG
+
+  // Position in orbital plane
+  const xv = a * (Math.cos(eRad) - e)
+  const yv = a * (Math.sqrt(1 - e * e) * Math.sin(eRad))
+  const v = norm360(Math.atan2(yv, xv) / DEG)
+  const r = Math.sqrt(xv * xv + yv * yv)
+
+  // Ecliptic position
+  const vPw = (v + w) * DEG
+  const nRad = N * DEG
+  const iRad = i * DEG
+  const xh = r * (Math.cos(nRad) * Math.cos(vPw) - Math.sin(nRad) * Math.sin(vPw) * Math.cos(iRad))
+  const yh = r * (Math.sin(nRad) * Math.cos(vPw) + Math.cos(nRad) * Math.sin(vPw) * Math.cos(iRad))
+  const zh = r * (Math.sin(vPw) * Math.sin(iRad))
+  return { x: xh, y: yh, z: zh, r }
+}
+
+// Earth's heliocentric position = -Sun's geocentric vector at distance 1 AU (approx)
+function earthHeliocentric(jd) {
+  const n = jd - 2451545.0
+  const L = norm360(280.46 + 0.9856474 * n)
+  const g = norm360(357.528 + 0.9856003 * n) * DEG
+  const sunLon = L + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)
+  // Earth is opposite the geocentric sun direction
+  const earthLon = norm360(sunLon + 180) * DEG
+  // Distance: approximate as 1 AU (slightly off due to Earth orbit eccentricity, OK for ~1° precision)
+  const r = 1.000001018 * (1 - 0.01671 * Math.cos(g))
+  return {
+    x: r * Math.cos(earthLon),
+    y: r * Math.sin(earthLon),
+    z: 0
+  }
+}
+
+// Geocentric ecliptic tropical longitude of a classical planet
+export function planetTropicalLongitude(planet, jd) {
+  const d = daysFromSchlyter(jd)
+  const helio = heliocentricPosition(planet, d)
+  const earth = earthHeliocentric(jd)
+  const geo = {
+    x: helio.x - earth.x,
+    y: helio.y - earth.y,
+    z: helio.z - earth.z
+  }
+  return norm360(Math.atan2(geo.y, geo.x) / DEG)
+}
+
+// Rahu (Mean Lunar North Node) — retrograde motion
+// Ketu = Rahu + 180°
+export function rahuTropicalLongitude(jd) {
+  const d = jd - 2451545.0
+  return norm360(125.04452 - 0.05295376 * d)
+}
+
+export function ketuTropicalLongitude(jd) {
+  return norm360(rahuTropicalLongitude(jd) + 180)
+}
+
 // Greenwich Mean Sidereal Time in degrees
 function gmstDegrees(jd) {
   const T = (jd - 2451545.0) / 36525
@@ -109,10 +246,24 @@ export function computeVedicChart({ year, month, day, hour, minute, tzOffset, la
   const sunTrop = sunTropicalLongitude(jd)
   const moonTrop = moonTropicalLongitude(jd)
   const ascTrop = tropicalAscendant(jd, lat, lon)
+  const marsTrop = planetTropicalLongitude('Mars', jd)
+  const mercuryTrop = planetTropicalLongitude('Mercury', jd)
+  const jupiterTrop = planetTropicalLongitude('Jupiter', jd)
+  const venusTrop = planetTropicalLongitude('Venus', jd)
+  const saturnTrop = planetTropicalLongitude('Saturn', jd)
+  const rahuTrop = rahuTropicalLongitude(jd)
+  const ketuTrop = ketuTropicalLongitude(jd)
 
   const sunSid = norm360(sunTrop - ayan)
   const moonSid = norm360(moonTrop - ayan)
   const ascSid = norm360(ascTrop - ayan)
+  const marsSid = norm360(marsTrop - ayan)
+  const mercurySid = norm360(mercuryTrop - ayan)
+  const jupiterSid = norm360(jupiterTrop - ayan)
+  const venusSid = norm360(venusTrop - ayan)
+  const saturnSid = norm360(saturnTrop - ayan)
+  const rahuSid = norm360(rahuTrop - ayan)
+  const ketuSid = norm360(ketuTrop - ayan)
 
   const makePos = (longitude) => ({
     longitude,
@@ -120,8 +271,36 @@ export function computeVedicChart({ year, month, day, hour, minute, tzOffset, la
     degreeInSign: longitude % 30
   })
 
-  const moonNakshatra = getNakshatraByLongitude(moonSid)
-  const sunNakshatra = getNakshatraByLongitude(sunSid)
+  const ascRashiIdx = Math.floor(ascSid / 30)
+  // Compute which house a sidereal longitude falls into (1-12)
+  const houseOf = (longitude) => {
+    const rashiIdx = Math.floor(longitude / 30)
+    return ((rashiIdx - ascRashiIdx + 12) % 12) + 1
+  }
+
+  const makeGraha = (longitude, tropLongitude) => ({
+    longitude,
+    tropical: tropLongitude,
+    rashi: getRashiByIndex(Math.floor(longitude / 30)),
+    degreeInSign: longitude % 30,
+    nakshatra: getNakshatraByLongitude(longitude),
+    house: houseOf(longitude)
+  })
+
+  const grahas = {
+    Sun: makeGraha(sunSid, sunTrop),
+    Moon: makeGraha(moonSid, moonTrop),
+    Mars: makeGraha(marsSid, marsTrop),
+    Mercury: makeGraha(mercurySid, mercuryTrop),
+    Jupiter: makeGraha(jupiterSid, jupiterTrop),
+    Venus: makeGraha(venusSid, venusTrop),
+    Saturn: makeGraha(saturnSid, saturnTrop),
+    Rahu: makeGraha(rahuSid, rahuTrop),
+    Ketu: makeGraha(ketuSid, ketuTrop)
+  }
+
+  const moonNakshatra = grahas.Moon.nakshatra
+  const sunNakshatra = grahas.Sun.nakshatra
 
   // Equal house system from sidereal ascendant (Raman-standard)
   const houses = rashis.map((_, i) => {
@@ -145,7 +324,8 @@ export function computeVedicChart({ year, month, day, hour, minute, tzOffset, la
       sun: { ...makePos(sunSid), nakshatra: sunNakshatra },
       moon: { ...makePos(moonSid), nakshatra: moonNakshatra },
       ascendant: makePos(ascSid),
-      houses
+      houses,
+      grahas // all 9 planets with rashi/house/nakshatra
     },
 
     // Legacy keys (backward compat - sidereal-based)
