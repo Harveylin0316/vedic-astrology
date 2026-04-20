@@ -155,7 +155,8 @@ export function computeVedicChart({ year, month, day, hour, minute, tzOffset, la
       rashi: ascRashi,
       degreeInSign: ascSid % 30
     },
-    houses
+    houses,
+    _input: { year, month, day, hour, minute }
   }
 }
 
@@ -166,3 +167,70 @@ export function formatDegrees(deg) {
   const s = Math.round((mFull - m) * 60)
   return `${d}°${String(m).padStart(2, '0')}'${String(s).padStart(2, '0')}"`
 }
+
+// ═════════════════════════════════════════════════════════════
+// Vimshottari Dasha 大運計算
+// Based on Moon's Nakshatra position at birth (sidereal longitude)
+// Total cycle = 120 years, 9 planets in fixed order
+// ═════════════════════════════════════════════════════════════
+
+const DASHA_YEARS = {
+  Ketu: 7, Venus: 20, Sun: 6, Moon: 10, Mars: 7,
+  Rahu: 18, Jupiter: 16, Saturn: 19, Mercury: 17
+}
+
+const DASHA_ORDER = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury']
+
+// Nakshatra index (0–26) → Dasha lord
+function nakshatraLord(nakIndex) {
+  return DASHA_ORDER[nakIndex % 9]
+}
+
+// Build the Vimshottari Mahadasha timeline from birth
+export function computeVimshottariDasha({ moonSidereal, birthYear, birthMonth, birthDay, birthHour = 0, birthMinute = 0 }) {
+  const NAK_SPAN = 360 / 27
+  const nakIndex = Math.floor(moonSidereal / NAK_SPAN)
+  const posInNak = (moonSidereal % NAK_SPAN) / NAK_SPAN // 0 - 1 (fraction traversed)
+
+  const startLord = nakshatraLord(nakIndex)
+  const startLordTotal = DASHA_YEARS[startLord]
+  const balanceYears = startLordTotal * (1 - posInNak) // years remaining in starting dasha at birth
+
+  const birth = new Date(Date.UTC(birthYear, birthMonth - 1, birthDay, birthHour, birthMinute))
+  const periods = []
+
+  let t = new Date(birth)
+  const firstEnd = addYears(t, balanceYears)
+  periods.push({ lord: startLord, start: new Date(t), end: firstEnd, years: balanceYears, isPartial: true })
+  t = firstEnd
+
+  let yearsUsed = balanceYears
+  let idx = DASHA_ORDER.indexOf(startLord)
+  while (yearsUsed < 120) {
+    idx = (idx + 1) % 9
+    const lord = DASHA_ORDER[idx]
+    const years = DASHA_YEARS[lord]
+    const end = addYears(t, years)
+    periods.push({ lord, start: new Date(t), end, years, isPartial: false })
+    t = end
+    yearsUsed += years
+  }
+
+  return periods
+}
+
+function addYears(date, years) {
+  const ms = years * 365.25 * 24 * 60 * 60 * 1000
+  return new Date(date.getTime() + ms)
+}
+
+export function getCurrentDasha(periods, now = new Date()) {
+  const idx = periods.findIndex((p) => now >= p.start && now < p.end)
+  if (idx === -1) return null
+  return {
+    ...periods[idx],
+    next: periods[idx + 1] || null,
+    yearsRemaining: (periods[idx].end - now) / (365.25 * 24 * 60 * 60 * 1000)
+  }
+}
+
