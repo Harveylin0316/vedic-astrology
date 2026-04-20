@@ -1,13 +1,13 @@
 // 27 Nakshatras (月宿) — each spans 13°20' of the sidereal zodiac
 export const nakshatras = [
   { id: 1, name: 'Ashwini', chinese: '阿說你', deity: 'Ashwini Kumaras', ruler: 'Ketu', symbol: '馬頭', trait: '療癒、迅捷、開創' },
-  { id: 2, name: 'Bharani', chinese: '婆羅尼', deity: 'Yama', ruler: 'Venus', symbol: '女陰', trait: '承載、轉化、紀律' },
+  { id: 2, name: 'Bharani', chinese: '婆羅尼', deity: 'Yama', ruler: 'Venus', symbol: '生命之門', trait: '承載、轉化、紀律' },
   { id: 3, name: 'Krittika', chinese: '昴宿', deity: 'Agni', ruler: 'Sun', symbol: '剃刀', trait: '淨化、銳利、光明' },
   { id: 4, name: 'Rohini', chinese: '畢宿', deity: 'Brahma', ruler: 'Moon', symbol: '戰車', trait: '豐盛、美麗、感官' },
   { id: 5, name: 'Mrigashira', chinese: '觜宿', deity: 'Soma', ruler: 'Mars', symbol: '鹿首', trait: '探索、溫柔、好奇' },
   { id: 6, name: 'Ardra', chinese: '參宿', deity: 'Rudra', ruler: 'Rahu', symbol: '淚珠', trait: '風暴、破舊立新' },
   { id: 7, name: 'Punarvasu', chinese: '井宿', deity: 'Aditi', ruler: 'Jupiter', symbol: '箭筒', trait: '重生、家宅、寬容' },
-  { id: 8, name: 'Pushya', chinese: '鬼宿', deity: 'Brihaspati', ruler: 'Saturn', symbol: '乳房', trait: '滋養、吉祥、導師' },
+  { id: 8, name: 'Pushya', chinese: '鬼宿', deity: 'Brihaspati', ruler: 'Saturn', symbol: '花朵 / 牛乳', trait: '滋養、吉祥、導師' },
   { id: 9, name: 'Ashlesha', chinese: '柳宿', deity: 'Nagas', ruler: 'Mercury', symbol: '盤蛇', trait: '潛伏、神祕、智慧' },
   { id: 10, name: 'Magha', chinese: '星宿', deity: 'Pitris', ruler: 'Ketu', symbol: '王座', trait: '榮耀、祖先、王權' },
   { id: 11, name: 'Purva Phalguni', chinese: '張宿', deity: 'Bhaga', ruler: 'Venus', symbol: '床腳', trait: '享樂、創造、戀愛' },

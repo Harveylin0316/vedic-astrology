@@ -483,7 +483,7 @@ export const nakshatraReadings = {
   Mrigashira: { theme: '輕盈的追尋者', body: '永遠在找下一個目標，旅行、研究、寫作是你的養分。戀愛也常「在路上」。' },
   Ardra: { theme: '風暴的淬煉', body: '人生起伏大、情緒濃烈。透過一次次破舊立新，你成為心理韌性最強的那群人。' },
   Punarvasu: { theme: '總是歸來的光', body: '跌倒會重生、失戀會重來、失業會東山再起。你有「東方不亮西方亮」的運勢。' },
-  Pushya: { theme: '最吉祥的乳', body: '27 個 Nakshatra 中最吉的一個！天生受長輩與貴人照顧，是導師與療癒者。' },
+  Pushya: { theme: '最吉祥的滋養者', body: '27 個 Nakshatra 中最吉的一個！天生受長輩與貴人照顧，是導師與療癒者。' },
   Ashlesha: { theme: '盤蛇的智慧', body: '有神祕的吸引力和洞察力。善用這能量是治療師，失衡則會陷入操控與嫉妒。' },
   Magha: { theme: '祖先的王座', body: '帶著家族的榮光與業力。早年可能與父親有課題，中年後會繼承屬於你的王國。' },
   PurvaPhalguni: { theme: '享樂的藝術家', body: '戀愛運和享樂運一流、藝術天賦強。適合演藝、時尚、娛樂產業。' },
