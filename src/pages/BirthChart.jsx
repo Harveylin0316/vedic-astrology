@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Sparkles,
   Calendar,
@@ -25,8 +25,11 @@ import {
   Clock4,
   History,
   CircleDot,
-  Telescope
+  Telescope,
+  Settings2,
+  UserRound
 } from 'lucide-react'
+import { cities, findCity } from '../data/cities.js'
 import {
   computeVedicChart,
   formatDegrees,
@@ -53,28 +56,60 @@ import {
 } from '../data/interpretations.js'
 
 const defaultForm = {
-  date: '1990-01-01',
-  time: '12:00',
+  date: '',
+  time: '',
   tz: '8',
-  lat: '25.04',
-  lon: '121.56',
-  city: '台北, 台灣'
+  lat: '25.0478',
+  lon: '121.5319',
+  city: '台北',
+  gender: ''
 }
 
 const elementIcon = { fire: Flame, earth: Mountain, air: Wind, water: Droplets }
 
+const sectionTabs = [
+  { id: 'self', label: '自我', icon: '🪞' },
+  { id: 'love', label: '愛情', icon: '💘' },
+  { id: 'career', label: '事業', icon: '💼' },
+  { id: 'dasha', label: '運勢', icon: '📅' },
+  { id: 'energy', label: '開運', icon: '🍀' }
+]
+
 export default function BirthChart() {
   const [form, setForm] = useState(defaultForm)
+  const [showAdvanced, setShowAdvanced] = useState(false)
   const [chart, setChart] = useState(null)
   const [submittedCity, setSubmittedCity] = useState('')
   const [submittedStamp, setSubmittedStamp] = useState('')
+  const [submittedGender, setSubmittedGender] = useState('')
   const [error, setError] = useState('')
+  const [activeTab, setActiveTab] = useState('self')
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
+
+  // 城市 autocomplete：選到已知城市自動填 lat/lon/tz
+  const handleCityChange = (value) => {
+    const matched = findCity(value)
+    if (matched) {
+      setForm((f) => ({
+        ...f,
+        city: matched.name,
+        lat: String(matched.lat),
+        lon: String(matched.lon),
+        tz: String(matched.tz)
+      }))
+    } else {
+      setForm((f) => ({ ...f, city: value }))
+    }
+  }
 
   const handleCompute = (e) => {
     e.preventDefault()
     setError('')
+    if (!form.date || !form.time) {
+      setError('請填寫出生日期與時間')
+      return
+    }
     try {
       const [year, month, day] = form.date.split('-').map(Number)
       const [hour, minute] = form.time.split(':').map(Number)
@@ -85,13 +120,26 @@ export default function BirthChart() {
         lon: parseFloat(form.lon)
       })
       setChart(result)
-      setSubmittedCity(form.city)
+      setSubmittedCity(form.city || `${form.lat}, ${form.lon}`)
       setSubmittedStamp(`${form.date} ${form.time}`)
+      setSubmittedGender(form.gender)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
       setError('計算失敗：請檢查輸入格式。')
       console.error(err)
     }
+  }
+
+  // 性別代稱
+  const partnerTerm = submittedGender === 'male' ? '女友 / 老婆'
+    : submittedGender === 'female' ? '男友 / 老公'
+    : '另一半 / 伴侶'
+
+  // 錨點平滑捲動
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setActiveTab(id)
   }
 
   // Raman-framework 混合策略：
@@ -177,42 +225,137 @@ export default function BirthChart() {
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[400px_1fr]">
+      <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
         {/* Form */}
         <form onSubmit={handleCompute} className="glass-panel p-6 space-y-5 h-fit lg:sticky lg:top-6">
+          {/* 性別 */}
+          <div>
+            <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
+              <UserRound className="h-4 w-4 text-saffron-400" />性別
+              <span className="text-xs text-slate-500 ml-auto">影響伴侶解讀用語</span>
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { v: 'male', label: '男' },
+                { v: 'female', label: '女' },
+                { v: 'other', label: '不選' }
+              ].map((opt) => (
+                <button
+                  key={opt.v}
+                  type="button"
+                  onClick={() => update('gender', opt.v)}
+                  className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
+                    form.gender === opt.v
+                      ? 'border-saffron-500 bg-saffron-500/10 text-saffron-400'
+                      : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 日期 */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
               <Calendar className="h-4 w-4 text-saffron-400" />出生日期
             </label>
-            <input type="date" required className="input-field" value={form.date} onChange={(e) => update('date', e.target.value)} />
+            <input
+              type="date"
+              required
+              className="input-field"
+              value={form.date}
+              onChange={(e) => update('date', e.target.value)}
+            />
           </div>
+
+          {/* 時間 */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <Clock className="h-4 w-4 text-saffron-400" />出生時間（24h）
+              <Clock className="h-4 w-4 text-saffron-400" />出生時間（24 小時制）
             </label>
-            <input type="time" required className="input-field" value={form.time} onChange={(e) => update('time', e.target.value)} />
+            <input
+              type="time"
+              required
+              className="input-field"
+              value={form.time}
+              onChange={(e) => update('time', e.target.value)}
+            />
+            <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+              吠陀占星上升星座每 2 小時換一次，時間越精確越好
+            </p>
           </div>
+
+          {/* 城市（含 autocomplete） */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <Globe className="h-4 w-4 text-saffron-400" />時區（UTC，台灣 +8）
+              <MapPin className="h-4 w-4 text-saffron-400" />出生城市
+              <span className="text-xs text-slate-500 ml-auto">選擇後自動填入座標</span>
             </label>
-            <input type="number" step="0.5" required className="input-field" value={form.tz} onChange={(e) => update('tz', e.target.value)} />
+            <input
+              type="text"
+              list="city-list"
+              placeholder="台北、Tokyo、New York…"
+              className="input-field"
+              value={form.city}
+              onChange={(e) => handleCityChange(e.target.value)}
+            />
+            <datalist id="city-list">
+              {cities.map((c) => (
+                <option key={c.name} value={c.name}>{c.display}</option>
+              ))}
+            </datalist>
+            {findCity(form.city) && (
+              <div className="mt-1.5 text-[11px] text-emerald-400">
+                ✓ 已自動填入 {findCity(form.city).lat.toFixed(2)}°N / {findCity(form.city).lon.toFixed(2)}°E · UTC{form.tz >= 0 ? '+' : ''}{form.tz}
+              </div>
+            )}
+            {!findCity(form.city) && form.city && (
+              <div className="mt-1.5 text-[11px] text-slate-400">
+                城市不在清單中 · 請在「進階設定」手動填入座標
+              </div>
+            )}
           </div>
+
+          {/* 進階設定（預設隱藏） */}
           <div>
-            <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <MapPin className="h-4 w-4 text-saffron-400" />出生城市（顯示用）
-            </label>
-            <input type="text" className="input-field" value={form.city} onChange={(e) => update('city', e.target.value)} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-sm text-slate-300 mb-2 block">緯度 °N</label>
-              <input type="number" step="0.01" required className="input-field" value={form.lat} onChange={(e) => update('lat', e.target.value)} />
-            </div>
-            <div>
-              <label className="text-sm text-slate-300 mb-2 block">經度 °E</label>
-              <input type="number" step="0.01" required className="input-field" value={form.lon} onChange={(e) => update('lon', e.target.value)} />
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowAdvanced((v) => !v)}
+              className="flex items-center gap-2 text-xs text-slate-400 hover:text-saffron-400 transition"
+            >
+              <Settings2 className="h-3.5 w-3.5" />
+              {showAdvanced ? '隱藏' : '顯示'}進階設定（時區與經緯度微調）
+            </button>
+            {showAdvanced && (
+              <div className="mt-3 space-y-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+                <div>
+                  <label className="text-xs text-slate-300 mb-1.5 block">時區 UTC±（台灣 +8）</label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    required
+                    className="input-field text-sm"
+                    value={form.tz}
+                    onChange={(e) => update('tz', e.target.value)}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs text-slate-300 mb-1.5 block">緯度 °N</label>
+                    <input type="number" step="0.001" required className="input-field text-sm" value={form.lat} onChange={(e) => update('lat', e.target.value)} />
+                  </div>
+                  <div>
+                    <label className="text-xs text-slate-300 mb-1.5 block">經度 °E</label>
+                    <input type="number" step="0.001" required className="input-field text-sm" value={form.lon} onChange={(e) => update('lon', e.target.value)} />
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  小貼士：南半球城市請用負值緯度、西半球請用負值經度。夏令時出生請手動把時區 -1。
+                </p>
+              </div>
+            )}
           </div>
 
           {error && (
@@ -226,8 +369,8 @@ export default function BirthChart() {
             算我的命盤 & 解讀
           </button>
 
-          <p className="text-xs text-slate-500 leading-relaxed">
-            沒有要 key 也沒有第三方 API，純本地計算。想精準的話建議查出生地的經緯度再填。
+          <p className="text-xs text-slate-500 leading-relaxed text-center">
+            純本地計算 · 無 API · 不收集任何個資
           </p>
         </form>
 
@@ -237,8 +380,29 @@ export default function BirthChart() {
             <WelcomePanel />
           ) : (
             <>
+              {/* ⓪ Sticky Section Nav — 讓使用者快速在區塊間跳 */}
+              <div className="sticky top-0 z-20 -mx-6 px-6 py-3 bg-cosmic-950/80 backdrop-blur-md border-b border-white/10">
+                <div className="flex gap-2 overflow-x-auto scrollbar-none">
+                  {sectionTabs.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => scrollToSection(s.id)}
+                      className={`flex-shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+                        activeTab === s.id
+                          ? 'border-saffron-500 bg-saffron-500/15 text-saffron-400'
+                          : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                      }`}
+                    >
+                      <span className="mr-1.5">{s.icon}</span>
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* ① Summary Hero — 西方主顯 + 吠陀副顯 */}
-              <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30">
+              <div id="self" className="glass-panel p-6 md:p-8 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 scroll-mt-20">
                 <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">你的命盤關鍵字</div>
                 <h2 className="font-serif text-3xl md:text-4xl gradient-text leading-tight">
                   {lagna?.tagline?.split('·')[0]?.trim()}
@@ -360,9 +524,10 @@ export default function BirthChart() {
                 </Section>
               )}
 
+              <div id="love" className="scroll-mt-20 -mt-6" />
               {/* ④ Moon + Love */}
               {moon && (
-                <Section icon={<Heart className="h-4 w-4" />} badge={`月亮 · ${chart.moon.rashi.chinese}`} title={`你的愛情模式：${moon.theme}`} highlight>
+                <Section icon={<Heart className="h-4 w-4" />} badge={`月亮 · ${chart.tropical.moon.rashi.chinese}`} title={`你的愛情模式：${moon.theme}`} highlight>
                   <p className="text-slate-300 leading-relaxed">{moon.emotional}</p>
                   <div className="grid md:grid-cols-2 gap-3 mt-4">
                     <InfoCard label="💘 你的戀愛風格" body={moon.loveStyle} />
@@ -374,12 +539,17 @@ export default function BirthChart() {
                     <div className="font-medium text-vermilion-500 mb-1">⚠️ 感情忠告</div>
                     <div className="text-slate-200">{moon.warning}</div>
                   </div>
+                  {submittedGender && submittedGender !== 'other' && (
+                    <div className="mt-3 text-xs text-slate-500">
+                      💡 本區解讀適用你找<strong className="text-saffron-400">{partnerTerm}</strong>時的判斷
+                    </div>
+                  )}
                 </Section>
               )}
 
               {/* ⑤ Compatibility */}
               {match && (
-                <Section icon={<Users className="h-4 w-4" />} badge="合盤配對" title="你最適合 / 最該閃的星座">
+                <Section icon={<Users className="h-4 w-4" />} badge="合盤配對" title={`你最適合 / 最該閃的${partnerTerm.split(' / ')[0]}星座`}>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
                       <div className="text-sm text-emerald-400 font-medium mb-2">💚 最合的三個</div>
@@ -402,9 +572,10 @@ export default function BirthChart() {
                 </Section>
               )}
 
+              <div id="career" className="scroll-mt-20 -mt-6" />
               {/* ⑥ Sun + Career + Money */}
               {sun && (
-                <Section icon={<Briefcase className="h-4 w-4" />} badge={`太陽 · ${chart.sun.rashi.chinese}`} title={`事業與財運：${sun.theme}`}>
+                <Section icon={<Briefcase className="h-4 w-4" />} badge={`太陽 · ${chart.tropical.sun.rashi.chinese}`} title={`事業與財運：${sun.theme}`}>
                   <p className="text-slate-300 leading-relaxed">{sun.workStyle}</p>
                   <div className="grid md:grid-cols-2 gap-4 mt-4">
                     <TagCard icon={<ShieldCheck className="h-4 w-4 text-emerald-400" />} title="超適合你的職業" tags={sun.bestCareers} tone="good" />
@@ -421,6 +592,7 @@ export default function BirthChart() {
                 </Section>
               )}
 
+              <div id="dasha" className="scroll-mt-20 -mt-6" />
               {/* ⑦-1 PAST 過去運勢（按年齡過濾事件） */}
               {pastPeriods.length > 0 && (
                 <Section icon={<History className="h-4 w-4" />} badge="過去運勢 · 你走過的大運" title="你這輩子經歷過的人生階段">
@@ -571,11 +743,12 @@ export default function BirthChart() {
 
               {/* ⑧ Nakshatra */}
               {nakshatra && (
-                <Section icon={<Star className="h-4 w-4" />} badge={`月宿 · ${chart.moon.nakshatra.name} · Pada ${chart.moon.nakshatra.pada}`} title={nakshatra.theme}>
+                <Section icon={<Star className="h-4 w-4" />} badge={`月宿 · ${chart.sidereal.moon.nakshatra.name} · Pada ${chart.sidereal.moon.nakshatra.pada}`} title={nakshatra.theme}>
                   <p className="text-slate-300 leading-relaxed">{nakshatra.body}</p>
                 </Section>
               )}
 
+              <div id="energy" className="scroll-mt-20 -mt-6" />
               {/* ⑨ Lucky System */}
               {lucky && (
                 <Section icon={<Gem className="h-4 w-4" />} badge="幸運系統" title="你的幸運色、幸運數字、幸運方位">
@@ -630,9 +803,9 @@ export default function BirthChart() {
               )}
 
               {/* ⑫ Houses */}
-              <Section icon={<MapPin className="h-4 w-4" />} badge="12 宮位" title="你的人生地圖">
+              <Section icon={<MapPin className="h-4 w-4" />} badge="12 宮位 · 吠陀人生地圖" title="你的 Bhavas（12 宮位）">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {chart.houses.map((h) => (
+                  {chart.sidereal.houses.map((h) => (
                     <div key={h.house} className="rounded-xl border border-white/10 bg-white/5 p-3">
                       <div className="text-xs text-slate-400">第 {h.house} 宮</div>
                       <div className="font-serif text-lg">{h.rashi.symbol} {h.rashi.chinese}</div>
