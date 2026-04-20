@@ -30,6 +30,7 @@ import {
   UserRound
 } from 'lucide-react'
 import { cities, findCity } from '../data/cities.js'
+import DeepReading from '../components/DeepReading.jsx'
 import {
   computeVedicChart,
   formatDegrees,
@@ -68,6 +69,7 @@ const defaultForm = {
 const elementIcon = { fire: Flame, earth: Mountain, air: Wind, water: Droplets }
 
 const sectionTabs = [
+  { id: 'deep-reading', label: '深度', icon: '🔮' },
   { id: 'self', label: '自我', icon: '🪞' },
   { id: 'love', label: '愛情', icon: '💘' },
   { id: 'career', label: '事業', icon: '💼' },
@@ -418,6 +420,13 @@ export default function BirthChart() {
                   {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
                 </div>
               </div>
+
+              {/* ⭐ Deep Reading — Raman Signal>Coverage framework */}
+              <DeepReading
+                chart={chart}
+                birthAge={ageOf(now)}
+                gender={submittedGender}
+              />
 
               {/* ① -b 雙系統對照說明 */}
               <div className="glass-panel p-5 bg-white/[0.02] border-white/10">

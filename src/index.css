@@ -45,6 +45,16 @@
   .gradient-text {
     @apply text-transparent bg-clip-text bg-gradient-to-r from-saffron-400 via-saffron-500 to-vermilion-500;
   }
+  .prose-reading {
+    @apply leading-relaxed;
+  }
+  .prose-reading table {
+    font-size: 0.875rem;
+  }
+  .prose-reading h1:first-child,
+  .prose-reading h2:first-child {
+    margin-top: 0;
+  }
 }
 
 ::-webkit-scrollbar {
