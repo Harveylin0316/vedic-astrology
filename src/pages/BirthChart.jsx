@@ -22,7 +22,10 @@ import {
   Sparkle,
   ShieldCheck,
   ShieldAlert,
-  Clock4
+  Clock4,
+  History,
+  CircleDot,
+  Telescope
 } from 'lucide-react'
 import { computeVedicChart, formatDegrees, computeVimshottariDasha, getCurrentDasha } from '../utils/vedicCalc.js'
 import ChartWheel from '../components/ChartWheel.jsx'
@@ -113,6 +116,17 @@ export default function BirthChart() {
   const currentDasha = dashaPeriods ? getCurrentDasha(dashaPeriods) : null
   const currentDashaReading = currentDasha ? dashaReadings[currentDasha.lord] : null
   const nextDashaReading = currentDasha?.next ? dashaReadings[currentDasha.next.lord] : null
+
+  // Split periods into past / present / future with age calculation
+  const birthDateObj = chart
+    ? new Date(Date.UTC(chart._input.year, chart._input.month - 1, chart._input.day, chart._input.hour, chart._input.minute))
+    : null
+  const now = new Date()
+  const ageOf = (d) => ((d - birthDateObj) / (365.25 * 24 * 60 * 60 * 1000))
+  const pastPeriods = dashaPeriods ? dashaPeriods.filter((p) => p.end <= now) : []
+  const futurePeriods = dashaPeriods
+    ? dashaPeriods.filter((p) => p.start > now).slice(0, 4)
+    : []
 
   const keywords = chart
     ? getKeywords({
@@ -301,29 +315,97 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ⑦ Current Dasha */}
+              {/* ⑦-1 PAST 過去運勢 */}
+              {pastPeriods.length > 0 && (
+                <Section icon={<History className="h-4 w-4" />} badge="過去運勢 · 你走過的大運" title="你這輩子經歷過的人生階段">
+                  <p className="text-sm text-slate-400 mb-4">
+                    吠陀占星用 Vimshottari 120 年週期，看出你在每個年齡段被哪顆星帶著。回頭看看，那些日子是不是都被命中了？
+                  </p>
+                  <div className="space-y-3">
+                    {pastPeriods.map((p, i) => {
+                      const r = dashaReadings[p.lord]
+                      const ageStart = ageOf(p.start)
+                      const ageEnd = ageOf(p.end)
+                      return (
+                        <DashaTimelineCard
+                          key={i}
+                          ageRange={`${ageStart < 0 ? 0 : ageStart.toFixed(0)} – ${ageEnd.toFixed(0)} 歲`}
+                          dateRange={`${p.start.getFullYear()} – ${p.end.getFullYear()}`}
+                          name={r.name}
+                          nickname={r.nickname}
+                          theme={r.theme}
+                          typicalEvents={r.typicalEvents}
+                          tone="past"
+                        />
+                      )
+                    })}
+                  </div>
+                </Section>
+              )}
+
+              {/* ⑦-2 PRESENT 現在運勢（詳細） */}
               {currentDasha && currentDashaReading && (
-                <Section icon={<Clock4 className="h-4 w-4" />} badge="Vimshottari 大運" title={`你現在正在走：${currentDashaReading.name}`} highlight>
-                  <div className="grid md:grid-cols-3 gap-3 mb-4">
-                    <DashaStat label="主題" value={currentDashaReading.theme} />
+                <Section icon={<CircleDot className="h-4 w-4" />} badge="現在運勢 · 目前大運" title={`你現在正在走：${currentDashaReading.name}（${currentDashaReading.nickname}）`} highlight>
+                  <div className="grid md:grid-cols-4 gap-3 mb-5">
+                    <DashaStat label="目前年齡" value={`${ageOf(now).toFixed(0)} 歲`} />
+                    <DashaStat label="大運主題" value={currentDashaReading.theme} />
                     <DashaStat label="此大運共" value={`${currentDashaReading.years} 年`} />
                     <DashaStat label="還剩" value={`約 ${currentDasha.yearsRemaining.toFixed(1)} 年`} accent />
                   </div>
-                  <p className="text-slate-300 leading-relaxed mb-4">{currentDashaReading.vibe}</p>
+                  <p className="text-slate-200 leading-relaxed text-base mb-5 border-l-2 border-saffron-500/60 pl-4">
+                    {currentDashaReading.vibe}
+                  </p>
                   <div className="grid md:grid-cols-2 gap-3">
+                    <InfoCard label="💼 事業運" body={currentDashaReading.career} />
+                    <InfoCard label="💘 感情運" body={currentDashaReading.love} />
+                    <InfoCard label="💰 財運" body={currentDashaReading.money} />
+                    <InfoCard label="🏥 健康運" body={currentDashaReading.health} />
+                  </div>
+                  <div className="mt-4 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-4">
+                    <div className="text-sm text-saffron-400 font-medium mb-2">📌 這段期間常見的人生事件</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {currentDashaReading.typicalEvents.map((e) => (
+                        <span key={e} className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs">{e}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-3 mt-3">
                     <TagCard icon={<TrendingUp className="h-4 w-4 text-emerald-400" />} title="這段時間適合做的事" tags={currentDashaReading.goodFor} tone="good" />
                     <TagCard icon={<ShieldAlert className="h-4 w-4 text-vermilion-500" />} title="需要特別注意的事" tags={currentDashaReading.watchOut} tone="bad" />
                   </div>
-                  {nextDashaReading && (
-                    <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4 text-sm">
-                      <div className="text-slate-400">下一個大運 →</div>
-                      <div className="text-saffron-400 font-medium mt-0.5">{nextDashaReading.name}</div>
-                      <div className="text-xs text-slate-400 mt-1">
-                        {currentDasha.next.start.toLocaleDateString('zh-TW')} 起、共 {nextDashaReading.years} 年
-                        <span className="text-slate-500 ml-2">· {nextDashaReading.theme}</span>
-                      </div>
-                    </div>
-                  )}
+                </Section>
+              )}
+
+              {/* ⑦-3 FUTURE 未來運勢 */}
+              {futurePeriods.length > 0 && (
+                <Section icon={<Telescope className="h-4 w-4" />} badge="未來運勢 · 接下來的大運" title="你未來 50 年的人生地圖">
+                  <p className="text-sm text-slate-400 mb-4">
+                    每個大運切換點就是人生的「翻頁時刻」。事先知道，你就能做好準備 — 該衝的衝、該收的收。
+                  </p>
+                  <div className="space-y-3">
+                    {futurePeriods.map((p, i) => {
+                      const r = dashaReadings[p.lord]
+                      const ageStart = ageOf(p.start)
+                      const ageEnd = ageOf(p.end)
+                      return (
+                        <DashaTimelineCard
+                          key={i}
+                          ageRange={`${ageStart.toFixed(0)} – ${ageEnd.toFixed(0)} 歲`}
+                          dateRange={`${p.start.getFullYear()} – ${p.end.getFullYear()}`}
+                          name={r.name}
+                          nickname={r.nickname}
+                          theme={r.theme}
+                          vibe={r.vibe}
+                          career={r.career}
+                          love={r.love}
+                          money={r.money}
+                          typicalEvents={r.typicalEvents}
+                          tone="future"
+                          turningPoint={i === 0}
+                        />
+                      )
+                    })}
+                  </div>
                 </Section>
               )}
 
@@ -510,6 +592,82 @@ function LuckyTile({ emoji, label, value, warn }) {
     <div className={`rounded-xl border p-3 ${warn ? 'border-vermilion-500/20 bg-vermilion-500/5' : 'border-white/10 bg-white/5'}`}>
       <div className="text-xs text-slate-400">{emoji} {label}</div>
       <div className="text-sm text-slate-100 font-medium mt-0.5">{value}</div>
+    </div>
+  )
+}
+
+function DashaTimelineCard({ ageRange, dateRange, name, nickname, theme, vibe, career, love, money, typicalEvents, tone, turningPoint }) {
+  const isPast = tone === 'past'
+  const isFuture = tone === 'future'
+  return (
+    <div
+      className={`relative rounded-xl border p-4 ${
+        isPast
+          ? 'border-white/10 bg-white/[0.03] opacity-90'
+          : isFuture
+          ? 'border-saffron-500/20 bg-saffron-500/[0.04]'
+          : 'border-white/10 bg-white/5'
+      }`}
+    >
+      {turningPoint && (
+        <div className="absolute -top-2 right-4 rounded-full bg-gradient-to-r from-saffron-500 to-vermilion-500 px-2.5 py-0.5 text-[10px] font-semibold text-cosmic-950">
+          下一個翻頁時刻
+        </div>
+      )}
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="font-serif text-saffron-400 text-lg">{name}</span>
+            <span className="text-xs text-slate-500">· {nickname}</span>
+          </div>
+          <div className="text-xs text-slate-400 mt-0.5">{theme}</div>
+        </div>
+        <div className="text-right flex-shrink-0">
+          <div className={`text-sm font-medium ${isFuture ? 'text-saffron-400' : 'text-slate-200'}`}>
+            {ageRange}
+          </div>
+          <div className="text-xs text-slate-500">{dateRange}</div>
+        </div>
+      </div>
+
+      {vibe && (
+        <p className="mt-3 text-sm text-slate-300 leading-relaxed">
+          {vibe}
+        </p>
+      )}
+
+      {(career || love || money) && (
+        <div className="mt-3 grid sm:grid-cols-3 gap-2 text-xs">
+          {career && (
+            <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2.5">
+              <div className="text-emerald-400 mb-0.5">💼 事業</div>
+              <div className="text-slate-300 leading-relaxed">{career}</div>
+            </div>
+          )}
+          {love && (
+            <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2.5">
+              <div className="text-pink-400 mb-0.5">💘 感情</div>
+              <div className="text-slate-300 leading-relaxed">{love}</div>
+            </div>
+          )}
+          {money && (
+            <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2.5">
+              <div className="text-amber-400 mb-0.5">💰 財運</div>
+              <div className="text-slate-300 leading-relaxed">{money}</div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {typicalEvents && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {typicalEvents.slice(0, isPast ? 4 : 6).map((e) => (
+            <span key={e} className="rounded-full bg-white/5 border border-white/10 px-2 py-0.5 text-[11px] text-slate-300">
+              {e}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
