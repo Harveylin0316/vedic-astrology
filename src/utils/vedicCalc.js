@@ -83,19 +83,19 @@ function gmstDegrees(jd) {
   return norm360(gmst)
 }
 
-// Ascendant (Lagna) — tropical, then apply ayanamsha for sidereal
+// Ascendant (Lagna) — tropical, then apply ayanamsha for sidereal.
+// Standard formula: tan(ASC) = cos(RAMC) / -(sin(RAMC)·cos(ε) + tan(φ)·sin(ε))
 export function tropicalAscendant(jd, latitudeDeg, longitudeDeg) {
   const gmst = gmstDegrees(jd)
-  const lst = norm360(gmst + longitudeDeg) // local sidereal time in degrees
-  const ramc = lst * DEG // right ascension of MC
-  const eps = 23.4367 * DEG // obliquity of ecliptic (approx)
+  const lst = norm360(gmst + longitudeDeg) // local sidereal time
+  const ramc = lst * DEG
+  const eps = 23.4367 * DEG
   const phi = latitudeDeg * DEG
 
-  const y = -Math.cos(ramc)
-  const x = Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps)
+  const y = Math.cos(ramc)
+  const x = -(Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps))
   let asc = Math.atan2(y, x) / DEG
-  asc = norm360(asc)
-  return asc
+  return norm360(asc)
 }
 
 // Compute a complete simplified Vedic chart snapshot.
