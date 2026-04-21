@@ -1767,12 +1767,12 @@ function RarityCard({ rarity }) {
                 </div>
               </div>
 
-              {/* 方法論 */}
+              {/* 計算方法 */}
               <div>
                 <div className="text-saffron-400 font-medium mb-2">🔬 計算方法</div>
                 <div className="text-slate-300 space-y-2">
                   <p>
-                    我們掃描你的命盤中 <strong>23 種古典吠陀配置</strong>，每個配置根據「在一般人口中的出現頻率」給一個權重（越罕見 = 權重越高）。
+                    掃描命盤中 <strong>23 種古典吠陀配置</strong>，每個配置根據「在一般人口中的出現頻率」給一個權重（越罕見 = 權重越高）。
                   </p>
                   <ul className="list-disc list-inside space-y-1 text-xs text-slate-400 ml-2">
                     <li>5 種 Panchamahapurusha Yoga（五大偉人瑜伽）</li>
@@ -1886,36 +1886,30 @@ function VedicCareerSection({ data }) {
 
   return (
     <>
-      {/* ⭐ 最核心：組合化判讀 Narrative — 具體到你命盤的一段話 */}
+      {/* 事業 Narrative */}
       {narrative && (
         <Section
           icon={<Briefcase className="h-4 w-4" />}
-          badge="事業判讀 · 你這張盤的具體組合"
-          title="你的事業命格（整合版）"
+          badge="事業判讀"
+          title="你的事業命格"
           highlight
         >
           <div className="rounded-xl border border-saffron-500/40 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-5">
-            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-3 font-medium">
-              🎯 把你命盤的 10 宮主 × 落宮 × 尊嚴 × Yoga × 命主星 全部整合
-            </div>
             {narrative.split('\n\n').map((para, i) => (
               <p key={i} className="text-sm md:text-base text-slate-100 leading-relaxed mb-3 last:mb-0">
                 {para}
               </p>
             ))}
           </div>
-          <p className="text-xs text-slate-500 mt-3 leading-relaxed">
-            💡 這段是「整合性判讀」— 比單看 10 宮主的分析更準。古典 BPHS 強調「Yoga 格局 + 三王交叉」才是事業真解，單點分析容易以偏概全。
-          </p>
         </Section>
       )}
 
-      {/* ⚡ Karaka Override — 自然本命星壓倒性強：身份加權（v3 新增） */}
+      {/* Karaka 身份加權 */}
       {karakaOverrides?.length > 0 && (
         <Section
           icon={<Sparkles className="h-4 w-4" />}
-          badge="Karaka 身份加權 · v3 新增"
-          title={`你命盤的 ${karakaOverrides.length} 個 Karaka 主導身份`}
+          badge="事業的自然主宰"
+          title={`你命盤的 ${karakaOverrides.length} 個主導身份`}
         >
           <p className="text-sm text-slate-400 mb-4 leading-relaxed">
             有些人的事業不是 10 宮主決定的，而是由某顆<strong className="text-saffron-400">特別強的自然徵象星</strong>（Amatyakaraka 或頂強行星）主導。
@@ -1993,17 +1987,17 @@ function VedicCareerSection({ data }) {
         </Section>
       )}
 
-      {/* 方法論 intro（精簡版 — 移到下方） */}
+      {/* 判讀依據（精簡） */}
       <Section
         icon={<Briefcase className="h-4 w-4" />}
-        badge="方法論 · 如何算的"
+        badge="判讀依據"
         title="古典吠陀事業判讀的 7 個檢查點"
       >
         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-sm text-slate-300 leading-relaxed">
-          <strong className="text-saffron-400">分析邏輯（依 BPHS + Phaladeepika + K.N. Rao）</strong>
+          <strong className="text-saffron-400">依據 Brihat Parashara Hora Shastra、Phaladeepika、K.N. Rao 派</strong>
           <ol className="mt-2 space-y-1 list-decimal list-inside text-sm">
             <li><strong>10 宮 Karma Bhava</strong> — 事業本體的星座</li>
-            <li><strong>10 宮主 Dashamesh</strong> — 落宮、星座、月宿 × 組合矩陣</li>
+            <li><strong>10 宮主 Dashamesh</strong> — 落宮、星座、月宿的組合</li>
             <li><strong>命主星 Lagna Lord</strong> — 三王交叉第一王</li>
             <li><strong>12 大 Yoga 格局</strong> — 優先於單點判讀</li>
             <li><strong>Digbala + Moolatrikona + Neecha Bhanga</strong> — 細節尊嚴</li>
@@ -2013,8 +2007,8 @@ function VedicCareerSection({ data }) {
         </div>
       </Section>
 
-      {/* Part 1: 10 宮本體 */}
-      <Section icon={<Briefcase className="h-4 w-4" />} badge="第 1 部分" title="你的事業宮（第 10 宮）">
+      {/* 10 宮本體 */}
+      <Section icon={<Briefcase className="h-4 w-4" />} badge="事業宮本體" title="你的事業宮（第 10 宮）">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="rounded-xl border border-white/10 bg-white/5 p-4">
             <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">10 宮星座</div>
@@ -2052,11 +2046,11 @@ function VedicCareerSection({ data }) {
         </div>
       </Section>
 
-      {/* Part 2: 10 宮主深度分析 */}
+      {/* 10 宮主深度分析 */}
       {karmesh.reading && (
         <Section
           icon={<Sparkles className="h-4 w-4" />}
-          badge="第 2 部分 · 最關鍵"
+          badge="10 宮主 · 最關鍵的行星"
           title={karmesh.reading.title}
           highlight
         >
@@ -2201,12 +2195,12 @@ function VedicCareerSection({ data }) {
       {lagnaLord && !lagnaLord.isSameAsKarmesh && (
         <Section
           icon={<Sparkle className="h-4 w-4" />}
-          badge="第 2b 部分 · 命主星"
+          badge="命主星交叉"
           title={`命主星 ${lagnaLord.planet} · 事業判讀的第二重量`}
         >
           <p className="text-sm text-slate-400 mb-4 leading-relaxed">
-            古典 K.N. Rao 派強調「三王交叉」— <strong className="text-saffron-400">命主星 + 10 宮主 + Navamsa Dispositor</strong>，三者都要看。
-            Obama 就是典型案例：10 宮主 Venus 陷於 6 宮，但 <strong>命主星 Saturn 在 1 宮自宮</strong>使他登上總統位置。
+            K.N. Rao 派強調「三王交叉」— <strong className="text-saffron-400">命主星 + 10 宮主 + Navamsa Dispositor</strong>，三者都要看。
+            典型案例：10 宮主陷弱但命主星強位，仍能走到高位。
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-white/10 bg-white/5 p-4">
@@ -2236,12 +2230,12 @@ function VedicCareerSection({ data }) {
         </Section>
       )}
 
-      {/* Part 2c: D10 (Dasamsa) 事業專盤交叉 */}
+      {/* D10 (Dasamsa) 事業專盤交叉 */}
       {d10 && (
         <Section
           icon={<Telescope className="h-4 w-4" />}
-          badge="第 2c 部分 · 雙盤交叉"
-          title="D10 (Dasamsa) 事業專盤：潛能 vs 實踐"
+          badge="雙盤交叉"
+          title="D10 事業專盤：潛能 vs 實踐"
         >
           <p className="text-sm text-slate-400 mb-4 leading-relaxed">
             BPHS 明文：<strong className="text-saffron-400">事業分析必須 D1（命盤）+ D10（事業專盤）雙盤合看</strong>。
@@ -2274,10 +2268,10 @@ function VedicCareerSection({ data }) {
         </Section>
       )}
 
-      {/* Part 3: 9 大徵象星 */}
+      {/* 9 大徵象星 */}
       <Section
         icon={<Star className="h-4 w-4" />}
-        badge="第 3 部分 · 自然徵象"
+        badge="9 大自然徵象星"
         title="9 顆行星的事業力量排行"
       >
         <p className="text-sm text-slate-400 mb-4 leading-relaxed">
@@ -2302,11 +2296,11 @@ function VedicCareerSection({ data }) {
         </div>
       </Section>
 
-      {/* Part 4: AMK */}
+      {/* AMK */}
       {amatyakaraka && (
         <Section
           icon={<Sparkle className="h-4 w-4" />}
-          badge="第 4 部分 · Jaimini"
+          badge="Jaimini 事業靈魂星"
           title="Amatyakaraka · 你的事業靈魂星"
         >
           <div className="rounded-xl border border-vermilion-500/30 bg-gradient-to-br from-vermilion-500/10 to-saffron-500/5 p-5">
@@ -2334,11 +2328,11 @@ function VedicCareerSection({ data }) {
         </Section>
       )}
 
-      {/* Part 5: 當前 Dasha */}
+      {/* 當前 Dasha */}
       {dasha && (
         <Section
           icon={<Clock4 className="h-4 w-4" />}
-          badge="第 5 部分 · 時機"
+          badge="時機 · 當前大運"
           title={`當前大運對事業的影響：${dasha.lord}`}
         >
           <div
