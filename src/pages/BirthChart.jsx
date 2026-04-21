@@ -38,6 +38,7 @@ import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
+import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import {
@@ -283,6 +284,15 @@ export default function BirthChart() {
     : null
 
   const rarity = chart ? computeRarityIndex(chart) : null
+
+  const signatures = chart
+    ? renderSignatureSentences({
+        lagnaRashi: tropLagnaName,
+        moonRashi: tropMoonName,
+        sunRashi: tropSunName,
+        moonNakshatra: chart.sidereal.moon.nakshatra.name
+      })
+    : []
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -533,6 +543,44 @@ export default function BirthChart() {
                 </div>
               </div>
 
+              {/* ②-a 命盤金句（必殺句型呈現 · 最毒戳點） */}
+              {signatures.length > 0 && (
+                <Section
+                  icon={<Sparkle className="h-4 w-4" />}
+                  badge="命盤金句 · 這些話朋友不敢跟你說"
+                  title="關於你的 5 個戳點"
+                >
+                  <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+                    根據你的上升、太陽、月亮、月宿組合產生的「命中句」。讀完覺得有被戳到的，就是你命盤寫好的個性模式。
+                  </p>
+                  <div className="space-y-3">
+                    {signatures.map((s, i) => (
+                      <div
+                        key={i}
+                        className="relative rounded-xl border border-saffron-500/20 bg-gradient-to-r from-saffron-500/5 to-transparent p-4 md:p-5"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 mt-0.5">
+                            {['🪞', '🔁', '⏳', '🎭', '🩹'][i] || '✦'}
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-[11px] uppercase tracking-widest text-saffron-400 mb-1 font-medium">
+                              {s.type}
+                            </div>
+                            <p className="text-base text-slate-100 leading-relaxed font-serif">
+                              {s.text}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                    💡 這 5 句話如果命中 3 句以上 — 你的 Lagna × Moon × Sun × Nakshatra 組合就是這樣運作的。下載下方命盤卡，這些句子會進到分享圖裡。
+                  </p>
+                </Section>
+              )}
+
               {/* ②-b 分享卡（IG / 朋友圈 / LINE） */}
               <ShareCardSection
                 filename={`我的吠陀命盤-${submittedStamp}.png`}
@@ -544,6 +592,7 @@ export default function BirthChart() {
                   stamp={submittedStamp}
                   city={submittedCity}
                   rarity={rarity}
+                  signatures={signatures}
                 />
               </ShareCardSection>
 
