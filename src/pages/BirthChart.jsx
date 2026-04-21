@@ -40,6 +40,7 @@ import { trackEvent } from '../components/Analytics.jsx'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
+import { buildCardPunchlines } from '../data/cardPunchlines.js'
 import { analyzeVedicCareer } from '../utils/careerVedic.js'
 import { dignityLabels } from '../data/careerVedicData.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
@@ -294,6 +295,15 @@ export default function BirthChart() {
     : []
 
   const persona = chart ? buildPersonaSignature(tropLagnaName, tropMoonName) : null
+
+  const cardPunchlines = chart
+    ? buildCardPunchlines({
+        lagnaRashi: tropLagnaName,
+        sunRashi: tropSunName,
+        moonRashi: tropMoonName,
+        nakshatraName: chart.sidereal.moon.nakshatra.name
+      })
+    : []
 
   const vedicCareer = chart
     ? analyzeVedicCareer(chart, currentDasha?.lord, currentAD?.lord)
@@ -633,7 +643,7 @@ export default function BirthChart() {
                   stamp={submittedStamp}
                   city={submittedCity}
                   rarity={rarity}
-                  signatures={signatures}
+                  punchlines={cardPunchlines}
                 />
               </ShareCardSection>
 
