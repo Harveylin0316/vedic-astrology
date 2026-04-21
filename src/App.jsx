@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx'
 import Starfield from './components/Starfield.jsx'
 import Home from './pages/Home.jsx'
 import BirthChart from './pages/BirthChart.jsx'
+import Compatibility from './pages/Compatibility.jsx'
 import Nakshatras from './pages/Nakshatras.jsx'
 import Planets from './pages/Planets.jsx'
 import NotFound from './pages/NotFound.jsx'
@@ -17,6 +18,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/birth-chart" element={<BirthChart />} />
+          <Route path="/compatibility" element={<Compatibility />} />
           <Route path="/nakshatras" element={<Nakshatras />} />
           <Route path="/planets" element={<Planets />} />
           <Route path="*" element={<NotFound />} />

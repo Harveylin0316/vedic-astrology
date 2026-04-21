@@ -4,6 +4,7 @@ import { Sun, Menu, X, Sparkles } from 'lucide-react'
 
 const links = [
   { to: '/birth-chart', label: '命盤與解讀' },
+  { to: '/compatibility', label: '雙人合盤' },
   { to: '/nakshatras', label: 'Nakshatra' },
   { to: '/planets', label: '九大行星' }
 ]

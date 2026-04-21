@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom'
-import { Sparkles, Compass, Moon, Orbit, Gem, ArrowRight, Star } from 'lucide-react'
+import { Sparkles, Compass, Moon, Orbit, Heart, ArrowRight, Star } from 'lucide-react'
 
 const features = [
   {
-    icon: Compass,
-    title: '排吠陀命盤',
-    desc: '以 Lahiri ayanamsha 計算 sidereal 上升星座、太陽與月亮位置。',
-    to: '/birth-chart'
+    icon: Heart,
+    title: '雙人合盤',
+    desc: '用 Ashta Kuta 8 因子 36 分制，看你跟 TA 天生合不合。附關係動態解析。',
+    to: '/compatibility',
+    highlight: true
   },
   {
-    icon: Gem,
-    title: '個人解讀',
-    desc: '根據你的 Lagna、太陽、月亮與 Nakshatra，給出詳細的性格與能量解讀。',
+    icon: Compass,
+    title: '吠陀命盤解讀',
+    desc: 'Lagna、月宿 Nakshatra、大運 Dasha 一次到位，看懂你人生每個階段。',
     to: '/birth-chart'
   },
   {
@@ -189,9 +190,18 @@ export default function Home() {
             <Link
               key={f.to}
               to={f.to}
-              className="glass-panel group p-6 hover:border-saffron-500/40 hover:bg-white/10 transition"
+              className={`glass-panel group p-6 transition relative ${
+                f.highlight
+                  ? 'border-saffron-500/50 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 hover:border-saffron-500 hover:shadow-lg hover:shadow-saffron-500/20'
+                  : 'hover:border-saffron-500/40 hover:bg-white/10'
+              }`}
             >
-              <f.icon className="h-8 w-8 text-saffron-400 group-hover:scale-110 transition-transform" />
+              {f.highlight && (
+                <span className="absolute -top-2 right-4 rounded-full bg-gradient-to-r from-saffron-500 to-vermilion-500 px-2.5 py-0.5 text-[10px] font-semibold text-cosmic-950">
+                  NEW
+                </span>
+              )}
+              <f.icon className={`h-8 w-8 group-hover:scale-110 transition-transform ${f.highlight ? 'text-vermilion-500' : 'text-saffron-400'}`} />
               <h3 className="mt-4 text-xl font-serif">{f.title}</h3>
               <p className="mt-2 text-sm text-slate-400 leading-relaxed">{f.desc}</p>
               <div className="mt-4 inline-flex items-center gap-1 text-sm text-saffron-400 opacity-0 group-hover:opacity-100 transition">
