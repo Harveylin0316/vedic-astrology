@@ -41,6 +41,15 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
   // 找一句「主 hero quote」：優先用 axis insight，否則退回 catchphrase
   const heroQuote = axisInsight || catchphrase
 
+  // QR 旁的 CTA 依稀有度動態變化（挑釁勝於通用）
+  const qrCta = (() => {
+    const top = rarity?.topPercent
+    if (!top) return '30 秒算你的'
+    if (top < 2) return '看你是不是也這種人'
+    if (top < 10) return '換你試，30 秒'
+    return '不服？換你來算'
+  })()
+
   return (
     <div
       ref={ref}
@@ -267,7 +276,7 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
                   lineHeight: 1.2
                 }}
               >
-                30 秒算你的
+                {qrCta}
               </div>
               <div
                 style={{
