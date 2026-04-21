@@ -1,6 +1,7 @@
 import { useRef, useState, cloneElement, isValidElement } from 'react'
 import { toPng } from 'html-to-image'
 import { Download, Share2, Check, Loader2 } from 'lucide-react'
+import { trackEvent } from './Analytics.jsx'
 
 // 通用 ShareCardSection：預覽縮圖 + 下載 PNG
 // 用法：<ShareCardSection filename="xxx.png"><Card ref={cardRef} /></ShareCardSection>
@@ -22,6 +23,7 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
       link.download = filename
       link.href = dataUrl
       link.click()
+      trackEvent('download_share_card', { filename })
       setStatus('success')
       setTimeout(() => setStatus('idle'), 2000)
     } catch (err) {
@@ -48,6 +50,7 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
           title: '我的吠陀命盤',
           text: '我剛算了自己的吠陀命盤'
         })
+        trackEvent('native_share', { filename })
       } else {
         // fallback：下載
         await handleDownload()

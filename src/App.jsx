@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Starfield from './components/Starfield.jsx'
+import Analytics from './components/Analytics.jsx'
 import Home from './pages/Home.jsx'
 import BirthChart from './pages/BirthChart.jsx'
 import Compatibility from './pages/Compatibility.jsx'
@@ -12,6 +13,7 @@ import NotFound from './pages/NotFound.jsx'
 export default function App() {
   return (
     <div className="relative min-h-screen flex flex-col">
+      <Analytics />
       <Starfield />
       <Navbar />
       <main className="relative z-10 flex-1">

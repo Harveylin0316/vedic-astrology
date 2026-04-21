@@ -21,6 +21,7 @@ import { cities, findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import CompatibilityShareCard from '../components/CompatibilityShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
+import { trackEvent } from '../components/Analytics.jsx'
 
 const emptyPerson = () => ({
   name: '',
@@ -91,6 +92,11 @@ export default function Compatibility() {
       const narrative = buildCompatibilityNarrative(compat, chartA, chartB, nameA, nameB)
       setPending({ compat, narrative, you: { ...you }, them: { ...them } })
       setShowTransition(true)
+      trackEvent('compute_compatibility', {
+        relationship,
+        category: compat.category,
+        score: compat.totalScore
+      })
     } catch (err) {
       console.error(err)
       setError('計算失敗，請檢查格式。')

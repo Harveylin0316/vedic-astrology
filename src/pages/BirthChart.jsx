@@ -33,6 +33,7 @@ import { cities, findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
+import { trackEvent } from '../components/Analytics.jsx'
 import {
   computeVedicChart,
   formatDegrees,
@@ -133,6 +134,10 @@ export default function BirthChart() {
         gender: form.gender
       })
       setShowTransition(true)
+      trackEvent('compute_birth_chart', {
+        has_gender: !!form.gender,
+        has_city: !!findCity(form.city)
+      })
     } catch (err) {
       setError('計算失敗：請檢查輸入格式。')
       console.error(err)
