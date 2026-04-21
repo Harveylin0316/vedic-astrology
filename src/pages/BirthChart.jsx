@@ -612,6 +612,7 @@ export default function BirthChart() {
                   city={submittedCity}
                   rarity={rarity}
                   punchlines={cardPunchlines}
+                  axisInsight={astrologerNote?.axisInsight?.axis}
                   shareUrl={typeof window !== 'undefined' ? window.location.href : ''}
                 />
               </ShareCardSection>

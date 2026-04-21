@@ -1,11 +1,24 @@
 import { forwardRef } from 'react'
 import QRCode from 'qrcode'
 
-// 1080×1080 命盤分享卡 · 專業報告風格
-// 參考：付費 Human Design 報告、專業占星師報告卡
-// 6 個清楚的 Section，金線分隔、typography hierarchy 明確
+// 1080×1080 命盤分享卡 · Postcard / 引述卡風格
+// 目標：擺脫報告感、保留病毒傳播核心元素
+//   · 軸心洞察（HUGE quote）→ 最可分享的「被看穿」時刻
+//   · 殼×芯 catchphrase → 身份標籤（attribution）
+//   · 3 條 punchlines → 朋友看了會問的戳點
+//   · Top X% → 社交貨幣
+//   · QR / URL / CTA → 朋友轉化入口
 const BirthChartShareCard = forwardRef(function BirthChartShareCard(
-  { chart, persona, stamp, city, rarity, punchlines = [], shareUrl },
+  {
+    chart,
+    persona,
+    stamp,
+    city,
+    rarity,
+    punchlines = [],
+    axisInsight,
+    shareUrl
+  },
   ref
 ) {
   const effectiveShareUrl =
@@ -15,23 +28,18 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
     .replace(/^https?:\/\//, '')
     .replace(/\/$/, '')
     .split('?')[0]
+
   const tropAsc = chart.tropical.ascendant.rashi
   const tropSun = chart.tropical.sun.rashi
   const tropMoon = chart.tropical.moon.rashi
   const moonNak = chart.sidereal.moon.nakshatra
   const catchphrase = persona?.primary || ''
 
-  // 挑 Top 2 最稀有的關鍵配置（含完整 meaning 敘述）
-  // 依「白話標題」去重 — 避免 mahapurusha-Mars + mahapurusha-Venus 顯示兩次同標題
-  const uniqueFeatures = []
-  const seenPlain = new Set()
-  for (const f of rarity?.features || []) {
-    const key = f.plain || f.name
-    if (seenPlain.has(key)) continue
-    seenPlain.add(key)
-    uniqueFeatures.push(f)
-  }
-  const topFeatures = uniqueFeatures.slice(0, 2)
+  // 最多顯示 3 條 punchlines（當 quote 用，不標號）
+  const quotedLines = punchlines.slice(0, 3)
+
+  // 找一句「主 hero quote」：優先用 axis insight，否則退回 catchphrase
+  const heroQuote = axisInsight || catchphrase
 
   return (
     <div
@@ -42,334 +50,247 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
         position: 'relative',
         background: '#0a0618',
         backgroundImage:
-          'radial-gradient(circle at 20% 10%, rgba(255,194,102,0.15) 0%, transparent 50%),' +
-          'radial-gradient(circle at 80% 90%, rgba(227,66,52,0.12) 0%, transparent 50%),' +
-          'linear-gradient(180deg, #1a0e36 0%, #0a0618 100%)',
+          'radial-gradient(ellipse at 15% 8%, rgba(255,194,102,0.14) 0%, transparent 55%),' +
+          'radial-gradient(ellipse at 85% 92%, rgba(227,66,52,0.12) 0%, transparent 60%),' +
+          'linear-gradient(180deg, #1a0e36 0%, #0a0618 80%)',
         color: '#e2e8f0',
-        fontFamily: 'Inter, system-ui, sans-serif',
+        fontFamily: '"PingFang TC", "Noto Sans TC", "Microsoft JhengHei", Inter, system-ui, sans-serif',
         overflow: 'hidden',
-        padding: '48px 64px',
+        padding: '68px 80px',
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column'
       }}
     >
-      {/* 精緻外框 */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '24px',
-          left: '24px',
-          right: '24px',
-          bottom: '24px',
-          border: '1px solid rgba(255,194,102,0.15)',
-          borderRadius: '4px',
-          pointerEvents: 'none'
-        }}
-      />
-
-      {/* 角落裝飾曼陀羅（極淡） */}
-      <CornerMandala position="top-right" />
-      <CornerMandala position="bottom-left" />
-
-      {/* ═══ Section 1: Header ═══ */}
-      <div style={{ display: 'flex', alignItems: 'center', zIndex: 2 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      {/* ═══ 頂部：極小品牌標 + 日期 ═══ */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 2 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
             style={{
-              width: '44px',
-              height: '44px',
+              width: '28px',
+              height: '28px',
               borderRadius: '50%',
               background: 'linear-gradient(135deg, #ffc266, #e34234)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontFamily: 'serif',
-              fontSize: '24px',
+              fontSize: '16px',
               color: '#0a0618',
               fontWeight: 700
             }}
           >
             ॐ
           </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div
-              style={{
-                fontSize: '11px',
-                letterSpacing: '0.3em',
-                color: '#94a3b8',
-                textTransform: 'uppercase',
-                fontWeight: 500
-              }}
-            >
-              Vedic Chart Analysis
-            </div>
-            <div
-              style={{
-                fontSize: '22px',
-                fontWeight: 600,
-                fontFamily: '"Cormorant Garamond", Georgia, serif',
-                background: 'linear-gradient(90deg, #ffc266, #e34234)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                color: 'transparent',
-                marginTop: '2px',
-                letterSpacing: '0.04em'
-              }}
-            >
-              Jyotish Report
-            </div>
+          <div style={{ fontSize: '13px', color: '#94a3b8', letterSpacing: '0.05em' }}>
+            吠陀命盤 · Vedic
           </div>
         </div>
-        <div style={{ marginLeft: 'auto', textAlign: 'right', fontSize: '11px', color: '#64748b', lineHeight: 1.5, letterSpacing: '0.08em' }}>
-          {stamp && <div style={{ color: '#94a3b8', fontWeight: 500 }}>{stamp}</div>}
+        <div style={{ fontSize: '11px', color: '#64748b', textAlign: 'right', lineHeight: 1.5 }}>
+          {stamp && <div>{stamp}</div>}
           {city && <div>{city}</div>}
         </div>
       </div>
 
-      <GoldDivider />
-
-      {/* ═══ Section 2: Chart Rarity（Hero · 社交貨幣） ═══ */}
-      {rarity && (
-        <>
-          <div style={{ textAlign: 'center', marginTop: '12px', zIndex: 2 }}>
-            <div
-              style={{
-                fontSize: '10px',
-                letterSpacing: '0.45em',
-                color: '#94a3b8',
-                textTransform: 'uppercase',
-                marginBottom: '8px'
-              }}
-            >
-              Chart Rarity Index
-            </div>
-            <div
-              style={{
-                fontSize: '108px',
-                fontWeight: 700,
-                fontFamily: '"Cormorant Garamond", Georgia, serif',
-                lineHeight: 1,
-                background: 'linear-gradient(135deg, #ffd580 0%, #ffa733 40%, #e34234 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                color: 'transparent',
-                letterSpacing: '-0.02em',
-                filter: 'drop-shadow(0 0 40px rgba(255,194,102,0.35))'
-              }}
-            >
-              TOP {rarity.topPercent}%
-            </div>
-            <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', fontSize: '14px' }}>
-              <span style={{ color: '#94a3b8', letterSpacing: '0.05em' }}>
-                稀有度 <span style={{ color: '#ffc266', fontWeight: 600, fontSize: '18px' }}>{rarity.score}</span> / 100
-              </span>
-              <span style={{ color: '#64748b' }}>·</span>
-              <span style={{ color: '#ffa733', fontWeight: 600 }}>{rarity.title}</span>
-            </div>
-            <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'center', gap: '4px' }}>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span
-                  key={i}
-                  style={{
-                    fontSize: '16px',
-                    color: i < rarity.stars ? '#ffc266' : 'rgba(255,255,255,0.1)'
-                  }}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <GoldDivider />
-        </>
-      )}
-
-      {/* ═══ Section 3: Soul Signature ═══ */}
-      {catchphrase && (
-        <>
-          <div style={{ textAlign: 'center', marginTop: '4px', zIndex: 2 }}>
-            <div
-              style={{
-                fontSize: '10px',
-                letterSpacing: '0.45em',
-                color: '#94a3b8',
-                textTransform: 'uppercase',
-                marginBottom: '10px'
-              }}
-            >
-              Soul Signature
-            </div>
-            <div
-              style={{
-                fontSize: '52px',
-                fontWeight: 600,
-                fontFamily: '"Cormorant Garamond", Georgia, serif',
-                lineHeight: 1.1,
-                background: 'linear-gradient(90deg, #ffd580, #ffa733)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                color: 'transparent',
-                letterSpacing: '0.02em',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {catchphrase}
-            </div>
-          </div>
-
-          <GoldDivider />
-        </>
-      )}
-
-      {/* ═══ Section 4: Placements（3 rashi + nakshatra） ═══ */}
+      {/* ═══ 中央：軸心 quote（hero） + 殼×芯 attribution ═══ */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gap: '12px',
-          marginTop: '8px',
+          marginTop: '78px',
           zIndex: 2
         }}
       >
-        <PlacementCell label="Rising" symbol={tropAsc.symbol} rashi={tropAsc.chinese} english={tropAsc.name} />
-        <PlacementCell label="Sun" symbol={tropSun.symbol} rashi={tropSun.chinese} english={tropSun.name} />
-        <PlacementCell label="Moon" symbol={tropMoon.symbol} rashi={tropMoon.chinese} english={tropMoon.name} extra={moonNak?.name && `${moonNak.name} · Pada ${moonNak.pada}`} />
-      </div>
-
-      <GoldDivider />
-
-      {/* ═══ Section 5: Signature Traits（命盤洩密） ═══ */}
-      {punchlines.length > 0 && (
-        <>
-          <div style={{ zIndex: 2 }}>
-            <SectionHeader label="Signature Traits" subtitle="命盤洩密的 4 件事" />
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '10px',
-                marginTop: '12px'
-              }}
-            >
-              {punchlines.slice(0, 4).map((line, i) => (
-                <TraitRow key={i} num={i + 1} text={line} />
-              ))}
-            </div>
-          </div>
-
-          {topFeatures.length > 0 && <GoldDivider />}
-        </>
-      )}
-
-      {/* ═══ Section 6: Key Configurations（關鍵配置） ═══ */}
-      {topFeatures.length > 0 && (
-        <div style={{ zIndex: 2 }}>
-          <SectionHeader label="Key Configurations" subtitle="讓你與眾不同的關鍵配置" />
-          <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '9px' }}>
-            {topFeatures.map((f, i) => (
-              <FeatureRow key={i} feature={f} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ═══ Section 7: Footer · QR + URL + CTA ═══ */}
-      <div
-        style={{
-          marginTop: 'auto',
-          paddingTop: '18px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          zIndex: 2
-        }}
-      >
-        {/* QR code：掃了直接進站算命盤 */}
+        {/* 左側裝飾引號 */}
         <div
           style={{
-            padding: '6px',
-            background: '#ffd580',
-            borderRadius: '6px',
-            flexShrink: 0,
-            display: 'flex'
+            fontSize: '120px',
+            fontFamily: 'Georgia, serif',
+            lineHeight: 0.8,
+            color: 'rgba(255,194,102,0.25)',
+            marginBottom: '-40px'
           }}
         >
-          <QrSvg value={effectiveShareUrl} size={88} />
+          “
         </div>
 
-        {/* 中間：CTA + 網址 */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <p
+          style={{
+            fontSize: '62px',
+            fontFamily: '"Cormorant Garamond", "Source Han Serif TC", Georgia, serif',
+            fontWeight: 500,
+            lineHeight: 1.25,
+            letterSpacing: '0.01em',
+            color: '#f1f5f9',
+            margin: 0,
+            maxWidth: '100%',
+            wordBreak: 'break-word'
+          }}
+        >
+          {heroQuote}
+        </p>
+
+        {/* 殼×芯 catchphrase 當 attribution（小一級） */}
+        {catchphrase && heroQuote !== catchphrase && (
           <div
             style={{
-              fontSize: '10px',
-              letterSpacing: '0.3em',
-              color: '#94a3b8',
-              textTransform: 'uppercase',
-              marginBottom: '4px'
-            }}
-          >
-            Scan · Get Yours in 30s
-          </div>
-          <div
-            style={{
-              fontSize: '22px',
+              marginTop: '28px',
+              fontSize: '26px',
               fontFamily: '"Cormorant Garamond", Georgia, serif',
-              fontWeight: 600,
               background: 'linear-gradient(90deg, #ffd580, #ffa733)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               color: 'transparent',
-              lineHeight: 1.1,
-              letterSpacing: '0.02em'
+              letterSpacing: '0.03em'
             }}
           >
-            猜你懂嗎？30 秒算你的命盤
+            — {catchphrase}
           </div>
-          <div
-            style={{
-              fontSize: '12px',
-              color: '#cbd5e1',
-              marginTop: '4px',
-              letterSpacing: '0.03em',
-              fontFamily: 'Inter, system-ui, sans-serif',
-              wordBreak: 'break-all',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {displayUrl}
-          </div>
+        )}
+      </div>
+
+      {/* ═══ 3 條 punchlines 當 quote list（無標號、無卡片） ═══ */}
+      {quotedLines.length > 0 && (
+        <div
+          style={{
+            marginTop: '60px',
+            paddingLeft: '8px',
+            borderLeft: '2px solid rgba(255,194,102,0.35)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            zIndex: 2
+          }}
+        >
+          {quotedLines.map((line, i) => (
+            <p
+              key={i}
+              style={{
+                margin: 0,
+                paddingLeft: '22px',
+                fontSize: '22px',
+                lineHeight: 1.45,
+                color: '#e2e8f0',
+                fontFamily: '"Source Han Serif TC", "PingFang TC", serif'
+              }}
+            >
+              {line}
+            </p>
+          ))}
+        </div>
+      )}
+
+      {/* ═══ 底部：placements + rarity + QR（一體化） ═══ */}
+      <div
+        style={{
+          marginTop: 'auto',
+          paddingTop: '28px',
+          zIndex: 2
+        }}
+      >
+        {/* Placements 一行 */}
+        <div
+          style={{
+            fontSize: '16px',
+            color: '#cbd5e1',
+            letterSpacing: '0.02em',
+            paddingBottom: '18px',
+            borderBottom: '1px solid rgba(255,194,102,0.18)'
+          }}
+        >
+          <span style={{ color: '#94a3b8' }}>上升</span>{' '}
+          <span style={{ color: '#ffc266', marginRight: '18px' }}>{tropAsc.chinese}</span>
+          <span style={{ color: '#94a3b8' }}>太陽</span>{' '}
+          <span style={{ color: '#ffc266', marginRight: '18px' }}>{tropSun.chinese}</span>
+          <span style={{ color: '#94a3b8' }}>月亮</span>{' '}
+          <span style={{ color: '#ffc266' }}>
+            {tropMoon.chinese}
+            {moonNak?.name && (
+              <span style={{ color: '#94a3b8', fontSize: '13px', marginLeft: '8px' }}>
+                · {moonNak.name} Pada {moonNak.pada}
+              </span>
+            )}
+          </span>
         </div>
 
-        {/* 右側：Methodology 標注（小字） */}
-        <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div
-            style={{
-              fontSize: '9px',
-              letterSpacing: '0.25em',
-              color: '#64748b',
-              textTransform: 'uppercase'
-            }}
-          >
-            Methodology
-          </div>
-          <div
-            style={{
-              fontSize: '11px',
-              color: '#94a3b8',
-              marginTop: '2px',
-              fontFamily: '"Cormorant Garamond", Georgia, serif',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            Sidereal · Lahiri
+        {/* Rarity + QR 一排 */}
+        <div
+          style={{
+            marginTop: '18px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '24px'
+          }}
+        >
+          {/* 左：Rarity */}
+          {rarity && (
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontSize: '58px',
+                  fontFamily: '"Cormorant Garamond", Georgia, serif',
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  background: 'linear-gradient(135deg, #ffd580 0%, #ffa733 40%, #e34234 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                  letterSpacing: '-0.01em'
+                }}
+              >
+                Top {rarity.topPercent}%
+              </div>
+              <div
+                style={{
+                  marginTop: '6px',
+                  fontSize: '15px',
+                  color: '#cbd5e1',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                {rarity.title}
+                <span style={{ color: '#64748b' }}> · </span>
+                <span style={{ color: '#94a3b8' }}>{rarity.note}</span>
+              </div>
+            </div>
+          )}
+
+          {/* 右：QR + URL */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexShrink: 0 }}>
+            <div style={{ textAlign: 'right' }}>
+              <div
+                style={{
+                  fontSize: '18px',
+                  fontFamily: '"Cormorant Garamond", Georgia, serif',
+                  color: '#ffc266',
+                  fontWeight: 600,
+                  lineHeight: 1.2
+                }}
+              >
+                30 秒算你的
+              </div>
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#94a3b8',
+                  marginTop: '4px',
+                  letterSpacing: '0.01em',
+                  fontFamily: 'Inter, system-ui, sans-serif'
+                }}
+              >
+                {displayUrl}
+              </div>
+            </div>
+            <div
+              style={{
+                padding: '6px',
+                background: '#ffd580',
+                borderRadius: '6px',
+                display: 'flex'
+              }}
+            >
+              <QrSvg value={effectiveShareUrl} size={84} />
+            </div>
           </div>
         </div>
       </div>
@@ -377,226 +298,8 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
   )
 })
 
-// ═══════════════════════ 子元件 ═══════════════════════
-
-function GoldDivider() {
-  return (
-    <div
-      style={{
-        margin: '14px 0',
-        height: '1px',
-        background:
-          'linear-gradient(90deg, transparent 0%, rgba(255,194,102,0.35) 20%, rgba(255,194,102,0.5) 50%, rgba(255,194,102,0.35) 80%, transparent 100%)',
-        zIndex: 2,
-        position: 'relative'
-      }}
-    />
-  )
-}
-
-function SectionHeader({ label, subtitle }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px' }}>
-      <div
-        style={{
-          fontSize: '11px',
-          letterSpacing: '0.35em',
-          color: '#ffc266',
-          textTransform: 'uppercase',
-          fontWeight: 600
-        }}
-      >
-        {label}
-      </div>
-      {subtitle && (
-        <div style={{ fontSize: '12px', color: '#64748b', fontFamily: '"Cormorant Garamond", Georgia, serif' }}>
-          {subtitle}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function PlacementCell({ label, symbol, rashi, english, extra }) {
-  return (
-    <div
-      style={{
-        textAlign: 'center',
-        padding: '14px 10px',
-        borderRadius: '6px',
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,194,102,0.15)'
-      }}
-    >
-      <div
-        style={{
-          fontSize: '9px',
-          letterSpacing: '0.3em',
-          color: '#94a3b8',
-          textTransform: 'uppercase',
-          marginBottom: '6px',
-          fontWeight: 500
-        }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          fontSize: '36px',
-          lineHeight: 1,
-          background: 'linear-gradient(135deg, #ffc266, #ffa733)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          color: 'transparent',
-          marginBottom: '4px'
-        }}
-      >
-        {symbol}
-      </div>
-      <div style={{ fontSize: '16px', color: '#e2e8f0', fontFamily: '"Cormorant Garamond", Georgia, serif', fontWeight: 500 }}>
-        {rashi}
-      </div>
-      <div style={{ fontSize: '10px', color: '#64748b', marginTop: '2px', letterSpacing: '0.05em' }}>
-        {english}
-      </div>
-      {extra && (
-        <div
-          style={{
-            fontSize: '10px',
-            color: '#ffc266',
-            marginTop: '6px',
-            paddingTop: '6px',
-            borderTop: '1px solid rgba(255,194,102,0.15)',
-            letterSpacing: '0.02em'
-          }}
-        >
-          {extra}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function TraitRow({ num, text }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '12px 14px',
-        borderRadius: '8px',
-        background: 'rgba(255,194,102,0.05)',
-        borderLeft: '2px solid #ffc266'
-      }}
-    >
-      <span
-        style={{
-          flexShrink: 0,
-          fontSize: '20px',
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          background: 'linear-gradient(135deg, #ffc266, #e34234)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          color: 'transparent',
-          fontWeight: 700,
-          lineHeight: 1
-        }}
-      >
-        {String(num).padStart(2, '0')}
-      </span>
-      <span
-        style={{
-          fontSize: '16px',
-          color: '#f1f5f9',
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 500,
-          lineHeight: 1.3
-        }}
-      >
-        {text}
-      </span>
-    </div>
-  )
-}
-
-function FeatureRow({ feature }) {
-  return (
-    <div
-      style={{
-        padding: '12px 16px',
-        borderRadius: '8px',
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px solid rgba(255,255,255,0.08)'
-      }}
-    >
-      {/* 標題列：◆ + 白話標題 + 人口佔比 pill */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{ flexShrink: 0, fontSize: '14px', color: '#ffc266' }}>◆</span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              fontSize: '17px',
-              color: '#f1f5f9',
-              fontFamily: '"Cormorant Garamond", Georgia, serif',
-              fontWeight: 500,
-              lineHeight: 1.2
-            }}
-          >
-            {feature.plain || feature.name}
-          </div>
-          <div
-            style={{
-              fontSize: '10px',
-              color: '#64748b',
-              marginTop: '2px',
-              letterSpacing: '0.02em'
-            }}
-          >
-            {feature.technical || feature.signature}
-          </div>
-        </div>
-        <span
-          style={{
-            flexShrink: 0,
-            fontSize: '10px',
-            color: '#ffa733',
-            fontWeight: 600,
-            fontFamily: 'Inter',
-            padding: '3px 10px',
-            borderRadius: '999px',
-            background: 'rgba(255,194,102,0.1)',
-            border: '1px solid rgba(255,194,102,0.3)',
-            letterSpacing: '0.02em',
-            whiteSpace: 'nowrap'
-          }}
-        >
-          人口 {feature.freq}
-        </span>
-      </div>
-      {/* 白話解讀 — 告訴你這代表什麼 */}
-      {feature.meaning && (
-        <div
-          style={{
-            marginTop: '7px',
-            paddingLeft: '26px',
-            fontSize: '12px',
-            color: '#cbd5e1',
-            lineHeight: 1.5,
-            letterSpacing: '0.01em'
-          }}
-        >
-          {feature.meaning}
-        </div>
-      )}
-    </div>
-  )
-}
-
-// 同步產生 QR SVG — html-to-image 截圖時不會有 async loading 問題
-function QrSvg({ value, size = 88 }) {
+// ═══════════════════════ QR SVG（同步渲染，html-to-image 友好） ═══════════════════════
+function QrSvg({ value, size = 84 }) {
   if (!value) return null
   let qr
   try {
@@ -627,38 +330,6 @@ function QrSvg({ value, size = 88 }) {
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block' }}>
       <rect width={size} height={size} fill="#ffd580" />
       {rects}
-    </svg>
-  )
-}
-
-function CornerMandala({ position }) {
-  const styles =
-    position === 'top-right'
-      ? { top: '-120px', right: '-120px', width: '320px', height: '320px' }
-      : { bottom: '-120px', left: '-120px', width: '280px', height: '280px' }
-  return (
-    <svg
-      viewBox="0 0 400 400"
-      style={{
-        position: 'absolute',
-        ...styles,
-        opacity: 0.08,
-        pointerEvents: 'none',
-        zIndex: 0
-      }}
-    >
-      <circle cx="200" cy="200" r="190" fill="none" stroke="#ffc266" strokeWidth="1" strokeDasharray="2 10" />
-      <circle cx="200" cy="200" r="160" fill="none" stroke="#ffc266" strokeWidth="1" />
-      <circle cx="200" cy="200" r="120" fill="none" stroke="#ffc266" strokeWidth="1" />
-      <circle cx="200" cy="200" r="80" fill="none" stroke="#ffc266" strokeWidth="1" />
-      {Array.from({ length: 12 }).map((_, i) => {
-        const a = (i * 30 - 90) * (Math.PI / 180)
-        const x1 = 200 + Math.cos(a) * 80
-        const y1 = 200 + Math.sin(a) * 80
-        const x2 = 200 + Math.cos(a) * 190
-        const y2 = 200 + Math.sin(a) * 190
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#ffc266" strokeWidth="1" />
-      })}
     </svg>
   )
 }
