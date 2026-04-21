@@ -13,6 +13,63 @@
 //   current dasha lord    → 時機信號
 //   active yogas          → 加權建議
 
+// ═══════════════════════════════════════════════════════════════
+// 工作能量特徵（代替「硬塞職業列表」的古板做法）
+// ═══════════════════════════════════════════════════════════════
+//
+// 古典 planetAsKarmesh.coreProfessions 是「字面職業列表」（建築師／醫師／律師…）
+// 放到現代用戶眼前會變成「職稱 filter」— 跟他實際興趣脫節
+//
+// 新做法：描述「你工作時需要的能量」+「現代具體範例」+「甜蜜點」
+// 這樣即使用戶不是「建築師」，也能在 infra engineer / PM / editor 裡找到對的能量
+export const careerEnergyByPlanet = {
+  Sun: {
+    energy: '需要「被看見、有頭銜、代表一個東西」的工作',
+    modernExamples: ['公司代言人／Founder', 'PM／部門主管', '品牌負責人', 'KOL／自媒體', '公部門首長', '節目主持／演講者'],
+    sweetSpot: '站在光下掌權'
+  },
+  Moon: {
+    energy: '需要「跟大眾連結、照顧人、有情感溫度」的工作',
+    modernExamples: ['UX／用戶研究', '品牌社群經營', '護理／照護', '餐飲服務', '客服主管', '兒少教育', '媒體製作'],
+    sweetSpot: '面對人、不是面對機器'
+  },
+  Mars: {
+    energy: '需要「體能挑戰、有對手、短期衝刺感」的工作',
+    modernExamples: ['Growth Marketing', '新創 VP 或 COO', '業務開發', '運動相關', '健身教練', '外科／急診', '消防'],
+    sweetSpot: '能戰、要快、有競爭'
+  },
+  Mercury: {
+    energy: '需要「用腦袋 + 嘴巴 + 多線並行」的工作',
+    modernExamples: ['產品經理', '業務／BD', '作家／自媒體', '投資分析', '律師', '顧問', '獵頭', '教師／講師'],
+    sweetSpot: '用語言或數字把事情搞定'
+  },
+  Jupiter: {
+    energy: '需要「傳承、智慧、有影響力」的工作',
+    modernExamples: ['大學教授', '法官／資深律師', '金融高階', '主編', 'Podcast 主持', '心理師', 'NGO 創辦人', '投資人'],
+    sweetSpot: '當 mentor 不當 operator'
+  },
+  Venus: {
+    energy: '需要「美感、享受、跟人打交道」的工作',
+    modernExamples: ['設計師（UI／室內／時裝）', '時尚編輯', '品牌策略', '攝影師', '公關', '演員／歌手', '甜點／餐飲品牌'],
+    sweetSpot: '創造漂亮的東西 + 跟人相處'
+  },
+  Saturn: {
+    energy: '需要「長期耕耘、扎實結構、不怕慢」的工作',
+    modernExamples: ['資深 PM', 'Infra／平台工程', '建築師', '產品工業設計', '編輯', '法律事務所', '公部門高階', '家業繼承'],
+    sweetSpot: '做會存在十年的東西'
+  },
+  Rahu: {
+    energy: '需要「海外、科技、非主流、突破性」的工作',
+    modernExamples: ['AI／ML 工程', 'Web3／加密貨幣', '跨境電商', '網紅經紀', '外交', '國際銷售', '遊戲開發'],
+    sweetSpot: '走別人看不懂的路'
+  },
+  Ketu: {
+    energy: '需要「深挖、獨立、少社交」的工作',
+    modernExamples: ['資料科學家', '研究員', '心理治療', '占星／玄學', '紀錄片導演', '自由接案', '獨立作家'],
+    sweetSpot: '一個人也能深得下去'
+  }
+}
+
 import { planetAsKarmesh } from './careerVedicData.js'
 
 // ═══════════════════════════════════════════════════════════════
@@ -161,32 +218,42 @@ export function synthesizeCareerPlaybook(vedicCareer) {
   const identity = careerIdentityByPlanet[karmeshPlanet]
   const houseContext = careerHouseModifier[karmeshHouse]
 
-  // 2. 產業推薦（合併 karmesh 主行 + lagnaLord 主行 + karaka override category）
-  const industrySet = []
-  const seen = new Set()
-  const addIndustry = (s) => {
-    if (!s) return
-    if (seen.has(s)) return
-    seen.add(s)
-    industrySet.push(s)
+  // 2. 工作能量特徵（替代舊的「硬塞職業列表」）
+  const karmeshEnergy = careerEnergyByPlanet[karmeshPlanet]
+  const lagnaLordEnergy =
+    lagnaLordPlanet && lagnaLordPlanet !== karmeshPlanet
+      ? careerEnergyByPlanet[lagnaLordPlanet]
+      : null
+
+  const energyPattern = karmeshEnergy
+    ? lagnaLordEnergy
+      ? `${karmeshEnergy.energy}，而且同時${lagnaLordEnergy.energy}`
+      : karmeshEnergy.energy
+    : null
+
+  const sweetSpot = karmeshEnergy
+    ? lagnaLordEnergy
+      ? `「${karmeshEnergy.sweetSpot}」× 「${lagnaLordEnergy.sweetSpot}」的交集`
+      : `「${karmeshEnergy.sweetSpot}」`
+    : null
+
+  // 現代範例 — 從兩顆行星的 modernExamples 各抽 3 個湊 5-6 個
+  const exampleSet = []
+  const seenEx = new Set()
+  const pushEx = (s) => {
+    if (!s || seenEx.has(s)) return
+    seenEx.add(s)
+    exampleSet.push(s)
   }
+  if (karmeshEnergy) karmeshEnergy.modernExamples.slice(0, 4).forEach(pushEx)
+  if (lagnaLordEnergy) lagnaLordEnergy.modernExamples.slice(0, 3).forEach(pushEx)
 
-  // 主路線：karmesh 的職業（拿 coreProfessions 前 3 個）
-  const karmeshProfs = planetAsKarmesh[karmeshPlanet]?.coreProfessions || []
-  karmeshProfs.slice(0, 3).forEach(addIndustry)
+  // Karaka override 加一句話（不塞進範例列表，避免又像職稱 filter）
+  const karakaHint = karakaOverrides[0]?.category
+    ? `另外你命盤還壓著「${karakaOverrides[0].category}」身份 — 把它當副業或長線目標都可以。`
+    : null
 
-  // 輔助路線：lagna lord 的職業（與 karmesh 不同才加）
-  if (lagnaLordPlanet && lagnaLordPlanet !== karmeshPlanet) {
-    const lagnaLordProfs = planetAsKarmesh[lagnaLordPlanet]?.coreProfessions || []
-    lagnaLordProfs.slice(0, 2).forEach(addIndustry)
-  }
-
-  // Karaka override 的 category（運動／藝術／工業等身份）
-  karakaOverrides.slice(0, 1).forEach((k) => {
-    if (k?.category) addIndustry(k.category)
-  })
-
-  const industries = industrySet.slice(0, 6)
+  const modernExamples = exampleSet.slice(0, 6)
 
   // 3. 避開
   const avoid = careerAvoidByPlanet[karmeshPlanet]
@@ -203,10 +270,10 @@ export function synthesizeCareerPlaybook(vedicCareer) {
   // 5. Action items（3 條具體）
   const actions = []
 
-  // Action 1: 產業鎖定
-  if (industries.length >= 3) {
+  // Action 1: 鎖定能量特徵（不再用職業列表）
+  if (sweetSpot) {
     actions.push(
-      `先鎖定「${industries.slice(0, 3).join(' / ')}」這三類方向投履歷、聽 podcast、看職缺 — 這是你命盤給的主軸。`
+      `篩選職缺時不要只看「職稱」，要看「能量匹配」— 鎖定 ${sweetSpot} 的工作。職稱可以差很多，但那個感覺對才是對。`
     )
   }
 
@@ -225,12 +292,11 @@ export function synthesizeCareerPlaybook(vedicCareer) {
     )
   } else if (karakaOverrides[0]) {
     actions.push(
-      `你的 Amatyakaraka（事業靈魂星）指向 ${karakaOverrides[0].category} — 即使 10 宮主沒直接指這個方向，靈魂層面你要的是這個。把它當副業或長期目標。`
+      `你的事業靈魂星指向 ${karakaOverrides[0].category} — 即使 10 宮主沒直接指這個方向，靈魂層面你要的是這個。把它當副業或長期目標。`
     )
-  } else if (lagnaLordPlanet && lagnaLordHouse) {
-    const lagnaProfs = planetAsKarmesh[lagnaLordPlanet]?.coreProfessions?.slice(0, 2).join('、')
+  } else if (lagnaLordEnergy) {
     actions.push(
-      `你的命主星 ${lagnaLordPlanet} 落第 ${lagnaLordHouse} 宮 — 這意味著「${lagnaProfs}」類路線會給你第二層動力，可以當副線同時推。`
+      `你的命主星給你加的是「${lagnaLordEnergy.sweetSpot}」這層能量 — 可以當副線同時推，不一定要選正職。`
     )
   } else {
     actions.push(avoid)
@@ -244,7 +310,11 @@ export function synthesizeCareerPlaybook(vedicCareer) {
           why: identity.why
         }
       : null,
-    industries,
+    // 能量特徵 + 現代翻譯 + 甜蜜點（取代舊的 industries 列表）
+    energyPattern,
+    modernExamples,
+    sweetSpot,
+    karakaHint,
     avoid,
     dashaSignal,
     actions

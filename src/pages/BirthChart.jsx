@@ -758,14 +758,35 @@ export default function BirthChart() {
                           </div>
                         )}
 
-                        {/* 產業方向 */}
-                        {vedicCareer.playbook.industries?.length > 0 && (
+                        {/* 工作能量特徵（不再是職業列表） */}
+                        {vedicCareer.playbook.energyPattern && (
                           <div>
                             <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
-                              先鎖定這幾類產業 / 職務
+                              你工作時需要的能量
                             </div>
                             <p className="text-base text-slate-100 leading-relaxed">
-                              {vedicCareer.playbook.industries.join('、')}
+                              {vedicCareer.playbook.energyPattern}
+                            </p>
+                            {vedicCareer.playbook.sweetSpot && (
+                              <p className="text-sm text-saffron-200/90 mt-2 leading-relaxed">
+                                甜蜜點：{vedicCareer.playbook.sweetSpot}
+                              </p>
+                            )}
+                            {vedicCareer.playbook.modernExamples?.length > 0 && (
+                              <div className="mt-3">
+                                <div className="text-xs text-slate-400 mb-1.5">現代工作舉例（能量對得上就算）：</div>
+                                <p className="text-sm text-slate-200 leading-relaxed">
+                                  {vedicCareer.playbook.modernExamples.join('、')}
+                                </p>
+                              </div>
+                            )}
+                            {vedicCareer.playbook.karakaHint && (
+                              <p className="text-xs text-slate-400 mt-3 leading-relaxed">
+                                {vedicCareer.playbook.karakaHint}
+                              </p>
+                            )}
+                            <p className="text-xs text-slate-500 italic mt-3 leading-relaxed">
+                              ※ 古典用「建築師／藝術家」這些詞，不是字面要你蓋房子或畫畫 — 而是在描述你工作時需要的「能量」。讀到某個職稱沒共鳴很正常，重點是能量匹配。
                             </p>
                           </div>
                         )}
