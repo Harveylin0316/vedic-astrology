@@ -41,6 +41,7 @@ import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
 import { analyzeCareer } from '../utils/careerAnalysis.js'
+import { rankCareers } from '../utils/careerRanking.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import {
@@ -299,6 +300,9 @@ export default function BirthChart() {
   const persona = chart ? buildPersonaSignature(tropLagnaName, tropMoonName) : null
 
   const careerAnalysis = chart ? analyzeCareer(chart, currentDasha?.lord) : null
+  const careerRanked = chart
+    ? rankCareers(chart, currentDasha?.lord, currentAD?.lord)
+    : null
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -745,6 +749,9 @@ export default function BirthChart() {
               )}
 
               <div id="career" className="scroll-mt-20 -mt-6" />
+              {/* ⑥-0 事業類別排名（主角 · 排序依命盤嚴格推理） */}
+              {careerRanked && <CareerRankingSection ranking={careerRanked} />}
+
               {/* ⑥ 事業深度解析 — 5 個因子交織的多層解讀 */}
               {sun && careerAnalysis && (
                 <Section
@@ -1651,6 +1658,219 @@ function buildRarityComparison(topPercent) {
     return '你的配置較有特色但非極罕見。每 5 個人裡大概有 1 個類似 — 像是「藍眼睛 + 某個血型」這種程度的組合。'
   }
   return '你的命盤屬於均衡型。這不代表平庸 — 反而是少了極端配置所以「日子比較穩」的類型。'
+}
+
+function CareerRankingSection({ ranking }) {
+  const [expandedId, setExpandedId] = useState(null)
+  if (!ranking || ranking.length === 0) return null
+
+  const top5 = ranking.slice(0, 5)
+  const bottom2 = ranking.slice(-2).reverse() // 最差 2 個倒序
+
+  const tierColor = (stars) => {
+    if (stars >= 5) return {
+      border: 'border-emerald-500/50',
+      bg: 'bg-gradient-to-br from-emerald-500/15 to-emerald-500/5',
+      text: 'text-emerald-400',
+      star: 'text-emerald-400'
+    }
+    if (stars >= 4) return {
+      border: 'border-saffron-500/40',
+      bg: 'bg-saffron-500/10',
+      text: 'text-saffron-400',
+      star: 'text-saffron-400'
+    }
+    if (stars >= 3) return {
+      border: 'border-white/15',
+      bg: 'bg-white/5',
+      text: 'text-slate-200',
+      star: 'text-saffron-400'
+    }
+    if (stars >= 2) return {
+      border: 'border-white/10',
+      bg: 'bg-white/[0.03]',
+      text: 'text-slate-300',
+      star: 'text-slate-400'
+    }
+    return {
+      border: 'border-vermilion-500/30',
+      bg: 'bg-vermilion-500/5',
+      text: 'text-slate-400',
+      star: 'text-vermilion-500'
+    }
+  }
+
+  const rankBadge = (rank) => {
+    if (rank === 1) return '🥇'
+    if (rank === 2) return '🥈'
+    if (rank === 3) return '🥉'
+    return `#${rank}`
+  }
+
+  return (
+    <Section
+      icon={<Briefcase className="h-4 w-4" />}
+      badge="命盤職業適配度 · 嚴格規則推導"
+      title="依你的命盤排序的事業類別"
+    >
+      <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+        根據 10 個事業類別的<strong className="text-saffron-400">主宰行星</strong>在你命盤中的力量分數排序。分數來源透明：<strong>星座強弱 · 宮位位置 · 事業宮連結 · 當前大運</strong>— 每一分都可點展開看推理。
+      </p>
+
+      {/* Top 5 推薦 */}
+      <div className="space-y-3 mb-6">
+        <div className="text-xs uppercase tracking-widest text-emerald-400 font-medium">
+          ✅ 最值得你投入的 5 個方向
+        </div>
+        {top5.map((cat) => {
+          const color = tierColor(cat.stars)
+          const isOpen = expandedId === cat.id
+          return (
+            <div key={cat.id} className={`rounded-2xl border ${color.border} ${color.bg} overflow-hidden`}>
+              <button
+                type="button"
+                onClick={() => setExpandedId(isOpen ? null : cat.id)}
+                className="w-full text-left p-4 md:p-5 hover:bg-white/[0.02] transition"
+              >
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="flex-shrink-0 flex items-center justify-center h-11 w-11 md:h-12 md:w-12 rounded-xl bg-white/5 border border-white/10 text-xl font-serif">
+                    {rankBadge(cat.rank)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span className="text-2xl flex-shrink-0">{cat.icon}</span>
+                      <h4 className="font-serif text-lg md:text-xl gradient-text">{cat.name}</h4>
+                    </div>
+                    <div className={`mt-1 flex items-center gap-3 text-xs ${color.text}`}>
+                      <span className="font-medium">{cat.level}</span>
+                      <span className="text-slate-500">·</span>
+                      <span className="tabular-nums">{cat.score} 分</span>
+                      <span className="flex gap-0.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span key={i} className={i < cat.stars ? color.star : 'text-white/10'}>★</span>
+                        ))}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                      <strong className="text-slate-300">典型職位：</strong>{cat.examples.slice(0, 4).join('、')}...
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 text-slate-400 text-sm">{isOpen ? '▲' : '▼'}</div>
+                </div>
+              </button>
+
+              {isOpen && (
+                <div className="border-t border-white/10 p-4 md:p-5 bg-cosmic-950/30">
+                  {/* 所有職業範例 */}
+                  <div className="mb-4">
+                    <div className="text-xs text-slate-400 mb-2">📋 這類的所有典型職業：</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {cat.examples.map((e) => (
+                        <span key={e} className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs text-slate-300">
+                          {e}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* thriveIn */}
+                  <div className="mb-4 text-sm">
+                    <span className="text-emerald-400">🌱 你會在這種環境發光：</span>
+                    <span className="text-slate-200 ml-1">{cat.thriveIn}</span>
+                  </div>
+
+                  {/* 計分推理 */}
+                  <div>
+                    <div className="text-xs text-saffron-400 font-medium mb-2">🧮 這個分數怎麼算的？</div>
+                    <PlanetReasons
+                      label={`主宰星 ${cat.primaryPlanet.name}（權重 ×1.0）`}
+                      reasons={cat.primaryPlanet.reasons}
+                      baseScore={cat.primaryPlanet.score}
+                    />
+                    {cat.secondary && cat.secondaryPlanet.reasons.length > 0 && (
+                      <PlanetReasons
+                        label={`輔助星 ${cat.secondaryPlanet.name}（權重 ×0.5）`}
+                        reasons={cat.secondaryPlanet.reasons}
+                        baseScore={cat.secondaryPlanet.score}
+                      />
+                    )}
+                    <div className="mt-2 text-xs text-slate-400 italic">
+                      = {cat.primaryPlanet.score} × 1.0 + {cat.secondaryPlanet.score} × 0.5 = <strong className="text-saffron-400">{cat.score} 分</strong>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* 底部 2 個 — 不推薦 */}
+      <div className="space-y-3">
+        <div className="text-xs uppercase tracking-widest text-vermilion-500 font-medium">
+          ❌ 命盤不支持的 2 個方向（不代表做不了，但要花更多力氣）
+        </div>
+        {bottom2.map((cat) => {
+          const color = tierColor(cat.stars)
+          return (
+            <div key={cat.id} className={`rounded-xl border ${color.border} ${color.bg} p-3 md:p-4`}>
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 text-2xl">{cat.icon}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-medium text-slate-200">#{cat.rank} · {cat.name}</span>
+                    <span className={`text-xs ${color.text}`}>{cat.level} · {cat.score} 分</span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    主宰星 <strong className="text-slate-300">{cat.primary}</strong> 在你命盤中力量為 {cat.primaryPlanet.score} 分。
+                    {cat.avoidIf && <span className="ml-1 text-vermilion-400">· 提醒：{cat.avoidIf}</span>}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* 透明度說明 */}
+      <div className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
+        💡 <strong className="text-slate-300">推理規則</strong>：
+        每個類別由 1-2 顆主宰行星決定。該行星在你命盤中越強，這類事業越適合你。
+        行星力量依照古典 Vedic 規則計算 — 落在<strong className="text-saffron-400">自己星座 +3、旺位 +4、陷位 -3</strong>；
+        坐<strong className="text-saffron-400">角宮 / 三角宮 +2</strong>；
+        直接坐<strong className="text-saffron-400">事業宮 +5</strong>；
+        是<strong className="text-saffron-400">10 宮主星 +4</strong>；
+        坐<strong className="text-saffron-400">財庫宮 +2</strong>；
+        當前走這顆<strong className="text-saffron-400">行星大運 +5</strong>。
+        所有推理可展開每個類別看完整計算。
+      </div>
+    </Section>
+  )
+}
+
+function PlanetReasons({ label, reasons, baseScore }) {
+  if (!reasons || reasons.length === 0) {
+    return (
+      <div className="mt-2 text-xs text-slate-500">
+        {label}：無特殊加分，基礎 {baseScore} 分
+      </div>
+    )
+  }
+  return (
+    <div className="mt-2 rounded-lg border border-white/10 bg-white/[0.02] p-3">
+      <div className="text-xs font-medium text-slate-300 mb-2">{label} · 總計 {baseScore} 分</div>
+      <div className="space-y-1">
+        {reasons.map((r, i) => (
+          <div key={i} className="flex items-start gap-2 text-xs">
+            <span className={`flex-shrink-0 font-mono tabular-nums ${r.points >= 0 ? 'text-emerald-400' : 'text-vermilion-500'}`}>
+              {r.points >= 0 ? '+' : ''}{r.points}
+            </span>
+            <span className="text-slate-300">{r.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function CopyLinkButton() {
