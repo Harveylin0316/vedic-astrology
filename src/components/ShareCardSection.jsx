@@ -1,8 +1,9 @@
 import { useRef, useState, cloneElement, isValidElement } from 'react'
 import { toPng } from 'html-to-image'
-import { Download, Share2, Check, Loader2, X } from 'lucide-react'
+import { Download, Share2, Check, Loader2, X, Link2 } from 'lucide-react'
 import { trackEvent } from './Analytics.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
+import { copyToClipboard } from '../utils/permalink.js'
 
 // 通用 ShareCardSection：預覽縮圖 + 下載 PNG
 // 用法：<ShareCardSection filename="xxx.png" shareText="..." shareTitle="..."><Card ref={cardRef} /></ShareCardSection>
@@ -18,6 +19,7 @@ export default function ShareCardSection({
   const cardRef = useRef(null)
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const [previewImage, setPreviewImage] = useState(null) // 手機長按儲存的 modal
+  const [linkCopied, setLinkCopied] = useState(false) // 「已複製連結」小 toast 狀態
   const displayTitle = title || t('share.title')
 
   const isMobile =
@@ -85,33 +87,16 @@ export default function ShareCardSection({
     }
   }
 
-  const handleNativeShare = async () => {
-    if (!navigator.share || !cardRef.current) return
-    setStatus('loading')
-    try {
-      const dataUrl = await renderCard()
-      const blob = await (await fetch(dataUrl)).blob()
-      const file = new File([blob], filename, { type: 'image/png' })
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: shareTitle || '我的吠陀命盤',
-          text: shareText || '我剛算了自己的吠陀命盤'
-        })
-        trackEvent('native_share', { filename, origin: 'share_btn' })
-      } else {
-        // fallback：下載 / modal
-        await handleDownload()
-        return
-      }
-      setStatus('idle')
-    } catch (err) {
-      if (err.name !== 'AbortError') console.error(err)
-      setStatus('idle')
+  // 直接複製連結，不觸發 navigator.share（避免系統分享選單打斷節奏）
+  const handleCopyLink = async () => {
+    if (typeof window === 'undefined') return
+    const ok = await copyToClipboard(window.location.href)
+    if (ok) {
+      trackEvent('share_copy_link', { filename })
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2500)
     }
   }
-
-  const hasNativeShare = typeof navigator !== 'undefined' && !!navigator.share
 
   // 複製 children 並注入 ref（正確做法）
   const childWithRef = isValidElement(children) ? cloneElement(children, { ref: cardRef }) : children
@@ -155,17 +140,24 @@ export default function ShareCardSection({
 
         {/* 行動按鈕 */}
         <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
-          {hasNativeShare && (
-            <button
-              type="button"
-              onClick={handleNativeShare}
-              disabled={status === 'loading'}
-              className="btn-ghost"
-            >
-              <Share2 className="h-4 w-4" />
-              {t('share.nativeBtn')}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            disabled={linkCopied}
+            className="btn-ghost min-w-[160px]"
+          >
+            {linkCopied ? (
+              <>
+                <Check className="h-4 w-4" />
+                已複製連結
+              </>
+            ) : (
+              <>
+                <Link2 className="h-4 w-4" />
+                複製連結給朋友
+              </>
+            )}
+          </button>
           <button
             type="button"
             onClick={handleDownload}
@@ -195,6 +187,18 @@ export default function ShareCardSection({
           {isMobile ? '手機端會打開預覽 → 長按圖片選「儲存影像」' : t('share.spec')}
         </p>
       </div>
+
+      {/* 「已複製連結」小 toast（右下角浮現） */}
+      {linkCopied && (
+        <div
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-emerald-500/95 text-white px-5 py-2.5 text-sm font-medium shadow-xl flex items-center gap-2 animate-[fadeIn_0.2s_ease-out]"
+          role="status"
+          aria-live="polite"
+        >
+          <Check className="h-4 w-4" />
+          已複製連結
+        </div>
+      )}
 
       {/* 手機長按儲存 Modal */}
       {previewImage && (
