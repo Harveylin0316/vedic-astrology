@@ -71,8 +71,8 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
         flexDirection: 'column'
       }}
     >
-      {/* ═══ 頂部：極小品牌標 + 日期 ═══ */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 2 }}>
+      {/* ═══ 頂部：品牌標 + tier 徽章（傳奇級命盤等） + 日期 ═══ */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', zIndex: 2 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
             style={{
@@ -95,9 +95,33 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
             吠陀命盤 · Vedic
           </div>
         </div>
-        <div style={{ fontSize: '11px', color: '#64748b', textAlign: 'right', lineHeight: 1.5 }}>
-          {stamp && <div>{stamp}</div>}
-          {city && <div>{city}</div>}
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+          {rarity?.title && (
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 18px',
+                borderRadius: '999px',
+                background: 'linear-gradient(135deg, #ffd580 0%, #ffa733 50%, #e34234 100%)',
+                color: '#0a0618',
+                fontSize: '18px',
+                fontWeight: 700,
+                fontFamily: '"Cormorant Garamond", "Source Han Serif TC", Georgia, serif',
+                letterSpacing: '0.03em',
+                boxShadow: '0 4px 20px rgba(255,167,51,0.35)'
+              }}
+            >
+              <span style={{ fontSize: '14px' }}>★</span>
+              {rarity.title}
+            </div>
+          )}
+          <div style={{ fontSize: '11px', color: '#64748b', textAlign: 'right', lineHeight: 1.5 }}>
+            {stamp && <div>{stamp}</div>}
+            {city && <div>{city}</div>}
+          </div>
         </div>
       </div>
 
