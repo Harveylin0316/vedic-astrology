@@ -159,11 +159,13 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
 
   const karmeshContext = {
     conjoinPlanets: allContextPlanets,
-    amatyakarakaPlanet: null // 稍後填
+    amatyakarakaPlanet: null, // 稍後填
+    strongSignificators: []   // 稍後填
   }
 
-  // 組合字典判讀（9 × 12，多語境）
-  const combinationReading = karmeshGraha
+  // 組合字典判讀（9 × 12，多語境）— 先算一個 conjoin-only 版本，
+  // 等 AMK + strongSignificators 備好後於 part 8 後重新計算一次。
+  let combinationReading = karmeshGraha
     ? selectKarmeshReading(karmeshPlanet, karmeshGraha.house, karmeshContext)
     : null
 
@@ -246,8 +248,11 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     }
   }
 
-  // ════ 第 8 部分：Karaka Overrides（v3 新增）════
-  // 當 AMK 或 Top Significator 為強旺 Mars/Venus/Saturn/Jupiter/Sun 時加 override
+  // ════ 第 8 部分：Karaka Overrides（v4：多訊號 voting）════
+  // 不再只看 AMK/Top-Significator 的 dignity，而是綜合：
+  //   - AMK/Top-3 的強度
+  //   - 行星所在 house 的事業意義（Mars 3/6、Sun 1/10、Venus 1/5/10、Jupiter 1/5/9/10、Saturn 7/10）
+  //   - Mahapurusha Yoga 加成
   const karakaOverrides = buildKarakaOverrides({
     amatyakaraka: amk.amatyakaraka
       ? {
@@ -256,8 +261,22 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
         }
       : null,
     significators: significatorRanking,
-    computeDignity
+    computeDignity,
+    chart,
+    activeYogas: allYogas
   })
+
+  // Strong significators 列表供 selectKarmeshReading 做雙重確認
+  const strongSignificators = significatorRanking
+    .filter((s) => ['exalted', 'own', 'moolatrikona'].includes(s.dignity))
+    .slice(0, 4)
+    .map((s) => s.planet)
+  karmeshContext.strongSignificators = strongSignificators
+
+  // 重算 combinationReading：AMK + strongSignificators 備好後，才能做正確的 variant 選擇
+  if (karmeshGraha) {
+    combinationReading = selectKarmeshReading(karmeshPlanet, karmeshGraha.house, karmeshContext)
+  }
 
   // ════ 第 9 部分：Narrative Synthesis — 最關鍵的一段文字（含 Karaka Override + D10）════
   const narrative = synthesizeCareerNarrative({

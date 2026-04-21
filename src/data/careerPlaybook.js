@@ -237,7 +237,9 @@ export function synthesizeCareerPlaybook(vedicCareer) {
       : `「${karmeshEnergy.sweetSpot}」`
     : null
 
-  // 現代範例 — 從兩顆行星的 modernExamples 各抽 3 個湊 5-6 個
+  // 現代範例 — 從兩顆行星的 modernExamples 各抽，若有 karaka override 則強制
+  // 塞入對應 karaka 的代表範例（讓 Lincoln/JFK 的 government 訊號、Messi/Ronaldo
+  // 的 sports 訊號在 playbook 裡出現）
   const exampleSet = []
   const seenEx = new Set()
   const pushEx = (s) => {
@@ -245,8 +247,15 @@ export function synthesizeCareerPlaybook(vedicCareer) {
     seenEx.add(s)
     exampleSet.push(s)
   }
-  if (karmeshEnergy) karmeshEnergy.modernExamples.slice(0, 4).forEach(pushEx)
-  if (lagnaLordEnergy) lagnaLordEnergy.modernExamples.slice(0, 3).forEach(pushEx)
+  if (karmeshEnergy) karmeshEnergy.modernExamples.slice(0, 3).forEach(pushEx)
+  if (lagnaLordEnergy) lagnaLordEnergy.modernExamples.slice(0, 2).forEach(pushEx)
+  // karaka override 加入對應行星的代表範例（確保 override 訊號反映在 playbook）
+  for (const ov of karakaOverrides.slice(0, 2)) {
+    const planet = ov.id?.replace('karaka-override-', '')
+    const planetKey = planet && planet.charAt(0).toUpperCase() + planet.slice(1)
+    const ovEnergy = planetKey && careerEnergyByPlanet[planetKey]
+    if (ovEnergy) ovEnergy.modernExamples.slice(0, 2).forEach(pushEx)
+  }
 
   // Karaka override 加一句話（不塞進範例列表，避免又像職稱 filter）
   const karakaHint = karakaOverrides[0]?.category

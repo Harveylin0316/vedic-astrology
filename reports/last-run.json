@@ -1,0 +1,3982 @@
+{
+  "total": 118,
+  "valid": 118,
+  "full": 69,
+  "partial": 17,
+  "miss": 32,
+  "accuracy": 0.6567796610169492,
+  "catStats": {
+    "tech-creative": {
+      "full": 1,
+      "partial": 0,
+      "miss": 0,
+      "total": 1
+    },
+    "business-leader": {
+      "full": 9,
+      "partial": 1,
+      "miss": 0,
+      "total": 10
+    },
+    "tech-exec": {
+      "full": 8,
+      "partial": 0,
+      "miss": 0,
+      "total": 8
+    },
+    "tech-engineer": {
+      "full": 3,
+      "partial": 0,
+      "miss": 1,
+      "total": 4
+    },
+    "business-entrepreneur": {
+      "full": 11,
+      "partial": 0,
+      "miss": 0,
+      "total": 11
+    },
+    "business-investor": {
+      "full": 0,
+      "partial": 4,
+      "miss": 0,
+      "total": 4
+    },
+    "finance": {
+      "full": 0,
+      "partial": 3,
+      "miss": 0,
+      "total": 3
+    },
+    "media-personality": {
+      "full": 4,
+      "partial": 1,
+      "miss": 2,
+      "total": 7
+    },
+    "arts-performer": {
+      "full": 21,
+      "partial": 9,
+      "miss": 11,
+      "total": 41
+    },
+    "arts-creator": {
+      "full": 12,
+      "partial": 1,
+      "miss": 3,
+      "total": 16
+    },
+    "media-creator": {
+      "full": 1,
+      "partial": 0,
+      "miss": 0,
+      "total": 1
+    },
+    "arts-visual": {
+      "full": 2,
+      "partial": 2,
+      "miss": 1,
+      "total": 5
+    },
+    "sports-athlete": {
+      "full": 6,
+      "partial": 1,
+      "miss": 12,
+      "total": 19
+    },
+    "politics": {
+      "full": 10,
+      "partial": 0,
+      "miss": 5,
+      "total": 15
+    },
+    "government": {
+      "full": 10,
+      "partial": 0,
+      "miss": 4,
+      "total": 14
+    },
+    "religion-leader": {
+      "full": 4,
+      "partial": 0,
+      "miss": 1,
+      "total": 5
+    },
+    "spiritual-teacher": {
+      "full": 1,
+      "partial": 0,
+      "miss": 1,
+      "total": 2
+    },
+    "science-academic": {
+      "full": 6,
+      "partial": 1,
+      "miss": 0,
+      "total": 7
+    },
+    "medicine": {
+      "full": 2,
+      "partial": 0,
+      "miss": 0,
+      "total": 2
+    }
+  },
+  "planetStats": {
+    "Venus": {
+      "full": 10,
+      "partial": 3,
+      "miss": 1,
+      "total": 14
+    },
+    "Mars": {
+      "full": 12,
+      "partial": 3,
+      "miss": 8,
+      "total": 23
+    },
+    "Jupiter": {
+      "full": 7,
+      "partial": 2,
+      "miss": 9,
+      "total": 18
+    },
+    "Moon": {
+      "full": 14,
+      "partial": 2,
+      "miss": 2,
+      "total": 18
+    },
+    "Sun": {
+      "full": 7,
+      "partial": 2,
+      "miss": 4,
+      "total": 13
+    },
+    "Mercury": {
+      "full": 15,
+      "partial": 2,
+      "miss": 5,
+      "total": 22
+    },
+    "Saturn": {
+      "full": 4,
+      "partial": 3,
+      "miss": 3,
+      "total": 10
+    }
+  },
+  "results": [
+    {
+      "name": "Steve Jobs",
+      "trueCats": [
+        "tech-creative",
+        "business-leader",
+        "tech-exec"
+      ],
+      "predicted": [
+        "tech-creative",
+        "arts-performer",
+        "arts-visual",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "business-leader",
+        "tech-engineer",
+        "science-academic",
+        "politics",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Mars",
+      "karmeshReading": "演藝／設計師／愛情相關創作 — Venus 最自然之位",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Bill Gates",
+      "trueCats": [
+        "tech-exec",
+        "business-leader",
+        "tech-engineer"
+      ],
+      "predicted": [
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "arts-performer",
+        "arts-visual",
+        "business-leader",
+        "politics",
+        "government",
+        "finance",
+        "business-investor",
+        "sports-athlete",
+        "tech-creative",
+        "science-academic",
+        "spiritual-teacher"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Mars",
+      "karmeshReading": "白手起家戰將 — 業務衝刺／工程寫作／衝鋒型創業",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "mahapurusha-Saturn",
+        "dhana-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Elon Musk",
+      "trueCats": [
+        "tech-exec",
+        "business-entrepreneur",
+        "tech-engineer"
+      ],
+      "predicted": [
+        "law",
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "business-entrepreneur",
+        "tech-exec",
+        "science-academic",
+        "politics",
+        "tech-creative",
+        "finance",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Rahu",
+      "karmeshReading": "法律／醫療／慈善／服務型專業",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mercury",
+        "gaja-kesari",
+        "budha-aditya",
+        "kemadruma",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Mark Zuckerberg",
+      "trueCats": [
+        "tech-exec",
+        "business-leader"
+      ],
+      "predicted": [
+        "arts-performer",
+        "arts-visual",
+        "exploration",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "sports-athlete",
+        "tech-creative",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "tech-exec",
+        "government"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Mercury",
+      "karmeshReading": "跨國演藝／海外歌手／多語言藝術 — 藝 × 智",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "chandra-mangal",
+        "dhana-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Jeff Bezos",
+      "trueCats": [
+        "business-leader",
+        "business-entrepreneur",
+        "tech-exec"
+      ],
+      "predicted": [
+        "business-leader",
+        "tech-engineer",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "politics",
+        "government",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur",
+        "arts-performer"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Rahu",
+      "karmeshReading": "家族經營／食品／聲音／情感品牌 — 母系傳承",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "mahapurusha-Saturn",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Larry Page",
+      "trueCats": [
+        "tech-exec",
+        "tech-engineer"
+      ],
+      "predicted": [
+        "exploration",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Rahu",
+      "karmeshReading": "海外戰線／武鬥派／幕後技術 — 隱性的 Mars",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Warren Buffett",
+      "trueCats": [
+        "business-investor",
+        "finance"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-leader",
+        "government",
+        "media-personality",
+        "politics",
+        "business-entrepreneur",
+        "sports-athlete",
+        "medicine"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "★ 本位最強 — 政府／CEO／公眾人物，事業即人生主軸",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Ratan Tata",
+      "trueCats": [
+        "business-leader"
+      ],
+      "predicted": [
+        "media-personality",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "arts-creator",
+        "law",
+        "media-creator",
+        "finance",
+        "banking"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Moon",
+      "karmeshReading": "知名寫手／個人 KOL／品牌代言人 — 靠嘴巴 + 臉變現",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Mukesh Ambani",
+      "trueCats": [
+        "business-leader"
+      ],
+      "predicted": [
+        "finance",
+        "law",
+        "government",
+        "politics",
+        "media-personality",
+        "business-leader",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "arts-visual",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "★ 長期合夥／保險／法律事務所 — Saturn 自在位",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Jack Ma",
+      "trueCats": [
+        "business-leader",
+        "business-entrepreneur",
+        "tech-exec"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "sports-athlete",
+        "military",
+        "government",
+        "politics",
+        "media-personality",
+        "science-academic"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Mercury",
+      "karmeshReading": "戰士型個人品牌 — 運動員／軍警／體能型創業家",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Li Ka-shing",
+      "trueCats": [
+        "business-leader",
+        "business-investor"
+      ],
+      "predicted": [
+        "media-personality",
+        "media-creator",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur",
+        "arts-performer",
+        "government"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Saturn",
+      "karmeshReading": "媒體／自媒體／社群經營 — 靠內容滋養大眾",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Oprah Winfrey",
+      "trueCats": [
+        "media-personality",
+        "business-entrepreneur",
+        "arts-performer"
+      ],
+      "predicted": [
+        "finance",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "business-leader",
+        "tech-engineer",
+        "science-academic",
+        "politics",
+        "arts-creator",
+        "law",
+        "media-personality",
+        "media-creator",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 6,
+      "dashaLord": "Mars",
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Taylor Swift",
+      "trueCats": [
+        "arts-performer",
+        "arts-creator"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "media-personality",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "politics",
+        "business-leader"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Saturn",
+      "karmeshReading": "個人品牌 × 權威 — 以名字跟臉變現的公眾人物型",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Beyoncé",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "medicine",
+        "business-leader",
+        "business-entrepreneur",
+        "arts-creator",
+        "tech-exec",
+        "politics",
+        "government",
+        "finance",
+        "science-academic",
+        "law"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Mercury",
+      "karmeshReading": "教育機構／母校歸屬／心理治療 — 根植於家學",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "mahapurusha-Mercury",
+        "raj-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Madonna",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "tech-creative",
+        "arts-visual",
+        "exploration",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "海外藝術／幕後設計師 — 非公眾美學",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Michael Jackson",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "government",
+        "politics",
+        "media-personality",
+        "business-leader",
+        "finance",
+        "business-investor"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Venus",
+      "karmeshReading": "白手起家戰將 — 業務衝刺／工程寫作／衝鋒型創業",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "dhana-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "John Lennon",
+      "trueCats": [
+        "arts-performer",
+        "arts-creator"
+      ],
+      "predicted": [
+        "finance",
+        "banking",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "law"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Mercury",
+      "karmeshReading": "金融／財務顧問／家族教育世家",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Paul McCartney",
+      "trueCats": [
+        "arts-performer",
+        "arts-creator"
+      ],
+      "predicted": [
+        "law",
+        "exploration",
+        "politics",
+        "government",
+        "business-leader",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "國際工業／跨國法律／長期外貿 — 智識 × 體系",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "chandra-mangal",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Elvis Presley",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "government",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "business-entrepreneur",
+        "media-personality",
+        "tech-exec",
+        "business-investor"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Venus",
+      "karmeshReading": "家族聲望／公職世家／繼承型權威 — 透過「家名」立業",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Bob Dylan",
+      "trueCats": [
+        "arts-creator",
+        "arts-performer"
+      ],
+      "predicted": [
+        "exploration",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "sports-athlete",
+        "tech-creative",
+        "business-entrepreneur",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Mercury",
+      "karmeshReading": "外交／公關／代言／合夥掌權型 — 站在台前代表機構",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "budha-aditya",
+        "dhana-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Lady Gaga",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "finance",
+        "law",
+        "business-leader",
+        "business-investor",
+        "tech-creative",
+        "tech-engineer",
+        "arts-creator",
+        "arts-visual",
+        "exploration"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Saturn",
+      "karmeshReading": "★ 長期合夥／保險／法律事務所 — Saturn 自在位",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "dhana-yoga",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Rihanna",
+      "trueCats": [
+        "arts-performer",
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "finance",
+        "banking",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "business-investor",
+        "sports-athlete",
+        "tech-creative",
+        "science-academic",
+        "law"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Venus",
+      "karmeshReading": "金融／財務顧問／家族教育世家",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Marilyn Monroe",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "medicine",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "government",
+        "business-entrepreneur",
+        "science-academic",
+        "tech-exec"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Venus",
+      "karmeshReading": "外科急診／武術／秘密警務 — 處理危險與劇烈變動",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Leonardo DiCaprio",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "finance",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "business-leader",
+        "tech-creative",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Saturn",
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Tom Cruise",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "business-leader",
+        "arts-performer",
+        "media-personality",
+        "tech-engineer",
+        "politics",
+        "government",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "medicine",
+        "tech-exec"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Moon",
+      "karmeshReading": "大眾偶像／女性品牌／民生霸業 — 公眾滋養者",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn"
+      ]
+    },
+    {
+      "name": "Brad Pitt",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "government",
+        "business-leader",
+        "tech-engineer",
+        "science-academic",
+        "politics",
+        "business-entrepreneur",
+        "media-personality",
+        "sports-athlete"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Saturn",
+      "karmeshReading": "家族聲望／公職世家／繼承型權威 — 透過「家名」立業",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Angelina Jolie",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "spiritual-teacher",
+        "law",
+        "military",
+        "exploration",
+        "science-academic",
+        "religion-leader",
+        "politics",
+        "business-leader",
+        "government",
+        "business-entrepreneur"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Moon",
+      "karmeshReading": "軍事哲學／國際法律／戰略智囊",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Meryl Streep",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "business-investor",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "finance",
+        "business-entrepreneur",
+        "arts-performer",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Saturn",
+      "karmeshReading": "多角化併購／武器貿易／投機型收入",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Robert De Niro",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "finance",
+        "banking",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "government",
+        "politics",
+        "media-personality",
+        "business-leader",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-creator"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Sun",
+      "karmeshReading": "金融／財務顧問／家族教育世家",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Al Pacino",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "business-investor",
+        "government",
+        "politics",
+        "media-personality",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-entrepreneur",
+        "science-academic",
+        "spiritual-teacher"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "多角化併購／武器貿易／投機型收入",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽",
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Jennifer Lawrence",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-leader",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "finance",
+        "business-investor",
+        "media-personality",
+        "business-entrepreneur",
+        "arts-performer"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "指揮官／CEO 武將型 — 帶兵的 CEO",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "mahapurusha-Jupiter",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Steven Spielberg",
+      "trueCats": [
+        "arts-creator",
+        "media-creator"
+      ],
+      "predicted": [
+        "science-academic",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "business-leader",
+        "media-personality",
+        "tech-creative",
+        "finance",
+        "law",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 6,
+      "dashaLord": "Venus",
+      "karmeshReading": "大學教授／子女教育／理論創作 — 智慧創造者",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Quentin Tarantino",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "medicine",
+        "business-leader",
+        "tech-engineer",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "government",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "tech-exec",
+        "arts-performer"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "婚顧／家庭諮商／公關／大眾品牌",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "budha-aditya",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Martin Scorsese",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "tech-exec",
+        "arts-creator",
+        "science-academic",
+        "law",
+        "media-personality",
+        "media-creator",
+        "religion-leader"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Moon",
+      "karmeshReading": "平台經濟／多元副業／仲介 — 網絡節點型事業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Stanley Kubrick",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "military",
+        "medicine",
+        "media-personality",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur",
+        "arts-performer",
+        "government"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Rahu",
+      "karmeshReading": "家族經營／食品／聲音／情感品牌 — 母系傳承",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Walt Disney",
+      "trueCats": [
+        "arts-creator",
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "arts-creator",
+        "media-personality",
+        "media-creator",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "business-leader"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Moon",
+      "karmeshReading": "記者／業務／自媒體內容 — 寫作 + 業務型白手起家",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "gaja-kesari",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "J.K. Rowling",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "arts-creator",
+        "religion-leader",
+        "business-leader",
+        "tech-engineer",
+        "finance",
+        "science-academic",
+        "law"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Saturn",
+      "karmeshReading": "教學出版／宗教傳播／寫作講座 — 智慧延伸",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "chandra-mangal",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Stephen King",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "sports-athlete",
+        "military",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "finance",
+        "business-investor",
+        "arts-performer",
+        "spiritual-teacher"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "戰士型個人品牌 — 運動員／軍警／體能型創業家",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Ernest Hemingway",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "arts-visual",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Venus",
+      "karmeshReading": "時尚人脈／美學社群經濟 — 品味網絡",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Pablo Picasso",
+      "trueCats": [
+        "arts-visual"
+      ],
+      "predicted": [
+        "exploration",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "business-entrepreneur",
+        "arts-performer",
+        "spiritual-teacher"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 5,
+      "dashaLord": null,
+      "karmeshReading": "海外戰線／武鬥派／幕後技術 — 隱性的 Mars",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Vincent van Gogh",
+      "trueCats": [
+        "arts-visual"
+      ],
+      "predicted": [
+        "arts-performer",
+        "sports-athlete",
+        "exploration",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "business-entrepreneur",
+        "science-academic",
+        "spiritual-teacher"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 5,
+      "dashaLord": null,
+      "karmeshReading": "國際運動巨星／動作巨星（SRK 型）／武術表演",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Andy Warhol",
+      "trueCats": [
+        "arts-visual"
+      ],
+      "predicted": [
+        "business-investor",
+        "media-personality",
+        "business-entrepreneur",
+        "science-academic",
+        "spiritual-teacher"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Saturn",
+      "karmeshReading": "多角化併購／武器貿易／投機型收入",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Coco Chanel",
+      "trueCats": [
+        "arts-visual",
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "arts-creator",
+        "science-academic",
+        "exploration",
+        "government",
+        "politics",
+        "media-personality",
+        "business-entrepreneur",
+        "law",
+        "media-creator",
+        "religion-leader"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 8,
+      "dashaLord": null,
+      "karmeshReading": "教授／作家／出版社／國際貿易 — 高階智識傳播",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Karl Lagerfeld",
+      "trueCats": [
+        "arts-visual"
+      ],
+      "predicted": [
+        "religion-leader",
+        "spiritual-teacher",
+        "science-academic",
+        "exploration",
+        "arts-creator",
+        "law",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Ketu",
+      "karmeshReading": "學術殿堂／哲學大師／國際宗教領袖 — 最正統智識",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Lionel Messi",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "finance",
+        "law",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "★ 長期合夥／保險／法律事務所 — Saturn 自在位",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Cristiano Ronaldo",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "finance",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "sports-athlete",
+        "tech-creative",
+        "law",
+        "media-personality",
+        "media-creator",
+        "banking"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Venus",
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Michael Jordan",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "politics",
+        "religion-leader",
+        "science-academic",
+        "law",
+        "business-leader",
+        "tech-engineer",
+        "government",
+        "finance",
+        "business-investor"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Mars",
+      "karmeshReading": "★ 最強位 — 大學院長／教廷／國師 / 法官",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "LeBron James",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "medicine",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "arts-performer"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Venus",
+      "karmeshReading": "護理／客服／心理諮商／食品檢驗 — 照顧型職業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Kobe Bryant",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "government",
+        "politics",
+        "media-personality",
+        "science-academic",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "arts-visual",
+        "arts-performer"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Rahu",
+      "karmeshReading": "建築／房產開發／傳統製造 — 扎根型",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Tiger Woods",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "tech-creative",
+        "business-investor",
+        "arts-creator",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "business-leader",
+        "finance",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Mars",
+      "karmeshReading": "教學／出版／智力遊戲／投資 — 把知識變成產品",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Muhammad Ali",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-leader",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "science-academic"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Ketu",
+      "karmeshReading": "指揮官／CEO 武將型 — 帶兵的 CEO",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Usain Bolt",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "politics",
+        "religion-leader",
+        "science-academic",
+        "law",
+        "business-leader",
+        "finance"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Mercury",
+      "karmeshReading": "★ 最強位 — 大學院長／教廷／國師 / 法官",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Serena Williams",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "business-leader",
+        "tech-creative",
+        "finance",
+        "science-academic",
+        "law",
+        "business-investor"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "教育機構／母校歸屬／心理治療 — 根植於家學",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "raj-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Roger Federer",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "arts-visual",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "arts-creator",
+        "media-personality",
+        "exploration"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Mercury",
+      "karmeshReading": "時尚／藝術名流個人品牌 — 美感即招牌",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Rafael Nadal",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "medicine",
+        "politics",
+        "government",
+        "business-leader",
+        "sports-athlete",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Moon",
+      "karmeshReading": "婚顧／家庭諮商／公關／大眾品牌",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "raj-yoga",
+        "kemadruma",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Diego Maradona",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "exploration",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "business-entrepreneur",
+        "media-personality",
+        "sports-athlete",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Venus",
+      "karmeshReading": "海外派駐／隱居權威／幕後領導 — 在遠方或不曝光處掌權",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Pelé",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "finance",
+        "banking",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "law"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Mars",
+      "karmeshReading": "金融／財務顧問／家族教育世家",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Barack Obama",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "medicine",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "government",
+        "media-personality",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "tech-exec",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Saturn",
+      "karmeshReading": "醫美／美容醫療／疾病美容 — 美感解決問題",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Donald Trump",
+      "trueCats": [
+        "politics",
+        "business-leader"
+      ],
+      "predicted": [
+        "tech-creative",
+        "arts-visual",
+        "exploration",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "tech-exec",
+        "government"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "海外藝術／幕後設計師 — 非公眾美學",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "dhana-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Bill Clinton",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "tech-exec",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Mercury",
+      "karmeshReading": "平台經濟／多元副業／仲介 — 網絡節點型事業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "George W. Bush",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "business-entrepreneur",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Ketu",
+      "karmeshReading": "家族工業／武器／機械承襲 — 繼承技術與體能型家業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "John F. Kennedy",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "business-investor",
+        "science-academic",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "business-leader",
+        "tech-creative",
+        "business-entrepreneur",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Venus",
+      "karmeshReading": "研究／調查／偵探／投資分析 — 深挖型智力工作",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Abraham Lincoln",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "arts-performer",
+        "sports-athlete",
+        "exploration",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "government"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 10,
+      "dashaLord": null,
+      "karmeshReading": "國際運動巨星／動作巨星（SRK 型）／武術表演",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Franklin D. Roosevelt",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "finance",
+        "medicine",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 6,
+      "dashaLord": null,
+      "karmeshReading": "會計／稽核／分析／醫療諮詢 — 精算師型",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "chandra-mangal"
+      ]
+    },
+    {
+      "name": "Angela Merkel",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "arts-creator",
+        "politics",
+        "government",
+        "religion-leader",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "media-personality",
+        "sports-athlete"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Mercury",
+      "karmeshReading": "教育體制／出版／宗教／高等政府 — 國師型",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Margaret Thatcher",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "arts-performer",
+        "media-personality",
+        "business-leader",
+        "tech-engineer",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "government",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "medicine",
+        "tech-exec"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Saturn",
+      "karmeshReading": "粉絲經濟／社群變現／大眾收入型事業",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Winston Churchill",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "finance",
+        "business-leader",
+        "tech-engineer",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": null,
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": []
+    },
+    {
+      "name": "Narendra Modi",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "politics",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "business-leader",
+        "government",
+        "business-entrepreneur",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Mars",
+      "karmeshReading": "政界權貴／多元收入／高層人脈經營者",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Mahatma Gandhi",
+      "trueCats": [
+        "politics",
+        "religion-leader"
+      ],
+      "predicted": [
+        "finance",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "tech-creative",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": null,
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Nelson Mandela",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "business-investor",
+        "science-academic",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "tech-creative",
+        "law",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Rahu",
+      "karmeshReading": "研究／調查／偵探／投資分析 — 深挖型智力工作",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Vladimir Putin",
+      "trueCats": [
+        "politics",
+        "government"
+      ],
+      "predicted": [
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "sports-athlete",
+        "tech-creative",
+        "science-academic",
+        "business-entrepreneur"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Mercury",
+      "karmeshReading": "心理治療／靈媒／失物尋回 — 情感深度工作",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Dalai Lama XIV",
+      "trueCats": [
+        "religion-leader",
+        "spiritual-teacher"
+      ],
+      "predicted": [
+        "science-academic",
+        "business-leader",
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "tech-exec",
+        "finance",
+        "law",
+        "media-personality"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Saturn",
+      "karmeshReading": "大學教授／子女教育／理論創作 — 智慧創造者",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mercury",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Pope John Paul II",
+      "trueCats": [
+        "religion-leader"
+      ],
+      "predicted": [
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "government",
+        "business-leader",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Venus",
+      "karmeshReading": "心理治療／靈媒／失物尋回 — 情感深度工作",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "raj-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Pope Francis",
+      "trueCats": [
+        "religion-leader"
+      ],
+      "predicted": [
+        "law",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "business-leader",
+        "tech-engineer",
+        "media-personality",
+        "finance"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Venus",
+      "karmeshReading": "法律合夥／婚姻諮詢／跨界導師 — 公眾導師",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Mother Teresa",
+      "trueCats": [
+        "religion-leader",
+        "spiritual-teacher"
+      ],
+      "predicted": [
+        "business-leader",
+        "religion-leader",
+        "government",
+        "politics",
+        "media-personality",
+        "business-entrepreneur",
+        "arts-creator",
+        "tech-exec",
+        "science-academic",
+        "law",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Venus",
+      "karmeshReading": "教育帝國／宗教組織／智慧大師 — 非商業的正統權威",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mercury"
+      ]
+    },
+    {
+      "name": "Albert Einstein",
+      "trueCats": [
+        "science-academic"
+      ],
+      "predicted": [
+        "politics",
+        "religion-leader",
+        "science-academic",
+        "law",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "government",
+        "media-personality",
+        "tech-creative",
+        "finance",
+        "tech-exec"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 10,
+      "dashaLord": null,
+      "karmeshReading": "★ 最強位 — 大學院長／教廷／國師 / 法官",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Isaac Newton",
+      "trueCats": [
+        "science-academic"
+      ],
+      "predicted": [
+        "spiritual-teacher",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur",
+        "arts-performer"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 5,
+      "dashaLord": null,
+      "karmeshReading": "大眾教育／家政哲學／心靈導師",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Stephen Hawking",
+      "trueCats": [
+        "science-academic"
+      ],
+      "predicted": [
+        "arts-performer",
+        "media-personality",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Mercury",
+      "karmeshReading": "粉絲經濟／社群變現／大眾收入型事業",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Marie Curie",
+      "trueCats": [
+        "science-academic"
+      ],
+      "predicted": [
+        "finance",
+        "exploration",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "business-investor",
+        "arts-creator",
+        "law",
+        "media-personality",
+        "media-creator",
+        "business-entrepreneur",
+        "religion-leader"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 3,
+      "dashaLord": null,
+      "karmeshReading": "海外貿易／跨國會計／翻譯 — 跨境智識工作者",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Carl Sagan",
+      "trueCats": [
+        "science-academic",
+        "media-personality"
+      ],
+      "predicted": [
+        "religion-leader",
+        "law",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "government",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "medicine"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 6,
+      "dashaLord": "Saturn",
+      "karmeshReading": "法律／傳統教育／宗教機構 — 體制型長者",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "dhana-yoga",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Sigmund Freud",
+      "trueCats": [
+        "science-academic",
+        "medicine"
+      ],
+      "predicted": [
+        "medicine",
+        "government",
+        "politics",
+        "media-personality",
+        "tech-creative",
+        "business-entrepreneur",
+        "arts-creator",
+        "arts-visual",
+        "science-academic"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 7,
+      "dashaLord": null,
+      "karmeshReading": "心理治療／靈媒／失物尋回 — 情感深度工作",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Carl Jung",
+      "trueCats": [
+        "science-academic",
+        "medicine"
+      ],
+      "predicted": [
+        "medicine",
+        "sports-athlete",
+        "military",
+        "business-leader",
+        "tech-engineer",
+        "science-academic",
+        "politics",
+        "media-personality",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "business-entrepreneur",
+        "finance"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 2,
+      "dashaLord": null,
+      "karmeshReading": "醫美／美容醫療／疾病美容 — 美感解決問題",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Mozart",
+      "trueCats": [
+        "arts-creator",
+        "arts-performer"
+      ],
+      "predicted": [
+        "arts-visual",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "government",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 6,
+      "dashaLord": null,
+      "karmeshReading": "婚顧／婚紗／合夥藝術 — 靠關係變美",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "dhana-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Beethoven",
+      "trueCats": [
+        "arts-creator"
+      ],
+      "predicted": [
+        "law",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "politics",
+        "business-leader",
+        "government",
+        "media-personality",
+        "finance"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 10,
+      "dashaLord": null,
+      "karmeshReading": "法律／教育／顧問掌舵型 — 智慧型領袖",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Frank Sinatra",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "arts-performer",
+        "spiritual-teacher",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "medicine",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Mars",
+      "karmeshReading": "兒少教育／娛樂／療癒／社群娛樂創作",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Mike Tyson",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "exploration",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "sports-athlete"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Moon",
+      "karmeshReading": "海外建設／養老院／長期幕後 — 遠方的長年工作",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Arnold Schwarzenegger",
+      "trueCats": [
+        "sports-athlete",
+        "arts-performer",
+        "politics"
+      ],
+      "predicted": [
+        "business-investor",
+        "business-leader",
+        "finance",
+        "media-personality",
+        "business-entrepreneur",
+        "science-academic",
+        "medicine"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 6,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "多角化併購／武器貿易／投機型收入",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "dhana-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Clint Eastwood",
+      "trueCats": [
+        "arts-performer",
+        "arts-creator"
+      ],
+      "predicted": [
+        "business-leader",
+        "arts-performer",
+        "media-personality",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Rahu",
+      "karmeshReading": "大眾偶像／女性品牌／民生霸業 — 公眾滋養者",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Shah Rukh Khan",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "tech-creative",
+        "arts-performer",
+        "arts-visual",
+        "business-leader",
+        "tech-engineer",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "politics",
+        "government",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Saturn",
+      "karmeshReading": "演藝／設計師／愛情相關創作 — Venus 最自然之位",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "mahapurusha-Saturn",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Amitabh Bachchan",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-engineer",
+        "business-entrepreneur"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Venus",
+      "karmeshReading": "外科急診／武術／秘密警務 — 處理危險與劇烈變動",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Sachin Tendulkar",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "military",
+        "medicine",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "諮詢顧問／公關／跨界合作 — 靠談判變現",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": []
+    },
+    {
+      "name": "Virat Kohli",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "finance",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Rahu",
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Princess Diana",
+      "trueCats": [
+        "media-personality",
+        "government"
+      ],
+      "predicted": [
+        "finance",
+        "science-academic",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "sports-athlete",
+        "tech-creative",
+        "business-entrepreneur",
+        "media-personality",
+        "tech-exec",
+        "business-leader"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Mercury",
+      "karmeshReading": "保險／研究／情報／深度調查型權威",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Queen Elizabeth II",
+      "trueCats": [
+        "government"
+      ],
+      "predicted": [
+        "arts-performer",
+        "arts-visual",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "government",
+        "politics",
+        "media-personality",
+        "science-academic",
+        "business-leader",
+        "tech-creative",
+        "tech-engineer",
+        "arts-creator",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Saturn",
+      "karmeshReading": "奢侈品／精品家業／歌手 — 「聲音／美感」世家",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Kim Kardashian",
+      "trueCats": [
+        "media-personality",
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "exploration",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "business-entrepreneur",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Venus",
+      "karmeshReading": "海外派駐／隱居權威／幕後領導 — 在遠方或不曝光處掌權",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Ellen DeGeneres",
+      "trueCats": [
+        "media-personality",
+        "arts-performer"
+      ],
+      "predicted": [
+        "media-personality",
+        "arts-creator",
+        "science-academic",
+        "law",
+        "media-creator",
+        "business-investor",
+        "finance"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Rahu",
+      "karmeshReading": "知名寫手／個人 KOL／品牌代言人 — 靠嘴巴 + 臉變現",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Jay Leno",
+      "trueCats": [
+        "media-personality"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "law",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-engineer",
+        "business-entrepreneur"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Saturn",
+      "karmeshReading": "競爭型合夥／談判／運動經紀／律師",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "chandra-mangal",
+        "dhana-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "David Letterman",
+      "trueCats": [
+        "media-personality"
+      ],
+      "predicted": [
+        "politics",
+        "government",
+        "business-leader",
+        "tech-engineer",
+        "business-entrepreneur",
+        "exploration"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Saturn",
+      "karmeshReading": "建築／房產開發／傳統製造 — 扎根型",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Michael Phelps",
+      "trueCats": [
+        "sports-athlete"
+      ],
+      "predicted": [
+        "religion-leader",
+        "science-academic",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "business-leader",
+        "tech-engineer",
+        "tech-creative",
+        "finance",
+        "law"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Venus",
+      "karmeshReading": "研究／遺產／宗教深度／占星 — 深奧智慧",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": []
+    },
+    {
+      "name": "Kanye West",
+      "trueCats": [
+        "arts-performer",
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-leader",
+        "arts-creator",
+        "arts-visual",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "politics",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Mercury",
+      "karmeshReading": "運動時尚品牌 CEO／動作片製片人／運動員企業家",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Jay-Z",
+      "trueCats": [
+        "arts-performer",
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "media-personality",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "tech-engineer",
+        "arts-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Saturn",
+      "karmeshReading": "個人品牌 × 權威 — 以名字跟臉變現的公眾人物型",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Justin Bieber",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "government",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "science-academic",
+        "business-entrepreneur",
+        "media-personality",
+        "tech-exec"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "守土型管理 — 政府／教育／房產／母校為根基",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Ariana Grande",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "law",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "government",
+        "science-academic",
+        "finance",
+        "business-investor",
+        "business-entrepreneur",
+        "tech-exec"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Rahu",
+      "karmeshReading": "競爭型合夥／談判／運動經紀／律師",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "gaja-kesari",
+        "dhana-yoga",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Dwayne Johnson",
+      "trueCats": [
+        "arts-performer",
+        "sports-athlete"
+      ],
+      "predicted": [
+        "arts-visual",
+        "government",
+        "politics",
+        "media-personality",
+        "science-academic",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-creative",
+        "business-entrepreneur",
+        "arts-creator",
+        "religion-leader"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Rahu",
+      "karmeshReading": "時尚人脈／美學社群經濟 — 品味網絡",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Tom Hanks",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "tech-creative",
+        "tech-exec",
+        "business-leader",
+        "business-entrepreneur",
+        "arts-creator",
+        "media-personality",
+        "media-creator",
+        "law"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Rahu",
+      "karmeshReading": "★ 商業帝國／科技／行銷管理 — 強力商業位",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "mahapurusha-Mercury",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Robin Williams",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "arts-performer",
+        "spiritual-teacher",
+        "science-academic",
+        "religion-leader",
+        "law",
+        "media-personality",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Venus",
+      "karmeshReading": "兒少教育／娛樂／療癒／社群娛樂創作",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Jim Carrey",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "arts-visual",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "government",
+        "tech-creative",
+        "arts-creator",
+        "tech-exec"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Mercury",
+      "karmeshReading": "時尚／藝術名流個人品牌 — 美感即招牌",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Will Smith",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "business-leader",
+        "tech-creative",
+        "tech-engineer",
+        "sports-athlete",
+        "sports-coach"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Venus",
+      "karmeshReading": "長期奮鬥型個人品牌／老店 — 晚發但不敗",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "raj-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Prince",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "arts-performer",
+        "spiritual-teacher",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Mercury",
+      "karmeshReading": "兒少教育／娛樂／療癒／社群娛樂創作",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "David Bowie",
+      "trueCats": [
+        "arts-performer",
+        "arts-creator"
+      ],
+      "predicted": [
+        "arts-visual",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "tech-creative",
+        "tech-engineer",
+        "arts-creator",
+        "finance",
+        "law"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Rahu",
+      "karmeshReading": "時尚人脈／美學社群經濟 — 品味網絡",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Freddie Mercury",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "science-academic",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "government",
+        "politics",
+        "media-personality",
+        "tech-creative",
+        "finance",
+        "law",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "大學教授／子女教育／理論創作 — 智慧創造者",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Whitney Houston",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "business-leader",
+        "finance",
+        "business-investor",
+        "tech-engineer",
+        "business-entrepreneur",
+        "exploration"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Rahu",
+      "karmeshReading": "外科急診／武術／秘密警務 — 處理危險與劇烈變動",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Amy Winehouse",
+      "trueCats": [
+        "arts-performer"
+      ],
+      "predicted": [
+        "government",
+        "business-leader",
+        "tech-engineer",
+        "politics",
+        "media-personality",
+        "tech-creative",
+        "business-entrepreneur",
+        "arts-creator",
+        "arts-visual",
+        "media-creator"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Mars",
+      "karmeshReading": "法規／稽核／公務／矯正服務 — Saturn 喜歡處理麻煩",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Steve Wozniak",
+      "trueCats": [
+        "tech-engineer"
+      ],
+      "predicted": [
+        "religion-leader",
+        "exploration",
+        "finance",
+        "science-academic",
+        "law"
+      ],
+      "tier": "miss",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Mars",
+      "karmeshReading": "海外教育／僧侶／慈善家 — 純粹智慧追尋",
+      "karakaOverrides": [],
+      "activeYogas": []
+    },
+    {
+      "name": "Larry Ellison",
+      "trueCats": [
+        "tech-exec",
+        "business-leader"
+      ],
+      "predicted": [
+        "finance",
+        "government",
+        "politics",
+        "media-personality",
+        "business-leader",
+        "business-investor",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "arts-visual"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "家族基業／傳統金融／長青產業 — 世代承襲",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "dhana-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Richard Branson",
+      "trueCats": [
+        "business-entrepreneur"
+      ],
+      "predicted": [
+        "tech-engineer",
+        "business-entrepreneur",
+        "arts-creator",
+        "science-academic",
+        "politics",
+        "business-leader",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "白手起家戰將 — 業務衝刺／工程寫作／衝鋒型創業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "George Soros",
+      "trueCats": [
+        "finance",
+        "business-investor"
+      ],
+      "predicted": [
+        "arts-creator",
+        "politics",
+        "government",
+        "religion-leader",
+        "science-academic",
+        "business-leader",
+        "business-entrepreneur",
+        "media-personality",
+        "sports-athlete",
+        "law"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Rahu",
+      "karmeshReading": "教育體制／出版／宗教／高等政府 — 國師型",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Ray Dalio",
+      "trueCats": [
+        "finance",
+        "business-investor"
+      ],
+      "predicted": [
+        "science-academic",
+        "politics",
+        "business-leader",
+        "government",
+        "media-personality",
+        "tech-creative",
+        "arts-creator",
+        "arts-visual",
+        "medicine"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Mercury",
+      "karmeshReading": "房產／餐飲／母嬰／居家品牌 — 最本位的月亮位置",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga"
+      ]
+    }
+  ]
+}

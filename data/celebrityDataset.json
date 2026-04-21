@@ -1,0 +1,829 @@
+[
+  {
+    "name": "Steve Jobs",
+    "birth": { "year": 1955, "month": 2, "day": 24, "hour": 19, "minute": 15, "tz": -8, "lat": 37.7749, "lon": -122.4194 },
+    "rating": "AA",
+    "categories": ["tech-creative", "business-leader", "tech-exec"],
+    "career": "Apple 創辦人、產品設計與科技商業",
+    "notes": "Astrodatabank AA via birth certificate"
+  },
+  {
+    "name": "Bill Gates",
+    "birth": { "year": 1955, "month": 10, "day": 28, "hour": 22, "minute": 0, "tz": -8, "lat": 47.6062, "lon": -122.3321 },
+    "rating": "A",
+    "categories": ["tech-exec", "business-leader", "tech-engineer"],
+    "career": "Microsoft 創辦人"
+  },
+  {
+    "name": "Elon Musk",
+    "birth": { "year": 1971, "month": 6, "day": 28, "hour": 7, "minute": 30, "tz": 2, "lat": -25.7461, "lon": 28.1881 },
+    "rating": "A",
+    "categories": ["tech-exec", "business-entrepreneur", "tech-engineer"],
+    "career": "Tesla、SpaceX 創辦人"
+  },
+  {
+    "name": "Mark Zuckerberg",
+    "birth": { "year": 1984, "month": 5, "day": 14, "hour": 14, "minute": 30, "tz": -4, "lat": 41.3887, "lon": -73.7873 },
+    "rating": "C",
+    "categories": ["tech-exec", "business-leader"],
+    "career": "Facebook/Meta 創辦人"
+  },
+  {
+    "name": "Jeff Bezos",
+    "birth": { "year": 1964, "month": 1, "day": 12, "hour": 1, "minute": 29, "tz": -7, "lat": 35.0844, "lon": -106.6504 },
+    "rating": "AA",
+    "categories": ["business-leader", "business-entrepreneur", "tech-exec"],
+    "career": "Amazon 創辦人"
+  },
+  {
+    "name": "Larry Page",
+    "birth": { "year": 1973, "month": 3, "day": 26, "hour": 6, "minute": 0, "tz": -5, "lat": 42.3314, "lon": -83.0458 },
+    "rating": "C",
+    "categories": ["tech-exec", "tech-engineer"],
+    "career": "Google 共同創辦人"
+  },
+  {
+    "name": "Warren Buffett",
+    "birth": { "year": 1930, "month": 8, "day": 30, "hour": 15, "minute": 0, "tz": -5, "lat": 41.2565, "lon": -95.9345 },
+    "rating": "A",
+    "categories": ["business-investor", "finance"],
+    "career": "Berkshire Hathaway 投資家"
+  },
+  {
+    "name": "Ratan Tata",
+    "birth": { "year": 1937, "month": 12, "day": 28, "hour": 6, "minute": 30, "tz": 5.5, "lat": 18.9667, "lon": 72.8333 },
+    "rating": "B",
+    "categories": ["business-leader"],
+    "career": "Tata 集團（工業集團）"
+  },
+  {
+    "name": "Mukesh Ambani",
+    "birth": { "year": 1957, "month": 4, "day": 19, "hour": 7, "minute": 37, "tz": 3, "lat": 15.3547, "lon": 44.2067 },
+    "rating": "B",
+    "categories": ["business-leader"],
+    "career": "Reliance Industries 董事長"
+  },
+  {
+    "name": "Jack Ma",
+    "birth": { "year": 1964, "month": 9, "day": 10, "hour": 3, "minute": 0, "tz": 8, "lat": 30.2741, "lon": 120.1551 },
+    "rating": "C",
+    "categories": ["business-leader", "business-entrepreneur", "tech-exec"],
+    "career": "阿里巴巴創辦人"
+  },
+  {
+    "name": "Li Ka-shing",
+    "birth": { "year": 1928, "month": 7, "day": 29, "hour": 12, "minute": 0, "tz": 8, "lat": 23.35, "lon": 116.68 },
+    "rating": "C",
+    "categories": ["business-leader", "business-investor"],
+    "career": "長江實業集團"
+  },
+  {
+    "name": "Oprah Winfrey",
+    "birth": { "year": 1954, "month": 1, "day": 29, "hour": 4, "minute": 30, "tz": -6, "lat": 33.7748, "lon": -89.8176 },
+    "rating": "A",
+    "categories": ["media-personality", "business-entrepreneur", "arts-performer"],
+    "career": "脫口秀主持人、媒體大亨"
+  },
+  {
+    "name": "Taylor Swift",
+    "birth": { "year": 1989, "month": 12, "day": 13, "hour": 5, "minute": 17, "tz": -5, "lat": 40.2732, "lon": -76.8867 },
+    "rating": "AA",
+    "categories": ["arts-performer", "arts-creator"],
+    "career": "歌手／創作者"
+  },
+  {
+    "name": "Beyoncé",
+    "birth": { "year": 1981, "month": 9, "day": 4, "hour": 2, "minute": 0, "tz": -5, "lat": 29.7604, "lon": -95.3698 },
+    "rating": "B",
+    "categories": ["arts-performer"],
+    "career": "歌手／表演者"
+  },
+  {
+    "name": "Madonna",
+    "birth": { "year": 1958, "month": 8, "day": 16, "hour": 7, "minute": 5, "tz": -5, "lat": 42.585, "lon": -83.2933 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "歌手／流行音樂天后"
+  },
+  {
+    "name": "Michael Jackson",
+    "birth": { "year": 1958, "month": 8, "day": 29, "hour": 19, "minute": 33, "tz": -5, "lat": 41.4769, "lon": -87.4614 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "流行之王"
+  },
+  {
+    "name": "John Lennon",
+    "birth": { "year": 1940, "month": 10, "day": 9, "hour": 18, "minute": 30, "tz": 1, "lat": 53.4084, "lon": -2.9916 },
+    "rating": "AA",
+    "categories": ["arts-performer", "arts-creator"],
+    "career": "披頭四歌手／創作者"
+  },
+  {
+    "name": "Paul McCartney",
+    "birth": { "year": 1942, "month": 6, "day": 18, "hour": 14, "minute": 0, "tz": 2, "lat": 53.4084, "lon": -2.9916 },
+    "rating": "A",
+    "categories": ["arts-performer", "arts-creator"],
+    "career": "披頭四歌手／創作者"
+  },
+  {
+    "name": "Elvis Presley",
+    "birth": { "year": 1935, "month": 1, "day": 8, "hour": 4, "minute": 35, "tz": -6, "lat": 34.2576, "lon": -88.7034 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "搖滾歌手"
+  },
+  {
+    "name": "Bob Dylan",
+    "birth": { "year": 1941, "month": 5, "day": 24, "hour": 21, "minute": 5, "tz": -5, "lat": 46.7833, "lon": -92.1066 },
+    "rating": "A",
+    "categories": ["arts-creator", "arts-performer"],
+    "career": "歌手／詩人"
+  },
+  {
+    "name": "Lady Gaga",
+    "birth": { "year": 1986, "month": 3, "day": 28, "hour": 8, "minute": 22, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "歌手／演員"
+  },
+  {
+    "name": "Rihanna",
+    "birth": { "year": 1988, "month": 2, "day": 20, "hour": 8, "minute": 10, "tz": -4, "lat": 13.1132, "lon": -59.5988 },
+    "rating": "A",
+    "categories": ["arts-performer", "business-entrepreneur"],
+    "career": "歌手／時尚企業家"
+  },
+  {
+    "name": "Marilyn Monroe",
+    "birth": { "year": 1926, "month": 6, "day": 1, "hour": 9, "minute": 30, "tz": -8, "lat": 34.0522, "lon": -118.2437 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員／性感偶像"
+  },
+  {
+    "name": "Leonardo DiCaprio",
+    "birth": { "year": 1974, "month": 11, "day": 11, "hour": 2, "minute": 47, "tz": -8, "lat": 34.0522, "lon": -118.2437 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Tom Cruise",
+    "birth": { "year": 1962, "month": 7, "day": 3, "hour": 15, "minute": 13, "tz": -4, "lat": 42.8975, "lon": -76.7811 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Brad Pitt",
+    "birth": { "year": 1963, "month": 12, "day": 18, "hour": 6, "minute": 31, "tz": -6, "lat": 36.3134, "lon": -95.6163 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Angelina Jolie",
+    "birth": { "year": 1975, "month": 6, "day": 4, "hour": 9, "minute": 9, "tz": -7, "lat": 34.0522, "lon": -118.2437 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Meryl Streep",
+    "birth": { "year": 1949, "month": 6, "day": 22, "hour": 8, "minute": 5, "tz": -4, "lat": 40.695, "lon": -74.1255 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Robert De Niro",
+    "birth": { "year": 1943, "month": 8, "day": 17, "hour": 3, "minute": 0, "tz": -4, "lat": 40.7128, "lon": -74.006 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Al Pacino",
+    "birth": { "year": 1940, "month": 4, "day": 25, "hour": 11, "minute": 2, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Jennifer Lawrence",
+    "birth": { "year": 1990, "month": 8, "day": 15, "hour": 6, "minute": 27, "tz": -4, "lat": 38.2527, "lon": -85.7585 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Steven Spielberg",
+    "birth": { "year": 1946, "month": 12, "day": 18, "hour": 18, "minute": 16, "tz": -5, "lat": 39.1637, "lon": -84.4568 },
+    "rating": "AA",
+    "categories": ["arts-creator", "media-creator"],
+    "career": "導演／製片"
+  },
+  {
+    "name": "Quentin Tarantino",
+    "birth": { "year": 1963, "month": 3, "day": 27, "hour": 21, "minute": 4, "tz": -5, "lat": 36.1627, "lon": -86.7816 },
+    "rating": "AA",
+    "categories": ["arts-creator"],
+    "career": "導演／編劇"
+  },
+  {
+    "name": "Martin Scorsese",
+    "birth": { "year": 1942, "month": 11, "day": 17, "hour": 10, "minute": 45, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "AA",
+    "categories": ["arts-creator"],
+    "career": "導演"
+  },
+  {
+    "name": "Stanley Kubrick",
+    "birth": { "year": 1928, "month": 7, "day": 26, "hour": 14, "minute": 20, "tz": -4, "lat": 40.7128, "lon": -74.006 },
+    "rating": "AA",
+    "categories": ["arts-creator"],
+    "career": "導演"
+  },
+  {
+    "name": "Walt Disney",
+    "birth": { "year": 1901, "month": 12, "day": 5, "hour": 0, "minute": 35, "tz": -6, "lat": 41.8781, "lon": -87.6298 },
+    "rating": "AA",
+    "categories": ["arts-creator", "business-entrepreneur"],
+    "career": "動畫／娛樂帝國創辦人"
+  },
+  {
+    "name": "J.K. Rowling",
+    "birth": { "year": 1965, "month": 7, "day": 31, "hour": 23, "minute": 10, "tz": 1, "lat": 51.5754, "lon": -2.4769 },
+    "rating": "C",
+    "categories": ["arts-creator"],
+    "career": "小說家 (哈利波特)"
+  },
+  {
+    "name": "Stephen King",
+    "birth": { "year": 1947, "month": 9, "day": 21, "hour": 1, "minute": 30, "tz": -4, "lat": 43.6615, "lon": -70.2553 },
+    "rating": "A",
+    "categories": ["arts-creator"],
+    "career": "恐怖小說家"
+  },
+  {
+    "name": "Ernest Hemingway",
+    "birth": { "year": 1899, "month": 7, "day": 21, "hour": 8, "minute": 0, "tz": -6, "lat": 41.8781, "lon": -87.6298 },
+    "rating": "AA",
+    "categories": ["arts-creator"],
+    "career": "小說家"
+  },
+  {
+    "name": "Pablo Picasso",
+    "birth": { "year": 1881, "month": 10, "day": 25, "hour": 23, "minute": 15, "tz": 0, "lat": 36.7213, "lon": -4.4214 },
+    "rating": "A",
+    "categories": ["arts-visual"],
+    "career": "畫家"
+  },
+  {
+    "name": "Vincent van Gogh",
+    "birth": { "year": 1853, "month": 3, "day": 30, "hour": 11, "minute": 0, "tz": 0, "lat": 51.5264, "lon": 4.4625 },
+    "rating": "AA",
+    "categories": ["arts-visual"],
+    "career": "畫家"
+  },
+  {
+    "name": "Andy Warhol",
+    "birth": { "year": 1928, "month": 8, "day": 6, "hour": 6, "minute": 30, "tz": -4, "lat": 40.4406, "lon": -79.9959 },
+    "rating": "A",
+    "categories": ["arts-visual"],
+    "career": "波普藝術家"
+  },
+  {
+    "name": "Coco Chanel",
+    "birth": { "year": 1883, "month": 8, "day": 19, "hour": 16, "minute": 0, "tz": 0, "lat": 47.2515, "lon": 2.3988 },
+    "rating": "A",
+    "categories": ["arts-visual", "business-entrepreneur"],
+    "career": "時尚設計師"
+  },
+  {
+    "name": "Karl Lagerfeld",
+    "birth": { "year": 1933, "month": 9, "day": 10, "hour": 16, "minute": 0, "tz": 2, "lat": 53.5511, "lon": 9.9937 },
+    "rating": "C",
+    "categories": ["arts-visual"],
+    "career": "時尚設計師"
+  },
+  {
+    "name": "Lionel Messi",
+    "birth": { "year": 1987, "month": 6, "day": 24, "hour": 6, "minute": 5, "tz": -3, "lat": -32.9468, "lon": -60.6393 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "足球運動員"
+  },
+  {
+    "name": "Cristiano Ronaldo",
+    "birth": { "year": 1985, "month": 2, "day": 5, "hour": 5, "minute": 25, "tz": 0, "lat": 32.6669, "lon": -16.9241 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "足球運動員"
+  },
+  {
+    "name": "Michael Jordan",
+    "birth": { "year": 1963, "month": 2, "day": 17, "hour": 13, "minute": 40, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "籃球運動員"
+  },
+  {
+    "name": "LeBron James",
+    "birth": { "year": 1984, "month": 12, "day": 30, "hour": 3, "minute": 45, "tz": -5, "lat": 41.0814, "lon": -81.519 },
+    "rating": "C",
+    "categories": ["sports-athlete"],
+    "career": "籃球運動員"
+  },
+  {
+    "name": "Kobe Bryant",
+    "birth": { "year": 1978, "month": 8, "day": 23, "hour": 23, "minute": 20, "tz": -4, "lat": 39.9526, "lon": -75.1652 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "籃球運動員"
+  },
+  {
+    "name": "Tiger Woods",
+    "birth": { "year": 1975, "month": 12, "day": 30, "hour": 22, "minute": 50, "tz": -8, "lat": 33.7701, "lon": -118.1937 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "高爾夫球選手"
+  },
+  {
+    "name": "Muhammad Ali",
+    "birth": { "year": 1942, "month": 1, "day": 17, "hour": 18, "minute": 35, "tz": -6, "lat": 38.2527, "lon": -85.7585 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "拳擊手"
+  },
+  {
+    "name": "Usain Bolt",
+    "birth": { "year": 1986, "month": 8, "day": 21, "hour": 2, "minute": 35, "tz": -5, "lat": 18.4655, "lon": -77.92 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "短跑運動員"
+  },
+  {
+    "name": "Serena Williams",
+    "birth": { "year": 1981, "month": 9, "day": 26, "hour": 20, "minute": 28, "tz": -7, "lat": 42.6875, "lon": -83.2341 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "網球運動員"
+  },
+  {
+    "name": "Roger Federer",
+    "birth": { "year": 1981, "month": 8, "day": 8, "hour": 8, "minute": 40, "tz": 2, "lat": 47.5596, "lon": 7.5886 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "網球運動員"
+  },
+  {
+    "name": "Rafael Nadal",
+    "birth": { "year": 1986, "month": 6, "day": 3, "hour": 18, "minute": 20, "tz": 2, "lat": 39.5696, "lon": 2.6502 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "網球運動員"
+  },
+  {
+    "name": "Diego Maradona",
+    "birth": { "year": 1960, "month": 10, "day": 30, "hour": 7, "minute": 5, "tz": -3, "lat": -34.6037, "lon": -58.3816 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "足球運動員"
+  },
+  {
+    "name": "Pelé",
+    "birth": { "year": 1940, "month": 10, "day": 23, "hour": 16, "minute": 0, "tz": -3, "lat": -22.8139, "lon": -45.1899 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "足球運動員"
+  },
+  {
+    "name": "Barack Obama",
+    "birth": { "year": 1961, "month": 8, "day": 4, "hour": 19, "minute": 24, "tz": -10, "lat": 21.3069, "lon": -157.8583 },
+    "rating": "AA",
+    "categories": ["politics", "government"],
+    "career": "美國第44任總統"
+  },
+  {
+    "name": "Donald Trump",
+    "birth": { "year": 1946, "month": 6, "day": 14, "hour": 10, "minute": 54, "tz": -4, "lat": 40.6501, "lon": -73.9496 },
+    "rating": "AA",
+    "categories": ["politics", "business-leader"],
+    "career": "美國第45任總統／地產大亨"
+  },
+  {
+    "name": "Bill Clinton",
+    "birth": { "year": 1946, "month": 8, "day": 19, "hour": 8, "minute": 51, "tz": -6, "lat": 33.6801, "lon": -93.5879 },
+    "rating": "AA",
+    "categories": ["politics", "government"],
+    "career": "美國第42任總統"
+  },
+  {
+    "name": "George W. Bush",
+    "birth": { "year": 1946, "month": 7, "day": 6, "hour": 7, "minute": 26, "tz": -4, "lat": 41.2428, "lon": -72.8518 },
+    "rating": "A",
+    "categories": ["politics", "government"],
+    "career": "美國第43任總統"
+  },
+  {
+    "name": "John F. Kennedy",
+    "birth": { "year": 1917, "month": 5, "day": 29, "hour": 15, "minute": 0, "tz": -5, "lat": 42.3359, "lon": -71.1212 },
+    "rating": "A",
+    "categories": ["politics", "government"],
+    "career": "美國第35任總統"
+  },
+  {
+    "name": "Abraham Lincoln",
+    "birth": { "year": 1809, "month": 2, "day": 12, "hour": 6, "minute": 54, "tz": -6, "lat": 37.5447, "lon": -85.7392 },
+    "rating": "A",
+    "categories": ["politics", "government"],
+    "career": "美國第16任總統"
+  },
+  {
+    "name": "Franklin D. Roosevelt",
+    "birth": { "year": 1882, "month": 1, "day": 30, "hour": 20, "minute": 45, "tz": -5, "lat": 41.7669, "lon": -73.9316 },
+    "rating": "AA",
+    "categories": ["politics", "government"],
+    "career": "美國第32任總統"
+  },
+  {
+    "name": "Angela Merkel",
+    "birth": { "year": 1954, "month": 7, "day": 17, "hour": 17, "minute": 30, "tz": 2, "lat": 53.5511, "lon": 9.9937 },
+    "rating": "B",
+    "categories": ["politics", "government"],
+    "career": "德國前總理"
+  },
+  {
+    "name": "Margaret Thatcher",
+    "birth": { "year": 1925, "month": 10, "day": 13, "hour": 9, "minute": 0, "tz": 0, "lat": 52.9089, "lon": -0.6381 },
+    "rating": "A",
+    "categories": ["politics", "government"],
+    "career": "英國前首相"
+  },
+  {
+    "name": "Winston Churchill",
+    "birth": { "year": 1874, "month": 11, "day": 30, "hour": 1, "minute": 30, "tz": 0, "lat": 51.8412, "lon": -1.3617 },
+    "rating": "AA",
+    "categories": ["politics", "government"],
+    "career": "英國前首相"
+  },
+  {
+    "name": "Narendra Modi",
+    "birth": { "year": 1950, "month": 9, "day": 17, "hour": 11, "minute": 0, "tz": 5.5, "lat": 23.4928, "lon": 72.5464 },
+    "rating": "B",
+    "categories": ["politics", "government"],
+    "career": "印度總理"
+  },
+  {
+    "name": "Mahatma Gandhi",
+    "birth": { "year": 1869, "month": 10, "day": 2, "hour": 7, "minute": 8, "tz": 5, "lat": 21.6419, "lon": 69.6293 },
+    "rating": "A",
+    "categories": ["politics", "religion-leader"],
+    "career": "印度國父／精神領袖"
+  },
+  {
+    "name": "Nelson Mandela",
+    "birth": { "year": 1918, "month": 7, "day": 18, "hour": 14, "minute": 54, "tz": 2, "lat": -31.5547, "lon": 28.5262 },
+    "rating": "A",
+    "categories": ["politics", "government"],
+    "career": "南非前總統"
+  },
+  {
+    "name": "Vladimir Putin",
+    "birth": { "year": 1952, "month": 10, "day": 7, "hour": 9, "minute": 30, "tz": 4, "lat": 59.9311, "lon": 30.3609 },
+    "rating": "B",
+    "categories": ["politics", "government"],
+    "career": "俄羅斯總統"
+  },
+  {
+    "name": "Dalai Lama XIV",
+    "birth": { "year": 1935, "month": 7, "day": 6, "hour": 4, "minute": 38, "tz": 7, "lat": 36.5, "lon": 101.3 },
+    "rating": "C",
+    "categories": ["religion-leader", "spiritual-teacher"],
+    "career": "藏傳佛教領袖"
+  },
+  {
+    "name": "Pope John Paul II",
+    "birth": { "year": 1920, "month": 5, "day": 18, "hour": 17, "minute": 30, "tz": 1, "lat": 49.8687, "lon": 19.4936 },
+    "rating": "A",
+    "categories": ["religion-leader"],
+    "career": "天主教教宗"
+  },
+  {
+    "name": "Pope Francis",
+    "birth": { "year": 1936, "month": 12, "day": 17, "hour": 21, "minute": 0, "tz": -3, "lat": -34.6037, "lon": -58.3816 },
+    "rating": "C",
+    "categories": ["religion-leader"],
+    "career": "天主教教宗"
+  },
+  {
+    "name": "Mother Teresa",
+    "birth": { "year": 1910, "month": 8, "day": 26, "hour": 14, "minute": 25, "tz": 1, "lat": 42.0, "lon": 21.4333 },
+    "rating": "A",
+    "categories": ["religion-leader", "spiritual-teacher"],
+    "career": "天主教慈善家"
+  },
+  {
+    "name": "Albert Einstein",
+    "birth": { "year": 1879, "month": 3, "day": 14, "hour": 11, "minute": 30, "tz": 0, "lat": 48.4011, "lon": 9.9876 },
+    "rating": "AA",
+    "categories": ["science-academic"],
+    "career": "理論物理學家"
+  },
+  {
+    "name": "Isaac Newton",
+    "birth": { "year": 1643, "month": 1, "day": 4, "hour": 1, "minute": 38, "tz": 0, "lat": 52.809, "lon": -0.619 },
+    "rating": "A",
+    "categories": ["science-academic"],
+    "career": "物理學家／數學家"
+  },
+  {
+    "name": "Stephen Hawking",
+    "birth": { "year": 1942, "month": 1, "day": 8, "hour": 1, "minute": 39, "tz": 0, "lat": 51.752, "lon": -1.2577 },
+    "rating": "C",
+    "categories": ["science-academic"],
+    "career": "理論物理學家"
+  },
+  {
+    "name": "Marie Curie",
+    "birth": { "year": 1867, "month": 11, "day": 7, "hour": 12, "minute": 0, "tz": 1, "lat": 52.2297, "lon": 21.0122 },
+    "rating": "C",
+    "categories": ["science-academic"],
+    "career": "物理／化學家"
+  },
+  {
+    "name": "Carl Sagan",
+    "birth": { "year": 1934, "month": 11, "day": 9, "hour": 17, "minute": 5, "tz": -5, "lat": 40.6501, "lon": -73.9496 },
+    "rating": "AA",
+    "categories": ["science-academic", "media-personality"],
+    "career": "天文學家／科普作家"
+  },
+  {
+    "name": "Sigmund Freud",
+    "birth": { "year": 1856, "month": 5, "day": 6, "hour": 18, "minute": 30, "tz": 1, "lat": 49.3, "lon": 18.0 },
+    "rating": "A",
+    "categories": ["science-academic", "medicine"],
+    "career": "精神分析學家"
+  },
+  {
+    "name": "Carl Jung",
+    "birth": { "year": 1875, "month": 7, "day": 26, "hour": 19, "minute": 32, "tz": 0.5, "lat": 47.643, "lon": 9.178 },
+    "rating": "A",
+    "categories": ["science-academic", "medicine"],
+    "career": "分析心理學家"
+  },
+  {
+    "name": "Mozart",
+    "birth": { "year": 1756, "month": 1, "day": 27, "hour": 20, "minute": 0, "tz": 1, "lat": 47.8095, "lon": 13.055 },
+    "rating": "A",
+    "categories": ["arts-creator", "arts-performer"],
+    "career": "古典音樂作曲家"
+  },
+  {
+    "name": "Beethoven",
+    "birth": { "year": 1770, "month": 12, "day": 17, "hour": 12, "minute": 0, "tz": 0, "lat": 50.7374, "lon": 7.0982 },
+    "rating": "C",
+    "categories": ["arts-creator"],
+    "career": "古典音樂作曲家"
+  },
+  {
+    "name": "Frank Sinatra",
+    "birth": { "year": 1915, "month": 12, "day": 12, "hour": 3, "minute": 0, "tz": -5, "lat": 40.7178, "lon": -74.0431 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "爵士歌手／演員"
+  },
+  {
+    "name": "Mike Tyson",
+    "birth": { "year": 1966, "month": 6, "day": 30, "hour": 1, "minute": 50, "tz": -4, "lat": 40.7128, "lon": -74.006 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "拳擊手"
+  },
+  {
+    "name": "Arnold Schwarzenegger",
+    "birth": { "year": 1947, "month": 7, "day": 30, "hour": 4, "minute": 10, "tz": 1, "lat": 47.0833, "lon": 15.45 },
+    "rating": "AA",
+    "categories": ["sports-athlete", "arts-performer", "politics"],
+    "career": "健美運動員／演員／加州前州長"
+  },
+  {
+    "name": "Clint Eastwood",
+    "birth": { "year": 1930, "month": 5, "day": 31, "hour": 17, "minute": 35, "tz": -8, "lat": 37.7749, "lon": -122.4194 },
+    "rating": "AA",
+    "categories": ["arts-performer", "arts-creator"],
+    "career": "演員／導演"
+  },
+  {
+    "name": "Shah Rukh Khan",
+    "birth": { "year": 1965, "month": 11, "day": 2, "hour": 2, "minute": 30, "tz": 5.5, "lat": 28.6139, "lon": 77.209 },
+    "rating": "B",
+    "categories": ["arts-performer"],
+    "career": "寶萊塢演員"
+  },
+  {
+    "name": "Amitabh Bachchan",
+    "birth": { "year": 1942, "month": 10, "day": 11, "hour": 16, "minute": 0, "tz": 5.5, "lat": 25.4358, "lon": 81.8463 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "寶萊塢演員"
+  },
+  {
+    "name": "Sachin Tendulkar",
+    "birth": { "year": 1973, "month": 4, "day": 24, "hour": 17, "minute": 26, "tz": 5.5, "lat": 19.076, "lon": 72.8777 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "板球運動員"
+  },
+  {
+    "name": "Virat Kohli",
+    "birth": { "year": 1988, "month": 11, "day": 5, "hour": 4, "minute": 0, "tz": 5.5, "lat": 28.6139, "lon": 77.209 },
+    "rating": "C",
+    "categories": ["sports-athlete"],
+    "career": "板球運動員"
+  },
+  {
+    "name": "Princess Diana",
+    "birth": { "year": 1961, "month": 7, "day": 1, "hour": 19, "minute": 45, "tz": 1, "lat": 52.8365, "lon": 0.5115 },
+    "rating": "AA",
+    "categories": ["media-personality", "government"],
+    "career": "英國王妃／公共人物"
+  },
+  {
+    "name": "Queen Elizabeth II",
+    "birth": { "year": 1926, "month": 4, "day": 21, "hour": 2, "minute": 40, "tz": 0, "lat": 51.5074, "lon": -0.1278 },
+    "rating": "AA",
+    "categories": ["government"],
+    "career": "英國女王"
+  },
+  {
+    "name": "Kim Kardashian",
+    "birth": { "year": 1980, "month": 10, "day": 21, "hour": 10, "minute": 46, "tz": -7, "lat": 34.0522, "lon": -118.2437 },
+    "rating": "AA",
+    "categories": ["media-personality", "business-entrepreneur"],
+    "career": "媒體名人／時尚企業家"
+  },
+  {
+    "name": "Ellen DeGeneres",
+    "birth": { "year": 1958, "month": 1, "day": 26, "hour": 6, "minute": 0, "tz": -6, "lat": 30.2241, "lon": -92.0198 },
+    "rating": "A",
+    "categories": ["media-personality", "arts-performer"],
+    "career": "脫口秀主持人"
+  },
+  {
+    "name": "Jay Leno",
+    "birth": { "year": 1950, "month": 4, "day": 28, "hour": 2, "minute": 15, "tz": -5, "lat": 40.8534, "lon": -73.866 },
+    "rating": "AA",
+    "categories": ["media-personality"],
+    "career": "脫口秀主持人"
+  },
+  {
+    "name": "David Letterman",
+    "birth": { "year": 1947, "month": 4, "day": 12, "hour": 6, "minute": 30, "tz": -5, "lat": 39.7684, "lon": -86.1581 },
+    "rating": "AA",
+    "categories": ["media-personality"],
+    "career": "脫口秀主持人"
+  },
+  {
+    "name": "Michael Phelps",
+    "birth": { "year": 1985, "month": 6, "day": 30, "hour": 5, "minute": 2, "tz": -4, "lat": 39.2904, "lon": -76.6122 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "游泳選手"
+  },
+  {
+    "name": "Kanye West",
+    "birth": { "year": 1977, "month": 6, "day": 8, "hour": 8, "minute": 45, "tz": -5, "lat": 33.4484, "lon": -84.3917 },
+    "rating": "AA",
+    "categories": ["arts-performer", "business-entrepreneur"],
+    "career": "饒舌歌手／時尚企業家"
+  },
+  {
+    "name": "Jay-Z",
+    "birth": { "year": 1969, "month": 12, "day": 4, "hour": 7, "minute": 3, "tz": -5, "lat": 40.6501, "lon": -73.9496 },
+    "rating": "A",
+    "categories": ["arts-performer", "business-entrepreneur"],
+    "career": "饒舌歌手／商人"
+  },
+  {
+    "name": "Justin Bieber",
+    "birth": { "year": 1994, "month": 3, "day": 1, "hour": 0, "minute": 56, "tz": -5, "lat": 43.2557, "lon": -79.8711 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "流行歌手"
+  },
+  {
+    "name": "Ariana Grande",
+    "birth": { "year": 1993, "month": 6, "day": 26, "hour": 0, "minute": 27, "tz": -4, "lat": 26.1224, "lon": -80.1373 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "流行歌手"
+  },
+  {
+    "name": "Dwayne Johnson",
+    "birth": { "year": 1972, "month": 5, "day": 2, "hour": 11, "minute": 20, "tz": -10, "lat": 37.6213, "lon": -122.379 },
+    "rating": "A",
+    "categories": ["arts-performer", "sports-athlete"],
+    "career": "演員／前職業摔角手"
+  },
+  {
+    "name": "Tom Hanks",
+    "birth": { "year": 1956, "month": 7, "day": 9, "hour": 11, "minute": 17, "tz": -8, "lat": 37.9577, "lon": -121.2908 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Robin Williams",
+    "birth": { "year": 1951, "month": 7, "day": 21, "hour": 13, "minute": 34, "tz": -5, "lat": 41.8781, "lon": -87.6298 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員／喜劇演員"
+  },
+  {
+    "name": "Jim Carrey",
+    "birth": { "year": 1962, "month": 1, "day": 17, "hour": 9, "minute": 5, "tz": -5, "lat": 43.4643, "lon": -80.5204 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員／喜劇演員"
+  },
+  {
+    "name": "Will Smith",
+    "birth": { "year": 1968, "month": 9, "day": 25, "hour": 20, "minute": 34, "tz": -4, "lat": 39.9526, "lon": -75.1652 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "演員"
+  },
+  {
+    "name": "Prince",
+    "birth": { "year": 1958, "month": 6, "day": 7, "hour": 18, "minute": 17, "tz": -5, "lat": 44.9778, "lon": -93.265 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "歌手／音樂家"
+  },
+  {
+    "name": "David Bowie",
+    "birth": { "year": 1947, "month": 1, "day": 8, "hour": 9, "minute": 0, "tz": 0, "lat": 51.4714, "lon": -0.1257 },
+    "rating": "A",
+    "categories": ["arts-performer", "arts-creator"],
+    "career": "歌手／音樂家"
+  },
+  {
+    "name": "Freddie Mercury",
+    "birth": { "year": 1946, "month": 9, "day": 5, "hour": 2, "minute": 0, "tz": 3, "lat": -6.1659, "lon": 39.2026 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "Queen 主唱"
+  },
+  {
+    "name": "Whitney Houston",
+    "birth": { "year": 1963, "month": 8, "day": 9, "hour": 20, "minute": 55, "tz": -4, "lat": 40.7282, "lon": -74.0776 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "歌手"
+  },
+  {
+    "name": "Amy Winehouse",
+    "birth": { "year": 1983, "month": 9, "day": 14, "hour": 22, "minute": 25, "tz": 1, "lat": 51.5074, "lon": -0.1278 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "歌手"
+  },
+  {
+    "name": "Steve Wozniak",
+    "birth": { "year": 1950, "month": 8, "day": 11, "hour": 21, "minute": 45, "tz": -7, "lat": 37.3382, "lon": -121.8863 },
+    "rating": "C",
+    "categories": ["tech-engineer"],
+    "career": "Apple 共同創辦人／工程師"
+  },
+  {
+    "name": "Larry Ellison",
+    "birth": { "year": 1944, "month": 8, "day": 17, "hour": 23, "minute": 40, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "A",
+    "categories": ["tech-exec", "business-leader"],
+    "career": "Oracle 創辦人"
+  },
+  {
+    "name": "Richard Branson",
+    "birth": { "year": 1950, "month": 7, "day": 18, "hour": 7, "minute": 0, "tz": 1, "lat": 51.5074, "lon": -0.1278 },
+    "rating": "A",
+    "categories": ["business-entrepreneur"],
+    "career": "Virgin 集團創辦人"
+  },
+  {
+    "name": "George Soros",
+    "birth": { "year": 1930, "month": 8, "day": 12, "hour": 15, "minute": 0, "tz": 1, "lat": 47.4979, "lon": 19.0402 },
+    "rating": "C",
+    "categories": ["finance", "business-investor"],
+    "career": "對沖基金投資家"
+  },
+  {
+    "name": "Ray Dalio",
+    "birth": { "year": 1949, "month": 8, "day": 8, "hour": 12, "minute": 0, "tz": -4, "lat": 40.7128, "lon": -74.006 },
+    "rating": "C",
+    "categories": ["finance", "business-investor"],
+    "career": "橋水基金創辦人"
+  }
+]

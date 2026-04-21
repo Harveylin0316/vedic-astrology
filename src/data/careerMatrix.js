@@ -285,6 +285,10 @@ export const yogaCareerReadings = {
 //
 // context.conjoinPlanets — 10 宮內（或與 karmesh 同宮）的其他行星
 // context.amatyakarakaPlanet — 若 AMK 是特定行星，也作為 override 參考
+//
+// v4：只有 conjoinPlanets 才會直接切換 variant；AMK 單獨不足以切換，必須配合
+// strongSignificators（強旺徵象星 top-3）才能生效，避免 Lincoln（AMK Venus）
+// 被誤判成「動作／運動巨星」。
 export function selectKarmeshReading(planet, house, context = {}) {
   const cell = karmeshMatrix[planet]?.[house]
   if (!cell) return null
@@ -293,14 +297,20 @@ export function selectKarmeshReading(planet, house, context = {}) {
   // object 版本：依照 context 挑
   const conjoinList = context.conjoinPlanets || []
   const amkPlanet = context.amatyakarakaPlanet
+  const strongSigs = context.strongSignificators || []
   const priorityOrder = ['Venus', 'Mars', 'Saturn', 'Jupiter', 'Mercury', 'Sun'] // 影響力順序
 
-  // 先找共位行星，再找 AMK，最後預設
+  // Pass 1：conjoin 共位直接觸發（最強訊號）
   for (const checkPlanet of priorityOrder) {
     const variant = cell[`with${checkPlanet}`]
     if (!variant) continue
     if (conjoinList.includes(checkPlanet)) return variant
-    if (amkPlanet === checkPlanet) return variant
+  }
+  // Pass 2：AMK + strong significator 雙重確認 才觸發
+  for (const checkPlanet of priorityOrder) {
+    const variant = cell[`with${checkPlanet}`]
+    if (!variant) continue
+    if (amkPlanet === checkPlanet && strongSigs.includes(checkPlanet)) return variant
   }
   return cell.default
 }
@@ -351,41 +361,193 @@ export const karakaOverrideReadings = {
   }
 }
 
-export function buildKarakaOverrides({ amatyakaraka, significators, computeDignity }) {
-  const overrides = []
+// v4：多訊號 voting score
+//
+// 每顆 override 候選行星（Mars/Venus/Saturn/Jupiter/Sun）會累積一個 roleScore：
+//   +4 AMK 且 strong dignity（own/exalted/moolatrikona）
+//   +3 top-3 significator + strong dignity
+//   +3 在 Kendra (1/4/7/10) 且 own/exalted
+//   +2 在 own/exalted（不在 Kendra 也算）
+//   +2 Mars/Sun 在 Upachaya (3/6/10/11)
+//   +2 Sun 在 1st/10th（公眾能見度）
+//   +2 Mars 在 3rd/6th（體能／競爭徵象）
+//   +2 Venus 在 1st/5th/10th（藝術徵象）
+//   +2 Jupiter 在 1st/5th/9th/10th（智慧／導師徵象）
+//   +2 Saturn 在 10th/7th（建設／體系徵象）
+//   +2 Mahapurusha Yoga 對應行星（Ruchaka/Malavya/Hamsa/Bhadra/Shasha）
+//   +1 在 Kendra 但 non-strong dignity
+//
+// roleScore ≥ 5 才啟用 override（medium），≥ 7 為 strong。
+//
+// 優勢：
+//   ✔ 救回 Messi / Ronaldo 類型（Mars 雖未 own，但在關鍵 house）
+//   ✔ 救回 Lincoln / JFK 類型（Sun 在關鍵宮可觸發 government override）
+//   ✔ 避免 Lincoln AMK Venus 觸發 Venus override 的誤判
+//   ✔ Beyoncé / Tiger Woods / Dalai Lama 仍可正確觸發
+export function buildKarakaOverrides({ amatyakaraka, significators, computeDignity, chart, activeYogas }) {
   const strongDignities = ['exalted', 'own', 'moolatrikona']
-  const seen = new Set()
+  const candidates = ['Mars', 'Venus', 'Saturn', 'Jupiter', 'Sun']
+  const scoreMap = Object.fromEntries(candidates.map((p) => [p, { score: 0, reasons: [] }]))
 
-  // 規則 1：AMK 強 + 是 override 候選 → 最高優先 override
-  if (amatyakaraka?.planet) {
+  // AMK 貢獻
+  if (amatyakaraka?.planet && candidates.includes(amatyakaraka.planet)) {
     const amkP = amatyakaraka.planet
     const amkGraha = amatyakaraka.graha
     const amkDignity = amkGraha && computeDignity ? computeDignity(amkP, amkGraha.rashi.name) : null
-    if (amkDignity && strongDignities.includes(amkDignity) && karakaOverrideReadings[amkP]) {
-      overrides.push({
-        ...karakaOverrideReadings[amkP],
-        source: `Amatyakaraka（事業靈魂星）為強 ${amkP}（${amkDignity}）`,
-        strength: 'strong'
-      })
-      seen.add(amkP)
+    if (amkDignity && strongDignities.includes(amkDignity)) {
+      scoreMap[amkP].score += 4
+      scoreMap[amkP].reasons.push(`AMK 且強旺（${amkDignity}）`)
+    } else if (amkDignity && ['friendly', 'neutral'].includes(amkDignity)) {
+      // AMK 中性也加一點點，但不夠門檻觸發
+      scoreMap[amkP].score += 1
+      scoreMap[amkP].reasons.push(`AMK（${amkDignity}）`)
     }
   }
 
-  // 規則 2：Top-2 徵象星中有強旺的 override 候選 + 尚未出現
+  // Significator 貢獻（top-3）
   if (significators?.length) {
     for (let i = 0; i < Math.min(3, significators.length); i++) {
       const s = significators[i]
-      if (seen.has(s.planet)) continue
-      if (!karakaOverrideReadings[s.planet]) continue
-      if (!strongDignities.includes(s.dignity)) continue
-      overrides.push({
-        ...karakaOverrideReadings[s.planet],
-        source: `徵象星排行第 ${i + 1} 且 ${s.planet} 強旺（${s.dignity}）`,
-        strength: 'medium'
-      })
-      seen.add(s.planet)
-      if (overrides.length >= 2) break // 最多 2 個 override，避免雜音
+      if (!candidates.includes(s.planet)) continue
+      if (strongDignities.includes(s.dignity)) {
+        scoreMap[s.planet].score += 3
+        scoreMap[s.planet].reasons.push(`Top-${i + 1} significator 強旺（${s.dignity}）`)
+      } else if (i === 0) {
+        // 連 Top-1 都不強就不加分
+      }
     }
+  }
+
+  // House-based 訊號（來自 chart.sidereal.grahas）
+  if (chart?.sidereal?.grahas) {
+    const g = chart.sidereal.grahas
+    const ascRashi = chart.sidereal.ascendant.rashi.name
+    const dignityFor = (p) => computeDignity ? computeDignity(p, g[p]?.rashi.name) : null
+    const inKendra = (h) => [1, 4, 7, 10].includes(h)
+    const inUpachaya = (h) => [3, 6, 10, 11].includes(h)
+    const inTrikona = (h) => [1, 5, 9].includes(h)
+
+    // Mars role：3/6/10/11（Upachaya + 戰鬥能量）
+    if (g.Mars) {
+      const d = dignityFor('Mars')
+      if (strongDignities.includes(d)) {
+        scoreMap.Mars.score += 2
+        scoreMap.Mars.reasons.push(`Mars 強旺於 ${g.Mars.rashi.chinese}`)
+      }
+      if (inKendra(g.Mars.house) && strongDignities.includes(d)) {
+        scoreMap.Mars.score += 3
+        scoreMap.Mars.reasons.push(`Mars 在 Kendra + 強旺（Ruchaka 型）`)
+      } else if (inKendra(g.Mars.house)) {
+        scoreMap.Mars.score += 1
+        scoreMap.Mars.reasons.push(`Mars 在 Kendra (${g.Mars.house})`)
+      }
+      if ([3, 6].includes(g.Mars.house)) {
+        scoreMap.Mars.score += 2
+        scoreMap.Mars.reasons.push(`Mars 在 ${g.Mars.house} 宮（戰鬥/體能本位）`)
+      }
+      if (inUpachaya(g.Mars.house) && d !== 'debilitated') {
+        scoreMap.Mars.score += 1
+        scoreMap.Mars.reasons.push(`Mars 在 Upachaya`)
+      }
+    }
+
+    // Venus role：1/5/10（藝術展現）
+    if (g.Venus) {
+      const d = dignityFor('Venus')
+      if (strongDignities.includes(d)) {
+        scoreMap.Venus.score += 2
+        scoreMap.Venus.reasons.push(`Venus 強旺`)
+      }
+      if (inKendra(g.Venus.house) && strongDignities.includes(d)) {
+        scoreMap.Venus.score += 3
+        scoreMap.Venus.reasons.push(`Venus 在 Kendra + 強旺（Malavya 型）`)
+      } else if ([1, 5, 10].includes(g.Venus.house)) {
+        scoreMap.Venus.score += 2
+        scoreMap.Venus.reasons.push(`Venus 在 ${g.Venus.house} 宮（藝術核心）`)
+      }
+    }
+
+    // Saturn role：10th（建設／體系）+ 7th（Digbala）
+    if (g.Saturn) {
+      const d = dignityFor('Saturn')
+      if (strongDignities.includes(d)) {
+        scoreMap.Saturn.score += 2
+        scoreMap.Saturn.reasons.push(`Saturn 強旺`)
+      }
+      if (inKendra(g.Saturn.house) && strongDignities.includes(d)) {
+        scoreMap.Saturn.score += 3
+        scoreMap.Saturn.reasons.push(`Saturn 在 Kendra + 強旺（Shasha 型）`)
+      } else if ([7, 10].includes(g.Saturn.house)) {
+        scoreMap.Saturn.score += 2
+        scoreMap.Saturn.reasons.push(`Saturn 在 ${g.Saturn.house} 宮（體系核心）`)
+      }
+    }
+
+    // Jupiter role：1/5/9/10（導師／智慧）
+    if (g.Jupiter) {
+      const d = dignityFor('Jupiter')
+      if (strongDignities.includes(d)) {
+        scoreMap.Jupiter.score += 2
+        scoreMap.Jupiter.reasons.push(`Jupiter 強旺`)
+      }
+      if (inKendra(g.Jupiter.house) && strongDignities.includes(d)) {
+        scoreMap.Jupiter.score += 3
+        scoreMap.Jupiter.reasons.push(`Jupiter 在 Kendra + 強旺（Hamsa 型）`)
+      } else if ([1, 5, 9, 10].includes(g.Jupiter.house)) {
+        scoreMap.Jupiter.score += 2
+        scoreMap.Jupiter.reasons.push(`Jupiter 在 ${g.Jupiter.house} 宮（智慧核心）`)
+      }
+    }
+
+    // Sun role：1/10（公眾能見度）+ Kendra
+    if (g.Sun) {
+      const d = dignityFor('Sun')
+      if (strongDignities.includes(d)) {
+        scoreMap.Sun.score += 2
+        scoreMap.Sun.reasons.push(`Sun 強旺`)
+      }
+      if ([1, 10].includes(g.Sun.house)) {
+        scoreMap.Sun.score += 2
+        scoreMap.Sun.reasons.push(`Sun 在 ${g.Sun.house} 宮（公眾能見度）`)
+      }
+      if (inKendra(g.Sun.house) && strongDignities.includes(d)) {
+        scoreMap.Sun.score += 2
+        scoreMap.Sun.reasons.push(`Sun 在 Kendra + 強旺`)
+      }
+    }
+  }
+
+  // Mahapurusha yoga 明確加分
+  if (activeYogas?.length) {
+    for (const y of activeYogas) {
+      const m = y.id?.match(/^mahapurusha-(Mars|Venus|Saturn|Jupiter|Mercury)$/)
+      if (m && scoreMap[m[1]]) {
+        scoreMap[m[1]].score += 2
+        scoreMap[m[1]].reasons.push(`${m[1]} Mahapurusha Yoga`)
+      }
+    }
+  }
+
+  // 轉化為 overrides：按 score desc 排序，最多 2 個
+  // 門檻差異化：Mars/Sun 稍低（≥4），其他 ≥5；≥7 為 strong
+  const sorted = candidates
+    .map((p) => ({ planet: p, ...scoreMap[p] }))
+    .filter((x) => {
+      const lowThreshold = x.planet === 'Mars' || x.planet === 'Sun'
+      return x.score >= (lowThreshold ? 4 : 5)
+    })
+    .sort((a, b) => b.score - a.score)
+
+  const overrides = []
+  for (const s of sorted) {
+    if (overrides.length >= 2) break
+    const reading = karakaOverrideReadings[s.planet]
+    if (!reading) continue
+    overrides.push({
+      ...reading,
+      source: `${s.planet} 角色分 ${s.score}（${s.reasons.slice(0, 2).join('；')}）`,
+      strength: s.score >= 7 ? 'strong' : 'medium'
+    })
   }
 
   return overrides
@@ -433,8 +595,10 @@ export function synthesizeCareerNarrative(analysis) {
   if (lagnaLord?.planet && lagnaLord.planet !== karmesh.planet) {
     const llMatrixKey = selectKarmeshReading(lagnaLord.planet, lagnaLord.house, karmeshContext || {})
     if (llMatrixKey) {
+      // 保留完整 reading（舊版 split('—')[1] 會把「大型企業／政府高層／長期統帥」等關鍵詞
+      // 截掉，造成 politics/government 訊號丟失）
       parts.push(
-        `你的命主星 ${lagnaLord.planet} 落第 ${lagnaLord.house} 宮，為事業判讀加第二層重量 — 若把命主星當事業副主看：${llMatrixKey.split('—')[1]?.trim() || llMatrixKey}。`
+        `你的命主星 ${lagnaLord.planet} 落第 ${lagnaLord.house} 宮，為事業判讀加第二層重量 — 若把命主星當事業副主看：${llMatrixKey}。`
       )
     }
   }
