@@ -37,6 +37,7 @@ import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
+import { computeRarityIndex } from '../utils/rarityIndex.js'
 import {
   encodeBirthPayload,
   decodeBirthPayload,
@@ -279,6 +280,8 @@ export default function BirthChart() {
       })
     : null
 
+  const rarity = chart ? computeRarityIndex(chart) : null
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
       {showTransition && (
@@ -491,6 +494,9 @@ export default function BirthChart() {
                 </div>
               </div>
 
+              {/* ①-c 稀有度指數 */}
+              {rarity && <RarityCard rarity={rarity} />}
+
               {/* ① -b 雙系統對照說明 */}
               <div className="glass-panel p-5 bg-white/[0.02] border-white/10">
                 <div className="text-xs uppercase tracking-widest text-slate-400 mb-3">Tropical（西方）vs Sidereal（吠陀）· 兩套系統並列</div>
@@ -539,6 +545,7 @@ export default function BirthChart() {
                   keywords={keywords}
                   stamp={submittedStamp}
                   city={submittedCity}
+                  rarity={rarity}
                 />
               </ShareCardSection>
 
@@ -1228,6 +1235,111 @@ function DashaTimelineCard({ ageRange, dateRange, name, nickname, theme, vibe, c
           ))}
         </div>
       )}
+    </div>
+  )
+}
+
+function RarityCard({ rarity }) {
+  return (
+    <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-vermilion-500/10 via-saffron-500/10 to-amber-500/5 border-saffron-500/40 relative overflow-hidden">
+      {/* 背景裝飾 */}
+      <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-saffron-500/10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-vermilion-500/10 blur-3xl pointer-events-none" />
+
+      <div className="relative">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-2">
+          <Sparkles className="h-4 w-4" />
+          命盤稀有度指數
+        </div>
+
+        <div className="grid md:grid-cols-[auto_1fr] gap-6 items-center">
+          {/* 左：大圓分數 */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <svg width="140" height="140" className="transform -rotate-90">
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="60"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.1)"
+                  strokeWidth="10"
+                />
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="60"
+                  fill="none"
+                  stroke="url(#rarity-gradient)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(rarity.score / 100) * 377} 377`}
+                />
+                <defs>
+                  <linearGradient id="rarity-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffc266" />
+                    <stop offset="100%" stopColor="#e34234" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="font-serif text-5xl gradient-text leading-none">
+                  {rarity.score}
+                </div>
+                <div className="text-xs text-slate-400 mt-1">/ 100</div>
+              </div>
+            </div>
+            {/* 星星 */}
+            <div className="mt-3 flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span
+                  key={i}
+                  className={`text-lg ${i < rarity.stars ? 'text-saffron-400' : 'text-white/15'}`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 右：標題 + 特徵清單 */}
+          <div className="flex-1">
+            <h3 className="font-serif text-3xl md:text-4xl gradient-text">
+              {rarity.title}
+            </h3>
+            <div className="mt-1 text-lg text-saffron-400">
+              位於全人口 <strong className="font-serif text-2xl">Top {rarity.topPercent}%</strong>
+            </div>
+            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+              {rarity.note}。下面是讓你命盤與眾不同的關鍵配置：
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {rarity.features.slice(0, 10).map((f, i) => (
+                <span
+                  key={i}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs ${
+                    f.weight >= 15
+                      ? 'border-vermilion-500/40 bg-vermilion-500/10 text-vermilion-300'
+                      : f.weight >= 10
+                      ? 'border-saffron-500/40 bg-saffron-500/10 text-saffron-300'
+                      : 'border-white/15 bg-white/5 text-slate-300'
+                  }`}
+                  title={f.signature}
+                >
+                  <span className="font-medium">{f.label}</span>
+                  <span className="text-[10px] opacity-70">{f.freq}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
+          💡 稀有度根據古典吠陀 Yoga（行星組合）+ Nakshatra Pada（108 種月宿分段）+ 特殊配置計算。
+          分數高代表命盤裡有越多「少見的強勢配置」— 不一定等於「命好」，但代表你跟大多數人不一樣。
+        </p>
+      </div>
     </div>
   )
 }

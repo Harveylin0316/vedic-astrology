@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 
 // 1080×1080 單人命盤分享卡
 const BirthChartShareCard = forwardRef(function BirthChartShareCard(
-  { chart, name, keywords, stamp, city },
+  { chart, name, keywords, stamp, city, rarity },
   ref
 ) {
   const tropAsc = chart.tropical.ascendant.rashi
@@ -201,41 +201,112 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
         </div>
       )}
 
-      {/* Nakshatra highlight */}
-      {sidMoonNakshatra && (
-        <div
-          style={{
-            marginTop: 'auto',
-            marginBottom: '40px',
-            padding: '24px 32px',
-            borderRadius: '20px',
-            background: 'rgba(255,194,102,0.08)',
-            border: '1.5px solid rgba(255,194,102,0.3)',
-            zIndex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '20px'
-          }}
-        >
-          <div style={{ fontSize: '48px' }}>🌙</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '12px', color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-              Moon Nakshatra · 月宿
-            </div>
-            <div
-              style={{
-                fontSize: '28px',
-                fontWeight: 600,
-                color: '#ffc266',
-                marginTop: '4px',
-                fontFamily: '"Cormorant Garamond", Georgia, serif'
-              }}
-            >
-              {sidMoonNakshatra.name} · Pada {sidMoonNakshatra.pada}
+      {/* Nakshatra + 稀有度 雙欄 */}
+      <div
+        style={{
+          marginTop: 'auto',
+          marginBottom: '40px',
+          display: 'grid',
+          gridTemplateColumns: rarity ? '1fr 1fr' : '1fr',
+          gap: '16px',
+          zIndex: 1
+        }}
+      >
+        {sidMoonNakshatra && (
+          <div
+            style={{
+              padding: '20px 24px',
+              borderRadius: '20px',
+              background: 'rgba(255,194,102,0.08)',
+              border: '1.5px solid rgba(255,194,102,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            <div style={{ fontSize: '42px' }}>🌙</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: '11px', color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                Moon Nakshatra
+              </div>
+              <div
+                style={{
+                  fontSize: '22px',
+                  fontWeight: 600,
+                  color: '#ffc266',
+                  marginTop: '4px',
+                  fontFamily: '"Cormorant Garamond", Georgia, serif',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}
+              >
+                {sidMoonNakshatra.name}
+              </div>
+              <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '2px' }}>
+                Pada {sidMoonNakshatra.pada}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {rarity && (
+          <div
+            style={{
+              padding: '20px 24px',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, rgba(255,194,102,0.15), rgba(227,66,52,0.1))',
+              border: '1.5px solid rgba(255,194,102,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            <div
+              style={{
+                width: '68px',
+                height: '68px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #ffc266, #e34234)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: '0 0 20px rgba(255,194,102,0.3)'
+              }}
+            >
+              <div style={{ textAlign: 'center', lineHeight: 1 }}>
+                <div style={{ fontSize: '24px', fontWeight: 700, color: '#0a0618', fontFamily: '"Cormorant Garamond", Georgia, serif' }}>
+                  {rarity.score}
+                </div>
+                <div style={{ fontSize: '9px', color: '#0a0618', opacity: 0.7, marginTop: '2px' }}>/ 100</div>
+              </div>
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: '11px', color: '#94a3b8', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                稀有度指數
+              </div>
+              <div
+                style={{
+                  fontSize: '22px',
+                  fontWeight: 600,
+                  color: '#ffc266',
+                  marginTop: '4px',
+                  fontFamily: '"Cormorant Garamond", Georgia, serif',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}
+              >
+                {rarity.title}
+              </div>
+              <div style={{ fontSize: '13px', color: '#ffa733', marginTop: '2px', whiteSpace: 'nowrap' }}>
+                Top {rarity.topPercent}%
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* 底部 */}
       <div
