@@ -495,53 +495,61 @@ function CompatibilityResult({ result, relationship, onReset }) {
         />
       </div>
 
-      {/* 8 Kutas 細項 */}
+      {/* 8 Kutas 細項 — 分兩類 */}
       <div className="glass-panel p-6">
-        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-3">
+        <div className="flex items-center gap-2 text-sm text-saffron-400/80 font-serif italic mb-4">
           <Flame className="h-4 w-4" />
-          Ashta Kuta · 8 因子 36 分制
+          <span>你們 8 個面向的對拍 / 打架</span>
         </div>
-        <h3 className="font-serif text-2xl gradient-text mb-4">合盤分項拆解</h3>
-        <div className="grid md:grid-cols-2 gap-3">
-          {compat.kutas.map((k) => {
-            const status = getKutaStatus(k.score, k.max)
-            const colors = {
-              excellent: 'border-emerald-500/40 bg-emerald-500/5',
-              good: 'border-saffron-500/30 bg-saffron-500/5',
-              ok: 'border-white/10 bg-white/5',
-              poor: 'border-vermilion-500/30 bg-vermilion-500/5'
-            }
-            const dotColors = {
-              excellent: 'bg-emerald-400',
-              good: 'bg-saffron-400',
-              ok: 'bg-slate-500',
-              poor: 'bg-vermilion-500'
-            }
-            return (
-              <div
-                key={k.id}
-                className={`rounded-xl border p-3 ${colors[status]}`}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium text-slate-200">{k.label}</div>
-                    <div className="text-xs text-slate-400 mt-0.5">{k.meaning}</div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* 天生對拍 */}
+          <div>
+            <h4 className="font-serif text-lg text-emerald-400 mb-3">❤️ 天生對拍的地方</h4>
+            <div className="space-y-3">
+              {compat.kutas
+                .filter((k) => {
+                  const s = getKutaStatus(k.score, k.max)
+                  return s === 'excellent' || s === 'good'
+                })
+                .map((k) => (
+                  <div key={k.id} className="text-sm">
+                    <div className="text-slate-100 font-medium">{k.label}</div>
+                    <div className="text-slate-400 leading-relaxed mt-0.5">{k.meaning}</div>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    <div className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs text-cosmic-950 font-semibold ${dotColors[status]}`}>
-                      {k.score}/{k.max}
-                    </div>
+                ))}
+              {compat.kutas.filter((k) => {
+                const s = getKutaStatus(k.score, k.max)
+                return s === 'excellent' || s === 'good'
+              }).length === 0 && (
+                <p className="text-sm text-slate-500 italic">沒有特別突出的對拍點 — 不是不合，只是沒有先天加分。</p>
+              )}
+            </div>
+          </div>
+
+          {/* 會打架 */}
+          <div>
+            <h4 className="font-serif text-lg text-vermilion-500 mb-3">⚠️ 容易打架的地方</h4>
+            <div className="space-y-3">
+              {compat.kutas
+                .filter((k) => {
+                  const s = getKutaStatus(k.score, k.max)
+                  return s === 'poor' || s === 'ok'
+                })
+                .map((k) => (
+                  <div key={k.id} className="text-sm">
+                    <div className="text-slate-100 font-medium">{k.label}</div>
+                    <div className="text-slate-400 leading-relaxed mt-0.5">{k.meaning}</div>
                   </div>
-                </div>
-                <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${dotColors[status]}`}
-                    style={{ width: `${(k.score / k.max) * 100}%` }}
-                  />
-                </div>
-              </div>
-            )
-          })}
+                ))}
+              {compat.kutas.filter((k) => {
+                const s = getKutaStatus(k.score, k.max)
+                return s === 'poor' || s === 'ok'
+              }).length === 0 && (
+                <p className="text-sm text-slate-500 italic">沒有明顯的衝突點 — 你們之間基本不會因為占星面向吵架。</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

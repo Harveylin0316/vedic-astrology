@@ -161,22 +161,15 @@ export default function Home() {
                 {t('home.concepts.body2')}
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { name: 'Jyotish', label: t('home.hero.tagline').split('·')[1]?.trim() || 'Science of Light', desc: t('home.hero.tagline') },
-                { name: 'Kundali', label: t('chart.pageTitle'), desc: 'Birth Chart' },
-                { name: 'Dasha', label: t('chart.section.dasha'), desc: 'Vimshottari 120y cycle' },
-                { name: 'Karma', label: 'Karma', desc: 'Cause & effect' }
-              ].map((c) => (
-                <div
-                  key={c.name}
-                  className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
-                >
-                  <div className="font-serif text-lg text-saffron-400">{c.name}</div>
-                  <div className="text-xs text-slate-300 font-medium">{c.label}</div>
-                  <div className="text-xs text-slate-500 mt-1">{c.desc}</div>
-                </div>
-              ))}
+            <div className="text-slate-300 leading-relaxed space-y-4 text-base md:text-lg">
+              <p>
+                你大概聽過西洋 12 星座。吠陀不太一樣 —
+                它用 <strong className="text-saffron-400">108 種月宿</strong> 看你的情緒、用{' '}
+                <strong className="text-saffron-400">9 顆行星</strong>（比西方多兩顆：Rahu、Ketu，專管你「這輩子在追什麼」和「放不下什麼」）排你的時間軸。
+              </p>
+              <p>
+                120 年分成 9 段大運，每段由不同行星主宰 — 所以你 <strong className="text-saffron-400">28 歲跟 38 歲會是完全不同的人</strong>。你不是在變心，是時間換頁了。
+              </p>
             </div>
           </div>
         </div>

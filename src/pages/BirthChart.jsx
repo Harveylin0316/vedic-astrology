@@ -74,6 +74,20 @@ const defaultForm = {
   unknownTime: false
 }
 
+// 命盤依據區塊用的行星名中文化（只作顯示層替換，不動變數）
+const PLANET_ZH = {
+  Sun: '太陽',
+  Moon: '月亮',
+  Mars: '火星',
+  Mercury: '水星',
+  Jupiter: '木星',
+  Venus: '金星',
+  Saturn: '土星',
+  Rahu: '北交點',
+  Ketu: '南交點'
+}
+const zhPlanet = (name) => (name && PLANET_ZH[name]) || name
+
 // sectionTabs will be built inside the component to use t()
 
 export default function BirthChart() {
@@ -545,7 +559,7 @@ export default function BirthChart() {
                 <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-vermilion-500/10 blur-3xl pointer-events-none" />
 
                 <div className="relative">
-                  <div className="text-xs uppercase tracking-widest text-saffron-400 mb-3">
+                  <div className="text-sm text-saffron-400/80 font-serif italic mb-3">
                     你的靈魂簽名
                   </div>
 
@@ -623,7 +637,7 @@ export default function BirthChart() {
               {astrologerNote && (
                 <>
                   <div id="note" className="scroll-mt-20 -mt-6" />
-                  <Section icon={<Sparkle className="h-4 w-4" />} badge="深度判讀" title="命盤跟你說的事" highlight>
+                  <Section icon={<Sparkle className="h-4 w-4" />} badge="占星師手記" title="命盤跟你說的事" highlight>
                     <div className="max-w-3xl mx-auto">
                       <div className="relative rounded-2xl border border-saffron-500/20 bg-gradient-to-br from-saffron-500/[0.06] via-saffron-500/[0.02] to-white/[0.02] p-6 md:p-10">
                         {/* greeting */}
@@ -662,7 +676,7 @@ export default function BirthChart() {
                         {/* 結語 closing */}
                         {astrologerNote.closing && (
                           <div className="mt-10 pt-6 border-t border-saffron-500/20">
-                            <div className="text-xs uppercase tracking-widest text-saffron-400/70 mb-3">── 最後一段</div>
+                            <div className="text-sm text-saffron-400/80 font-serif italic mb-3">── 最後一段</div>
                             <p className="font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
                               {astrologerNote.closing}
                             </p>
@@ -671,7 +685,7 @@ export default function BirthChart() {
 
                         {/* 署名 */}
                         <div className="mt-8 text-right text-sm text-slate-400/80 font-serif italic">
-                          — 寫於你的命盤之上
+                          — 2026 年 4 月，寫給你
                         </div>
                       </div>
                     </div>
@@ -698,13 +712,13 @@ export default function BirthChart() {
                     )}
                     {/* 結尾：命盤依據 */}
                     <div className="pt-4 mt-4 border-t border-saffron-500/20">
-                      <div className="text-[10px] uppercase tracking-widest text-saffron-400/70 mb-2">命盤依據</div>
+                      <div className="text-sm text-saffron-400/80 font-serif italic mb-2">為什麼我知道你是這樣？</div>
                       <p className="text-xs text-slate-400 leading-relaxed italic">
-                        Moon in {astrologerNote?.meta?.moonRashi || tropMoonName}
+                        月亮落在 {astrologerNote?.meta?.moonRashi || tropMoonName}
                         {chart?.sidereal?.moon?.nakshatra?.name && ` · ${chart.sidereal.moon.nakshatra.name}`}
                         {' '}— 所以你愛起人來是這個節奏
                         {astrologerNote?.meta?.venusRashi && (
-                          <> · Venus in {astrologerNote.meta.venusRashi} — 所以你對美感／親密感的敏感方式固定走這條線</>
+                          <> · 金星落在 {astrologerNote.meta.venusRashi} — 所以你對美感／親密感的敏感方式固定走這條線</>
                         )}
                         {match?.best?.[0] && <> · 合盤上最合 {match.best[0]}，是因為互補你這套節奏</>}
                       </p>
@@ -739,7 +753,7 @@ export default function BirthChart() {
                         {/* 身份 */}
                         {vedicCareer.playbook.identity && (
                           <div>
-                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
+                            <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
                               你在職場裡是哪種人
                             </div>
                             <p className="text-base md:text-lg text-slate-100 leading-snug">
@@ -761,7 +775,7 @@ export default function BirthChart() {
                         {/* 工作能量特徵（不再是職業列表） */}
                         {vedicCareer.playbook.energyPattern && (
                           <div>
-                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
+                            <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
                               你工作時需要的能量
                             </div>
                             <p className="text-base text-slate-100 leading-relaxed">
@@ -794,7 +808,7 @@ export default function BirthChart() {
                         {/* 避開 */}
                         {vedicCareer.playbook.avoid && (
                           <div>
-                            <div className="text-[11px] uppercase tracking-[0.25em] text-amber-400/90 mb-2">
+                            <div className="text-sm text-amber-400/90 font-serif italic mb-2">
                               ⚠️ 千萬別進這種環境
                             </div>
                             <p className="text-base text-slate-100 leading-relaxed">
@@ -806,7 +820,7 @@ export default function BirthChart() {
                         {/* 當前大運時機 */}
                         {vedicCareer.playbook.dashaSignal && (
                           <div>
-                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
+                            <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
                               現在這段時期的時機信號
                             </div>
                             <p className="text-base text-slate-100 leading-relaxed">
@@ -824,7 +838,7 @@ export default function BirthChart() {
                         {/* 下一步具體 action */}
                         {vedicCareer.playbook.actions?.length > 0 && (
                           <div>
-                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-3">
+                            <div className="text-sm text-saffron-400/80 font-serif italic mb-3">
                               接下來具體該做的 {vedicCareer.playbook.actions.length} 件事
                             </div>
                             <ol className="space-y-3">
@@ -846,16 +860,16 @@ export default function BirthChart() {
 
                     {/* 結尾：命盤依據 */}
                     <div className="pt-4 mt-4 border-t border-saffron-500/20">
-                      <div className="text-[10px] uppercase tracking-widest text-saffron-400/70 mb-2">命盤依據</div>
+                      <div className="text-sm text-saffron-400/80 font-serif italic mb-2">為什麼我知道你是這樣？</div>
                       <p className="text-xs text-slate-400 leading-relaxed italic">
                         {vedicCareer.karmesh?.planet && vedicCareer.karmesh?.house && (
-                          <>10 宮主 {vedicCareer.karmesh.planet} 落第 {vedicCareer.karmesh.house} 宮 — 所以事業的核心會朝這個方向開展</>
+                          <>10 宮主 {zhPlanet(vedicCareer.karmesh.planet)} 落第 {vedicCareer.karmesh.house} 宮 — 所以事業的核心會朝這個方向開展</>
                         )}
                         {vedicCareer.lagnaLord?.planet && vedicCareer.lagnaLord?.house && !vedicCareer.lagnaLord?.isSameAsKarmesh && (
-                          <> · 命主星 {vedicCareer.lagnaLord.planet} 落第 {vedicCareer.lagnaLord.house} 宮 — 你「想做」的方向由此決定</>
+                          <> · 命主星 {zhPlanet(vedicCareer.lagnaLord.planet)} 落第 {vedicCareer.lagnaLord.house} 宮 — 你「想做」的方向由此決定</>
                         )}
                         {currentDasha && (
-                          <> · 當前走 {currentDasha.lord} 大運{currentAD && ` / ${currentAD.lord} 小運`} — 這個主題現在正被放大</>
+                          <> · 當前走 {zhPlanet(currentDasha.lord)} 大運{currentAD && ` / ${zhPlanet(currentAD.lord)} 小運`} — 這個主題現在正被放大</>
                         )}
                       </p>
                     </div>
@@ -882,15 +896,15 @@ export default function BirthChart() {
                   )}
                   {/* 結尾：命盤依據 */}
                   <div className="pt-4 mt-4 border-t border-saffron-500/20">
-                    <div className="text-[10px] uppercase tracking-widest text-saffron-400/70 mb-2">命盤依據</div>
+                    <div className="text-sm text-saffron-400/80 font-serif italic mb-2">為什麼我知道你是這樣？</div>
                     <p className="text-xs text-slate-400 leading-relaxed italic">
                       {astrologerNote?.meta?.marsRashi && (
-                        <>Mars in {astrologerNote.meta.marsRashi} — 所以身體「發火」的點固定落在這條線</>
+                        <>火星落在 {astrologerNote.meta.marsRashi} — 所以身體「發火」的點固定落在這條線</>
                       )}
                       {astrologerNote?.meta?.saturnRashi && (
-                        <> · Saturn in {astrologerNote.meta.saturnRashi} — 所以你長期的結構性壓力會從這個地方累積</>
+                        <> · 土星落在 {astrologerNote.meta.saturnRashi} — 所以你長期的結構性壓力會從這個地方累積</>
                       )}
-                      {remedy?.ruler && <> · 守護星 {remedy.ruler} — 這是你身體＆精神最該優先「餵飽」的那顆星</>}
+                      {remedy?.ruler && <> · 守護星 {zhPlanet(remedy.ruler)} — 這是你身體＆精神最該優先「餵飽」的那顆星</>}
                     </p>
                   </div>
                 </div>
@@ -926,14 +940,14 @@ export default function BirthChart() {
                     })()}
                     {/* 結尾：命盤依據 */}
                     <div className="pt-4 mt-4 border-t border-saffron-500/20">
-                      <div className="text-[10px] uppercase tracking-widest text-saffron-400/70 mb-2">命盤依據</div>
+                      <div className="text-sm text-saffron-400/80 font-serif italic mb-2">為什麼我知道你是這樣？</div>
                       <p className="text-xs text-slate-400 leading-relaxed italic">
-                        當前大運 {currentDasha.lord}{currentAD && ` / 小運 ${currentAD.lord}`} — 所以現在的劇本由這組行星在寫
+                        當前大運 {zhPlanet(currentDasha.lord)}{currentAD && ` / 小運 ${zhPlanet(currentAD.lord)}`} — 所以現在的劇本由這組行星在寫
                         {astrologerNote?.meta?.rahuHouse && (
-                          <> · Rahu 落第 {astrologerNote.meta.rahuHouse} 宮 — 所以你今生的「想要更多」會被導向這個領域</>
+                          <> · 北交點落第 {astrologerNote.meta.rahuHouse} 宮 — 所以你今生的「想要更多」會被導向這個領域</>
                         )}
                         {chart?.sidereal?.moon?.nakshatra?.name && (
-                          <> · Moon 月宿 {chart.sidereal.moon.nakshatra.name} — 時間感與節奏感的底色</>
+                          <> · 月宿 {chart.sidereal.moon.nakshatra.name} — 時間感與節奏感的底色</>
                         )}
                       </p>
                     </div>
@@ -943,11 +957,32 @@ export default function BirthChart() {
 
               {/* 結語 push — 最後推你一下 */}
               {astrologerNote?.closing && (
-                <div className="max-w-3xl mx-auto pt-8 pb-12 text-center">
-                  <div className="text-xs uppercase tracking-widest text-saffron-400/70 mb-4">── 寫在最後</div>
-                  <p className="font-serif text-[15px] md:text-lg text-slate-100 leading-[1.95] md:leading-loose italic">
-                    {astrologerNote.closing}
-                  </p>
+                <div className="max-w-3xl mx-auto pt-6 pb-4 font-serif text-[15px] md:text-lg text-slate-100 leading-[1.95] md:leading-loose italic border-t border-saffron-500/20">
+                  <p className="pt-6">{astrologerNote.closing}</p>
+
+                  {/* 分享 CTA */}
+                  <div className="mt-10 not-italic flex flex-col sm:flex-row gap-3 justify-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (navigator.share) {
+                          navigator.share({
+                            title: '我剛算了我的命盤',
+                            text: `剛算完自己的吠陀命盤，我是 Top ${rarity?.topPercent || '?'}% 的人 😳 你也來算`,
+                            url: window.location.href
+                          })
+                        } else {
+                          copyToClipboard(window.location.href)
+                        }
+                      }}
+                      className="btn-primary"
+                    >
+                      把連結傳給 3 個最好的朋友
+                    </button>
+                    <a href="/compatibility" className="btn-ghost">
+                      👉 或問 TA 生辰，算你們合盤
+                    </a>
+                  </div>
                 </div>
               )}
             </>
@@ -964,26 +999,27 @@ export default function BirthChart() {
 
 function WelcomePanel() {
   return (
-    <div className="glass-panel p-10 text-center">
-      <Sparkles className="h-12 w-12 mx-auto text-saffron-400/60 mb-4" />
-      <h3 className="font-serif text-2xl mb-2">你的命盤解讀包含：</h3>
-      <div className="grid sm:grid-cols-2 gap-3 mt-5 text-left">
-        {[
-          ['🪞', '朋友眼中 vs 真實的你'],
-          ['💘', '你的戀愛模式 + 地雷'],
-          ['💚', '最合 / 最雷的星座配對'],
-          ['💼', '超適合你的職業清單'],
-          ['💰', '你的賺錢風格'],
-          ['📅', '你現在走哪個大運、剩幾年'],
-          ['🍀', '幸運色、數字、方位、寶石'],
-          ['🎯', '你這輩子的宿命功課']
-        ].map(([e, t]) => (
-          <div key={t} className="flex items-start gap-2 text-sm text-slate-300">
-            <span className="text-lg">{e}</span>{t}
-          </div>
-        ))}
+    <div className="glass-panel p-8 md:p-12 text-center relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-radial from-saffron-500/5 via-transparent to-transparent pointer-events-none" />
+
+      <div className="relative max-w-2xl mx-auto">
+        <div className="inline-flex items-center gap-2 text-xs text-saffron-400/80 mb-4">
+          <Sparkles className="h-4 w-4" />
+          <span className="font-serif italic">占星師的話</span>
+        </div>
+
+        <p className="font-serif text-xl md:text-3xl text-slate-100 leading-relaxed">
+          填好左邊，你會看到一個沒人跟你講過的、關於你自己的故事。
+        </p>
+
+        <p className="mt-5 text-slate-400 text-base leading-relaxed">
+          包括你朋友從來沒注意、但你自己心裡一直懷疑的那些事。
+        </p>
+
+        <p className="mt-8 text-xs text-slate-500">
+          30 秒 · 免註冊 · 算完可以分享給朋友逼 TA 也算
+        </p>
       </div>
-      <div className="mt-6 text-sm text-slate-500">← 在左邊填入你的生辰資料開始</div>
     </div>
   )
 }
@@ -991,7 +1027,7 @@ function WelcomePanel() {
 function Section({ icon, badge, title, children, highlight }) {
   return (
     <div className={`glass-panel p-6 ${highlight ? 'border-saffron-500/40 bg-saffron-500/5' : ''}`}>
-      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-2">
+      <div className="flex items-center gap-2 text-sm text-saffron-400/80 font-serif italic mb-2">
         {icon}{badge}
       </div>
       <h3 className="font-serif text-2xl gradient-text mb-4">{title}</h3>
@@ -1001,221 +1037,59 @@ function Section({ icon, badge, title, children, highlight }) {
 }
 
 function RarityCard({ rarity }) {
-  const [showDetails, setShowDetails] = useState(false)
-  // 從對比參考中挑一個比你「更稀有」的屬性（讓用戶有「哇」的反應）
+  if (!rarity) return null
   const comparison = buildRarityComparison(rarity.topPercent)
+  // 依 plain 標題去重取 top 3-4
+  const uniqueFeatures = []
+  const seen = new Set()
+  for (const f of rarity.features || []) {
+    const key = f.plain || f.name
+    if (seen.has(key)) continue
+    seen.add(key)
+    uniqueFeatures.push(f)
+    if (uniqueFeatures.length >= 4) break
+  }
 
   return (
-    <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-vermilion-500/10 via-saffron-500/10 to-amber-500/5 border-saffron-500/40 relative overflow-hidden">
-      {/* 背景裝飾 */}
-      <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-saffron-500/10 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-vermilion-500/10 blur-3xl pointer-events-none" />
+    <div className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/8 to-vermilion-500/5 border-saffron-500/25 relative overflow-hidden">
+      <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-saffron-500/8 blur-3xl pointer-events-none" />
 
-      <div className="relative">
-        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-2">
-          <Sparkles className="h-4 w-4" />
-          命盤稀有度指數
-        </div>
+      <div className="relative max-w-2xl">
+        <p className="text-sm text-saffron-400/80 font-serif italic mb-3">說一件你可能會想發到 IG 的事 —</p>
 
-        <div className="grid md:grid-cols-[auto_1fr] gap-6 items-center">
-          {/* 左：大圓分數 */}
-          <div className="flex flex-col items-center">
-            <div className="relative">
-              <svg width="140" height="140" className="transform -rotate-90">
-                <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
-                <circle
-                  cx="70"
-                  cy="70"
-                  r="60"
-                  fill="none"
-                  stroke="url(#rarity-gradient)"
-                  strokeWidth="10"
-                  strokeLinecap="round"
-                  strokeDasharray={`${(rarity.score / 100) * 377} 377`}
-                />
-                <defs>
-                  <linearGradient id="rarity-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#ffc266" />
-                    <stop offset="100%" stopColor="#e34234" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="font-serif text-5xl gradient-text leading-none">{rarity.score}</div>
-                <div className="text-xs text-slate-400 mt-1">/ 100</div>
-              </div>
-            </div>
-            <div className="mt-3 flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span key={i} className={`text-lg ${i < rarity.stars ? 'text-saffron-400' : 'text-white/15'}`}>★</span>
+        <h2 className="font-serif text-4xl md:text-6xl gradient-text leading-tight mb-2">
+          你比 {(100 - rarity.topPercent).toFixed(1)}% 的人還稀奇
+        </h2>
+
+        <p className="text-slate-200 text-base md:text-lg leading-relaxed mb-5">
+          {comparison}
+        </p>
+
+        {uniqueFeatures.length > 0 && (
+          <div className="space-y-3 mt-6">
+            <p className="text-sm text-saffron-400/80 font-serif italic">
+              你身上那幾個明顯不一樣的地方：
+            </p>
+            <div className="space-y-2">
+              {uniqueFeatures.map((f, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="text-saffron-400 flex-shrink-0 mt-0.5">·</span>
+                  <div className="flex-1">
+                    <div className="text-slate-100">
+                      <span className="font-medium">{f.plain || f.name}</span>
+                      {f.freq && <span className="text-xs text-slate-500 ml-2">（這種人大概 {f.freq}）</span>}
+                    </div>
+                    {f.meaning && <div className="text-sm text-slate-300 leading-relaxed mt-1">{f.meaning}</div>}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
+        )}
 
-          {/* 右：標題 + 特徵清單 */}
-          <div className="flex-1">
-            <h3 className="font-serif text-3xl md:text-4xl gradient-text">{rarity.title}</h3>
-            <div className="mt-1 text-lg text-saffron-400">
-              位於全人口 <strong className="font-serif text-2xl">Top {rarity.topPercent}%</strong>
-            </div>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">{rarity.note}。</p>
-
-            {/* 人口比較 — 真實統計數據作對比 */}
-            <div className="mt-3 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-3">
-              <div className="text-[11px] text-saffron-400 font-medium uppercase tracking-wider mb-1.5">
-                放在世界人口裡比比看
-              </div>
-              <div className="text-sm text-slate-200 leading-relaxed">{comparison}</div>
-            </div>
-
-            {/* 特徵 chips */}
-            {rarity.features.length > 0 && (
-              <div className="mt-4">
-                <div className="text-xs text-slate-400 mb-2 font-medium">
-                  讓你與眾不同的 {rarity.features.length} 個關鍵配置：
-                </div>
-                <div className="space-y-2.5">
-                  {rarity.features.slice(0, 10).map((f, i) => (
-                    <div
-                      key={i}
-                      className={`rounded-xl border p-3 ${
-                        f.weight >= 15
-                          ? 'border-vermilion-500/30 bg-vermilion-500/5'
-                          : f.weight >= 10
-                          ? 'border-saffron-500/30 bg-saffron-500/5'
-                          : 'border-white/10 bg-white/[0.03]'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium text-slate-100">
-                            {f.plain || f.label}
-                          </div>
-                          <div className="text-[11px] text-slate-500 mt-0.5">
-                            {f.technical || f.signature}
-                          </div>
-                        </div>
-                        <span
-                          title="此配置在全球人口中的估計出現比例"
-                          className={`flex-shrink-0 text-[10px] tabular-nums rounded-full px-2 py-0.5 border ${
-                            f.weight >= 15
-                              ? 'border-vermilion-500/40 text-vermilion-300'
-                              : f.weight >= 10
-                              ? 'border-saffron-500/40 text-saffron-300'
-                              : 'border-white/15 text-slate-400'
-                          }`}
-                        >
-                          人口 {f.freq}
-                        </span>
-                      </div>
-                      {f.meaning && (
-                        <p className="mt-2 text-xs text-slate-300 leading-relaxed">
-                          {f.meaning}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* 展開：分數拆解 + 方法論 + 經典出處 */}
-        <div className="mt-5 border-t border-white/10 pt-4">
-          <button
-            type="button"
-            onClick={() => setShowDetails((s) => !s)}
-            className="flex items-center gap-2 text-sm text-saffron-400 hover:text-saffron-300 transition"
-          >
-            {showDetails ? '收合' : '展開'}「怎麼算的？分數從哪裡來？」
-            <span className="text-xs">{showDetails ? '▲' : '▼'}</span>
-          </button>
-
-          {showDetails && (
-            <div className="mt-4 space-y-5 text-sm leading-relaxed">
-              {/* 分數拆解 */}
-              <div>
-                <div className="text-saffron-400 font-medium mb-2">📊 你的分數組成</div>
-                <div className="rounded-xl border border-white/10 bg-cosmic-950/40 overflow-hidden">
-                  <table className="w-full text-xs">
-                    <tbody>
-                      <tr className="border-b border-white/5">
-                        <td className="py-2 px-3 text-slate-400">基礎分（人人皆有）</td>
-                        <td className="py-2 px-3 text-right text-slate-300 tabular-nums">+40</td>
-                      </tr>
-                      {rarity.features.map((f, i) => (
-                        <tr key={i} className="border-b border-white/5 last:border-b-0">
-                          <td className="py-2 px-3">
-                            <div className="text-slate-200">{f.plain || f.name}</div>
-                            <div className="text-[10px] text-slate-500">
-                              {f.technical || f.signature} · 出現頻率 {f.freq}
-                            </div>
-                          </td>
-                          <td className="py-2 px-3 text-right text-saffron-400 tabular-nums font-medium">
-                            +{f.weight}
-                          </td>
-                        </tr>
-                      ))}
-                      <tr className="bg-saffron-500/5">
-                        <td className="py-2 px-3 font-semibold text-saffron-400">合計（上限 100）</td>
-                        <td className="py-2 px-3 text-right font-serif text-xl gradient-text tabular-nums">
-                          {rarity.score}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* 計算方法 */}
-              <div>
-                <div className="text-saffron-400 font-medium mb-2">🔬 計算方法</div>
-                <div className="text-slate-300 space-y-2">
-                  <p>
-                    掃描命盤中 <strong>23 種古典吠陀配置</strong>，每個配置根據「在一般人口中的出現頻率」給一個權重（越罕見 = 權重越高）。
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-xs text-slate-400 ml-2">
-                    <li>5 種 Panchamahapurusha Yoga（五大偉人瑜伽）</li>
-                    <li>4 種吉星組合（Raj / Dhana / Gaja Kesari / Budha-Aditya）</li>
-                    <li>3 種逆轉型瑜伽（Neecha Bhanga / Vipreet Raj / Parivartana）</li>
-                    <li>11 種特殊配置（雙光合宿、新/滿月、Stellium、元素主導等）</li>
-                  </ul>
-                  <p className="text-xs text-slate-500">
-                    頻率估計基於古典 Jyotish 文獻的經驗統計（見下方出處），並參考現代吠陀占星家（B.V. Raman、K.N. Rao）的統計資料。
-                  </p>
-                </div>
-              </div>
-
-              {/* 經典出處 */}
-              <div>
-                <div className="text-saffron-400 font-medium mb-2">📚 經典出處</div>
-                <div className="space-y-1.5 text-xs text-slate-400">
-                  <div>
-                    <strong className="text-slate-200">Brihat Parashara Hora Shastra</strong> — 帕拉薩拉尊者著，吠陀占星最權威的古典文本（c. 300 BCE – 600 CE 編纂），定義多數 Yoga 與 Dosha
-                  </div>
-                  <div>
-                    <strong className="text-slate-200">Saravali</strong> — Kalyana Varma 著（11 世紀），五大偉人瑜伽的系統化來源
-                  </div>
-                  <div>
-                    <strong className="text-slate-200">Phaladeepika</strong> — Mantreswara 著（14 世紀），Nakshatra Pada 分段與宮位解讀權威
-                  </div>
-                  <div>
-                    <strong className="text-slate-200">B.V. Raman 著作</strong>（1912-1998）— 現代吠陀占星標準化的奠基者，Hindu Predictive Astrology / Three Hundred Important Combinations
-                  </div>
-                </div>
-              </div>
-
-              {/* 警語 */}
-              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3 text-xs text-slate-400 leading-relaxed">
-                ⚠️ <strong className="text-slate-300">重要提醒</strong>：稀有度 ≠「命好 / 命不好」。
-                高分代表命盤中有較多「在古典文獻被特別記載」的配置，這些配置往往伴隨明顯的人格或人生特徵（可能是吉、可能是挑戰）。
-                分數低的命盤不代表平庸，可能是「均衡型」— 沒有極端配置，日子反而平穩。
-                這個指數的核心用途是<strong className="text-saffron-400">幫你認識自己的獨特點</strong>，不是用來比較高低。
-              </div>
-            </div>
-          )}
-        </div>
+        <p className="text-xs text-slate-500 italic leading-relaxed mt-6 pt-5 border-t border-white/5">
+          ※ 這個「稀奇」不是說你命好或命不好 — 是掃了你盤上 23 種古典吠陀配置（五大偉人瑜伽、財富瑜伽、逆轉型瑜伽、雙光合宿等），依它們在人口裡出現的頻率算的。低分也不是普通，只是「均衡」。
+        </p>
       </div>
     </div>
   )
