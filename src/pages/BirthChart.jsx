@@ -533,8 +533,13 @@ export default function BirthChart() {
                 </div>
               )}
 
-              {/* ① Summary Hero — 靈魂簽名（殼 × 芯） */}
-              <div id="self" className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 scroll-mt-20 relative overflow-hidden">
+              <div id="self" className="scroll-mt-20 -mt-6" />
+
+              {/* ①-a 稀有度 — 第一眼就看到社交貨幣 */}
+              {rarity && <RarityCard rarity={rarity} />}
+
+              {/* ①-b 靈魂簽名（殼 × 芯） */}
+              <div className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 relative overflow-hidden">
                 {/* 背景裝飾光暈 */}
                 <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-saffron-500/10 blur-3xl pointer-events-none" />
                 <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-vermilion-500/10 blur-3xl pointer-events-none" />
@@ -586,9 +591,6 @@ export default function BirthChart() {
                   </div>
                 </div>
               </div>
-
-              {/* ①-b 稀有度 — 緊鄰 Hero 下方當作附帶 */}
-              {rarity && <RarityCard rarity={rarity} />}
 
               {/* ②-b 分享卡（IG / 朋友圈 / LINE）— 緊鄰在 Hero + 稀有度之下 */}
               <ShareCardSection
