@@ -728,6 +728,101 @@ export default function BirthChart() {
                         {vedicCareer.activeCareerYogas.find((y) => y.strength === 'strong').careerImplication}
                       </p>
                     )}
+
+                    {/* Playbook — 那現在實際該怎麼找工作？ */}
+                    {vedicCareer.playbook && (
+                      <div className="pt-6 mt-4 border-t border-saffron-500/25 space-y-6 not-italic">
+                        <h4 className="font-serif text-xl md:text-2xl text-saffron-200">
+                          那，現在實際該怎麼走？
+                        </h4>
+
+                        {/* 身份 */}
+                        {vedicCareer.playbook.identity && (
+                          <div>
+                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
+                              你在職場裡是哪種人
+                            </div>
+                            <p className="text-base md:text-lg text-slate-100 leading-snug">
+                              <span className="font-serif text-saffron-300">
+                                {vedicCareer.playbook.identity.label}
+                              </span>
+                              {vedicCareer.playbook.identity.houseContext && (
+                                <span className="text-slate-300">
+                                  {' '}·{' '}{vedicCareer.playbook.identity.houseContext}
+                                </span>
+                              )}
+                            </p>
+                            <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+                              {vedicCareer.playbook.identity.why}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* 產業方向 */}
+                        {vedicCareer.playbook.industries?.length > 0 && (
+                          <div>
+                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
+                              先鎖定這幾類產業 / 職務
+                            </div>
+                            <p className="text-base text-slate-100 leading-relaxed">
+                              {vedicCareer.playbook.industries.join('、')}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* 避開 */}
+                        {vedicCareer.playbook.avoid && (
+                          <div>
+                            <div className="text-[11px] uppercase tracking-[0.25em] text-amber-400/90 mb-2">
+                              ⚠️ 千萬別進這種環境
+                            </div>
+                            <p className="text-base text-slate-100 leading-relaxed">
+                              {vedicCareer.playbook.avoid}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* 當前大運時機 */}
+                        {vedicCareer.playbook.dashaSignal && (
+                          <div>
+                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-2">
+                              現在這段時期的時機信號
+                            </div>
+                            <p className="text-base text-slate-100 leading-relaxed">
+                              你正在走 <span className="text-saffron-300 font-medium">{vedicCareer.playbook.dashaSignal.lord}</span> 大運 ·{' '}
+                              <span className="text-saffron-300">{vedicCareer.playbook.dashaSignal.phase}</span>
+                              {vedicCareer.playbook.dashaSignal.isKarmesh && (
+                                <span className="text-emerald-400">（10 宮主大運 = 事業最強時刻）</span>
+                              )}
+                              <br />
+                              <span className="text-slate-300">— {vedicCareer.playbook.dashaSignal.signal}</span>
+                            </p>
+                          </div>
+                        )}
+
+                        {/* 下一步具體 action */}
+                        {vedicCareer.playbook.actions?.length > 0 && (
+                          <div>
+                            <div className="text-[11px] uppercase tracking-[0.25em] text-saffron-400/80 mb-3">
+                              接下來具體該做的 {vedicCareer.playbook.actions.length} 件事
+                            </div>
+                            <ol className="space-y-3">
+                              {vedicCareer.playbook.actions.map((a, i) => (
+                                <li key={i} className="flex gap-3 items-start">
+                                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-saffron-500/20 border border-saffron-500/40 text-saffron-300 text-xs flex items-center justify-center font-medium mt-0.5">
+                                    {i + 1}
+                                  </span>
+                                  <span className="text-base text-slate-100 leading-relaxed flex-1">
+                                    {a}
+                                  </span>
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     {/* 結尾：命盤依據 */}
                     <div className="pt-4 mt-4 border-t border-saffron-500/20">
                       <div className="text-[10px] uppercase tracking-widest text-saffron-400/70 mb-2">命盤依據</div>

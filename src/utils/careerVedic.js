@@ -30,6 +30,7 @@ import {
   selectKarmeshReading,
   buildKarakaOverrides
 } from '../data/careerMatrix.js'
+import { synthesizeCareerPlaybook } from '../data/careerPlaybook.js'
 import { computeDasamsa } from './vedicCalc.js'
 
 // ═══════════════════════════════════════════════
@@ -273,9 +274,21 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     d10: d10Karmesh
   })
 
+  // ════ 最後一部分：Playbook（實操建議）════
+  // 解決「看完不知道怎麼找工作」的痛點
+  const playbook = synthesizeCareerPlaybook({
+    karmesh: { planet: karmeshPlanet, house: karmeshGraha?.house },
+    lagnaLord,
+    dasha: dashaImpact,
+    karakaOverrides,
+    activeCareerYogas
+  })
+
   return {
     // 最核心：合成敘事（放在 UI 最上面）
     narrative,
+    // Playbook（實操建議 — 那現在該怎麼找工作？）
+    playbook,
     // Karaka Overrides（v3 新增）— 自然本命星壓倒性強 → 身份標籤
     karakaOverrides,
     // Yoga 事業啟示（優先級最高）
