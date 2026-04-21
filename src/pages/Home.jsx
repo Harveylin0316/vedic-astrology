@@ -5,26 +5,26 @@ const features = [
   {
     icon: Heart,
     title: '雙人合盤',
-    desc: '用 Ashta Kuta 8 因子 36 分制，看你跟 TA 天生合不合。附關係動態解析。',
+    desc: '你跟 TA 其實合嗎？36 分制看完就知道 — 為什麼吸引、會吵什麼、怎麼走得久。',
     to: '/compatibility',
     highlight: true
   },
   {
     icon: Compass,
     title: '吠陀命盤解讀',
-    desc: 'Lagna、月宿 Nakshatra、大運 Dasha 一次到位，看懂你人生每個階段。',
+    desc: '別人眼中的你 vs 真實的你。看你每個年齡段走什麼大運、哪幾年是你的轉折點。',
     to: '/birth-chart'
   },
   {
     icon: Moon,
     title: '27 Nakshatra',
-    desc: '深入月宿系統，查詢你的出生星宿、守護神與 Pada 四分位。',
+    desc: '比 12 星座細 9 倍的印度月宿 — 你是 108 種命格裡哪一個？',
     to: '/nakshatras'
   },
   {
     icon: Orbit,
     title: '九大行星 Navagraha',
-    desc: '從 Surya 到 Ketu，理解 9 個 Graha 的本質、吉凶與象徵意義。',
+    desc: '吠陀用 9 顆行星（多出 Rahu / Ketu）— 看哪顆在主宰你的財、愛、事業。',
     to: '/planets'
   }
 ]
@@ -48,14 +48,13 @@ export default function Home() {
               Jyotish · 光明之學
             </div>
             <h1 className="text-4xl md:text-6xl font-serif leading-tight text-balance">
-              聆聽星辰的低語，
+              為什麼你是你？
               <br />
-              <span className="gradient-text">解讀你靈魂的藍圖</span>
+              <span className="gradient-text">3000 年印度占星給答案</span>
             </h1>
             <p className="text-lg text-slate-300 leading-relaxed max-w-xl">
-              吠陀占星（Jyotish Shastra）是印度古老的星象系統，以 sidereal
-              zodiac、27 Nakshatra 與九大 Graha 揭示靈魂的因果軌跡。
-              透過這套工具，在數千年智慧中尋回你自己的星光。
+              吠陀占星用 <strong className="text-saffron-400">108 種月宿</strong> × <strong className="text-saffron-400">9 顆行星</strong> × <strong className="text-saffron-400">120 年大運</strong>，告訴你：
+              為什麼你總是 X、什麼時候會 Y、跟誰合不合。比 12 星座細 9 倍，準到你自己都驚嚇。
             </p>
             <div className="flex flex-wrap gap-3">
               <Link to="/birth-chart" className="btn-primary">
@@ -246,9 +245,11 @@ export default function Home() {
 
       {/* CTA */}
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <h2 className="section-title">讓星辰為你指路</h2>
+        <h2 className="section-title">30 秒看懂你為什麼是你</h2>
         <p className="mt-4 text-slate-400 max-w-2xl mx-auto">
-          只需填入出生日期、時間與地點，立刻獲得你的吠陀命盤與完整解讀。
+          填出生日期、時間、地點 — 你的命盤、人格簽名、大運時間軸、稀有度指數，一次產出。
+          <br />
+          <span className="text-slate-500 text-sm">不收集任何個資、純本地計算。</span>
         </p>
         <div className="mt-8">
           <Link to="/birth-chart" className="btn-primary">

@@ -39,6 +39,7 @@ import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
+import { buildPersonaSignature } from '../data/personaLabels.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import {
@@ -294,6 +295,8 @@ export default function BirthChart() {
       })
     : []
 
+  const persona = chart ? buildPersonaSignature(tropLagnaName, tropMoonName) : null
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
       {showTransition && (
@@ -481,24 +484,51 @@ export default function BirthChart() {
                 </div>
               </div>
 
-              {/* ① Summary Hero — 西方主顯 + 吠陀副顯 */}
-              <div id="self" className="glass-panel p-6 md:p-8 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 scroll-mt-20">
-                <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">你的命盤關鍵字</div>
-                <h2 className="font-serif text-3xl md:text-4xl gradient-text leading-tight">
-                  {lagna?.tagline?.split('·')[0]?.trim()}
-                </h2>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {keywords?.map((k) => (
-                    <span key={k} className="rounded-full border border-saffron-500/30 bg-saffron-500/10 px-3 py-1 text-xs font-medium">
-                      {k}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-5 flex items-center justify-between gap-3 flex-wrap">
-                  <div className="text-sm text-slate-400">
-                    {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
+              {/* ① Summary Hero — 靈魂簽名（殼 × 芯） */}
+              <div id="self" className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 scroll-mt-20 relative overflow-hidden">
+                {/* 背景裝飾光暈 */}
+                <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-saffron-500/10 blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-vermilion-500/10 blur-3xl pointer-events-none" />
+
+                <div className="relative">
+                  <div className="text-xs uppercase tracking-widest text-saffron-400 mb-3">
+                    你的靈魂簽名
                   </div>
-                  <CopyLinkButton />
+
+                  {persona ? (
+                    <>
+                      <h2 className="font-serif text-4xl md:text-6xl gradient-text leading-tight">
+                        {persona.primary}
+                      </h2>
+                      <p className="mt-4 text-base md:text-lg text-slate-200 leading-relaxed max-w-2xl">
+                        {persona.detail}
+                      </p>
+                    </>
+                  ) : (
+                    <h2 className="font-serif text-3xl md:text-4xl gradient-text leading-tight">
+                      {lagna?.tagline?.split('·')[0]?.trim()}
+                    </h2>
+                  )}
+
+                  {keywords && keywords.length > 0 && (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {keywords.map((k) => (
+                        <span
+                          key={k}
+                          className="rounded-full border border-saffron-500/30 bg-saffron-500/10 px-3 py-1 text-xs font-medium"
+                        >
+                          {k}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="mt-6 flex items-center justify-between gap-3 flex-wrap pt-4 border-t border-white/10">
+                    <div className="text-sm text-slate-400">
+                      {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
+                    </div>
+                    <CopyLinkButton />
+                  </div>
                 </div>
               </div>
 
