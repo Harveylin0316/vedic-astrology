@@ -42,6 +42,7 @@ import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
 import { analyzeCareer } from '../utils/careerAnalysis.js'
 import { rankCareers } from '../utils/careerRanking.js'
+import { computeEntrepreneurship } from '../utils/entrepreneurScore.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
@@ -306,6 +307,10 @@ export default function BirthChart() {
   ]
   const careerRanked = chart
     ? rankCareers(chart, currentDasha?.lord, currentAD?.lord)
+    : null
+
+  const entrepreneurship = chart
+    ? computeEntrepreneurship(chart, currentDasha?.lord, currentAD?.lord)
     : null
 
   return (
@@ -754,7 +759,12 @@ export default function BirthChart() {
               )}
 
               <div id="career" className="scroll-mt-20 -mt-6" />
-              {/* ⑥-0 事業適配度排名 — 這是唯一的「推薦什麼職業」來源 */}
+              {/* ⑥-0-A 創業 vs 上班 傾向（工作「模式」層面） */}
+              {entrepreneurship && (
+                <EntrepreneurshipSection data={entrepreneurship} />
+              )}
+
+              {/* ⑥-0-B 事業適配度排名 — 事業「類別」層面 */}
               {careerRanked && <CareerRankingSection ranking={careerRanked} />}
 
               {/* ⑥ 事業「怎麼工作」的人格解讀（不是推薦職業，是描述你工作時的樣子） */}
@@ -1663,6 +1673,117 @@ function buildRarityComparison(topPercent) {
     return '你的配置較有特色但非極罕見。每 5 個人裡大概有 1 個類似 — 像是「藍眼睛 + 某個血型」這種程度的組合。'
   }
   return '你的命盤屬於均衡型。這不代表平庸 — 反而是少了極端配置所以「日子比較穩」的類型。'
+}
+
+function EntrepreneurshipSection({ data }) {
+  const { entrepreneurship: ent, employment: emp, diff, verdict } = data
+  const entStars = Math.max(0, Math.min(5, Math.round(ent.score / 2)))
+  const empStars = Math.max(0, Math.min(5, Math.round(emp.score / 2)))
+
+  return (
+    <Section
+      icon={<Briefcase className="h-4 w-4" />}
+      badge="工作模式 · 創業 vs 上班"
+      title="你適合自己做還是上組織？"
+      highlight
+    >
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 mb-5 text-sm text-slate-300 leading-relaxed">
+        <strong className="text-saffron-400">這跟下方類別排名不一樣。</strong>
+        <br />
+        創業不是一個「事業類別」— 你可以在美學、商業、研究、任何一類裡創業。
+        這裡評估的是：<strong>你的命盤比較適合「自己做老闆」還是「進組織領薪水」？</strong>
+        兩個分數獨立計算，可以都高、都低、或一高一低。
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <TendencyCard
+          icon="🚀"
+          title="創業傾向"
+          subtitle="自立門戶、自負盈虧"
+          score={ent.score}
+          stars={entStars}
+          reasons={ent.reasons}
+          tone="saffron"
+        />
+        <TendencyCard
+          icon="🏢"
+          title="上班傾向"
+          subtitle="組織內累積、穩定發展"
+          score={emp.score}
+          stars={empStars}
+          reasons={emp.reasons}
+          tone="sky"
+        />
+      </div>
+
+      {/* 判定 */}
+      <div className="mt-5 rounded-xl border border-saffron-500/30 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-4">
+        <div className="flex items-start gap-3">
+          <div className="text-2xl">🧭</div>
+          <div>
+            <div className="text-xs uppercase tracking-widest text-saffron-400 font-medium mb-1">
+              命盤判定
+            </div>
+            <p className="text-slate-100 leading-relaxed">{verdict}</p>
+            <p className="text-xs text-slate-500 mt-2">
+              分數差距 {diff > 0 ? '+' : ''}{diff}（創業 {ent.score} · 上班 {emp.score}）
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-4 text-xs text-slate-500 leading-relaxed">
+        💡 創業傾向看：Mars（勇氣）+ Sun（自主）+ Rahu 3/10/11（突破）+ 10/11 宮主強度（自主事業格 + 多元收入）+ Jupiter（貴人智慧）。
+        上班傾向看：Jupiter / Mercury 強（協作）+ Saturn 坐 10（耐組織）+ 6 宮行星（服務導向）+ Moon 在穩定星座。
+      </p>
+    </Section>
+  )
+}
+
+function TendencyCard({ icon, title, subtitle, score, stars, reasons, tone }) {
+  const border = tone === 'saffron' ? 'border-saffron-500/40' : 'border-sky-500/40'
+  const bg = tone === 'saffron' ? 'bg-saffron-500/5' : 'bg-sky-500/5'
+  const text = tone === 'saffron' ? 'text-saffron-400' : 'text-sky-400'
+  const barColor = tone === 'saffron' ? 'bg-saffron-500' : 'bg-sky-500'
+  return (
+    <div className={`rounded-xl border ${border} ${bg} p-4`}>
+      <div className="flex items-start gap-3">
+        <div className="text-3xl flex-shrink-0">{icon}</div>
+        <div className="flex-1 min-w-0">
+          <div className={`text-sm font-medium ${text}`}>{title}</div>
+          <div className="text-[11px] text-slate-400">{subtitle}</div>
+          <div className="mt-2 flex items-center gap-3">
+            <div className={`text-3xl font-serif ${text} tabular-nums`}>{score}</div>
+            <div className="text-xs text-slate-500">/ 10</div>
+            <div className="flex gap-0.5 ml-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} className={i < stars ? text : 'text-white/10'}>★</span>
+              ))}
+            </div>
+          </div>
+          <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
+            <div className={`h-full rounded-full ${barColor}`} style={{ width: `${(score / 10) * 100}%` }} />
+          </div>
+        </div>
+      </div>
+
+      {reasons.length > 0 && (
+        <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
+          {reasons.map((r, i) => (
+            <div key={i} className="flex items-start gap-2 text-xs">
+              <span className={`flex-shrink-0 tabular-nums font-medium ${text}`}>+{r.points}</span>
+              <span className="text-slate-300">{r.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {reasons.length === 0 && (
+        <div className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500">
+          命盤上沒找到明顯加分因子
+        </div>
+      )}
+    </div>
+  )
 }
 
 function CareerRankingSection({ ranking }) {

@@ -57,15 +57,16 @@ export const CAREER_CATEGORIES = [
   },
   {
     id: 'warrior',
-    name: '競爭 · 創業 · 戰鬥',
+    name: '競爭 · 業務 · 行動派',
     icon: '⚔️',
     primary: 'Mars',
     secondary: 'Sun',
-    // 戰鬥：純火、土象扛得住、水風不適
+    // 純 Mars 能量：戰鬥、衝刺、體能、對抗
     elementAffinity: { fire: 3, earth: 1, air: 1, water: 0 },
-    examples: ['創業家 / 業務主管', '軍警 / 消防', '外科醫師 / 急診', '運動員 / 教練', '房地產 / 仲介', '工程 / 機械'],
-    thriveIn: '有明確對手、贏得出名字的戰場',
-    avoidIf: 'Mars 落陷於 Karka → 行動力易受情緒綁架'
+    examples: ['業務主管 / 銷售冠軍', '軍警 / 消防', '外科醫師 / 急診', '運動員 / 教練', '高壓談判', '機械 / 技工'],
+    thriveIn: '有明確對手、靠體力或勝負賺錢的戰場',
+    avoidIf: 'Mars 落陷於 Karka → 行動力易受情緒綁架',
+    note: '此類是「純粹 Mars 能量的行業」。「創業」不在此類 — 因為創業是工作方式（可在任何類別中發生），下方有獨立的「創業傾向指數」。'
   },
   {
     id: 'service',
