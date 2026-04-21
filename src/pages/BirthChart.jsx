@@ -30,7 +30,7 @@ import {
   UserRound
 } from 'lucide-react'
 import { cities, findCity } from '../data/cities.js'
-import DeepReading from '../components/DeepReading.jsx'
+import MysticalTransition from '../components/MysticalTransition.jsx'
 import {
   computeVedicChart,
   formatDegrees,
@@ -69,7 +69,6 @@ const defaultForm = {
 const elementIcon = { fire: Flame, earth: Mountain, air: Wind, water: Droplets }
 
 const sectionTabs = [
-  { id: 'deep-reading', label: '深度', icon: '🔮' },
   { id: 'self', label: '自我', icon: '🪞' },
   { id: 'love', label: '愛情', icon: '💘' },
   { id: 'career', label: '事業', icon: '💼' },
@@ -81,6 +80,9 @@ export default function BirthChart() {
   const [form, setForm] = useState(defaultForm)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [chart, setChart] = useState(null)
+  const [pendingChart, setPendingChart] = useState(null)
+  const [pendingMeta, setPendingMeta] = useState(null)
+  const [showTransition, setShowTransition] = useState(false)
   const [submittedCity, setSubmittedCity] = useState('')
   const [submittedStamp, setSubmittedStamp] = useState('')
   const [submittedGender, setSubmittedGender] = useState('')
@@ -121,15 +123,28 @@ export default function BirthChart() {
         lat: parseFloat(form.lat),
         lon: parseFloat(form.lon)
       })
-      setChart(result)
-      setSubmittedCity(form.city || `${form.lat}, ${form.lon}`)
-      setSubmittedStamp(`${form.date} ${form.time}`)
-      setSubmittedGender(form.gender)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      // 先暫存結果，啟動神祕過場；動畫結束後才揭曉命盤
+      setPendingChart(result)
+      setPendingMeta({
+        city: form.city || `${form.lat}, ${form.lon}`,
+        stamp: `${form.date} ${form.time}`,
+        gender: form.gender
+      })
+      setShowTransition(true)
     } catch (err) {
       setError('計算失敗：請檢查輸入格式。')
       console.error(err)
     }
+  }
+
+  const handleTransitionComplete = () => {
+    setChart(pendingChart)
+    setSubmittedCity(pendingMeta.city)
+    setSubmittedStamp(pendingMeta.stamp)
+    setSubmittedGender(pendingMeta.gender)
+    setShowTransition(false)
+    // 轉場結束後滑到頁頂讓命盤從頭呈現
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   // 性別代稱
@@ -220,6 +235,12 @@ export default function BirthChart() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
+      {showTransition && (
+        <MysticalTransition
+          onComplete={handleTransitionComplete}
+          duration={1500}
+        />
+      )}
       <div className="text-center mb-10">
         <h1 className="section-title">吠陀命盤 · 超接地氣解讀</h1>
         <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
@@ -420,13 +441,6 @@ export default function BirthChart() {
                   {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
                 </div>
               </div>
-
-              {/* ⭐ Deep Reading — Raman Signal>Coverage framework */}
-              <DeepReading
-                chart={chart}
-                birthAge={ageOf(now)}
-                gender={submittedGender}
-              />
 
               {/* ① -b 雙系統對照說明 */}
               <div className="glass-panel p-5 bg-white/[0.02] border-white/10">
