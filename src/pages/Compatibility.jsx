@@ -178,7 +178,7 @@ export default function Compatibility() {
       <div className="text-center mb-10">
         <h1 className="section-title">雙人合盤 · 你們的業力契合度</h1>
         <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
-          用吠陀傳統 Ashta Kuta 8 因子 36 分制，看你跟 TA 天生合不合 — 附接地氣的關係解析。
+          用吠陀傳統 Ashta Kuta 8 因子 36 分制算出你跟 TA 的契合度 — 為什麼吸引、會吵什麼、怎麼走得長久。
         </p>
       </div>
 

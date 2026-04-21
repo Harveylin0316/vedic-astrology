@@ -306,7 +306,7 @@ export default function BirthChart() {
         />
       )}
       <div className="text-center mb-10">
-        <h1 className="section-title">吠陀命盤 · 超接地氣解讀</h1>
+        <h1 className="section-title">你的吠陀命盤</h1>
         <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
           輸入生辰，看看你這輩子的愛情、事業、財運、大運走向 — 以及你朋友都不好意思告訴你的那些事
         </p>
@@ -557,7 +557,7 @@ export default function BirthChart() {
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 mt-3 leading-relaxed">
-                  💡 兩套系統差 ~{chart.ayanamsha.toFixed(1)}°（歲差 Ayanamsha）。本站把你<strong className="text-sky-400">熟悉的西方星座</strong>用於性格解讀（「準不準」的基礎），把吠陀獨有的<strong className="text-saffron-400"> Nakshatra 月宿 + Vimshottari 大運</strong>用於人生運勢預測 — 兩者互補，這是現代吠陀大師 Raman 派的整合路線。
+                  💡 兩套系統差 ~{chart.ayanamsha.toFixed(1)}°（歲差 Ayanamsha）。本站用你<strong className="text-sky-400">熟悉的西方星座</strong>做性格解讀，用吠陀獨有的<strong className="text-saffron-400"> Nakshatra 月宿 + Vimshottari 大運</strong>做人生運勢預測 — 兩套系統互補。
                 </p>
               </div>
 
@@ -581,7 +581,7 @@ export default function BirthChart() {
                   title="關於你的 5 個戳點"
                 >
                   <p className="text-sm text-slate-400 mb-4 leading-relaxed">
-                    根據你的上升、太陽、月亮、月宿組合產生的「命中句」。讀完覺得有被戳到的，就是你命盤寫好的個性模式。
+                    這 5 句話來自你的上升 × 太陽 × 月亮 × 月宿組合 — 每個組合只會得到這組結果。覺得被戳到的，就是你命盤寫好的個性模式。
                   </p>
                   <div className="space-y-3">
                     {signatures.map((s, i) => (
@@ -866,7 +866,7 @@ export default function BirthChart() {
                   {currentAD && currentADReading && (
                     <div className="mt-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
                       <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-emerald-400 mb-3">
-                        🔍 Antardasha 小運（Raman 法則：細到月的預測）
+                        🔍 Antardasha 小運 · 精細到月的預測
                       </div>
                       <div className="flex items-baseline gap-2 flex-wrap">
                         <span className="font-serif text-xl text-emerald-300">

@@ -75,7 +75,7 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
       </div>
       <h3 className="font-serif text-2xl gradient-text mb-4">{title}</h3>
       <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto leading-relaxed">
-        下載這張 1080×1080 方形圖，直接發 IG、小紅書、朋友圈、LINE 群 — 讓你的朋友也想來算一次。
+        下載這張圖，直接發 IG、小紅書、朋友圈、LINE 群。
       </p>
 
       {/* 隱藏的 1080×1080 卡片（實際截圖來源）+ 縮小預覽 */}
@@ -144,7 +144,7 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
       </div>
 
       <p className="text-xs text-slate-500 mt-3">
-        圖片格式：PNG · 尺寸 1080×1080（IG 標準）
+        PNG · 1080×1080（IG 標準尺寸）
       </p>
     </div>
   )
