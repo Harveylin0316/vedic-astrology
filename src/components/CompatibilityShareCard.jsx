@@ -108,7 +108,7 @@ const CompatibilityShareCard = forwardRef(function CompatibilityShareCard(
             Vedic Compatibility
           </div>
         </div>
-        <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#64748b' }}>
+        <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#64748b', whiteSpace: 'nowrap' }}>
           Ashta Kuta · 36 分制
         </div>
       </div>
@@ -150,35 +150,37 @@ const CompatibilityShareCard = forwardRef(function CompatibilityShareCard(
           style={{
             display: 'inline-flex',
             alignItems: 'baseline',
-            gap: '8px',
-            padding: '16px 40px',
-            borderRadius: '50px',
+            gap: '14px',
+            padding: '18px 56px',
+            borderRadius: '80px',
             background: 'rgba(255,194,102,0.1)',
-            border: '2px solid rgba(255,194,102,0.35)'
+            border: '2px solid rgba(255,194,102,0.35)',
+            whiteSpace: 'nowrap'
           }}
         >
           <span
             style={{
-              fontSize: '80px',
+              fontSize: '88px',
               fontWeight: 700,
               color: '#ffc266',
-              fontFamily: 'serif',
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
               lineHeight: 1
             }}
           >
             {compat.totalScore}
           </span>
-          <span style={{ fontSize: '32px', color: '#94a3b8' }}>/ 36</span>
-          <span style={{ fontSize: '24px', color: '#ffa733', marginLeft: '16px' }}>
-            ({compat.percent}%)
+          <span style={{ fontSize: '40px', color: '#94a3b8', lineHeight: 1 }}>/</span>
+          <span style={{ fontSize: '48px', color: '#cbd5e1', lineHeight: 1, fontFamily: '"Cormorant Garamond", Georgia, serif' }}>36</span>
+          <span style={{ fontSize: '26px', color: '#ffa733', marginLeft: '20px', lineHeight: 1 }}>
+            {compat.percent}%
           </span>
         </div>
         <div
           style={{
-            fontSize: '18px',
+            fontSize: '20px',
             color: '#cbd5e1',
-            maxWidth: '720px',
-            margin: '20px auto 0',
+            maxWidth: '800px',
+            margin: '24px auto 0',
             lineHeight: 1.6,
             fontFamily: 'Inter, system-ui, sans-serif'
           }}

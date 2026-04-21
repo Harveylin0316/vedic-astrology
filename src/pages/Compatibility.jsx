@@ -86,7 +86,9 @@ export default function Compatibility() {
       const chartA = computeChartFor(you)
       const chartB = computeChartFor(them)
       const compat = computeCompatibility(chartA, chartB)
-      const narrative = buildCompatibilityNarrative(compat, chartA, chartB)
+      const nameA = (you.name || '').trim() || '你'
+      const nameB = (them.name || '').trim() || 'TA'
+      const narrative = buildCompatibilityNarrative(compat, chartA, chartB, nameA, nameB)
       setPending({ compat, narrative, you: { ...you }, them: { ...them } })
       setShowTransition(true)
     } catch (err) {
