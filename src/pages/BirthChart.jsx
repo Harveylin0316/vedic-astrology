@@ -1794,7 +1794,7 @@ function PlanetReasons({ label, reasons, baseScore }) {
 // VedicCareerSection — 正統吠陀事業分析 UI
 // ═══════════════════════════════════════════════════
 function VedicCareerSection({ data }) {
-  const { foundation, karmesh, significators, amatyakaraka, dasha } = data
+  const { foundation, karmesh, significators, amatyakaraka, dasha, narrative, activeCareerYogas, lagnaLord, d10 } = data
   const dignityColor = {
     exalted: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10',
     own: 'text-saffron-400 border-saffron-500/40 bg-saffron-500/10',
@@ -1807,24 +1807,91 @@ function VedicCareerSection({ data }) {
 
   return (
     <>
-      {/* 方法論 intro */}
+      {/* ⭐ 最核心：組合化判讀 Narrative — 具體到你命盤的一段話 */}
+      {narrative && (
+        <Section
+          icon={<Briefcase className="h-4 w-4" />}
+          badge="事業判讀 · 你這張盤的具體組合"
+          title="你的事業命格（整合版）"
+          highlight
+        >
+          <div className="rounded-xl border border-saffron-500/40 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-5">
+            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-3 font-medium">
+              🎯 把你命盤的 10 宮主 × 落宮 × 尊嚴 × Yoga × 命主星 全部整合
+            </div>
+            {narrative.split('\n\n').map((para, i) => (
+              <p key={i} className="text-sm md:text-base text-slate-100 leading-relaxed mb-3 last:mb-0">
+                {para}
+              </p>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 mt-3 leading-relaxed">
+            💡 這段是「整合性判讀」— 比單看 10 宮主的分析更準。古典 BPHS 強調「Yoga 格局 + 三王交叉」才是事業真解，單點分析容易以偏概全。
+          </p>
+        </Section>
+      )}
+
+      {/* ⚡ Active Career Yogas — 命盤中啟動的事業格局 */}
+      {activeCareerYogas?.length > 0 && (
+        <Section
+          icon={<Sparkles className="h-4 w-4" />}
+          badge="你命盤啟動的 Yoga 格局"
+          title={`檢測到 ${activeCareerYogas.length} 個事業相關組合`}
+        >
+          <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+            Yoga = 行星特殊組合。古典認為 <strong className="text-saffron-400">Yoga 判讀優先於單點分析</strong> —
+            即使 10 宮主看起來弱，有強力的 Yoga 仍可成大事（反之亦然）。
+          </p>
+          <div className="space-y-3">
+            {activeCareerYogas.map((y) => (
+              <div
+                key={y.id}
+                className={`rounded-xl border p-4 ${
+                  y.strength === 'strong'
+                    ? 'border-emerald-500/40 bg-emerald-500/5'
+                    : y.strength === 'warn'
+                    ? 'border-vermilion-500/30 bg-vermilion-500/5'
+                    : 'border-saffron-500/25 bg-saffron-500/5'
+                }`}
+              >
+                <div className="flex items-start gap-2">
+                  <span className="flex-shrink-0 text-lg">
+                    {y.strength === 'strong' ? '💎' : y.strength === 'warn' ? '⚠️' : '✦'}
+                  </span>
+                  <div className="flex-1">
+                    <div className="font-serif text-base text-slate-100 leading-tight">
+                      {y.verdict}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-1">{y.signature}</div>
+                    <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+                      <strong className="text-saffron-400">事業啟示 → </strong>
+                      {y.careerImplication}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {/* 方法論 intro（精簡版 — 移到下方） */}
       <Section
         icon={<Briefcase className="h-4 w-4" />}
-        badge="事業分析 · 正統吠陀方法"
-        title="你的事業命格"
+        badge="方法論 · 如何算的"
+        title="古典吠陀事業判讀的 7 個檢查點"
       >
-        <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-4 text-sm text-slate-300 leading-relaxed">
-          <strong className="text-saffron-400">分析邏輯（依 Brihat Parashara Hora Shastra）</strong>
-          <br />
-          1. <strong>第 10 宮 Karma Bhava</strong> — 事業本體
-          <br />
-          2. <strong>10 宮主 Dashamesh</strong> — 最關鍵。它的星座、宮位、月宿決定你的職業樣貌
-          <br />
-          3. <strong>9 大徵象星 Karakas</strong> — 每顆行星對應特定事業領域（Saturn = 事業本命星）
-          <br />
-          4. <strong>Amatyakaraka (AMK)</strong> — Jaimini 派的「事業靈魂星」（度數第 2 高）
-          <br />
-          5. <strong>當前 Dasha</strong> — 時機
+        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-sm text-slate-300 leading-relaxed">
+          <strong className="text-saffron-400">分析邏輯（依 BPHS + Phaladeepika + K.N. Rao）</strong>
+          <ol className="mt-2 space-y-1 list-decimal list-inside text-sm">
+            <li><strong>10 宮 Karma Bhava</strong> — 事業本體的星座</li>
+            <li><strong>10 宮主 Dashamesh</strong> — 落宮、星座、月宿 × 組合矩陣</li>
+            <li><strong>命主星 Lagna Lord</strong> — 三王交叉第一王</li>
+            <li><strong>12 大 Yoga 格局</strong> — 優先於單點判讀</li>
+            <li><strong>Digbala + Moolatrikona + Neecha Bhanga</strong> — 細節尊嚴</li>
+            <li><strong>D10 (Dasamsa) 事業專盤</strong> — 「潛能」vs「實踐」交叉</li>
+            <li><strong>9 大徵象星 + AMK + 當前 Dasha</strong> — 時機與方向</li>
+          </ol>
         </div>
       </Section>
 
@@ -1881,6 +1948,18 @@ function VedicCareerSection({ data }) {
             <p className="text-sm text-slate-300 mt-2 leading-relaxed">{karmesh.reading.style}</p>
           </div>
 
+          {/* ★ 組合判讀（109 條精確對應）— 取代原本獨立的「行星 + 宮」兩段堆疊 */}
+          {karmesh.combinationReading && (
+            <div className="mb-5 rounded-xl border border-saffron-500/40 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-4">
+              <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2 font-medium">
+                ★ {karmesh.planet} 當 10 宮主 × 落第 {karmesh.house} 宮 · 組合意義
+              </div>
+              <p className="text-base text-slate-100 leading-relaxed font-serif">
+                {karmesh.combinationReading}
+              </p>
+            </div>
+          )}
+
           <div className="grid md:grid-cols-3 gap-3 mb-5">
             <InfoCard
               label={`🪐 ${karmesh.planet} 所在星座`}
@@ -1893,6 +1972,26 @@ function VedicCareerSection({ data }) {
                     </div>
                   )}
                   <div className="text-xs text-slate-400 mt-1">{karmesh.dignityInfo?.note}</div>
+                  {/* 擴展 dignity flags：Moolatrikona / Digbala / Neecha Bhanga */}
+                  {karmesh.dignityDetails && (karmesh.dignityDetails.moolatrikona || karmesh.dignityDetails.digbala || karmesh.dignityDetails.neechaBhanga) && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {karmesh.dignityDetails.moolatrikona && (
+                        <span className="text-[10px] rounded-full border border-emerald-500/40 text-emerald-400 bg-emerald-500/5 px-2 py-0.5">
+                          ✦ Moolatrikona 根本位
+                        </span>
+                      )}
+                      {karmesh.dignityDetails.digbala && (
+                        <span className="text-[10px] rounded-full border border-sky-500/40 text-sky-400 bg-sky-500/5 px-2 py-0.5">
+                          ✦ Digbala 方向力最強
+                        </span>
+                      )}
+                      {karmesh.dignityDetails.neechaBhanga && (
+                        <span className="text-[10px] rounded-full border border-vermilion-500/40 text-vermilion-400 bg-vermilion-500/5 px-2 py-0.5">
+                          ⚡ Neecha Bhanga 解消
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </>
               }
             />
@@ -1977,6 +2076,83 @@ function VedicCareerSection({ data }) {
               ⚠️ {karmesh.reading.strengthsWhenWeak}
             </div>
           )}
+        </Section>
+      )}
+
+      {/* Part 2b: Lagna Lord · 命主星（三王交叉第一王） */}
+      {lagnaLord && !lagnaLord.isSameAsKarmesh && (
+        <Section
+          icon={<Sparkle className="h-4 w-4" />}
+          badge="第 2b 部分 · 命主星"
+          title={`命主星 ${lagnaLord.planet} · 事業判讀的第二重量`}
+        >
+          <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+            古典 K.N. Rao 派強調「三王交叉」— <strong className="text-saffron-400">命主星 + 10 宮主 + Navamsa Dispositor</strong>，三者都要看。
+            Obama 就是典型案例：10 宮主 Venus 陷於 6 宮，但 <strong>命主星 Saturn 在 1 宮自宮</strong>使他登上總統位置。
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">命主星位置</div>
+              <div className="font-serif text-lg text-slate-100">
+                {lagnaLord.planet} 落第 {lagnaLord.house} 宮 · {lagnaLord.rashi?.chinese}
+              </div>
+              {lagnaLord.dignityInfo !== 'neutral' && (
+                <div className={`inline-block mt-2 rounded-full border px-2 py-0.5 text-[11px] ${dignityColor[lagnaLord.dignity]}`}>
+                  {dignityLabels[lagnaLord.dignity]?.label}
+                </div>
+              )}
+              <div className="text-xs text-slate-400 mt-2">
+                月宿：{lagnaLord.nakshatra?.name} Pada {lagnaLord.nakshatra?.pada}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-sky-500/25 bg-sky-500/5 p-4">
+              <div className="text-xs uppercase tracking-widest text-sky-400 mb-2">
+                當「副事業主」看的組合讀法
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed">
+                {lagnaLord.combinationReading || '此組合待擴充資料庫'}
+              </p>
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {/* Part 2c: D10 (Dasamsa) 事業專盤交叉 */}
+      {d10 && (
+        <Section
+          icon={<Telescope className="h-4 w-4" />}
+          badge="第 2c 部分 · 雙盤交叉"
+          title="D10 (Dasamsa) 事業專盤：潛能 vs 實踐"
+        >
+          <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+            BPHS 明文：<strong className="text-saffron-400">事業分析必須 D1（命盤）+ D10（事業專盤）雙盤合看</strong>。
+            D1 顯示「你的事業潛能」，D10 顯示「你實際怎麼執行事業」。兩者一致 = 方向穩；不一致 = 內外拉扯。
+          </p>
+          <div className={`rounded-xl border p-4 ${
+            d10.agreement
+              ? 'border-emerald-500/30 bg-emerald-500/5'
+              : 'border-amber-500/30 bg-amber-500/5'
+          }`}>
+            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">
+              {d10.agreement ? '✅ D1 × D10 方向一致' : '⚠️ D1 × D10 方向分歧'}
+            </div>
+            <div className="text-sm text-slate-200 leading-relaxed mb-3">
+              {d10.verdict}
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="rounded-lg bg-white/[0.03] border border-white/5 p-2.5">
+                <div className="text-slate-400 mb-1">D1 · 事業潛能</div>
+                <div className="text-slate-100 font-medium">{foundation.karmeshPlanet} 主</div>
+                <div className="text-slate-500">10 宮星座 {foundation.tenthRashi.chinese}</div>
+              </div>
+              <div className="rounded-lg bg-white/[0.03] border border-white/5 p-2.5">
+                <div className="text-slate-400 mb-1">D10 · 事業實踐</div>
+                <div className="text-slate-100 font-medium">{d10.tenthLord} 主</div>
+                <div className="text-slate-500">D10 Lagna {d10.lagnaRashi?.chinese} · 10 宮星座 {d10.tenthRashiName}</div>
+              </div>
+            </div>
+          </div>
         </Section>
       )}
 

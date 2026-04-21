@@ -232,10 +232,21 @@ export function computeRarityIndex(chart) {
   score = Math.min(100, Math.round(score))
   const tier = scoreTier(score)
 
+  // 依 plain 標題去重 — 避免同一類 yoga 的不同 variant（如 mahapurusha-Mars / -Venus）被顯示多次
+  const sorted = features.sort((a, b) => b.weight - a.weight)
+  const seen = new Set()
+  const deduped = []
+  for (const f of sorted) {
+    const key = f.plain || f.name
+    if (seen.has(key)) continue
+    seen.add(key)
+    deduped.push(f)
+  }
+
   return {
     score,
     ...tier,
-    features: features.sort((a, b) => b.weight - a.weight)
+    features: deduped
   }
 }
 

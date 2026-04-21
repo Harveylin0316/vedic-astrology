@@ -1,17 +1,14 @@
-// 正統吠陀事業分析引擎
+// 正統吠陀事業分析引擎 · v2 (增強版)
 //
-// 依據 Brihat Parashara Hora Shastra（BPHS）+ Phaladeepika：
+// v2 相對 v1 的升級：
+//   ✅ 加入 Lagna Lord（命主星）分析 — 古典 K.N. Rao 派三王交叉第一王
+//   ✅ 加入 Yoga 偵測 → 事業啟示 (override 單點判讀)
+//   ✅ D10 (Dasamsa) 事業專盤交叉驗證
+//   ✅ 尊嚴 Dignity 擴展：Moolatrikona / Digbala / Neecha Bhanga 解消
+//   ✅ 108 組合矩陣（9 行星 × 12 宮）取代原本 9×1 + 12×1 並列
+//   ✅ Synthesized Narrative：把所有發現組合成「像專業占星師寫的」一段話
 //
-// 核心分析流程：
-//   1. 10 宮本體（Karma Bhava）— 星座、占星
-//   2. 10 宮主（Dashamesh）深度分析 — 最關鍵
-//      - 所在宮位（事業環境）
-//      - 所在星座（尊嚴 Dignity）
-//      - 所在月宿（Nakshatra → 精細職業）
-//   3. 九大自然徵象（Natural Karakas）— 每顆行星的職業領域
-//   4. 特別強調：Saturn = 所有人事業的自然本命星
-//   5. Amatyakaraka（AMK）— Jaimini 派的事業靈魂星（度數第 2 高）
-//   6. 當前 Dasha 對事業的影響
+// 依據：Brihat Parashara Hora Shastra + Phaladeepika + K.N. Rao + B.V. Raman
 
 import {
   planetAsKarmesh,
@@ -21,12 +18,20 @@ import {
   nakshatraRuler,
   planetDignityMap,
   dignityLabels,
-  planetFriendship
+  planetFriendship,
+  digbalaHouse
 } from '../data/careerVedicData.js'
 import { scorePlanetForCareer } from './planetStrength.js'
+import { detectYogas } from './yogaDetector.js'
+import {
+  karmeshMatrix,
+  yogaCareerReadings,
+  synthesizeCareerNarrative
+} from '../data/careerMatrix.js'
+import { computeDasamsa } from './vedicCalc.js'
 
 // ═══════════════════════════════════════════════
-// 尊嚴 Dignity 計算
+// 基礎尊嚴 Dignity 計算（簡版 — 僅傳 rashi 名稱判斷）
 // ═══════════════════════════════════════════════
 export function computeDignity(planet, rashiName) {
   const d = planetDignityMap[planet]
@@ -34,7 +39,6 @@ export function computeDignity(planet, rashiName) {
   if (d.exalted === rashiName) return 'exalted'
   if (d.own && d.own.includes(rashiName)) return 'own'
   if (d.debilitated === rashiName) return 'debilitated'
-  // 友敵判定
   const signLord = rashiLord[rashiName]
   if (!signLord || planet === 'Rahu' || planet === 'Ketu') return 'neutral'
   const fr = planetFriendship[planet]
@@ -45,9 +49,35 @@ export function computeDignity(planet, rashiName) {
 }
 
 // ═══════════════════════════════════════════════
+// 詳細 Dignity Details — Digbala + Moolatrikona + Neecha Bhanga 解消
+// ═══════════════════════════════════════════════
+export function computeDignityDetails(planet, graha, activeYogas = []) {
+  if (!graha) {
+    return { dignity: 'neutral', moolatrikona: false, digbala: false, neechaBhanga: false }
+  }
+  const dignity = computeDignity(planet, graha.rashi.name)
+  const d = planetDignityMap[planet]
+
+  // Moolatrikona 判定：行星在 moolatrikona 星座 + 度數在範圍內
+  let moolatrikona = false
+  if (d?.moolatrikona && graha.rashi.name === d.moolatrikona.rashi) {
+    const deg = graha.degreeInSign
+    moolatrikona = deg >= d.moolatrikona.from && deg <= d.moolatrikona.to
+  }
+
+  // Digbala 判定：行星在對的宮位（太陽/火星→10; 木/水→1; 土→7; 月/金→4）
+  const targetHouse = digbalaHouse[planet]
+  const digbala = targetHouse && graha.house === targetHouse
+
+  // Neecha Bhanga 判定：從 activeYogas 找是否有 neecha-bhanga-<planet>
+  const neechaBhanga = activeYogas.some((y) => y.id === `neecha-bhanga-${planet}`)
+
+  return { dignity, moolatrikona, digbala, neechaBhanga }
+}
+
+// ═══════════════════════════════════════════════
 // Amatyakaraka 計算（Jaimini 派）
 // 度數最高的行星中第 2 名（排除 Rahu/Ketu）
-// 通常取 Sun/Moon/Mars/Mercury/Jupiter/Venus/Saturn 7 個行星的度數
 // ═══════════════════════════════════════════════
 export function computeAmatyakaraka(chart) {
   const candidates = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']
@@ -58,8 +88,6 @@ export function computeAmatyakaraka(chart) {
     })
     .filter(Boolean)
     .sort((a, b) => b.deg - a.deg)
-  // AK = 第 1 名（最高度數）
-  // AMK = 第 2 名
   return {
     atmakaraka: withDegrees[0] || null,
     amatyakaraka: withDegrees[1] || null,
@@ -68,14 +96,31 @@ export function computeAmatyakaraka(chart) {
 }
 
 // ═══════════════════════════════════════════════
-// 主分析函數
+// 主分析函數（v2）
 // ═══════════════════════════════════════════════
 export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord = null) {
-  // ════ 第 1 部分：10 宮本體 ════
-  const tenthRashi = chart.sidereal.houses[9].rashi // index 9 = 10th house
-  const karmeshPlanet = rashiLord[tenthRashi.name]
+  // ════ 第 0 部分：Yogas（重要！優先於單點判讀）════
+  const allYogas = detectYogas(chart)
+  // 只挑事業相關的 yoga（且有對應的 career reading）
+  const activeCareerYogas = allYogas
+    .map((y) => {
+      const reading = yogaCareerReadings[y.id]
+      if (!reading) return null
+      return {
+        id: y.id,
+        name: y.name,
+        signature: y.signature,
+        verdict: reading.verdict,
+        careerImplication: reading.careerImplication,
+        strength: reading.strength,
+        type: y.type
+      }
+    })
+    .filter(Boolean)
 
-  // 10 宮內的行星（不含 Rahu/Ketu 可選）
+  // ════ 第 1 部分：10 宮本體 ════
+  const tenthRashi = chart.sidereal.houses[9].rashi
+  const karmeshPlanet = rashiLord[tenthRashi.name]
   const tenthOccupants = Object.entries(chart.sidereal.grahas)
     .filter(([, g]) => g.house === 10)
     .map(([name, g]) => ({
@@ -86,22 +131,40 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
       naturalDomain: naturalKaraka[name]?.domains || []
     }))
 
-  // ════ 第 2 部分：10 宮主深度分析 ════
+  // ════ 第 2 部分：10 宮主深度分析 + 擴展尊嚴 ════
   const karmeshGraha = chart.sidereal.grahas[karmeshPlanet]
-  const karmeshDignity = karmeshGraha
-    ? computeDignity(karmeshPlanet, karmeshGraha.rashi.name)
-    : 'neutral'
-  const karmeshNakshatraLord = karmeshGraha
-    ? nakshatraRuler[karmeshGraha.nakshatra.name]
-    : null
-
-  // 力量分數（給 Dasha 時間與整體強弱判斷）
+  const karmeshDignity = karmeshGraha ? computeDignity(karmeshPlanet, karmeshGraha.rashi.name) : 'neutral'
+  const karmeshDignityDetails = computeDignityDetails(karmeshPlanet, karmeshGraha, allYogas)
+  const karmeshNakshatraLord = karmeshGraha ? nakshatraRuler[karmeshGraha.nakshatra.name] : null
   const karmeshScore = karmeshGraha
     ? scorePlanetForCareer(karmeshPlanet, chart, currentDashaLord, currentADLord)
     : { score: 0, reasons: [] }
-
-  // 是否當前走 10 宮主大運（重要時機）
   const inKarmeshDasha = currentDashaLord === karmeshPlanet
+
+  // 組合字典判讀（9 × 12）
+  const combinationReading =
+    karmeshGraha && karmeshMatrix[karmeshPlanet]?.[karmeshGraha.house]
+      ? karmeshMatrix[karmeshPlanet][karmeshGraha.house]
+      : null
+
+  // ════ 第 2b 部分：Lagna Lord（命主星）— 古典三王交叉第一王 ════
+  const lagnaRashi = chart.sidereal.ascendant.rashi
+  const lagnaLordPlanet = rashiLord[lagnaRashi.name]
+  const lagnaLordGraha = chart.sidereal.grahas[lagnaLordPlanet]
+  const lagnaLord = lagnaLordGraha
+    ? {
+        planet: lagnaLordPlanet,
+        graha: lagnaLordGraha,
+        rashi: lagnaLordGraha.rashi,
+        house: lagnaLordGraha.house,
+        nakshatra: lagnaLordGraha.nakshatra,
+        dignity: computeDignity(lagnaLordPlanet, lagnaLordGraha.rashi.name),
+        dignityDetails: computeDignityDetails(lagnaLordPlanet, lagnaLordGraha, allYogas),
+        score: scorePlanetForCareer(lagnaLordPlanet, chart, currentDashaLord, currentADLord),
+        combinationReading: karmeshMatrix[lagnaLordPlanet]?.[lagnaLordGraha.house] || null,
+        isSameAsKarmesh: lagnaLordPlanet === karmeshPlanet
+      }
+    : null
 
   // ════ 第 3 部分：九大徵象星事業力量 ════
   const significatorRanking = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu']
@@ -114,7 +177,7 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     }))
     .sort((a, b) => b.scoreData.score - a.scoreData.score)
 
-  // ════ 第 4 部分：Saturn 特別強調（事業自然本命星）════
+  // ════ 第 4 部分：Saturn 特別強調 ════
   const saturnInfo = {
     planet: 'Saturn',
     scoreData: scorePlanetForCareer('Saturn', chart, currentDashaLord, currentADLord),
@@ -137,13 +200,48 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
       }
     : null
 
-  return {
-    // 第 1 部分
-    foundation: {
-      tenthRashi,
-      tenthOccupants,
-      karmeshPlanet
+  // ════ 第 7 部分：D10 (Dasamsa) 事業專盤交叉 ════
+  const dasamsa = computeDasamsa(chart)
+  let d10Karmesh = null
+  if (dasamsa) {
+    // D10 10 宮主 = D10 Lagna 往後數到第 10 個 rashi 的 lord
+    const d10TenthSignIdx0 = (dasamsa.lagna.signIndex0 + 9) % 12
+    const rashisOrder = ['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena']
+    const d10TenthSign = rashisOrder[d10TenthSignIdx0]
+    const d10TenthLord = rashiLord[d10TenthSign]
+    d10Karmesh = {
+      lagnaRashi: dasamsa.lagna.rashi,
+      tenthRashiName: d10TenthSign,
+      tenthLord: d10TenthLord,
+      tenthLordPositionInD10: dasamsa.grahas[d10TenthLord],
+      planetPositions: dasamsa.grahas,
+      agreement: d10TenthLord === karmeshPlanet,  // D1 跟 D10 10 宮主一致 = 事業方向穩定
+      verdict:
+        d10TenthLord === karmeshPlanet
+          ? `D1 與 D10 10 宮主都是 ${karmeshPlanet} — 事業方向一致、執行與潛能同軌`
+          : `D1 10 宮主是 ${karmeshPlanet}（潛能），D10 10 宮主是 ${d10TenthLord}（實踐） — 事業的「想做」與「會做」可能不同領域`
+    }
+  }
+
+  // ════ 第 8 部分：Narrative Synthesis — 最關鍵的一段文字 ════
+  const narrative = synthesizeCareerNarrative({
+    karmesh: {
+      planet: karmeshPlanet,
+      house: karmeshGraha?.house,
+      rashi: karmeshGraha?.rashi
     },
+    lagnaLord,
+    activeCareerYogas,
+    dignityDetails: karmeshDignityDetails
+  })
+
+  return {
+    // 最核心：合成敘事（放在 UI 最上面）
+    narrative,
+    // Yoga 事業啟示（優先級最高）
+    activeCareerYogas,
+    // 第 1 部分
+    foundation: { tenthRashi, tenthOccupants, karmeshPlanet },
     // 第 2 部分（最重要）
     karmesh: {
       planet: karmeshPlanet,
@@ -154,9 +252,11 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
       nakshatraLord: karmeshNakshatraLord,
       dignity: karmeshDignity,
       dignityInfo: dignityLabels[karmeshDignity],
+      dignityDetails: karmeshDignityDetails,
       score: karmeshScore,
       reading: planetAsKarmesh[karmeshPlanet],
       environment: karmeshGraha ? karmeshInHouse[karmeshGraha.house] : null,
+      combinationReading,
       specificDirection: karmeshNakshatraLord
         ? {
             nakshatraLord: karmeshNakshatraLord,
@@ -164,6 +264,8 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
           }
         : null
     },
+    // 第 2b 部分（Lagna Lord 加權）
+    lagnaLord,
     // 第 3 部分
     significators: significatorRanking,
     // 第 4 部分
@@ -178,6 +280,8 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
         }
       : null,
     // 第 6 部分
-    dasha: dashaImpact
+    dasha: dashaImpact,
+    // 第 7 部分
+    d10: d10Karmesh
   }
 }

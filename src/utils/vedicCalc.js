@@ -462,3 +462,53 @@ export function getCurrentAntardasha(antardashas, now = new Date()) {
   }
 }
 
+// ═════════════════════════════════════════════════════════════
+// D10 (Dasamsa) 事業專盤計算
+//
+// 古典規則（Parashara）：
+// - 每個 30° 星座切 10 等份，每份 3°
+// - 奇數星座（Mesha/Mithuna/Simha/Tula/Dhanu/Kumbha）：10 分格從該星座起算
+// - 偶數星座（Vrishabha/Karka/Kanya/Vrishchika/Makara/Meena）：10 分格從該星座的第 9 個星座起算
+// - divIndex = floor(度數 / 3) ∈ [0, 9]
+// - D10 signIndex = (startSign + divIndex) % 12
+//
+// D10 houses 使用 whole-sign 從 D10 Lagna 算起
+// ═════════════════════════════════════════════════════════════
+export function computeDasamsaSignIndex(signIndex0, degreesInSign) {
+  const divIndex = Math.min(9, Math.floor(degreesInSign / 3))
+  const isOdd = signIndex0 % 2 === 0 // 0-based: 0=Mesha=odd, 1=Vrishabha=even
+  const startSignIdx0 = isOdd ? signIndex0 : (signIndex0 + 8) % 12
+  return (startSignIdx0 + divIndex) % 12
+}
+
+export function computeDasamsa(chart) {
+  if (!chart?.sidereal?.grahas) return null
+
+  // D10 Lagna (Ascendant's Dasamsa sign)
+  const ascRashi = chart.sidereal.ascendant.rashi
+  const ascSignIdx0 = ascRashi.id - 1
+  const ascDeg = chart.sidereal.ascendant.degreeInSign
+  const dasamsaLagnaIdx0 = computeDasamsaSignIndex(ascSignIdx0, ascDeg)
+  const dasamsaLagnaRashi = getRashiByIndex(dasamsaLagnaIdx0 + 1)
+
+  // D10 positions for each planet
+  const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu']
+  const grahas = {}
+  for (const p of planets) {
+    const g = chart.sidereal.grahas[p]
+    if (!g) continue
+    const signIdx0 = g.rashi.id - 1
+    const dasamsaIdx0 = computeDasamsaSignIndex(signIdx0, g.degreeInSign)
+    const d10House = ((dasamsaIdx0 - dasamsaLagnaIdx0 + 12) % 12) + 1
+    grahas[p] = {
+      rashi: getRashiByIndex(dasamsaIdx0 + 1),
+      house: d10House
+    }
+  }
+
+  return {
+    lagna: { rashi: dasamsaLagnaRashi, signIndex0: dasamsaLagnaIdx0 },
+    grahas
+  }
+}
+

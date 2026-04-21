@@ -22,7 +22,16 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
   const catchphrase = persona?.primary || ''
 
   // 挑 Top 2 最稀有的關鍵配置（含完整 meaning 敘述）
-  const topFeatures = (rarity?.features || []).slice(0, 2)
+  // 依「白話標題」去重 — 避免 mahapurusha-Mars + mahapurusha-Venus 顯示兩次同標題
+  const uniqueFeatures = []
+  const seenPlain = new Set()
+  for (const f of rarity?.features || []) {
+    const key = f.plain || f.name
+    if (seenPlain.has(key)) continue
+    seenPlain.add(key)
+    uniqueFeatures.push(f)
+  }
+  const topFeatures = uniqueFeatures.slice(0, 2)
 
   return (
     <div

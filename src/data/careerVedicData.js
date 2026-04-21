@@ -177,17 +177,31 @@ export const nakshatraRuler = {
   'Purva Bhadrapada': 'Jupiter', 'Uttara Bhadrapada': 'Saturn', Revati: 'Mercury'
 }
 
-// 行星本宮 / 旺 / 陷（判定尊嚴 Dignity）
+// 行星本宮 / 旺 / 陷 + Moolatrikona（判定尊嚴 Dignity）
+// Moolatrikona 帶度數範圍，力量僅次於本宮
 export const planetDignityMap = {
-  Sun: { own: ['Simha'], exalted: 'Mesha', debilitated: 'Tula' },
-  Moon: { own: ['Karka'], exalted: 'Vrishabha', debilitated: 'Vrishchika' },
-  Mars: { own: ['Mesha', 'Vrishchika'], exalted: 'Makara', debilitated: 'Karka' },
-  Mercury: { own: ['Mithuna', 'Kanya'], exalted: 'Kanya', debilitated: 'Meena' },
-  Jupiter: { own: ['Dhanu', 'Meena'], exalted: 'Karka', debilitated: 'Makara' },
-  Venus: { own: ['Vrishabha', 'Tula'], exalted: 'Meena', debilitated: 'Kanya' },
-  Saturn: { own: ['Makara', 'Kumbha'], exalted: 'Tula', debilitated: 'Mesha' },
-  Rahu: { own: [], exalted: 'Vrishabha', debilitated: 'Vrishchika' },
-  Ketu: { own: [], exalted: 'Vrishchika', debilitated: 'Vrishabha' }
+  Sun: { own: ['Simha'], exalted: 'Mesha', debilitated: 'Tula', moolatrikona: { rashi: 'Simha', from: 0, to: 20 } },
+  Moon: { own: ['Karka'], exalted: 'Vrishabha', debilitated: 'Vrishchika', moolatrikona: { rashi: 'Vrishabha', from: 3, to: 30 } },
+  Mars: { own: ['Mesha', 'Vrishchika'], exalted: 'Makara', debilitated: 'Karka', moolatrikona: { rashi: 'Mesha', from: 0, to: 12 } },
+  Mercury: { own: ['Mithuna', 'Kanya'], exalted: 'Kanya', debilitated: 'Meena', moolatrikona: { rashi: 'Kanya', from: 16, to: 20 } },
+  Jupiter: { own: ['Dhanu', 'Meena'], exalted: 'Karka', debilitated: 'Makara', moolatrikona: { rashi: 'Dhanu', from: 0, to: 10 } },
+  Venus: { own: ['Vrishabha', 'Tula'], exalted: 'Meena', debilitated: 'Kanya', moolatrikona: { rashi: 'Tula', from: 0, to: 15 } },
+  Saturn: { own: ['Makara', 'Kumbha'], exalted: 'Tula', debilitated: 'Mesha', moolatrikona: { rashi: 'Kumbha', from: 0, to: 20 } },
+  Rahu: { own: [], exalted: 'Vrishabha', debilitated: 'Vrishchika', moolatrikona: null },
+  Ketu: { own: [], exalted: 'Vrishchika', debilitated: 'Vrishabha', moolatrikona: null }
+}
+
+// Digbala — 方向力（行星在哪一宮達到最大「方向力量」）
+// Parashara 鐵律：Jupiter/Mercury → 1 宮（東）；Mars/Sun → 10 宮（南）；Saturn → 7 宮（西）；Moon/Venus → 4 宮（北）
+export const digbalaHouse = {
+  Jupiter: 1,
+  Mercury: 1,
+  Mars: 10,
+  Sun: 10,
+  Saturn: 7,
+  Moon: 4,
+  Venus: 4
+  // Rahu/Ketu 無 Digbala
 }
 
 // 尊嚴文字
