@@ -41,6 +41,7 @@ import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
 import { buildCardPunchlines } from '../data/cardPunchlines.js'
+import { dashaLifeStages, getLifeFlavor, lifePhaseLabel } from '../data/dashaLifeStages.js'
 import { analyzeVedicCareer } from '../utils/careerVedic.js'
 import { dignityLabels } from '../data/careerVedicData.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
@@ -1010,6 +1011,51 @@ export default function BirthChart() {
                 </Section>
               )}
 
+              {/* ⑦-4 人生重要階段發展軌跡 · 全時間軸敘事 */}
+              {dashaPeriods && dashaPeriods.length > 0 && (
+                <Section
+                  icon={<History className="h-4 w-4" />}
+                  badge="人生地圖 · Vimshottari 120 年敘事"
+                  title="人生每個重要階段的發展軌跡"
+                >
+                  <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+                    你的命盤會依出生時的月亮位置，產生 9 顆行星輪流主政的 120 年大運。每段大運會為你的人生染上不同色調 —
+                    <strong className="text-saffron-400">以下每張卡對應一段大運 + 你當時的年齡階段，讀完就等於讀完自己這輩子的劇本綱要</strong>。
+                  </p>
+                  <div className="space-y-3">
+                    {dashaPeriods
+                      .filter((p) => {
+                        const ageEnd = ageOf(p.end)
+                        return ageEnd >= 0 && ageOf(p.start) <= 90
+                      })
+                      .map((p, i) => {
+                        const ageStart = ageOf(p.start)
+                        const ageEnd = ageOf(p.end)
+                        const isPast = p.end <= now
+                        const isCurrent = p.start <= now && p.end > now
+                        const status = isCurrent ? 'current' : isPast ? 'past' : 'future'
+                        return (
+                          <LifeStageCard
+                            key={i}
+                            index={i + 1}
+                            lord={p.lord}
+                            dateRange={`${p.start.getFullYear()} – ${p.end.getFullYear()}`}
+                            ageRange={`${Math.max(0, ageStart).toFixed(1)} – ${ageEnd.toFixed(1)} 歲`}
+                            years={p.years}
+                            ageStart={ageStart}
+                            ageEnd={ageEnd}
+                            status={status}
+                          />
+                        )
+                      })}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-5 leading-relaxed">
+                    💡 這份敘事是「純 Dasha 層」— 沒把你命盤裡行星落點考慮進去（那是事業分析、性格分析在做的事）。
+                    把這份敘事 × 你命盤的具體配置，才是完整的運勢。
+                  </p>
+                </Section>
+              )}
+
               {/* ⑧ Nakshatra */}
               {nakshatra && (
                 <Section icon={<Star className="h-4 w-4" />} badge={`月宿 · ${chart.sidereal.moon.nakshatra.name} · 第 ${chart.sidereal.moon.nakshatra.pada} 象限`} title={nakshatra.theme}>
@@ -1376,6 +1422,100 @@ function DashaTimelineCard({ ageRange, dateRange, name, nickname, theme, vibe, c
           ))}
         </div>
       )}
+    </div>
+  )
+}
+
+// 人生階段敘事卡 — 每段大運的 360° 描述（主題 / 生命狀態 / 星象意義）
+function LifeStageCard({ index, lord, dateRange, ageRange, years, ageStart, ageEnd, status }) {
+  const stage = dashaLifeStages[lord]
+  if (!stage) return null
+  const flavorKey = getLifeFlavor(ageStart, ageEnd)
+  const flavor = stage[flavorKey]
+  const phaseLabel = lifePhaseLabel[flavorKey]
+
+  const isPast = status === 'past'
+  const isCurrent = status === 'current'
+  const isFuture = status === 'future'
+
+  const statusStyle = isCurrent
+    ? 'border-saffron-500/50 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 shadow-lg shadow-saffron-500/10'
+    : isPast
+    ? 'border-white/10 bg-white/[0.03] opacity-90'
+    : 'border-saffron-500/20 bg-saffron-500/[0.03]'
+
+  const statusBadge = isCurrent
+    ? { label: '現在', cls: 'bg-saffron-500 text-cosmic-950' }
+    : isPast
+    ? { label: '已過', cls: 'bg-white/10 text-slate-400' }
+    : { label: '未來', cls: 'bg-saffron-500/20 text-saffron-400 border border-saffron-500/30' }
+
+  const planetSymbol = {
+    Sun: '☉', Moon: '☽', Mars: '♂', Mercury: '☿',
+    Jupiter: '♃', Venus: '♀', Saturn: '♄', Rahu: '☊', Ketu: '☋'
+  }[lord]
+
+  return (
+    <div className={`rounded-xl border p-5 ${statusStyle}`}>
+      {/* 標題列：編號 + 行星 + 年份 + 狀態徽章 */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-br from-saffron-500/30 to-vermilion-500/20 border border-saffron-500/30 flex items-center justify-center">
+            <span className="font-serif text-lg text-saffron-300">{planetSymbol}</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-xs text-slate-500 font-mono">#{index}</span>
+              <span className="font-serif text-lg text-slate-100">
+                {lord} 大運
+              </span>
+              <span className="text-xs text-slate-500">· {years.toFixed(1)} 年</span>
+            </div>
+            <div className="text-xs text-slate-400 mt-0.5">
+              {dateRange} · {ageRange} · <span className="text-saffron-400">{phaseLabel}期</span>
+            </div>
+          </div>
+        </div>
+        <span className={`flex-shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-medium ${statusBadge.cls}`}>
+          {statusBadge.label}
+        </span>
+      </div>
+
+      {/* 標題 + 主題 */}
+      <div className="mb-4">
+        <div className="font-serif text-xl gradient-text leading-tight">
+          {stage.title}
+        </div>
+        <div className="text-xs text-saffron-400/80 mt-1 tracking-wide">
+          階段主題 · {stage.theme}
+        </div>
+      </div>
+
+      {/* 生命狀態 */}
+      <div className="mb-3 rounded-lg bg-white/[0.02] border border-white/5 p-3">
+        <div className="text-[11px] uppercase tracking-widest text-saffron-400 mb-1.5 font-medium">
+          📖 生命狀態
+        </div>
+        <p className="text-sm text-slate-200 leading-relaxed">
+          {stage.lifeState}
+        </p>
+        {flavor && (
+          <p className="text-sm text-slate-300 leading-relaxed mt-2 pt-2 border-t border-white/5">
+            <span className="text-saffron-400 font-medium">{phaseLabel}微調：</span>
+            {flavor}
+          </p>
+        )}
+      </div>
+
+      {/* 星象意義 */}
+      <div className="rounded-lg bg-sky-500/[0.04] border border-sky-500/15 p-3">
+        <div className="text-[11px] uppercase tracking-widest text-sky-400 mb-1.5 font-medium">
+          🔭 星象意義
+        </div>
+        <p className="text-sm text-slate-300 leading-relaxed">
+          {stage.astroMeaning}
+        </p>
+      </div>
     </div>
   )
 }

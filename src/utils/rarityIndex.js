@@ -135,7 +135,7 @@ const RARITY_WEIGHTS = {
     meaning: '你的外在目標跟內在渴望方向一致 — 比一般人少了「想要的 vs 現實做的」那種撕裂感。'
   },
   'rahu-axis-identity': {
-    weight: 7,
+    weight: 4,
     freq: '~17%',
     plain: '身份 / 關係 是人生主題',
     technical: 'Rahu 在第 1 宮或第 7 宮',
@@ -143,36 +143,37 @@ const RARITY_WEIGHTS = {
   },
 
   // ═══ 常見但仍為特殊標記（15%+ 人口）═══
+  // 註：這區段權重已校準 — 頻率 ≥15% 就不該算「很稀有」
   'raj-yoga': {
-    weight: 6,
+    weight: 3,
     freq: '~20%',
     plain: '命中有領導格',
     technical: 'Raj Yoga · 皇家瑜伽',
     meaning: '你的事業會走到「帶人、主導、有聲望」的位置 — 不會永遠當員工。'
   },
   'dhana-yoga': {
-    weight: 6,
+    weight: 3,
     freq: '~18%',
     plain: '錢會自然進來的命',
     technical: 'Dhana Yoga · 財富瑜伽',
     meaning: '命盤中有財富配置，你這輩子不會為錢苦到哪裡去 — 收入會從多個管道自然累積。'
   },
   'budha-aditya': {
-    weight: 5,
+    weight: 3,
     freq: '~15%',
     plain: '聰明會表達、有權威感',
     technical: 'Budha Aditya Yoga · 水太陽',
     meaning: '太陽 + 水星同宮。你講話別人會聽、寫東西別人會信服。適合做知識型公眾人物。'
   },
   'chandra-mangal': {
-    weight: 5,
+    weight: 4,
     freq: '~10%',
     plain: '情感 × 行動力強結合',
     technical: 'Chandra Mangal · 月火瑜伽',
     meaning: '月亮 + 火星同宮。你「感覺對了就衝」的反應特別強，商業直覺也敏銳。'
   },
   'moon-strong': {
-    weight: 5,
+    weight: 3,
     freq: '~17%',
     plain: '情緒穩定 · 心裡有根',
     technical: '月亮落於本宮或旺宮',
@@ -239,11 +240,13 @@ export function computeRarityIndex(chart) {
 }
 
 function scoreTier(score) {
-  if (score >= 95) return { topPercent: 0.3, stars: 5, title: '傳奇級命盤', note: '1000 人裡不到 3 個跟你一樣' }
-  if (score >= 85) return { topPercent: 1.5, stars: 5, title: '極稀有', note: '100 個人裡只有 1-2 個跟你類似' }
-  if (score >= 75) return { topPercent: 3, stars: 4, title: '非常稀有', note: '30 個人裡才會出現 1 個' }
-  if (score >= 65) return { topPercent: 7, stars: 4, title: '稀有', note: '15 個人裡 1 個' }
-  if (score >= 55) return { topPercent: 15, stars: 3, title: '有特色', note: '比多數人更特別' }
-  if (score >= 45) return { topPercent: 30, stars: 3, title: '較為平均', note: '平常型命盤但仍有亮點' }
+  // 門檻經過 2026 校準 — 高頻配置（raj-yoga / dhana-yoga 等 ≥15% 人口）權重已下調
+  // 避免「人人都是傳奇」的通膨現象
+  if (score >= 98) return { topPercent: 0.3, stars: 5, title: '傳奇級命盤', note: '1000 人裡不到 3 個跟你一樣' }
+  if (score >= 90) return { topPercent: 1.5, stars: 5, title: '極稀有', note: '100 個人裡只有 1-2 個跟你類似' }
+  if (score >= 80) return { topPercent: 3, stars: 4, title: '非常稀有', note: '30 個人裡才會出現 1 個' }
+  if (score >= 70) return { topPercent: 7, stars: 4, title: '稀有', note: '15 個人裡 1 個' }
+  if (score >= 60) return { topPercent: 15, stars: 3, title: '有特色', note: '比多數人更特別' }
+  if (score >= 50) return { topPercent: 30, stars: 3, title: '較為平均', note: '平常型命盤但仍有亮點' }
   return { topPercent: 50, stars: 2, title: '樸實型', note: '你的命盤偏平衡、沒有極端配置' }
 }
