@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   Heart,
   Calendar,
@@ -12,7 +13,9 @@ import {
   ShieldAlert,
   ArrowRight,
   Flame,
-  Swords
+  Swords,
+  Link2,
+  Check
 } from 'lucide-react'
 import { computeVedicChart } from '../utils/vedicCalc.js'
 import { computeCompatibility, getKutaStatus } from '../utils/compatibilityEngine.js'
@@ -22,6 +25,12 @@ import MysticalTransition from '../components/MysticalTransition.jsx'
 import CompatibilityShareCard from '../components/CompatibilityShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
+import {
+  encodeCompatPayload,
+  decodeCompatPayload,
+  replaceUrlParam,
+  copyToClipboard
+} from '../utils/permalink.js'
 
 const emptyPerson = () => ({
   name: '',
@@ -35,6 +44,7 @@ const emptyPerson = () => ({
 })
 
 export default function Compatibility() {
+  const [searchParams] = useSearchParams()
   const [you, setYou] = useState(emptyPerson())
   const [them, setThem] = useState(emptyPerson())
   const [relationship, setRelationship] = useState('romantic')
@@ -42,6 +52,51 @@ export default function Compatibility() {
   const [pending, setPending] = useState(null)
   const [result, setResult] = useState(null)
   const [showTransition, setShowTransition] = useState(false)
+
+  // 從 URL 參數還原（永久連結）
+  useEffect(() => {
+    const encoded = searchParams.get('d')
+    if (!encoded) return
+    const payload = decodeCompatPayload(encoded)
+    if (!payload) return
+
+    setYou(payload.you)
+    setThem(payload.them)
+    setRelationship(payload.relationship)
+
+    // 直接計算 + 顯示（跳過過場，因為是朋友點進來看結果的）
+    try {
+      const [yY, yM, yD] = payload.you.date.split('-').map(Number)
+      const [yH, yMin] = payload.you.time.split(':').map(Number)
+      const [tY, tM, tD] = payload.them.date.split('-').map(Number)
+      const [tH, tMin] = payload.them.time.split(':').map(Number)
+      const chartA = computeVedicChart({
+        year: yY, month: yM, day: yD, hour: yH, minute: yMin,
+        tzOffset: parseFloat(payload.you.tz),
+        lat: parseFloat(payload.you.lat),
+        lon: parseFloat(payload.you.lon)
+      })
+      const chartB = computeVedicChart({
+        year: tY, month: tM, day: tD, hour: tH, minute: tMin,
+        tzOffset: parseFloat(payload.them.tz),
+        lat: parseFloat(payload.them.lat),
+        lon: parseFloat(payload.them.lon)
+      })
+      const compat = computeCompatibility(chartA, chartB)
+      const nameA = (payload.you.name || '').trim() || '你'
+      const nameB = (payload.them.name || '').trim() || 'TA'
+      const narrative = buildCompatibilityNarrative(compat, chartA, chartB, nameA, nameB)
+      setResult({ compat, narrative, you: payload.you, them: payload.them })
+      trackEvent('compatibility_permalink_view', {
+        relationship: payload.relationship,
+        category: compat.category,
+        score: compat.totalScore
+      })
+    } catch (err) {
+      console.error(err)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const updateYou = (k, v) => setYou((p) => ({ ...p, [k]: v }))
   const updateThem = (k, v) => setThem((p) => ({ ...p, [k]: v }))
@@ -92,6 +147,9 @@ export default function Compatibility() {
       const narrative = buildCompatibilityNarrative(compat, chartA, chartB, nameA, nameB)
       setPending({ compat, narrative, you: { ...you }, them: { ...them } })
       setShowTransition(true)
+      // 把兩人生辰編進 URL（永久連結）
+      const payload = encodeCompatPayload({ you, them, relationship })
+      replaceUrlParam('d', payload)
       trackEvent('compute_compatibility', {
         relationship,
         category: compat.category,
@@ -473,13 +531,43 @@ function CompatibilityResult({ result, relationship, onReset }) {
 
       {/* CTA */}
       <div className="glass-panel p-6 text-center">
-        <p className="text-slate-300 mb-4">想看其他人的合盤？</p>
-        <button onClick={onReset} className="btn-primary">
-          <ArrowRight className="h-4 w-4" />
-          再算一組
-        </button>
+        <p className="text-slate-300 mb-4">想分享或看下一組？</p>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <CopyLinkButton />
+          <button onClick={onReset} className="btn-ghost">
+            <ArrowRight className="h-4 w-4" />
+            再算一組
+          </button>
+        </div>
       </div>
     </div>
+  )
+}
+
+function CopyLinkButton() {
+  const [copied, setCopied] = useState(false)
+  const handleCopy = async () => {
+    const ok = await copyToClipboard(window.location.href)
+    if (ok) {
+      setCopied(true)
+      trackEvent('copy_permalink', { page: 'compatibility' })
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+  return (
+    <button type="button" onClick={handleCopy} className="btn-primary">
+      {copied ? (
+        <>
+          <Check className="h-4 w-4" />
+          已複製連結
+        </>
+      ) : (
+        <>
+          <Link2 className="h-4 w-4" />
+          複製連結給 TA
+        </>
+      )}
+    </button>
   )
 }
 

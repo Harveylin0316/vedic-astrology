@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   Sparkles,
   Calendar,
@@ -27,13 +28,21 @@ import {
   CircleDot,
   Telescope,
   Settings2,
-  UserRound
+  UserRound,
+  Link2,
+  Check
 } from 'lucide-react'
 import { cities, findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
+import {
+  encodeBirthPayload,
+  decodeBirthPayload,
+  replaceUrlParam,
+  copyToClipboard
+} from '../utils/permalink.js'
 import {
   computeVedicChart,
   formatDegrees,
@@ -80,6 +89,7 @@ const sectionTabs = [
 ]
 
 export default function BirthChart() {
+  const [searchParams] = useSearchParams()
   const [form, setForm] = useState(defaultForm)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [chart, setChart] = useState(null)
@@ -91,6 +101,33 @@ export default function BirthChart() {
   const [submittedGender, setSubmittedGender] = useState('')
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('self')
+
+  // 從 URL 參數還原（永久連結）
+  useEffect(() => {
+    const encoded = searchParams.get('d')
+    if (!encoded) return
+    const restored = decodeBirthPayload(encoded)
+    if (!restored) return
+    setForm(restored)
+    try {
+      const [year, month, day] = restored.date.split('-').map(Number)
+      const [hour, minute] = restored.time.split(':').map(Number)
+      const result = computeVedicChart({
+        year, month, day, hour, minute,
+        tzOffset: parseFloat(restored.tz),
+        lat: parseFloat(restored.lat),
+        lon: parseFloat(restored.lon)
+      })
+      setChart(result)
+      setSubmittedCity(restored.city || `${restored.lat}, ${restored.lon}`)
+      setSubmittedStamp(`${restored.date} ${restored.time}`)
+      setSubmittedGender(restored.gender)
+      trackEvent('birth_chart_permalink_view')
+    } catch (err) {
+      console.error(err)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
@@ -134,6 +171,8 @@ export default function BirthChart() {
         gender: form.gender
       })
       setShowTransition(true)
+      // 把生辰編進 URL（永久連結）
+      replaceUrlParam('d', encodeBirthPayload(form))
       trackEvent('compute_birth_chart', {
         has_gender: !!form.gender,
         has_city: !!findCity(form.city)
@@ -444,8 +483,11 @@ export default function BirthChart() {
                     </span>
                   ))}
                 </div>
-                <div className="mt-5 text-sm text-slate-400">
-                  {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
+                <div className="mt-5 flex items-center justify-between gap-3 flex-wrap">
+                  <div className="text-sm text-slate-400">
+                    {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
+                  </div>
+                  <CopyLinkButton />
                 </div>
               </div>
 
@@ -1187,6 +1229,37 @@ function DashaTimelineCard({ ageRange, dateRange, name, nickname, theme, vibe, c
         </div>
       )}
     </div>
+  )
+}
+
+function CopyLinkButton() {
+  const [copied, setCopied] = useState(false)
+  const handleCopy = async () => {
+    const ok = await copyToClipboard(window.location.href)
+    if (ok) {
+      setCopied(true)
+      trackEvent('copy_permalink', { page: 'birth_chart' })
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      className="flex-shrink-0 inline-flex items-center gap-1.5 rounded-xl border border-saffron-500/30 bg-saffron-500/10 px-3 py-1.5 text-xs font-medium text-saffron-400 hover:bg-saffron-500/20 transition"
+    >
+      {copied ? (
+        <>
+          <Check className="h-3.5 w-3.5" />
+          已複製
+        </>
+      ) : (
+        <>
+          <Link2 className="h-3.5 w-3.5" />
+          複製分享連結
+        </>
+      )}
+    </button>
   )
 }
 
