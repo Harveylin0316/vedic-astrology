@@ -2,13 +2,16 @@ import { useRef, useState, cloneElement, isValidElement } from 'react'
 import { toPng } from 'html-to-image'
 import { Download, Share2, Check, Loader2 } from 'lucide-react'
 import { trackEvent } from './Analytics.jsx'
+import { useI18n } from '../i18n/I18nProvider.jsx'
 
 // 通用 ShareCardSection：預覽縮圖 + 下載 PNG
 // 用法：<ShareCardSection filename="xxx.png"><Card ref={cardRef} /></ShareCardSection>
 // children 必須是 forwardRef 元件（會自動接 ref）
-export default function ShareCardSection({ children, filename = 'vedic-chart.png', title = '分享你的結果' }) {
+export default function ShareCardSection({ children, filename = 'vedic-chart.png', title }) {
+  const { t } = useI18n()
   const cardRef = useRef(null)
   const [status, setStatus] = useState('idle') // idle | loading | success | error
+  const displayTitle = title || t('share.title')
 
   const handleDownload = async () => {
     if (!cardRef.current) return
@@ -71,11 +74,11 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
     <div className="glass-panel p-6 text-center">
       <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-2">
         <Share2 className="h-4 w-4" />
-        分享你的結果
+        {t('share.title')}
       </div>
-      <h3 className="font-serif text-2xl gradient-text mb-4">{title}</h3>
+      <h3 className="font-serif text-2xl gradient-text mb-4">{displayTitle}</h3>
       <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto leading-relaxed">
-        下載這張圖，直接發 IG、小紅書、朋友圈、LINE 群。
+        {t('share.description')}
       </p>
 
       {/* 隱藏的 1080×1080 卡片（實際截圖來源）+ 縮小預覽 */}
@@ -113,7 +116,7 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
             className="btn-ghost"
           >
             <Share2 className="h-4 w-4" />
-            分享給朋友
+            {t('share.nativeBtn')}
           </button>
         )}
         <button
@@ -125,26 +128,24 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
           {status === 'loading' ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              產圖中...
+              {t('share.downloadingBtn')}
             </>
           ) : status === 'success' ? (
             <>
               <Check className="h-4 w-4" />
-              已下載
+              {t('share.downloadedBtn')}
             </>
-          ) : status === 'error' ? (
-            <>下載失敗</>
           ) : (
             <>
               <Download className="h-4 w-4" />
-              下載分享圖
+              {t('share.downloadBtn')}
             </>
           )}
         </button>
       </div>
 
       <p className="text-xs text-slate-500 mt-3">
-        PNG · 1080×1080（IG 標準尺寸）
+        {t('share.spec')}
       </p>
     </div>
   )

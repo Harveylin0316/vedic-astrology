@@ -1,16 +1,20 @@
 import { useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { Sun, Menu, X, Sparkles } from 'lucide-react'
-
-const links = [
-  { to: '/birth-chart', label: '命盤與解讀' },
-  { to: '/compatibility', label: '雙人合盤' },
-  { to: '/nakshatras', label: 'Nakshatra' },
-  { to: '/planets', label: '九大行星' }
-]
+import { Sun, Menu, X, Sparkles, Globe } from 'lucide-react'
+import { useI18n } from '../i18n/I18nProvider.jsx'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const { lang, setLang, t } = useI18n()
+
+  const links = [
+    { to: '/birth-chart', label: t('nav.birthChart') },
+    { to: '/compatibility', label: t('nav.compatibility') },
+    { to: '/nakshatras', label: t('nav.nakshatras') },
+    { to: '/planets', label: t('nav.planets') }
+  ]
+
+  const toggleLang = () => setLang(lang === 'zh-TW' ? 'en' : 'zh-TW')
 
   return (
     <header className="relative z-20 border-b border-white/10 bg-cosmic-950/60 backdrop-blur-xl">
@@ -20,9 +24,9 @@ export default function Navbar() {
             <Sun className="h-5 w-5 text-cosmic-950" strokeWidth={2.5} />
           </span>
           <div className="leading-tight">
-            <div className="font-serif text-xl font-semibold gradient-text">吠陀占星</div>
+            <div className="font-serif text-xl font-semibold gradient-text">{t('nav.brandTitle')}</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
-              Vedic Astrology
+              {t('nav.brandSubtitle')}
             </div>
           </div>
         </Link>
@@ -43,9 +47,21 @@ export default function Navbar() {
               {l.label}
             </NavLink>
           ))}
-          <Link to="/birth-chart" className="btn-primary ml-3 py-2 px-4 text-sm">
+
+          {/* 語言切換 */}
+          <button
+            type="button"
+            onClick={toggleLang}
+            className="ml-2 flex items-center gap-1 rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-slate-300 hover:bg-white/5 transition"
+            aria-label="Switch language"
+          >
+            <Globe className="h-3.5 w-3.5" />
+            {lang === 'zh-TW' ? 'EN' : '中文'}
+          </button>
+
+          <Link to="/birth-chart" className="btn-primary ml-2 py-2 px-4 text-sm">
             <Sparkles className="h-4 w-4" />
-            開始解讀
+            {t('nav.startReading')}
           </Link>
         </div>
 
@@ -77,6 +93,14 @@ export default function Navbar() {
                 {l.label}
               </NavLink>
             ))}
+            <button
+              type="button"
+              onClick={() => { toggleLang(); setOpen(false) }}
+              className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300"
+            >
+              <Globe className="h-4 w-4" />
+              {lang === 'zh-TW' ? 'English' : '中文'}
+            </button>
           </div>
         </div>
       )}

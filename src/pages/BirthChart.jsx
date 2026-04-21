@@ -44,6 +44,7 @@ import { analyzeCareer } from '../utils/careerAnalysis.js'
 import { rankCareers } from '../utils/careerRanking.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
+import { useI18n } from '../i18n/I18nProvider.jsx'
 import {
   encodeBirthPayload,
   decodeBirthPayload,
@@ -87,15 +88,10 @@ const defaultForm = {
 
 const elementIcon = { fire: Flame, earth: Mountain, air: Wind, water: Droplets }
 
-const sectionTabs = [
-  { id: 'self', label: '自我', icon: '🪞' },
-  { id: 'love', label: '愛情', icon: '💘' },
-  { id: 'career', label: '事業', icon: '💼' },
-  { id: 'dasha', label: '運勢', icon: '📅' },
-  { id: 'energy', label: '開運', icon: '🍀' }
-]
+// sectionTabs will be built inside the component to use t()
 
 export default function BirthChart() {
+  const { t, lang } = useI18n()
   const [searchParams] = useSearchParams()
   const [form, setForm] = useState(defaultForm)
   const [showAdvanced, setShowAdvanced] = useState(false)
@@ -158,7 +154,7 @@ export default function BirthChart() {
     e.preventDefault()
     setError('')
     if (!form.date || !form.time) {
-      setError('請填寫出生日期與時間')
+      setError(t('form.error.dateTime'))
       return
     }
     try {
@@ -185,7 +181,7 @@ export default function BirthChart() {
         has_city: !!findCity(form.city)
       })
     } catch (err) {
-      setError('計算失敗：請檢查輸入格式。')
+      setError(t('form.error.generic'))
       console.error(err)
     }
   }
@@ -300,6 +296,14 @@ export default function BirthChart() {
   const persona = chart ? buildPersonaSignature(tropLagnaName, tropMoonName) : null
 
   const careerAnalysis = chart ? analyzeCareer(chart, currentDasha?.lord) : null
+
+  const sectionTabs = [
+    { id: 'self', label: t('chart.section.self'), icon: '🪞' },
+    { id: 'love', label: t('chart.section.love'), icon: '💘' },
+    { id: 'career', label: t('chart.section.career'), icon: '💼' },
+    { id: 'dasha', label: t('chart.section.dasha'), icon: '📅' },
+    { id: 'energy', label: t('chart.section.energy'), icon: '🍀' }
+  ]
   const careerRanked = chart
     ? rankCareers(chart, currentDasha?.lord, currentAD?.lord)
     : null
@@ -313,9 +317,9 @@ export default function BirthChart() {
         />
       )}
       <div className="text-center mb-10">
-        <h1 className="section-title">你的吠陀命盤</h1>
+        <h1 className="section-title">{t('chart.pageTitle')}</h1>
         <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
-          輸入生辰，看看你這輩子的愛情、事業、財運、大運走向 — 以及你朋友都不好意思告訴你的那些事
+          {t('chart.pageSubtitle')}
         </p>
       </div>
 
@@ -325,14 +329,14 @@ export default function BirthChart() {
           {/* 性別 */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <UserRound className="h-4 w-4 text-saffron-400" />性別
-              <span className="text-xs text-slate-500 ml-auto">影響伴侶解讀用語</span>
+              <UserRound className="h-4 w-4 text-saffron-400" />{t('form.gender')}
+              <span className="text-xs text-slate-500 ml-auto">{t('form.gender.hint')}</span>
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { v: 'male', label: '男' },
-                { v: 'female', label: '女' },
-                { v: 'other', label: '不選' }
+                { v: 'male', label: t('form.gender.male') },
+                { v: 'female', label: t('form.gender.female') },
+                { v: 'other', label: t('form.gender.other') }
               ].map((opt) => (
                 <button
                   key={opt.v}
@@ -353,7 +357,7 @@ export default function BirthChart() {
           {/* 日期 */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <Calendar className="h-4 w-4 text-saffron-400" />出生日期
+              <Calendar className="h-4 w-4 text-saffron-400" />{t('form.date')}
             </label>
             <SmartDateInput
               required
@@ -365,23 +369,24 @@ export default function BirthChart() {
           {/* 時間 */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <Clock className="h-4 w-4 text-saffron-400" />出生時間（24 小時制）
+              <Clock className="h-4 w-4 text-saffron-400" />{t('form.time')} {t('form.time.hint24h')}
             </label>
             <SmartTimeInput
               required
+              lang={lang}
               value={form.time}
               onChange={(v) => update('time', v)}
             />
             <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
-              吠陀占星上升星座每 2 小時換一次，時間越精確越好
+              {t('form.time.helpText')}
             </p>
           </div>
 
           {/* 城市（含 autocomplete） */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
-              <MapPin className="h-4 w-4 text-saffron-400" />出生城市
-              <span className="text-xs text-slate-500 ml-auto">選擇後自動填入座標</span>
+              <MapPin className="h-4 w-4 text-saffron-400" />{t('form.city')}
+              <span className="text-xs text-slate-500 ml-auto">{t('form.city.hint')}</span>
             </label>
             <input
               type="text"
@@ -398,17 +403,17 @@ export default function BirthChart() {
             </datalist>
             {findCity(form.city) && (
               <div className="mt-1.5 text-[11px] text-emerald-400">
-                ✓ 已自動填入 {findCity(form.city).lat.toFixed(2)}°N / {findCity(form.city).lon.toFixed(2)}°E · UTC{form.tz >= 0 ? '+' : ''}{form.tz}
+                ✓ {t('form.city.autoFilled')} {findCity(form.city).lat.toFixed(2)}°N / {findCity(form.city).lon.toFixed(2)}°E · UTC{form.tz >= 0 ? '+' : ''}{form.tz}
               </div>
             )}
             {!findCity(form.city) && form.city && (
               <div className="mt-1.5 text-[11px] text-slate-400">
-                城市不在清單中 · 請在「進階設定」手動填入座標
+                {t('form.city.notFound')}
               </div>
             )}
           </div>
 
-          {/* 進階設定（預設隱藏） */}
+          {/* 進階設定 */}
           <div>
             <button
               type="button"
@@ -416,12 +421,12 @@ export default function BirthChart() {
               className="flex items-center gap-2 text-xs text-slate-400 hover:text-saffron-400 transition"
             >
               <Settings2 className="h-3.5 w-3.5" />
-              {showAdvanced ? '隱藏' : '顯示'}進階設定（時區與經緯度微調）
+              {showAdvanced ? t('form.advanced.hide') : t('form.advanced.show')}
             </button>
             {showAdvanced && (
               <div className="mt-3 space-y-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
                 <div>
-                  <label className="text-xs text-slate-300 mb-1.5 block">時區 UTC±（台灣 +8）</label>
+                  <label className="text-xs text-slate-300 mb-1.5 block">{t('form.tz')} UTC±</label>
                   <input
                     type="number"
                     step="0.5"
@@ -433,16 +438,16 @@ export default function BirthChart() {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-xs text-slate-300 mb-1.5 block">緯度 °N</label>
+                    <label className="text-xs text-slate-300 mb-1.5 block">{t('form.lat')} °N</label>
                     <input type="number" step="0.001" required className="input-field text-sm" value={form.lat} onChange={(e) => update('lat', e.target.value)} />
                   </div>
                   <div>
-                    <label className="text-xs text-slate-300 mb-1.5 block">經度 °E</label>
+                    <label className="text-xs text-slate-300 mb-1.5 block">{t('form.lon')} °E</label>
                     <input type="number" step="0.001" required className="input-field text-sm" value={form.lon} onChange={(e) => update('lon', e.target.value)} />
                   </div>
                 </div>
                 <p className="text-[11px] text-slate-500 leading-relaxed">
-                  小貼士：南半球城市請用負值緯度、西半球請用負值經度。夏令時出生請手動把時區 -1。
+                  {t('form.advanced.tip')}
                 </p>
               </div>
             )}
@@ -456,11 +461,11 @@ export default function BirthChart() {
 
           <button type="submit" className="btn-primary w-full">
             <Sparkles className="h-4 w-4" />
-            算我的命盤 & 解讀
+            {t('form.submit.chart')}
           </button>
 
           <p className="text-xs text-slate-500 leading-relaxed text-center">
-            請放心輸入，不收集任何個資
+            {t('form.privacy')}
           </p>
         </form>
 

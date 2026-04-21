@@ -1,14 +1,20 @@
 import { useRef, useEffect, useState } from 'react'
 
-// 自訂時間輸入：HH / MM 兩格自動跳焦
+// 自訂時間輸入：時 / 分 兩格自動跳焦
 // 值格式：'HH:MM'（跟 <input type="time"> 相容）
-export default function SmartTimeInput({ value, onChange, required }) {
+// 支援語系：中文預設「時 / 分」、英文「HH / MM」
+export default function SmartTimeInput({ value, onChange, required, lang = 'zh-TW' }) {
   const [h, setH] = useState('')
   const [m, setM] = useState('')
   const hRef = useRef(null)
   const mRef = useRef(null)
+  const didEmitRef = useRef(false)
 
   useEffect(() => {
+    if (didEmitRef.current) {
+      didEmitRef.current = false
+      return
+    }
     if (!value) {
       setH('')
       setM('')
@@ -22,8 +28,10 @@ export default function SmartTimeInput({ value, onChange, required }) {
   const emit = (nh, nm) => {
     if (nh.length > 0 && nm.length > 0) {
       const formatted = `${nh.padStart(2, '0')}:${nm.padStart(2, '0')}`
+      didEmitRef.current = true
       onChange(formatted)
     } else if (!nh && !nm) {
+      didEmitRef.current = true
       onChange('')
     }
   }
@@ -49,6 +57,9 @@ export default function SmartTimeInput({ value, onChange, required }) {
     if (e.key === 'Backspace' && m === '') hRef.current?.focus()
   }
 
+  const placeholderH = lang === 'en' ? 'HH' : '時'
+  const placeholderM = lang === 'en' ? 'MM' : '分'
+
   const baseInputStyle =
     'bg-transparent border-0 outline-none text-center text-slate-100 placeholder:text-slate-500 tabular-nums'
 
@@ -62,7 +73,7 @@ export default function SmartTimeInput({ value, onChange, required }) {
         maxLength={2}
         value={h}
         onChange={handleH}
-        placeholder="HH"
+        placeholder={placeholderH}
         required={required}
         className={`${baseInputStyle} w-[3ch]`}
       />
@@ -76,7 +87,7 @@ export default function SmartTimeInput({ value, onChange, required }) {
         value={m}
         onChange={handleM}
         onKeyDown={handleMKeyDown}
-        placeholder="MM"
+        placeholder={placeholderM}
         required={required}
         className={`${baseInputStyle} w-[3ch]`}
       />

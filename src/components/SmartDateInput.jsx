@@ -9,9 +9,14 @@ export default function SmartDateInput({ value, onChange, required }) {
   const mRef = useRef(null)
   const dRef = useRef(null)
   const yRef = useRef(null)
+  // 防止 echo loop：當我們自己 emit 了新值、父元件回灌時不要蓋掉使用者正在打字的欄位
+  const didEmitRef = useRef(false)
 
-  // 外部 value 變動時同步
   useEffect(() => {
+    if (didEmitRef.current) {
+      didEmitRef.current = false
+      return
+    }
     if (!value) {
       setY('')
       setM('')
@@ -25,11 +30,12 @@ export default function SmartDateInput({ value, onChange, required }) {
   }, [value])
 
   const emit = (ny, nm, nd) => {
-    // 都有值才送 onChange，確保格式正確
     if (ny.length === 4 && nm.length > 0 && nd.length > 0) {
       const formatted = `${ny}-${nm.padStart(2, '0')}-${nd.padStart(2, '0')}`
+      didEmitRef.current = true
       onChange(formatted)
     } else if (!ny && !nm && !nd) {
+      didEmitRef.current = true
       onChange('')
     }
   }
@@ -37,23 +43,14 @@ export default function SmartDateInput({ value, onChange, required }) {
   const handleY = (e) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 4)
     setY(v)
-    if (v.length === 4) {
-      // 自動跳到月份
-      mRef.current?.focus()
-    }
+    if (v.length === 4) mRef.current?.focus()
     emit(v, m, d)
   }
 
   const handleM = (e) => {
     let v = e.target.value.replace(/\D/g, '').slice(0, 2)
-    // 避免輸入 > 12
     if (v.length === 2 && parseInt(v, 10) > 12) v = '12'
-    if (v.length === 1 && parseInt(v, 10) > 1) {
-      // 例如輸入 3 直接補 0 變 03，但要先讓用戶有機會輸入第二位
-      // 這裡先等他輸入第二位
-    }
     setM(v)
-    // 輸入 2 位 OR 輸入 1 位但 > 1（1x 不可能，只能是 10/11/12）自動跳日
     if (v.length === 2 || (v.length === 1 && parseInt(v, 10) > 1)) {
       dRef.current?.focus()
     }
@@ -67,7 +64,6 @@ export default function SmartDateInput({ value, onChange, required }) {
     emit(y, m, v)
   }
 
-  // Backspace 在空欄位時跳回上一個
   const handleMKeyDown = (e) => {
     if (e.key === 'Backspace' && m === '') yRef.current?.focus()
   }

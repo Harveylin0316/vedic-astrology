@@ -33,6 +33,7 @@ import {
 } from '../utils/permalink.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
+import { useI18n } from '../i18n/I18nProvider.jsx'
 
 const emptyPerson = () => ({
   name: '',
@@ -46,6 +47,7 @@ const emptyPerson = () => ({
 })
 
 export default function Compatibility() {
+  const { t, lang } = useI18n()
   const [searchParams] = useSearchParams()
   const [you, setYou] = useState(emptyPerson())
   const [them, setThem] = useState(emptyPerson())
@@ -137,7 +139,7 @@ export default function Compatibility() {
     e.preventDefault()
     setError('')
     if (!you.date || !you.time || !them.date || !them.time) {
-      setError('兩邊都要填出生日期與時間')
+      setError(t('form.error.both'))
       return
     }
     try {
@@ -159,7 +161,7 @@ export default function Compatibility() {
       })
     } catch (err) {
       console.error(err)
-      setError('計算失敗，請檢查格式。')
+      setError(t('form.error.generic'))
     }
   }
 
@@ -176,9 +178,9 @@ export default function Compatibility() {
       )}
 
       <div className="text-center mb-10">
-        <h1 className="section-title">雙人合盤 · 你們的業力契合度</h1>
+        <h1 className="section-title">{t('compat.pageTitle')}</h1>
         <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
-          用吠陀傳統 Ashta Kuta 8 因子 36 分制算出你跟 TA 的契合度 — 為什麼吸引、會吵什麼、怎麼走得長久。
+          {t('compat.pageSubtitle')}
         </p>
       </div>
 
@@ -187,11 +189,11 @@ export default function Compatibility() {
           {/* 關係類型 */}
           <div className="glass-panel p-4 mb-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-sm text-slate-300">關係類型：</span>
+              <span className="text-sm text-slate-300">{t('compat.relationship')}：</span>
               {[
-                { v: 'romantic', label: '💕 戀人 / 伴侶' },
-                { v: 'family', label: '👨‍👩‍👧 家人' },
-                { v: 'friend', label: '🤝 朋友 / 合夥人' }
+                { v: 'romantic', label: t('compat.relationship.romantic') },
+                { v: 'family', label: t('compat.relationship.family') },
+                { v: 'friend', label: t('compat.relationship.friend') }
               ].map((opt) => (
                 <button
                   key={opt.v}
@@ -214,15 +216,19 @@ export default function Compatibility() {
               person={you}
               update={updateYou}
               onCityChange={handleCityChangeFor(setYou)}
-              title="你"
+              title={t('compat.person.you')}
               accent="saffron"
+              t={t}
+              lang={lang}
             />
             <PersonForm
               person={them}
               update={updateThem}
               onCityChange={handleCityChangeFor(setThem)}
-              title="TA"
+              title={t('compat.person.them')}
               accent="vermilion"
+              t={t}
+              lang={lang}
             />
           </div>
 
@@ -235,11 +241,11 @@ export default function Compatibility() {
 
           <button type="submit" className="btn-primary w-full mt-8 text-lg py-4">
             <Sparkles className="h-5 w-5" />
-            算我們的合盤
+            {t('form.submit.compatibility')}
           </button>
 
           <p className="text-center text-xs text-slate-500 mt-3">
-            請放心輸入，不收集任何個資
+            {t('form.privacy')}
           </p>
         </form>
       ) : (
@@ -259,27 +265,28 @@ export default function Compatibility() {
 // ════════════════════════════════════════
 // 單人表單
 // ════════════════════════════════════════
-function PersonForm({ person, update, onCityChange, title, accent }) {
+function PersonForm({ person, update, onCityChange, title, accent, t, lang }) {
   const accentClasses =
     accent === 'saffron'
       ? 'border-saffron-500/40 bg-saffron-500/5'
       : 'border-vermilion-500/40 bg-vermilion-500/5'
   const accentText = accent === 'saffron' ? 'text-saffron-400' : 'text-vermilion-500'
+  const birthOf = lang === 'en' ? `${title}'s birth data` : `${title} 的生辰`
 
   return (
     <div className={`glass-panel p-5 ${accentClasses}`}>
       <div className={`text-xs uppercase tracking-widest mb-3 ${accentText}`}>
-        {title} 的生辰
+        {birthOf}
       </div>
 
       <div className="space-y-4">
         <div>
-          <label className="text-sm text-slate-300 mb-1.5 block">暱稱（選填）</label>
+          <label className="text-sm text-slate-300 mb-1.5 block">{t('form.name')}</label>
           <input
             type="text"
             value={person.name}
             onChange={(e) => update('name', e.target.value)}
-            placeholder={title === '你' ? '例：小明' : '例：小美'}
+            placeholder={lang === 'en' ? (title === 'You' ? 'e.g. Alex' : 'e.g. Sam') : (title === '你' ? '例：小明' : '例：小美')}
             className="input-field"
           />
         </div>
@@ -287,13 +294,13 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
         <div>
           <label className="flex items-center gap-2 text-sm text-slate-300 mb-1.5">
             <UserRound className="h-4 w-4" />
-            性別（選填）
+            {t('form.gender')}
           </label>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { v: 'male', label: '男' },
-              { v: 'female', label: '女' },
-              { v: 'other', label: '不選' }
+              { v: 'male', label: t('form.gender.male') },
+              { v: 'female', label: t('form.gender.female') },
+              { v: 'other', label: t('form.gender.other') }
             ].map((opt) => (
               <button
                 key={opt.v}
@@ -314,7 +321,7 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
         <div>
           <label className="flex items-center gap-2 text-sm text-slate-300 mb-1.5">
             <Calendar className="h-4 w-4" />
-            出生日期
+            {t('form.date')}
           </label>
           <SmartDateInput
             required
@@ -326,10 +333,11 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
         <div>
           <label className="flex items-center gap-2 text-sm text-slate-300 mb-1.5">
             <Clock className="h-4 w-4" />
-            出生時間
+            {t('form.time')}
           </label>
           <SmartTimeInput
             required
+            lang={lang}
             value={person.time}
             onChange={(v) => update('time', v)}
           />
@@ -338,7 +346,7 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
         <div>
           <label className="flex items-center gap-2 text-sm text-slate-300 mb-1.5">
             <MapPin className="h-4 w-4" />
-            出生城市
+            {t('form.city')}
           </label>
           <input
             type="text"
@@ -357,8 +365,8 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
           </datalist>
           {findCity(person.city) && (
             <div className="mt-1 text-[11px] text-emerald-400">
-              ✓ 已自動填入座標（時區 UTC{person.tz >= 0 ? '+' : ''}
-              {person.tz}）
+              ✓ {t('form.city.autoFilled')} (UTC{person.tz >= 0 ? '+' : ''}
+              {person.tz})
             </div>
           )}
         </div>
@@ -371,6 +379,7 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
 // 結果呈現
 // ════════════════════════════════════════
 function CompatibilityResult({ result, relationship, onReset }) {
+  const { t } = useI18n()
   const { compat, narrative, you, them } = result
   const meta = CATEGORY_META[compat.category] || CATEGORY_META['互補型配對']
 
@@ -529,12 +538,11 @@ function CompatibilityResult({ result, relationship, onReset }) {
 
       {/* CTA */}
       <div className="glass-panel p-6 text-center">
-        <p className="text-slate-300 mb-4">想分享或看下一組？</p>
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <CopyLinkButton />
           <button onClick={onReset} className="btn-ghost">
             <ArrowRight className="h-4 w-4" />
-            再算一組
+            {t('compat.result.rematch')}
           </button>
         </div>
       </div>
@@ -543,6 +551,7 @@ function CompatibilityResult({ result, relationship, onReset }) {
 }
 
 function CopyLinkButton() {
+  const { t } = useI18n()
   const [copied, setCopied] = useState(false)
   const handleCopy = async () => {
     const ok = await copyToClipboard(window.location.href)
@@ -557,12 +566,12 @@ function CopyLinkButton() {
       {copied ? (
         <>
           <Check className="h-4 w-4" />
-          已複製連結
+          {t('chart.copied')}
         </>
       ) : (
         <>
           <Link2 className="h-4 w-4" />
-          複製連結給 TA
+          {t('compat.result.copyLink')}
         </>
       )}
     </button>
