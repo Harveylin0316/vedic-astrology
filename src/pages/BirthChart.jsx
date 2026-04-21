@@ -681,12 +681,12 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ②-a+ 占星師手寫筆記（像一封信） */}
+              {/* ②-a+ 命盤深度判讀（給一個人的信） */}
               {astrologerNote && (
                 <Section
                   icon={<Sparkle className="h-4 w-4" />}
-                  badge="占星師給你的手寫筆記"
-                  title="如果你付錢算命，師父會這樣跟你說"
+                  badge="深度判讀"
+                  title="只寫給你一個人的命盤筆記"
                   highlight
                 >
                   <div className="max-w-3xl mx-auto">
@@ -701,7 +701,22 @@ export default function BirthChart() {
                         {astrologerNote.greeting}
                       </p>
 
-                      {/* 6 個主題段落 */}
+                      {/* 軸心洞察：整份筆記只在講一件事 */}
+                      {astrologerNote.axisInsight && (
+                        <div className="mt-8 pl-5 md:pl-6 border-l-2 border-saffron-500/60 bg-saffron-500/[0.03] rounded-r-lg py-4 pr-4">
+                          <div className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-saffron-400/80 mb-3">
+                            軸心洞察 · 這份筆記其實只在講一件事
+                          </div>
+                          <p className="font-serif text-lg md:text-2xl text-saffron-200 leading-snug italic mb-4">
+                            「{astrologerNote.axisInsight.axis}」
+                          </p>
+                          <p className="font-serif text-[15px] md:text-base text-slate-200 leading-[1.95] md:leading-loose">
+                            {astrologerNote.axisInsight.opener}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* 9 個主題段落 */}
                       <div className="mt-8 space-y-8">
                         {astrologerNote.sections.map((s) => (
                           <div key={s.id}>
@@ -731,12 +746,12 @@ export default function BirthChart() {
 
                       {/* 署名 */}
                       <div className="mt-8 text-right text-sm text-slate-400/80 font-serif italic">
-                        — 手寫於你的命盤之上
+                        — 寫於你的命盤之上
                       </div>
                     </div>
 
                     <p className="text-xs text-slate-500 mt-4 leading-relaxed text-center">
-                      💡 這 6 段不是模板 — 每段都挑你命盤某個最關鍵的配置來寫。覺得準，是因為這是你的。
+                      💡 這幾段不是模板 — 每段都挑你命盤某個最關鍵的配置來寫。覺得準，是因為這是你的。
                     </p>
                   </div>
                 </Section>
