@@ -13,8 +13,8 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
   const moonNak = chart.sidereal.moon.nakshatra
   const catchphrase = persona?.primary || ''
 
-  // 挑 Top 3 最稀有的關鍵配置
-  const topFeatures = (rarity?.features || []).slice(0, 3)
+  // 挑 Top 2 最稀有的關鍵配置（含完整 meaning 敘述）
+  const topFeatures = (rarity?.features || []).slice(0, 2)
 
   return (
     <div
@@ -465,64 +465,71 @@ function FeatureRow({ feature }) {
   return (
     <div
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '14px',
-        padding: '11px 16px',
+        padding: '12px 16px',
         borderRadius: '8px',
         background: 'rgba(255,255,255,0.02)',
         border: '1px solid rgba(255,255,255,0.08)'
       }}
     >
-      <span
-        style={{
-          flexShrink: 0,
-          fontSize: '14px',
-          color: '#ffc266'
-        }}
-      >
-        ◆
-      </span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{
-            fontSize: '16px',
-            color: '#f1f5f9',
-            fontFamily: '"Cormorant Garamond", Georgia, serif',
-            fontWeight: 500,
-            lineHeight: 1.2
-          }}
-        >
-          {feature.plain || feature.name}
+      {/* 標題列：◆ + 白話標題 + 人口佔比 pill */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <span style={{ flexShrink: 0, fontSize: '14px', color: '#ffc266' }}>◆</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              fontSize: '17px',
+              color: '#f1f5f9',
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontWeight: 500,
+              lineHeight: 1.2
+            }}
+          >
+            {feature.plain || feature.name}
+          </div>
+          <div
+            style={{
+              fontSize: '10px',
+              color: '#64748b',
+              marginTop: '2px',
+              letterSpacing: '0.02em'
+            }}
+          >
+            {feature.technical || feature.signature}
+          </div>
         </div>
-        <div
+        <span
           style={{
+            flexShrink: 0,
             fontSize: '10px',
-            color: '#64748b',
-            marginTop: '2px',
-            letterSpacing: '0.02em'
+            color: '#ffa733',
+            fontWeight: 600,
+            fontFamily: 'Inter',
+            padding: '3px 10px',
+            borderRadius: '999px',
+            background: 'rgba(255,194,102,0.1)',
+            border: '1px solid rgba(255,194,102,0.3)',
+            letterSpacing: '0.02em',
+            whiteSpace: 'nowrap'
           }}
         >
-          {feature.technical || feature.signature}
-        </div>
+          人口 {feature.freq}
+        </span>
       </div>
-      <span
-        style={{
-          flexShrink: 0,
-          fontSize: '11px',
-          color: '#ffa733',
-          fontWeight: 600,
-          fontFamily: 'Inter',
-          padding: '3px 10px',
-          borderRadius: '999px',
-          background: 'rgba(255,194,102,0.1)',
-          border: '1px solid rgba(255,194,102,0.3)',
-          letterSpacing: '0.02em',
-          whiteSpace: 'nowrap'
-        }}
-      >
-        {feature.freq}
-      </span>
+      {/* 白話解讀 — 告訴你這代表什麼 */}
+      {feature.meaning && (
+        <div
+          style={{
+            marginTop: '7px',
+            paddingLeft: '26px',
+            fontSize: '12px',
+            color: '#cbd5e1',
+            lineHeight: 1.5,
+            letterSpacing: '0.01em'
+          }}
+        >
+          {feature.meaning}
+        </div>
+      )}
     </div>
   )
 }

@@ -546,7 +546,13 @@ export default function BirthChart() {
 
                   <div className="mt-6 flex items-center justify-between gap-3 flex-wrap pt-4 border-t border-white/10">
                     <div className="text-sm text-slate-400">
-                      {submittedCity} · {submittedStamp} · Lahiri Ayanamsha {chart.ayanamsha.toFixed(2)}°
+                      {submittedCity} · {submittedStamp}
+                      <span
+                        className="ml-1"
+                        title="Ayanamsha = 吠陀與西方曆差距；用於把西方座標轉成吠陀座標"
+                      >
+                        · 吠陀座標差 {chart.ayanamsha.toFixed(2)}°
+                      </span>
                     </div>
                     <CopyLinkButton />
                   </div>
@@ -956,7 +962,10 @@ export default function BirthChart() {
 
               {/* ⑧ Nakshatra */}
               {nakshatra && (
-                <Section icon={<Star className="h-4 w-4" />} badge={`月宿 · ${chart.sidereal.moon.nakshatra.name} · Pada ${chart.sidereal.moon.nakshatra.pada}`} title={nakshatra.theme}>
+                <Section icon={<Star className="h-4 w-4" />} badge={`月宿 · ${chart.sidereal.moon.nakshatra.name} · 第 ${chart.sidereal.moon.nakshatra.pada} 象限`} title={nakshatra.theme}>
+                  <p className="text-xs text-slate-500 mb-3 leading-relaxed">
+                    💡 月宿（Nakshatra）= 吠陀獨有的 27 個月亮細分星區；每個再切 4 等份叫「象限 Pada」，總共 108 種組合 — 比西方星座精細 9 倍，是吠陀人格判讀的核心。
+                  </p>
                   <p className="text-slate-300 leading-relaxed">{nakshatra.body}</p>
                 </Section>
               )}
@@ -1416,14 +1425,17 @@ function RarityCard({ rarity }) {
                             {f.technical || f.signature}
                           </div>
                         </div>
-                        <span className={`flex-shrink-0 text-[10px] tabular-nums rounded-full px-2 py-0.5 border ${
-                          f.weight >= 15
-                            ? 'border-vermilion-500/40 text-vermilion-300'
-                            : f.weight >= 10
-                            ? 'border-saffron-500/40 text-saffron-300'
-                            : 'border-white/15 text-slate-400'
-                        }`}>
-                          {f.freq}
+                        <span
+                          title="此配置在全球人口中的估計出現比例"
+                          className={`flex-shrink-0 text-[10px] tabular-nums rounded-full px-2 py-0.5 border ${
+                            f.weight >= 15
+                              ? 'border-vermilion-500/40 text-vermilion-300'
+                              : f.weight >= 10
+                              ? 'border-saffron-500/40 text-saffron-300'
+                              : 'border-white/15 text-slate-400'
+                          }`}
+                        >
+                          人口 {f.freq}
                         </span>
                       </div>
                       {f.meaning && (
