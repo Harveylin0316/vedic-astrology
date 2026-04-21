@@ -393,7 +393,7 @@ export default function BirthChart() {
           </button>
 
           <p className="text-xs text-slate-500 leading-relaxed text-center">
-            純本地計算 · 無 API · 不收集任何個資
+            請放心輸入，不收集任何個資
           </p>
         </form>
 
@@ -616,6 +616,45 @@ export default function BirthChart() {
               )}
 
               <div id="dasha" className="scroll-mt-20 -mt-6" />
+              {/* ⑦-0 人生大運地圖 — 完整 120 年 Vimshottari 總覽 */}
+              {dashaPeriods && dashaPeriods.length > 0 && (
+                <Section
+                  icon={<Clock4 className="h-4 w-4" />}
+                  badge="人生大運地圖 · Vimshottari 全貌"
+                  title="你這輩子會走過的每一個大運"
+                >
+                  <p className="text-sm text-slate-400 mb-4">
+                    吠陀占星 120 年大運循環 — 你每個年齡階段由哪一顆行星主導，一張表看完。
+                  </p>
+                  <div className="space-y-2">
+                    {dashaPeriods.map((p, i) => {
+                      const reading = dashaReadings[p.lord]
+                      const ageStart = Math.max(0, ageOf(p.start))
+                      const ageEnd = ageOf(p.end)
+                      const isPast = p.end <= now
+                      const isCurrent = p.start <= now && p.end > now
+                      const status = isCurrent ? 'current' : isPast ? 'past' : 'future'
+                      return (
+                        <DashaMapRow
+                          key={i}
+                          index={i + 1}
+                          ageRange={`${ageStart.toFixed(0)}–${ageEnd.toFixed(0)} 歲`}
+                          dateRange={`${p.start.getFullYear()}–${p.end.getFullYear()}`}
+                          years={p.years.toFixed(1)}
+                          name={reading?.name}
+                          nickname={reading?.nickname}
+                          theme={reading?.theme}
+                          status={status}
+                        />
+                      )
+                    })}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+                    💡 大運總長 120 年。不是每個人都會走完整個循環 — 這張表顯示「如果你活到 120 歲」會經歷的全部，現實中你會走到你壽數所在的位置。
+                  </p>
+                </Section>
+              )}
+
               {/* ⑦-1 PAST 過去運勢（按年齡過濾事件） */}
               {pastPeriods.length > 0 && (
                 <Section icon={<History className="h-4 w-4" />} badge="過去運勢 · 你走過的大運" title="你這輩子經歷過的人生階段">
@@ -1002,6 +1041,55 @@ function LuckyTile({ emoji, label, value, warn }) {
     <div className={`rounded-xl border p-3 ${warn ? 'border-vermilion-500/20 bg-vermilion-500/5' : 'border-white/10 bg-white/5'}`}>
       <div className="text-xs text-slate-400">{emoji} {label}</div>
       <div className="text-sm text-slate-100 font-medium mt-0.5">{value}</div>
+    </div>
+  )
+}
+
+function DashaMapRow({ index, ageRange, dateRange, years, name, nickname, theme, status }) {
+  const styles = {
+    past: 'border-white/10 bg-white/[0.02] opacity-70',
+    current: 'border-saffron-500/60 bg-gradient-to-r from-saffron-500/15 to-vermilion-500/10 shadow-lg shadow-saffron-500/20',
+    future: 'border-white/10 bg-white/5'
+  }
+  const badges = {
+    past: { text: '已過', cls: 'bg-slate-700/60 text-slate-300' },
+    current: { text: '● 現在', cls: 'bg-saffron-500 text-cosmic-950 font-semibold animate-pulse' },
+    future: { text: '將到', cls: 'bg-white/10 text-slate-300' }
+  }
+  const badge = badges[status]
+
+  return (
+    <div className={`relative rounded-xl border p-3 md:p-4 ${styles[status]} transition-all`}>
+      <div className="flex items-center gap-3 md:gap-4">
+        {/* 順序 */}
+        <div className="flex-shrink-0 h-9 w-9 md:h-10 md:w-10 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-sm font-serif text-slate-300">
+          {index}
+        </div>
+        {/* 年齡 + 年份 */}
+        <div className="flex-shrink-0 text-center min-w-[90px]">
+          <div className={`text-sm md:text-base font-medium ${status === 'current' ? 'text-saffron-300' : 'text-slate-200'}`}>
+            {ageRange}
+          </div>
+          <div className="text-[11px] text-slate-500">{dateRange}</div>
+        </div>
+        {/* 大運名稱 + 主題 */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`font-serif text-base md:text-lg ${status === 'current' ? 'text-saffron-400' : 'text-slate-200'}`}>
+              {name}
+            </span>
+            <span className="text-[11px] text-slate-500">· {nickname}</span>
+          </div>
+          <div className="text-xs text-slate-400 mt-0.5 line-clamp-1">{theme}</div>
+        </div>
+        {/* 狀態徽章 */}
+        <div className="flex-shrink-0 flex flex-col items-end gap-1">
+          <span className={`rounded-full px-2 py-0.5 text-[10px] ${badge.cls}`}>
+            {badge.text}
+          </span>
+          <span className="text-[10px] text-slate-500">{years} 年</span>
+        </div>
+      </div>
     </div>
   )
 }
