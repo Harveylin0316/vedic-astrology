@@ -1715,18 +1715,29 @@ function CareerRankingSection({ ranking }) {
   return (
     <Section
       icon={<Briefcase className="h-4 w-4" />}
-      badge="命盤職業適配度 · 唯一推薦來源"
+      badge="命盤職業適配度 · 雙維度評分"
       title="依你的命盤排序的 10 個事業類別"
     >
       <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-4 mb-5 text-sm text-slate-300 leading-relaxed">
         <strong className="text-saffron-400">怎麼看這個排行？</strong>
         <br />
-        這裡排出<strong className="text-slate-100">你的命盤在 10 類事業上的適配度</strong>。分數不是主觀評比，是根據每類的<strong className="text-saffron-400">主宰行星</strong>在你命盤中的強度算出的：
-        <span className="text-slate-400">星座強弱 + 宮位位置 + 事業宮連結 + 當前大運 + 燃燒折減</span>。
+        每類事業用<strong className="text-slate-100">兩個維度</strong>打分：
+        <br />
+        <span className="inline-block mt-2">
+          💪 <strong className="text-emerald-400">能力分</strong> — 主宰行星在你命盤中的<strong>實力</strong>（能不能做好？看行星力量）
+        </span>
+        <br />
+        <span className="inline-block mt-1">
+          ❤️ <strong className="text-saffron-400">契合分</strong> — 你的性格元素跟這類事業<strong>合不合</strong>（會不會喜歡？看 Lagna × Sun × Moon 的元素分佈，月亮加權 ×2）
+        </span>
+        <br />
+        <span className="inline-block mt-1">
+          🏆 <strong className="text-vermilion-500">綜合分</strong> — 兩者各 50% 的加權平均（用來排名）
+        </span>
         <br /><br />
-        <strong className="text-emerald-400">✅ 排前 5 的</strong> = 你命盤真正支持、該投入的方向。
-        <strong className="text-vermilion-500 ml-3">❌ 排後 2 的</strong> = 命盤不支持（要做就得比別人多花力氣）。
-        每個類別都可以展開看「為什麼是這個分數」— 完全可追溯到具體行星規則。
+        <span className="text-xs text-slate-400">
+          例：建築工程（Saturn-led）如果你土星強 → 能力分高、但你月亮是水象 → 契合分低 → 綜合排中間。你能做但不會愛。
+        </span>
       </div>
 
       {/* Top 5 推薦 */}
@@ -1735,7 +1746,7 @@ function CareerRankingSection({ ranking }) {
           ✅ 最值得你投入的 5 個方向
         </div>
         {top5.map((cat) => {
-          const color = tierColor(cat.stars)
+          const color = tierColor(cat.combinedStars)
           const isOpen = expandedId === cat.id
           return (
             <div key={cat.id} className={`rounded-2xl border ${color.border} ${color.bg} overflow-hidden`}>
@@ -1752,17 +1763,36 @@ function CareerRankingSection({ ranking }) {
                     <div className="flex items-baseline gap-2 flex-wrap">
                       <span className="text-2xl flex-shrink-0">{cat.icon}</span>
                       <h4 className="font-serif text-lg md:text-xl gradient-text">{cat.name}</h4>
+                      <span className={`text-xs font-medium ${color.text}`}>{cat.level}</span>
                     </div>
-                    <div className={`mt-1 flex items-center gap-3 text-xs ${color.text}`}>
-                      <span className="font-medium">{cat.level}</span>
-                      <span className="text-slate-500">·</span>
-                      <span className="tabular-nums">{cat.score} 分</span>
-                      <span className="flex gap-0.5">
+
+                    {/* 雙維度 bars */}
+                    <div className="mt-2 grid grid-cols-2 gap-3">
+                      <DualBar
+                        label="能力"
+                        score={cat.strength}
+                        stars={cat.strengthStars}
+                        emoji="💪"
+                        tone="emerald"
+                      />
+                      <DualBar
+                        label="契合"
+                        score={cat.fit}
+                        stars={cat.fitStars}
+                        emoji="❤️"
+                        tone="saffron"
+                      />
+                    </div>
+
+                    <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                      <span>🏆 綜合 <strong className="text-slate-200 tabular-nums">{cat.combined}</strong> / 10</span>
+                      <span className="flex gap-0.5 ml-1">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <span key={i} className={i < cat.stars ? color.star : 'text-white/10'}>★</span>
+                          <span key={i} className={i < cat.combinedStars ? color.star : 'text-white/10'}>★</span>
                         ))}
                       </span>
                     </div>
+
                     <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                       <strong className="text-slate-300">典型職位：</strong>{cat.examples.slice(0, 4).join('、')}...
                     </p>
@@ -1791,24 +1821,53 @@ function CareerRankingSection({ ranking }) {
                     <span className="text-slate-200 ml-1">{cat.thriveIn}</span>
                   </div>
 
-                  {/* 計分推理 */}
-                  <div>
-                    <div className="text-xs text-saffron-400 font-medium mb-2">🧮 這個分數怎麼算的？</div>
-                    <PlanetReasons
-                      label={`主宰星 ${cat.primaryPlanet.name}（權重 ×1.0）`}
-                      reasons={cat.primaryPlanet.reasons}
-                      baseScore={cat.primaryPlanet.score}
-                    />
-                    {cat.secondary && cat.secondaryPlanet.reasons.length > 0 && (
+                  {/* 雙維度詳細分解 */}
+                  <div className="grid md:grid-cols-2 gap-3 mb-4">
+                    {/* 能力分解 */}
+                    <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-3">
+                      <div className="text-xs text-emerald-400 font-medium mb-2">💪 能力分 {cat.strength} / 10</div>
+                      <div className="text-[11px] text-slate-400 mb-2">
+                        主宰星 {cat.primaryPlanet.name}（原始分 {cat.primaryPlanet.score}）× 1.0
+                        + 輔助星 {cat.secondaryPlanet.name}（原始分 {cat.secondaryPlanet.score}）× 0.5
+                      </div>
                       <PlanetReasons
-                        label={`輔助星 ${cat.secondaryPlanet.name}（權重 ×0.5）`}
-                        reasons={cat.secondaryPlanet.reasons}
-                        baseScore={cat.secondaryPlanet.score}
+                        label={`${cat.primaryPlanet.name} (主)`}
+                        reasons={cat.primaryPlanet.reasons}
+                        baseScore={cat.primaryPlanet.score}
                       />
-                    )}
-                    <div className="mt-2 text-xs text-slate-400 italic">
-                      = {cat.primaryPlanet.score} × 1.0 + {cat.secondaryPlanet.score} × 0.5 = <strong className="text-saffron-400">{cat.score} 分</strong>
+                      {cat.secondaryPlanet.reasons.length > 0 && (
+                        <PlanetReasons
+                          label={`${cat.secondaryPlanet.name} (輔)`}
+                          reasons={cat.secondaryPlanet.reasons}
+                          baseScore={cat.secondaryPlanet.score}
+                        />
+                      )}
                     </div>
+
+                    {/* 契合分解 */}
+                    <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-3">
+                      <div className="text-xs text-saffron-400 font-medium mb-2">❤️ 契合分 {cat.fit} / 10</div>
+                      <div className="text-[11px] text-slate-400 mb-2">
+                        這類需要的元素 vs 你的元素分佈
+                      </div>
+                      <div className="space-y-1.5 text-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-500">這類元素需求：</span>
+                          <ElementBarMini values={cat.elementAffinity} />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-500">你的元素分佈：</span>
+                          <ElementBarMini values={cat.userElements} />
+                        </div>
+                      </div>
+                      <div className="text-[11px] text-slate-400 mt-2 pt-2 border-t border-white/5">
+                        💡 月亮加權 ×2（情感偏好核心）· 越對得上越契合
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-slate-400 italic">
+                    🏆 綜合分 = 能力 {cat.strength} × 50% + 契合 {cat.fit} × 50% = <strong className="text-saffron-400">{cat.combined} 分</strong>
                   </div>
                 </div>
               )}
@@ -1823,7 +1882,7 @@ function CareerRankingSection({ ranking }) {
           ❌ 命盤不支持的 2 個方向（不代表做不了，但要花更多力氣）
         </div>
         {bottom2.map((cat) => {
-          const color = tierColor(cat.stars)
+          const color = tierColor(cat.combinedStars)
           return (
             <div key={cat.id} className={`rounded-xl border ${color.border} ${color.bg} p-3 md:p-4`}>
               <div className="flex items-start gap-3">
@@ -1831,11 +1890,13 @@ function CareerRankingSection({ ranking }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-medium text-slate-200">#{cat.rank} · {cat.name}</span>
-                    <span className={`text-xs ${color.text}`}>{cat.level} · {cat.score} 分</span>
+                    <span className={`text-xs ${color.text}`}>{cat.level}</span>
+                  </div>
+                  <div className="mt-1 text-xs text-slate-400">
+                    💪 能力 {cat.strength} · ❤️ 契合 {cat.fit} · 🏆 綜合 {cat.combined}
                   </div>
                   <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    主宰星 <strong className="text-slate-300">{cat.primary}</strong> 在你命盤中力量為 {cat.primaryPlanet.score} 分。
-                    {cat.avoidIf && <span className="ml-1 text-vermilion-400">· 提醒：{cat.avoidIf}</span>}
+                    {cat.avoidIf && <span className="text-vermilion-400">提醒：{cat.avoidIf}</span>}
                   </p>
                 </div>
               </div>
@@ -1846,17 +1907,63 @@ function CareerRankingSection({ ranking }) {
 
       {/* 透明度說明 */}
       <div className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
-        💡 <strong className="text-slate-300">推理規則</strong>：
-        每個類別由 1-2 顆主宰行星決定。該行星在你命盤中越強，這類事業越適合你。
-        行星力量依照古典 Vedic 規則計算 — 落在<strong className="text-saffron-400">自己星座 +3、旺位 +4、陷位 -3</strong>；
-        坐<strong className="text-saffron-400">角宮 / 三角宮 +2</strong>；
-        直接坐<strong className="text-saffron-400">事業宮 +5</strong>；
-        是<strong className="text-saffron-400">10 宮主星 +4</strong>；
-        坐<strong className="text-saffron-400">財庫宮 +2</strong>；
-        當前走這顆<strong className="text-saffron-400">行星大運 +5</strong>。
+        💡 <strong className="text-slate-300">完整計分邏輯</strong>：
+        <br />
+        <strong className="text-emerald-400">💪 能力分（0-10）</strong> — 主宰行星在命盤中的力量。規則：
+        自己星座 +3、旺位 +4、陷位 -3；坐角宮 / 三角宮 +2；坐 10 宮 +5；是 10 宮主星 +4；坐財庫宮 +2；當前走此行星大運 +5；燃燒 -2。
+        <br />
+        <strong className="text-saffron-400">❤️ 契合分（0-10）</strong> — 你的 Lagna × Sun × Moon（月亮 ×2）元素分佈 vs 此類事業的元素需求，內積後 normalize。
+        <br />
+        <strong className="text-vermilion-500">🏆 綜合分</strong> = 能力 × 50% + 契合 × 50%。
         所有推理可展開每個類別看完整計算。
       </div>
     </Section>
+  )
+}
+
+// 小條 bar（展開時用）
+function DualBar({ label, score, stars, emoji, tone }) {
+  const barColor = tone === 'emerald' ? 'bg-emerald-500' : 'bg-saffron-500'
+  const textColor = tone === 'emerald' ? 'text-emerald-400' : 'text-saffron-400'
+  return (
+    <div className={`rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2`}>
+      <div className="flex items-baseline justify-between text-xs">
+        <span className="text-slate-300">{emoji} {label}</span>
+        <span className={`tabular-nums font-medium ${textColor}`}>{score} / 10</span>
+      </div>
+      <div className="mt-1.5 h-1.5 rounded-full bg-white/10 overflow-hidden">
+        <div
+          className={`h-full rounded-full ${barColor}`}
+          style={{ width: `${(score / 10) * 100}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
+// 小元素分佈條
+function ElementBarMini({ values }) {
+  const total = (values.fire || 0) + (values.earth || 0) + (values.air || 0) + (values.water || 0)
+  if (total === 0) return <span className="text-[10px] text-slate-500">—</span>
+  const pct = (v) => (v / total) * 100
+  const items = [
+    { key: 'fire', label: '火', color: '#e34234', v: values.fire || 0 },
+    { key: 'earth', label: '土', color: '#a16207', v: values.earth || 0 },
+    { key: 'air', label: '風', color: '#38bdf8', v: values.air || 0 },
+    { key: 'water', label: '水', color: '#60a5fa', v: values.water || 0 }
+  ]
+  return (
+    <div className="flex items-center gap-1.5">
+      {items.map((it) => (
+        <span key={it.key} className="inline-flex items-center gap-0.5 text-[10px]">
+          <span
+            className="inline-block w-1.5 rounded-sm"
+            style={{ height: `${Math.max(2, Math.min(14, 2 + pct(it.v) * 0.12))}px`, backgroundColor: it.color, opacity: it.v > 0 ? 1 : 0.2 }}
+          />
+          <span className={it.v > 0 ? 'text-slate-300' : 'text-slate-600'}>{it.label}{it.v}</span>
+        </span>
+      ))}
+    </div>
   )
 }
 
