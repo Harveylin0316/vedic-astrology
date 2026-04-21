@@ -41,6 +41,7 @@ import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
 import { buildCardPunchlines } from '../data/cardPunchlines.js'
+import { buildAstrologerNote } from '../utils/astrologerNoteBuilder.js'
 import { dashaLifeStages, getLifeFlavor, lifePhaseLabel } from '../data/dashaLifeStages.js'
 import { analyzeVedicCareer } from '../utils/careerVedic.js'
 import { dignityLabels } from '../data/careerVedicData.js'
@@ -313,6 +314,8 @@ export default function BirthChart() {
   const vedicCareer = chart
     ? analyzeVedicCareer(chart, currentDasha?.lord, currentAD?.lord)
     : null
+
+  const astrologerNote = chart ? buildAstrologerNote(chart, persona) : null
 
   const sectionTabs = [
     { id: 'self', label: t('chart.section.self'), icon: '🪞' },
@@ -675,6 +678,67 @@ export default function BirthChart() {
                   <p className="text-xs text-slate-500 mt-4 leading-relaxed">
                     💡 這 5 句話如果命中 3 句以上 — 你的 Lagna × Moon × Sun × Nakshatra 組合就是這樣運作的。下載下方命盤卡，這些句子會進到分享圖裡。
                   </p>
+                </Section>
+              )}
+
+              {/* ②-a+ 占星師手寫筆記（像一封信） */}
+              {astrologerNote && (
+                <Section
+                  icon={<Sparkle className="h-4 w-4" />}
+                  badge="占星師給你的手寫筆記"
+                  title="如果你付錢算命，師父會這樣跟你說"
+                  highlight
+                >
+                  <div className="max-w-3xl mx-auto">
+                    <div className="relative rounded-2xl border border-saffron-500/20 bg-gradient-to-br from-saffron-500/[0.06] via-saffron-500/[0.02] to-white/[0.02] p-6 md:p-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                      {/* 信紙邊角小裝飾 */}
+                      <div className="absolute top-4 right-5 text-saffron-500/40 text-xs tracking-widest uppercase">
+                        — 給你 —
+                      </div>
+
+                      {/* 開場白 */}
+                      <p className="font-serif text-[15px] md:text-base text-slate-100 leading-[1.95] md:leading-loose italic">
+                        {astrologerNote.greeting}
+                      </p>
+
+                      {/* 6 個主題段落 */}
+                      <div className="mt-8 space-y-8">
+                        {astrologerNote.sections.map((s) => (
+                          <div key={s.id}>
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="text-saffron-400/80 text-lg leading-none">✦</span>
+                              <h4 className="font-serif text-lg md:text-xl text-saffron-200 tracking-wide">
+                                {s.title}
+                              </h4>
+                              <div className="flex-1 h-px bg-gradient-to-r from-saffron-500/20 to-transparent" />
+                            </div>
+                            <p className="font-serif text-[15px] md:text-base text-slate-100/95 leading-[1.95] md:leading-loose pl-1">
+                              {s.body}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* 結語 */}
+                      <div className="mt-10 pt-6 border-t border-saffron-500/20">
+                        <div className="text-xs uppercase tracking-widest text-saffron-400/70 mb-3">
+                          ─ 最後一段 ─
+                        </div>
+                        <p className="font-serif text-[15px] md:text-base text-slate-100 leading-[1.95] md:leading-loose">
+                          {astrologerNote.closing}
+                        </p>
+                      </div>
+
+                      {/* 署名 */}
+                      <div className="mt-8 text-right text-sm text-slate-400/80 font-serif italic">
+                        — 手寫於你的命盤之上
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-slate-500 mt-4 leading-relaxed text-center">
+                      💡 這 6 段不是模板 — 每段都挑你命盤某個最關鍵的配置來寫。覺得準，是因為這是你的。
+                    </p>
+                  </div>
                 </Section>
               )}
 
