@@ -619,11 +619,11 @@ export default function BirthChart() {
                 />
               </ShareCardSection>
 
-              {/* 📜 完整占星師筆記 — 只寫給你一個人 */}
+              {/* 📜 完整占星師筆記 */}
               {astrologerNote && (
                 <>
                   <div id="note" className="scroll-mt-20 -mt-6" />
-                  <Section icon={<Sparkle className="h-4 w-4" />} badge="深度判讀" title="只寫給你一個人的命盤筆記" highlight>
+                  <Section icon={<Sparkle className="h-4 w-4" />} badge="深度判讀" title="命盤跟你說的事" highlight>
                     <div className="max-w-3xl mx-auto">
                       <div className="relative rounded-2xl border border-saffron-500/20 bg-gradient-to-br from-saffron-500/[0.06] via-saffron-500/[0.02] to-white/[0.02] p-6 md:p-10">
                         {/* greeting */}
