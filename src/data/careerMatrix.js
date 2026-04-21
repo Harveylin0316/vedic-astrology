@@ -46,26 +46,59 @@ export const karmeshMatrix = {
     2: '家族工業／武器／機械承襲 — 繼承技術與體能型家業',
     3: '白手起家戰將 — 業務衝刺／工程寫作／衝鋒型創業',
     4: '房產／建築／土地戰役 — 從土地取得財富',
-    5: '運動教練／電競／子女競爭 — 「鬥技型」創造',
+    5: {
+      default: '運動教練／電競／子女競爭 — 「鬥技型」創造',
+      withVenus: '運動明星／舞者／動感藝術家（Messi 型）',
+      withMercury: '運動解說／體育寫手／競技策略家',
+      withJupiter: '運動哲學家／武術宗師／體育教育'
+    },
     6: '★ 外科／軍警／消防／衝突處理 — Mars 最強之位',
     7: '競爭型合夥／談判／運動經紀／律師',
     8: '外科急診／武術／秘密警務 — 處理危險與劇烈變動',
-    9: '軍事學／法律／國際戰略 — 高階決策型',
-    10: '指揮官／CEO 武將型 — 帶兵的 CEO',
+    9: {
+      default: '軍事學／法律／國際戰略 — 高階決策型',
+      withVenus: '國際運動巨星／動作巨星（SRK 型）／武術表演',
+      withMercury: '國際體育評論／跨國軍事學者',
+      withJupiter: '軍事哲學／國際法律／戰略智囊'
+    },
+    10: {
+      default: '指揮官／CEO 武將型 — 帶兵的 CEO',
+      withVenus: '運動時尚品牌 CEO／動作片製片人／運動員企業家',
+      withMercury: '體育傳媒集團／運動電商／競技商業帝國',
+      withSun: '軍政首長／國家級領袖／總司令型'
+    },
     11: '多角化併購／武器貿易／投機型收入',
     12: '海外戰線／武鬥派／幕後技術 — 隱性的 Mars'
   },
   Mercury: {
     1: '知名寫手／個人 KOL／品牌代言人 — 靠嘴巴 + 臉變現',
     2: '家族金融／語言／聲音變現 — 繼承家族商道 + 口才',
-    3: '記者／業務／自媒體內容 — 寫作 + 業務型白手起家',
+    3: {
+      default: '記者／業務／自媒體內容 — 寫作 + 業務型白手起家',
+      withVenus: '時尚媒體／藝術書寫／美感內容創作',
+      withMars: '體育記者／競技評論／業務衝刺型寫作',
+      withSaturn: '傳統媒體／嚴肅書寫／工業報導',
+      withJupiter: '教學型寫作／哲學散文／正統知識傳播'
+    },
     4: '教育／家居服務／本地商業 — 根植於地方的商業',
     5: '教學／出版／智力遊戲／投資 — 把知識變成產品',
     6: '會計／稽核／分析／醫療諮詢 — 精算師型',
     7: '諮詢顧問／公關／跨界合作 — 靠談判變現',
     8: '研究／調查／偵探／投資分析 — 深挖型智力工作',
-    9: '教授／作家／出版社／國際貿易 — 高階智識傳播',
-    10: '★ 商業帝國／科技／行銷管理 — 強力商業位',
+    9: {
+      default: '教授／作家／出版社／國際貿易 — 高階智識傳播',
+      withVenus: '國際演藝／海外音樂／跨國時尚表演 — 智識 × 藝術',
+      withMars: '國際運動／跨國競技／海外軍事戰略 — 智識 × 戰鬥',
+      withSaturn: '國際工業／跨國法律／長期外貿 — 智識 × 體系',
+      withJupiter: '學術殿堂／哲學大師／國際宗教領袖 — 最正統智識'
+    },
+    10: {
+      default: '★ 商業帝國／科技／行銷管理 — 強力商業位',
+      withVenus: '娛樂／時尚／藝術商業帝國 — 美感變商業',
+      withMars: '運動商業／體育帝國／競技事業 — 戰士型商業',
+      withSaturn: '傳統工業／重工／建設集團 — 長期型商業',
+      withJupiter: '教育帝國／宗教組織／智慧大師 — 非商業的正統權威'
+    },
     11: '平台經濟／多元副業／仲介 — 網絡節點型事業',
     12: '海外貿易／跨國會計／翻譯 — 跨境智識工作者'
   },
@@ -87,13 +120,29 @@ export const karmeshMatrix = {
     1: '時尚／藝術名流個人品牌 — 美感即招牌',
     2: '奢侈品／精品家業／歌手 — 「聲音／美感」世家',
     3: '藝術寫作／時尚媒體／自媒體 — 美感傳播者',
-    4: '美學居家／婚紗／花藝 — 美感根植家園',
+    4: {
+      default: '美學居家／婚紗／花藝 — 美感根植家園',
+      withMars: '動感美學／舞蹈／運動美妝 — 美 × 動',
+      withMercury: '美學內容創作／時尚文案／設計教學',
+      withSaturn: '傳統精品／家族老牌／工藝傳承',
+      withSun: '公眾美學／皇室級精品／官方代言 — 美 × 權威'
+    },
     5: '演藝／設計師／愛情相關創作 — Venus 最自然之位',
     6: '醫美／美容醫療／疾病美容 — 美感解決問題',
     7: '婚顧／婚紗／合夥藝術 — 靠關係變美',
     8: '珠寶／遺產／情慾業務 — 奢華深度',
-    9: '國際藝術／文化大使／奢華旅遊',
-    10: '時尚／娛樂／高端品牌 CEO — 美感之巔',
+    9: {
+      default: '國際藝術／文化大使／奢華旅遊',
+      withMercury: '跨國演藝／海外歌手／多語言藝術 — 藝 × 智',
+      withMars: '國際運動美學／舞蹈家／武術表演',
+      withJupiter: '跨國宗教藝術／文化傳承者／學院派美學'
+    },
+    10: {
+      default: '時尚／娛樂／高端品牌 CEO — 美感之巔',
+      withMercury: '歌手 × 商業帝國（Beyoncé 型）／時尚寫手兼 CEO',
+      withMars: '動作派演員／運動時尚／舞者 CEO',
+      withSun: '皇室級演藝／國家級表演藝術／名譽藝術家'
+    },
     11: '時尚人脈／美學社群經濟 — 品味網絡',
     12: '海外藝術／幕後設計師 — 非公眾美學'
   },
@@ -226,18 +275,142 @@ export const yogaCareerReadings = {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// 選擇 karmeshMatrix 讀法（支援多語境）
+// ═══════════════════════════════════════════════════════════════
+//
+// karmeshMatrix[planet][house] 可以是：
+//   - string         — 直接返回
+//   - object         — { default, withMars, withVenus, withMercury, withJupiter, withSaturn, withSun }
+//                       按照 context 選擇最相關的
+//
+// context.conjoinPlanets — 10 宮內（或與 karmesh 同宮）的其他行星
+// context.amatyakarakaPlanet — 若 AMK 是特定行星，也作為 override 參考
+export function selectKarmeshReading(planet, house, context = {}) {
+  const cell = karmeshMatrix[planet]?.[house]
+  if (!cell) return null
+  if (typeof cell === 'string') return cell
+
+  // object 版本：依照 context 挑
+  const conjoinList = context.conjoinPlanets || []
+  const amkPlanet = context.amatyakarakaPlanet
+  const priorityOrder = ['Venus', 'Mars', 'Saturn', 'Jupiter', 'Mercury', 'Sun'] // 影響力順序
+
+  // 先找共位行星，再找 AMK，最後預設
+  for (const checkPlanet of priorityOrder) {
+    const variant = cell[`with${checkPlanet}`]
+    if (!variant) continue
+    if (conjoinList.includes(checkPlanet)) return variant
+    if (amkPlanet === checkPlanet) return variant
+  }
+  return cell.default
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Karaka Override Layer — 自然事業徵象星壓倒性強時，加身份標籤
+// ═══════════════════════════════════════════════════════════════
+//
+// 當 Amatyakaraka（事業靈魂星）或 Top Significator 是下列其一且旺/本宮：
+//   Mars  → 運動／軍警／外科 身份加權 override
+//   Venus → 演藝／藝術／時尚 身份加權 override
+//   Saturn → 工業／重工／長期建設 身份加權 override
+//   Jupiter → 教學／宗教／法律／智慧領袖 身份加權 override
+//   Sun  → 政府／公職／名譽 身份加權
+//
+// 目的：救回 Beyoncé（Venus 藝術）、Messi（Mars 運動）、Dalai Lama（Jupiter 宗教）、Tata（Saturn 工業）
+// 這類「被 10 宮主決定論壓過」的案例
+export const karakaOverrideReadings = {
+  Mars: {
+    id: 'karaka-override-mars',
+    category: '運動 / 軍警 / 外科',
+    verdict: '運動員型 · 戰士型職業身份',
+    implication: '不論 10 宮主指哪方向，你命盤中 Mars 強到足以讓「運動／軍警／外科／體力型創業」成為核心身份。Mars 主導的案例常在「靠身體／靠膽量」的領域發光。'
+  },
+  Venus: {
+    id: 'karaka-override-venus',
+    category: '演藝 / 藝術 / 時尚',
+    verdict: '藝術家／表演者型職業身份',
+    implication: '不論 10 宮主指哪方向，你命盤中 Venus 強到足以讓「演藝／音樂／時尚／美感產業」成為核心身份。Venus 主導的案例常在「靠美感／靠魅力」的領域發光。'
+  },
+  Saturn: {
+    id: 'karaka-override-saturn',
+    category: '工業 / 重工 / 長期建設',
+    verdict: '工業家／體系建設者型職業身份',
+    implication: '不論 10 宮主指哪方向，你命盤中 Saturn 強到足以讓「工業／重工／基礎建設／長期體系」成為核心身份。Saturn 主導的案例常走「10 年磨一劍」路線、晚發但不敗。'
+  },
+  Jupiter: {
+    id: 'karaka-override-jupiter',
+    category: '教學 / 宗教 / 法律',
+    verdict: '智者／導師／宗教領袖型職業身份',
+    implication: '不論 10 宮主指哪方向，你命盤中 Jupiter 強到足以讓「教學／宗教／法律／哲學／智慧指導」成為核心身份。Jupiter 主導的案例常在「智慧傳承」的領域發光。'
+  },
+  Sun: {
+    id: 'karaka-override-sun',
+    category: '政府 / 公職 / 名譽',
+    verdict: '權威型／公職型職業身份',
+    implication: '不論 10 宮主指哪方向，你命盤中 Sun 強到足以讓「政府／公職／名譽位置／公眾人物」成為核心身份。'
+  }
+}
+
+export function buildKarakaOverrides({ amatyakaraka, significators, computeDignity }) {
+  const overrides = []
+  const strongDignities = ['exalted', 'own', 'moolatrikona']
+  const seen = new Set()
+
+  // 規則 1：AMK 強 + 是 override 候選 → 最高優先 override
+  if (amatyakaraka?.planet) {
+    const amkP = amatyakaraka.planet
+    const amkGraha = amatyakaraka.graha
+    const amkDignity = amkGraha && computeDignity ? computeDignity(amkP, amkGraha.rashi.name) : null
+    if (amkDignity && strongDignities.includes(amkDignity) && karakaOverrideReadings[amkP]) {
+      overrides.push({
+        ...karakaOverrideReadings[amkP],
+        source: `Amatyakaraka（事業靈魂星）為強 ${amkP}（${amkDignity}）`,
+        strength: 'strong'
+      })
+      seen.add(amkP)
+    }
+  }
+
+  // 規則 2：Top-2 徵象星中有強旺的 override 候選 + 尚未出現
+  if (significators?.length) {
+    for (let i = 0; i < Math.min(3, significators.length); i++) {
+      const s = significators[i]
+      if (seen.has(s.planet)) continue
+      if (!karakaOverrideReadings[s.planet]) continue
+      if (!strongDignities.includes(s.dignity)) continue
+      overrides.push({
+        ...karakaOverrideReadings[s.planet],
+        source: `徵象星排行第 ${i + 1} 且 ${s.planet} 強旺（${s.dignity}）`,
+        strength: 'medium'
+      })
+      seen.add(s.planet)
+      if (overrides.length >= 2) break // 最多 2 個 override，避免雜音
+    }
+  }
+
+  return overrides
+}
+
+// ═══════════════════════════════════════════════════════════════
 // 合成 Narrative：把所有關鍵發現揉成一段「具體到你命盤」的描述
 // ═══════════════════════════════════════════════════════════════
-// 不只是列清單 — 而是把 10 宮主 × 落宮 × 尊嚴 × Yoga × Lagna Lord
-// 綁成一段話，讀起來像專業占星師口中的「你這張盤」判讀
+// v3: 新增 Karaka Override + D10 交叉驗證的 narrative 片段
 export function synthesizeCareerNarrative(analysis) {
-  const { karmesh, lagnaLord, activeCareerYogas, dignityDetails } = analysis
+  const {
+    karmesh,
+    lagnaLord,
+    activeCareerYogas,
+    dignityDetails,
+    karmeshContext,
+    karakaOverrides,
+    d10
+  } = analysis
   if (!karmesh?.planet) return null
 
   const parts = []
 
-  // Part 1: 本質 — 10 宮主 × 落宮 組合
-  const matrixKey = karmeshMatrix[karmesh.planet]?.[karmesh.house]
+  // Part 1: 本質 — 10 宮主 × 落宮 組合（多語境版）
+  const matrixKey = selectKarmeshReading(karmesh.planet, karmesh.house, karmeshContext || {})
   if (matrixKey) {
     parts.push(`你的事業核心配置是「${karmesh.planet} 作為 10 宮主，落第 ${karmesh.house} 宮」— ${matrixKey}。`)
   }
@@ -258,7 +431,7 @@ export function synthesizeCareerNarrative(analysis) {
 
   // Part 3: Lagna Lord 加乘
   if (lagnaLord?.planet && lagnaLord.planet !== karmesh.planet) {
-    const llMatrixKey = karmeshMatrix[lagnaLord.planet]?.[lagnaLord.house]
+    const llMatrixKey = selectKarmeshReading(lagnaLord.planet, lagnaLord.house, karmeshContext || {})
     if (llMatrixKey) {
       parts.push(
         `你的命主星 ${lagnaLord.planet} 落第 ${lagnaLord.house} 宮，為事業判讀加第二層重量 — 若把命主星當事業副主看：${llMatrixKey.split('—')[1]?.trim() || llMatrixKey}。`
@@ -272,6 +445,27 @@ export function synthesizeCareerNarrative(analysis) {
     if (strongOnes.length) {
       parts.push(
         `更關鍵的是：你的命盤有 ${strongOnes.map((y) => y.verdict.split('—')[0].trim()).join(' + ')}，這會 override 單點分析 — ${strongOnes[0].careerImplication}。`
+      )
+    }
+  }
+
+  // Part 5（v3 NEW）：Karaka Override — 當自然本命星強到壓過 10 宮主時
+  if (karakaOverrides?.length) {
+    const top = karakaOverrides[0]
+    parts.push(
+      `⚡ Karaka 加權 — ${top.source}。這代表：${top.implication}`
+    )
+  }
+
+  // Part 6（v3 NEW）：D10 交叉驗證
+  if (d10) {
+    if (d10.agreement) {
+      parts.push(
+        `D10（事業專盤）與 D1 方向一致：${karmesh.planet} 兩盤都主事業 — 你「想做的」跟「實際會做的」方向同軌，事業動力集中。`
+      )
+    } else {
+      parts.push(
+        `⚠️ D10（事業專盤）與 D1 方向分歧：D1 潛能指向 ${karmesh.planet}，但 D10 實踐是 ${d10.tenthLord} 主導 — 你可能「想做 A 但最後靠 B 成功」，兩條路線都是你的真相。`
       )
     }
   }

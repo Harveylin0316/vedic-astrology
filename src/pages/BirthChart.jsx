@@ -1794,7 +1794,7 @@ function PlanetReasons({ label, reasons, baseScore }) {
 // VedicCareerSection — 正統吠陀事業分析 UI
 // ═══════════════════════════════════════════════════
 function VedicCareerSection({ data }) {
-  const { foundation, karmesh, significators, amatyakaraka, dasha, narrative, activeCareerYogas, lagnaLord, d10 } = data
+  const { foundation, karmesh, significators, amatyakaraka, dasha, narrative, activeCareerYogas, lagnaLord, d10, karakaOverrides } = data
   const dignityColor = {
     exalted: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10',
     own: 'text-saffron-400 border-saffron-500/40 bg-saffron-500/10',
@@ -1828,6 +1828,45 @@ function VedicCareerSection({ data }) {
           <p className="text-xs text-slate-500 mt-3 leading-relaxed">
             💡 這段是「整合性判讀」— 比單看 10 宮主的分析更準。古典 BPHS 強調「Yoga 格局 + 三王交叉」才是事業真解，單點分析容易以偏概全。
           </p>
+        </Section>
+      )}
+
+      {/* ⚡ Karaka Override — 自然本命星壓倒性強：身份加權（v3 新增） */}
+      {karakaOverrides?.length > 0 && (
+        <Section
+          icon={<Sparkles className="h-4 w-4" />}
+          badge="Karaka 身份加權 · v3 新增"
+          title={`你命盤的 ${karakaOverrides.length} 個 Karaka 主導身份`}
+        >
+          <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+            有些人的事業不是 10 宮主決定的，而是由某顆<strong className="text-saffron-400">特別強的自然徵象星</strong>（Amatyakaraka 或頂強行星）主導。
+            這是救回「演藝／運動／宗教／工業」這類非商業身份的關鍵規則 — 古典 Jaimini 派稱此為「事業真主宰」。
+          </p>
+          <div className="space-y-3">
+            {karakaOverrides.map((k, i) => (
+              <div
+                key={i}
+                className={`rounded-xl border p-4 ${
+                  k.strength === 'strong'
+                    ? 'border-emerald-500/40 bg-emerald-500/5'
+                    : 'border-saffron-500/30 bg-saffron-500/5'
+                }`}
+              >
+                <div className="flex items-start gap-2">
+                  <span className="flex-shrink-0 text-lg">⚡</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-serif text-base text-slate-100 leading-tight">
+                      {k.verdict} · <span className="text-saffron-400">{k.category}</span>
+                    </div>
+                    <div className="text-xs text-slate-500 mt-1">{k.source}</div>
+                    <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+                      {k.implication}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </Section>
       )}
 

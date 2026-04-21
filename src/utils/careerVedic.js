@@ -26,7 +26,9 @@ import { detectYogas } from './yogaDetector.js'
 import {
   karmeshMatrix,
   yogaCareerReadings,
-  synthesizeCareerNarrative
+  synthesizeCareerNarrative,
+  selectKarmeshReading,
+  buildKarakaOverrides
 } from '../data/careerMatrix.js'
 import { computeDasamsa } from './vedicCalc.js'
 
@@ -141,11 +143,28 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     : { score: 0, reasons: [] }
   const inKarmeshDasha = currentDashaLord === karmeshPlanet
 
-  // 組合字典判讀（9 × 12）
-  const combinationReading =
-    karmeshGraha && karmeshMatrix[karmeshPlanet]?.[karmeshGraha.house]
-      ? karmeshMatrix[karmeshPlanet][karmeshGraha.house]
-      : null
+  // 建立 karmesh context（10 宮 + karmesh 所在宮的共位行星）
+  const karmeshHouseNum = karmeshGraha?.house
+  const conjoinPlanets = karmeshHouseNum
+    ? Object.entries(chart.sidereal.grahas)
+        .filter(([name, g]) => name !== karmeshPlanet && g.house === karmeshHouseNum)
+        .map(([name]) => name)
+    : []
+  // 也把 10 宮內其他行星納入 context（可能不與 karmesh 共位但在事業宮）
+  const tenthHousePlanets = Object.entries(chart.sidereal.grahas)
+    .filter(([name, g]) => name !== karmeshPlanet && g.house === 10)
+    .map(([name]) => name)
+  const allContextPlanets = Array.from(new Set([...conjoinPlanets, ...tenthHousePlanets]))
+
+  const karmeshContext = {
+    conjoinPlanets: allContextPlanets,
+    amatyakarakaPlanet: null // 稍後填
+  }
+
+  // 組合字典判讀（9 × 12，多語境）
+  const combinationReading = karmeshGraha
+    ? selectKarmeshReading(karmeshPlanet, karmeshGraha.house, karmeshContext)
+    : null
 
   // ════ 第 2b 部分：Lagna Lord（命主星）— 古典三王交叉第一王 ════
   const lagnaRashi = chart.sidereal.ascendant.rashi
@@ -187,6 +206,9 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
 
   // ════ 第 5 部分：Amatyakaraka ════
   const amk = computeAmatyakaraka(chart)
+  const amkPlanet = amk.amatyakaraka?.planet || null
+  // 更新 karmeshContext（把 AMK 塞進去）
+  karmeshContext.amatyakarakaPlanet = amkPlanet
 
   // ════ 第 6 部分：Dasha 影響 ════
   const dashaImpact = currentDashaLord
@@ -223,7 +245,20 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     }
   }
 
-  // ════ 第 8 部分：Narrative Synthesis — 最關鍵的一段文字 ════
+  // ════ 第 8 部分：Karaka Overrides（v3 新增）════
+  // 當 AMK 或 Top Significator 為強旺 Mars/Venus/Saturn/Jupiter/Sun 時加 override
+  const karakaOverrides = buildKarakaOverrides({
+    amatyakaraka: amk.amatyakaraka
+      ? {
+          planet: amk.amatyakaraka.planet,
+          graha: chart.sidereal.grahas[amk.amatyakaraka.planet]
+        }
+      : null,
+    significators: significatorRanking,
+    computeDignity
+  })
+
+  // ════ 第 9 部分：Narrative Synthesis — 最關鍵的一段文字（含 Karaka Override + D10）════
   const narrative = synthesizeCareerNarrative({
     karmesh: {
       planet: karmeshPlanet,
@@ -232,12 +267,17 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     },
     lagnaLord,
     activeCareerYogas,
-    dignityDetails: karmeshDignityDetails
+    dignityDetails: karmeshDignityDetails,
+    karmeshContext,
+    karakaOverrides,
+    d10: d10Karmesh
   })
 
   return {
     // 最核心：合成敘事（放在 UI 最上面）
     narrative,
+    // Karaka Overrides（v3 新增）— 自然本命星壓倒性強 → 身份標籤
+    karakaOverrides,
     // Yoga 事業啟示（優先級最高）
     activeCareerYogas,
     // 第 1 部分
