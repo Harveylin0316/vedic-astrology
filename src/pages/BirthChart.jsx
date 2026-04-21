@@ -31,6 +31,8 @@ import {
 } from 'lucide-react'
 import { cities, findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
+import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
+import ShareCardSection from '../components/ShareCardSection.jsx'
 import {
   computeVedicChart,
   formatDegrees,
@@ -479,6 +481,19 @@ export default function BirthChart() {
                   <PlanetBadge icon={<Moon className="h-5 w-5" />} label="月亮 Moon" rashi={chart.tropical.moon.rashi} degree={chart.tropical.moon.degreeInSign} nakshatra={chart.sidereal.moon.nakshatra} sideLabel={`吠陀 ${chart.sidereal.moon.rashi.chinese}`} highlight />
                 </div>
               </div>
+
+              {/* ②-b 分享卡（IG / 朋友圈 / LINE） */}
+              <ShareCardSection
+                filename={`我的吠陀命盤-${submittedStamp}.png`}
+                title="下載你的命盤卡"
+              >
+                <BirthChartShareCard
+                  chart={chart}
+                  keywords={keywords}
+                  stamp={submittedStamp}
+                  city={submittedCity}
+                />
+              </ShareCardSection>
 
               {/* ③ 個性優缺點 — 最快「准不准」的判斷 */}
               {personality && (

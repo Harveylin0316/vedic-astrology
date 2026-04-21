@@ -19,6 +19,8 @@ import { computeCompatibility, getKutaStatus } from '../utils/compatibilityEngin
 import { buildCompatibilityNarrative, CATEGORY_META } from '../data/compatibilityReadings.js'
 import { cities, findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
+import CompatibilityShareCard from '../components/CompatibilityShareCard.jsx'
+import ShareCardSection from '../components/ShareCardSection.jsx'
 
 const emptyPerson = () => ({
   name: '',
@@ -335,6 +337,18 @@ function CompatibilityResult({ result, relationship, onReset }) {
           {compat.tagline}
         </p>
       </div>
+
+      {/* 分享卡（IG / 朋友圈 / LINE 下載） */}
+      <ShareCardSection
+        filename={`${youName}-x-${themName}-合盤.png`}
+        title="下載這張卡片分享給 TA"
+      >
+        <CompatibilityShareCard
+          result={result}
+          youName={youName}
+          themName={themName}
+        />
+      </ShareCardSection>
 
       {/* 3 段敘事 */}
       <div className="grid md:grid-cols-3 gap-4">
