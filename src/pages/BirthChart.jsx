@@ -1385,22 +1385,43 @@ function RarityCard({ rarity }) {
                 <div className="text-xs text-slate-400 mb-2 font-medium">
                   讓你與眾不同的 {rarity.features.length} 個關鍵配置：
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="space-y-2.5">
                   {rarity.features.slice(0, 10).map((f, i) => (
-                    <span
+                    <div
                       key={i}
-                      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs ${
+                      className={`rounded-xl border p-3 ${
                         f.weight >= 15
-                          ? 'border-vermilion-500/40 bg-vermilion-500/10 text-vermilion-300'
+                          ? 'border-vermilion-500/30 bg-vermilion-500/5'
                           : f.weight >= 10
-                          ? 'border-saffron-500/40 bg-saffron-500/10 text-saffron-300'
-                          : 'border-white/15 bg-white/5 text-slate-300'
+                          ? 'border-saffron-500/30 bg-saffron-500/5'
+                          : 'border-white/10 bg-white/[0.03]'
                       }`}
-                      title={f.signature}
                     >
-                      <span className="font-medium">{f.label}</span>
-                      <span className="text-[10px] opacity-70">{f.freq}</span>
-                    </span>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-slate-100">
+                            {f.plain || f.label}
+                          </div>
+                          <div className="text-[11px] text-slate-500 mt-0.5">
+                            {f.technical || f.signature}
+                          </div>
+                        </div>
+                        <span className={`flex-shrink-0 text-[10px] tabular-nums rounded-full px-2 py-0.5 border ${
+                          f.weight >= 15
+                            ? 'border-vermilion-500/40 text-vermilion-300'
+                            : f.weight >= 10
+                            ? 'border-saffron-500/40 text-saffron-300'
+                            : 'border-white/15 text-slate-400'
+                        }`}>
+                          {f.freq}
+                        </span>
+                      </div>
+                      {f.meaning && (
+                        <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+                          {f.meaning}
+                        </p>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -1434,9 +1455,9 @@ function RarityCard({ rarity }) {
                       {rarity.features.map((f, i) => (
                         <tr key={i} className="border-b border-white/5 last:border-b-0">
                           <td className="py-2 px-3">
-                            <div className="text-slate-200">{f.label}</div>
+                            <div className="text-slate-200">{f.plain || f.name}</div>
                             <div className="text-[10px] text-slate-500">
-                              出現頻率 {f.freq} · {f.signature}
+                              {f.technical || f.signature} · 出現頻率 {f.freq}
                             </div>
                           </td>
                           <td className="py-2 px-3 text-right text-saffron-400 tabular-nums font-medium">
