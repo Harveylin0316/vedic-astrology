@@ -38,6 +38,8 @@ import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
+import SmartDateInput from '../components/SmartDateInput.jsx'
+import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import {
   encodeBirthPayload,
   decodeBirthPayload,
@@ -333,12 +335,10 @@ export default function BirthChart() {
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
               <Calendar className="h-4 w-4 text-saffron-400" />出生日期
             </label>
-            <input
-              type="date"
+            <SmartDateInput
               required
-              className="input-field"
               value={form.date}
-              onChange={(e) => update('date', e.target.value)}
+              onChange={(v) => update('date', v)}
             />
           </div>
 
@@ -347,12 +347,10 @@ export default function BirthChart() {
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
               <Clock className="h-4 w-4 text-saffron-400" />出生時間（24 小時制）
             </label>
-            <input
-              type="time"
+            <SmartTimeInput
               required
-              className="input-field"
               value={form.time}
-              onChange={(e) => update('time', e.target.value)}
+              onChange={(v) => update('time', v)}
             />
             <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
               吠陀占星上升星座每 2 小時換一次，時間越精確越好
@@ -1240,6 +1238,10 @@ function DashaTimelineCard({ ageRange, dateRange, name, nickname, theme, vibe, c
 }
 
 function RarityCard({ rarity }) {
+  const [showDetails, setShowDetails] = useState(false)
+  // 從對比參考中挑一個比你「更稀有」的屬性（讓用戶有「哇」的反應）
+  const comparison = buildRarityComparison(rarity.topPercent)
+
   return (
     <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-vermilion-500/10 via-saffron-500/10 to-amber-500/5 border-saffron-500/40 relative overflow-hidden">
       {/* 背景裝飾 */}
@@ -1257,14 +1259,7 @@ function RarityCard({ rarity }) {
           <div className="flex flex-col items-center">
             <div className="relative">
               <svg width="140" height="140" className="transform -rotate-90">
-                <circle
-                  cx="70"
-                  cy="70"
-                  r="60"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.1)"
-                  strokeWidth="10"
-                />
+                <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
                 <circle
                   cx="70"
                   cy="70"
@@ -1283,65 +1278,183 @@ function RarityCard({ rarity }) {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="font-serif text-5xl gradient-text leading-none">
-                  {rarity.score}
-                </div>
+                <div className="font-serif text-5xl gradient-text leading-none">{rarity.score}</div>
                 <div className="text-xs text-slate-400 mt-1">/ 100</div>
               </div>
             </div>
-            {/* 星星 */}
             <div className="mt-3 flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`text-lg ${i < rarity.stars ? 'text-saffron-400' : 'text-white/15'}`}
-                >
-                  ★
-                </span>
+                <span key={i} className={`text-lg ${i < rarity.stars ? 'text-saffron-400' : 'text-white/15'}`}>★</span>
               ))}
             </div>
           </div>
 
           {/* 右：標題 + 特徵清單 */}
           <div className="flex-1">
-            <h3 className="font-serif text-3xl md:text-4xl gradient-text">
-              {rarity.title}
-            </h3>
+            <h3 className="font-serif text-3xl md:text-4xl gradient-text">{rarity.title}</h3>
             <div className="mt-1 text-lg text-saffron-400">
               位於全人口 <strong className="font-serif text-2xl">Top {rarity.topPercent}%</strong>
             </div>
-            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-              {rarity.note}。下面是讓你命盤與眾不同的關鍵配置：
-            </p>
+            <p className="mt-2 text-sm text-slate-300 leading-relaxed">{rarity.note}。</p>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              {rarity.features.slice(0, 10).map((f, i) => (
-                <span
-                  key={i}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs ${
-                    f.weight >= 15
-                      ? 'border-vermilion-500/40 bg-vermilion-500/10 text-vermilion-300'
-                      : f.weight >= 10
-                      ? 'border-saffron-500/40 bg-saffron-500/10 text-saffron-300'
-                      : 'border-white/15 bg-white/5 text-slate-300'
-                  }`}
-                  title={f.signature}
-                >
-                  <span className="font-medium">{f.label}</span>
-                  <span className="text-[10px] opacity-70">{f.freq}</span>
-                </span>
-              ))}
+            {/* 人口比較 — 真實統計數據作對比 */}
+            <div className="mt-3 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-3">
+              <div className="text-[11px] text-saffron-400 font-medium uppercase tracking-wider mb-1.5">
+                放在世界人口裡比比看
+              </div>
+              <div className="text-sm text-slate-200 leading-relaxed">{comparison}</div>
             </div>
+
+            {/* 特徵 chips */}
+            {rarity.features.length > 0 && (
+              <div className="mt-4">
+                <div className="text-xs text-slate-400 mb-2 font-medium">
+                  讓你與眾不同的 {rarity.features.length} 個關鍵配置：
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {rarity.features.slice(0, 10).map((f, i) => (
+                    <span
+                      key={i}
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs ${
+                        f.weight >= 15
+                          ? 'border-vermilion-500/40 bg-vermilion-500/10 text-vermilion-300'
+                          : f.weight >= 10
+                          ? 'border-saffron-500/40 bg-saffron-500/10 text-saffron-300'
+                          : 'border-white/15 bg-white/5 text-slate-300'
+                      }`}
+                      title={f.signature}
+                    >
+                      <span className="font-medium">{f.label}</span>
+                      <span className="text-[10px] opacity-70">{f.freq}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <p className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
-          💡 稀有度根據古典吠陀 Yoga（行星組合）+ Nakshatra Pada（108 種月宿分段）+ 特殊配置計算。
-          分數高代表命盤裡有越多「少見的強勢配置」— 不一定等於「命好」，但代表你跟大多數人不一樣。
-        </p>
+        {/* 展開：分數拆解 + 方法論 + 經典出處 */}
+        <div className="mt-5 border-t border-white/10 pt-4">
+          <button
+            type="button"
+            onClick={() => setShowDetails((s) => !s)}
+            className="flex items-center gap-2 text-sm text-saffron-400 hover:text-saffron-300 transition"
+          >
+            {showDetails ? '收合' : '展開'}「怎麼算的？分數從哪裡來？」
+            <span className="text-xs">{showDetails ? '▲' : '▼'}</span>
+          </button>
+
+          {showDetails && (
+            <div className="mt-4 space-y-5 text-sm leading-relaxed">
+              {/* 分數拆解 */}
+              <div>
+                <div className="text-saffron-400 font-medium mb-2">📊 你的分數組成</div>
+                <div className="rounded-xl border border-white/10 bg-cosmic-950/40 overflow-hidden">
+                  <table className="w-full text-xs">
+                    <tbody>
+                      <tr className="border-b border-white/5">
+                        <td className="py-2 px-3 text-slate-400">基礎分（人人皆有）</td>
+                        <td className="py-2 px-3 text-right text-slate-300 tabular-nums">+40</td>
+                      </tr>
+                      {rarity.features.map((f, i) => (
+                        <tr key={i} className="border-b border-white/5 last:border-b-0">
+                          <td className="py-2 px-3">
+                            <div className="text-slate-200">{f.label}</div>
+                            <div className="text-[10px] text-slate-500">
+                              出現頻率 {f.freq} · {f.signature}
+                            </div>
+                          </td>
+                          <td className="py-2 px-3 text-right text-saffron-400 tabular-nums font-medium">
+                            +{f.weight}
+                          </td>
+                        </tr>
+                      ))}
+                      <tr className="bg-saffron-500/5">
+                        <td className="py-2 px-3 font-semibold text-saffron-400">合計（上限 100）</td>
+                        <td className="py-2 px-3 text-right font-serif text-xl gradient-text tabular-nums">
+                          {rarity.score}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* 方法論 */}
+              <div>
+                <div className="text-saffron-400 font-medium mb-2">🔬 計算方法</div>
+                <div className="text-slate-300 space-y-2">
+                  <p>
+                    我們掃描你的命盤中 <strong>23 種古典吠陀配置</strong>，每個配置根據「在一般人口中的出現頻率」給一個權重（越罕見 = 權重越高）。
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 text-xs text-slate-400 ml-2">
+                    <li>5 種 Panchamahapurusha Yoga（五大偉人瑜伽）</li>
+                    <li>4 種吉星組合（Raj / Dhana / Gaja Kesari / Budha-Aditya）</li>
+                    <li>3 種逆轉型瑜伽（Neecha Bhanga / Vipreet Raj / Parivartana）</li>
+                    <li>11 種特殊配置（雙光合宿、新/滿月、Stellium、元素主導等）</li>
+                  </ul>
+                  <p className="text-xs text-slate-500">
+                    頻率估計基於古典 Jyotish 文獻的經驗統計（見下方出處），並參考現代吠陀占星家（B.V. Raman、K.N. Rao）的統計資料。
+                  </p>
+                </div>
+              </div>
+
+              {/* 經典出處 */}
+              <div>
+                <div className="text-saffron-400 font-medium mb-2">📚 經典出處</div>
+                <div className="space-y-1.5 text-xs text-slate-400">
+                  <div>
+                    <strong className="text-slate-200">Brihat Parashara Hora Shastra</strong> — 帕拉薩拉尊者著，吠陀占星最權威的古典文本（c. 300 BCE – 600 CE 編纂），定義多數 Yoga 與 Dosha
+                  </div>
+                  <div>
+                    <strong className="text-slate-200">Saravali</strong> — Kalyana Varma 著（11 世紀），五大偉人瑜伽的系統化來源
+                  </div>
+                  <div>
+                    <strong className="text-slate-200">Phaladeepika</strong> — Mantreswara 著（14 世紀），Nakshatra Pada 分段與宮位解讀權威
+                  </div>
+                  <div>
+                    <strong className="text-slate-200">B.V. Raman 著作</strong>（1912-1998）— 現代吠陀占星標準化的奠基者，Hindu Predictive Astrology / Three Hundred Important Combinations
+                  </div>
+                </div>
+              </div>
+
+              {/* 警語 */}
+              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3 text-xs text-slate-400 leading-relaxed">
+                ⚠️ <strong className="text-slate-300">重要提醒</strong>：稀有度 ≠「命好 / 命不好」。
+                高分代表命盤中有較多「在古典文獻被特別記載」的配置，這些配置往往伴隨明顯的人格或人生特徵（可能是吉、可能是挑戰）。
+                分數低的命盤不代表平庸，可能是「均衡型」— 沒有極端配置，日子反而平穩。
+                這個指數的核心用途是<strong className="text-saffron-400">幫你認識自己的獨特點</strong>，不是用來比較高低。
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
+}
+
+// 依據 topPercent 挑合適的人口對比（全部是真實全球統計）
+function buildRarityComparison(topPercent) {
+  // 真實參考：
+  //   雙胞胎 ~1.2% · 紅髮 ~2% · 綠眼 ~2% · O 型陰性血 ~6.6% ·
+  //   AB 型血 ~4% · 左撇子 ~10% · 藍眼 ~8-10%
+  if (topPercent <= 0.5) {
+    return '你比「雙胞胎出生者」（約 1.2%）還稀有。在 1000 個人裡，大概只有 3-5 個人的命盤配置跟你類似。'
+  }
+  if (topPercent <= 2) {
+    return `你的命盤稀有度跟「紅髮」（全球約 2%）、「綠眼睛」（約 2%）同級。100 個朋友裡，大概只有 1-2 個人會有類似配置。`
+  }
+  if (topPercent <= 5) {
+    return '你的稀有度大致跟「AB 型血」（全球約 4%）同等級。20 個人裡會有 1 個人跟你配置相近。'
+  }
+  if (topPercent <= 10) {
+    return '你的稀有度接近「左撇子」（約 10% 全球人口）。10 個人裡會有 1 個人配置類似 — 不是罕見，但也明顯有特色。'
+  }
+  if (topPercent <= 20) {
+    return '你的配置較有特色但非極罕見。每 5 個人裡大概有 1 個類似 — 像是「藍眼睛 + 某個血型」這種程度的組合。'
+  }
+  return '你的命盤屬於均衡型。這不代表平庸 — 反而是少了極端配置所以「日子比較穩」的類型。'
 }
 
 function CopyLinkButton() {

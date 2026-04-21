@@ -31,6 +31,8 @@ import {
   replaceUrlParam,
   copyToClipboard
 } from '../utils/permalink.js'
+import SmartDateInput from '../components/SmartDateInput.jsx'
+import SmartTimeInput from '../components/SmartTimeInput.jsx'
 
 const emptyPerson = () => ({
   name: '',
@@ -314,12 +316,10 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
             <Calendar className="h-4 w-4" />
             出生日期
           </label>
-          <input
-            type="date"
+          <SmartDateInput
             required
             value={person.date}
-            onChange={(e) => update('date', e.target.value)}
-            className="input-field"
+            onChange={(v) => update('date', v)}
           />
         </div>
 
@@ -328,12 +328,10 @@ function PersonForm({ person, update, onCityChange, title, accent }) {
             <Clock className="h-4 w-4" />
             出生時間
           </label>
-          <input
-            type="time"
+          <SmartTimeInput
             required
             value={person.time}
-            onChange={(e) => update('time', e.target.value)}
-            className="input-field"
+            onChange={(v) => update('time', v)}
           />
         </div>
 
