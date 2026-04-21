@@ -234,15 +234,15 @@ export const closings = {
 // 標題對照
 // ═════════════════════════════════════════════════════════════
 export const sectionTitles = {
-  family: '你的原生家庭',
-  intimacy: '你在親密關係裡',
-  reaction: '你的反應力與說話',
-  selfCriticism: '你的自我批判',
-  authorization: '你可以的（給你的授權）',
-  money: '你的財運模式',
-  bodyWarning: '你身體在說的事',
-  contrarian: '我知道你不想聽但...',
-  lifeCourse: '你今生的核心課題'
+  family: '關於你的家',
+  intimacy: '關於你在親密關係裡',
+  reaction: '關於你的反應跟講話',
+  selfCriticism: '關於你對自己的嚴厲',
+  authorization: '關於你可以的',
+  money: '關於錢',
+  bodyWarning: '關於身體',
+  contrarian: '我知道你不想聽',
+  lifeCourse: '關於今生的核心課題'
 }
 
 // ═════════════════════════════════════════════════════════════

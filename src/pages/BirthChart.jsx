@@ -316,6 +316,8 @@ export default function BirthChart() {
     : null
 
   const astrologerNote = chart ? buildAstrologerNote(chart, persona) : null
+  // 取得某段筆記 body 的小工具（把筆記內容散佈到對應 section 用）
+  const noteBody = (id) => astrologerNote?.sections?.find((s) => s.id === id)?.body || null
 
   const sectionTabs = [
     { id: 'self', label: t('chart.section.self'), icon: '🪞' },
@@ -605,6 +607,18 @@ export default function BirthChart() {
                 </div>
               </div>
 
+              {/* 軸心洞察 — 你這張盤只在講一件事（不要 meta 標題，只講話） */}
+              {astrologerNote?.axisInsight && (
+                <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-saffron-500/5 to-transparent border-saffron-500/20">
+                  <p className="font-serif text-xl md:text-3xl text-saffron-200 leading-tight italic mb-5">
+                    「{astrologerNote.axisInsight.axis}」
+                  </p>
+                  <p className="font-serif text-[15px] md:text-base text-slate-200 leading-[1.95]">
+                    {astrologerNote.axisInsight.opener}
+                  </p>
+                </div>
+              )}
+
               {/* ① -b 雙系統對照說明 */}
               <div className="glass-panel p-5 bg-white/[0.02] border-white/10">
                 <div className="text-xs uppercase tracking-widest text-slate-400 mb-3">Tropical（西方）vs Sidereal（吠陀）· 兩套系統並列</div>
@@ -681,81 +695,6 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ②-a+ 命盤深度判讀（給一個人的信） */}
-              {astrologerNote && (
-                <Section
-                  icon={<Sparkle className="h-4 w-4" />}
-                  badge="深度判讀"
-                  title="只寫給你一個人的命盤筆記"
-                  highlight
-                >
-                  <div className="max-w-3xl mx-auto">
-                    <div className="relative rounded-2xl border border-saffron-500/20 bg-gradient-to-br from-saffron-500/[0.06] via-saffron-500/[0.02] to-white/[0.02] p-6 md:p-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                      {/* 信紙邊角小裝飾 */}
-                      <div className="absolute top-4 right-5 text-saffron-500/40 text-xs tracking-widest uppercase">
-                        — 給你 —
-                      </div>
-
-                      {/* 開場白 */}
-                      <p className="font-serif text-[15px] md:text-base text-slate-100 leading-[1.95] md:leading-loose italic">
-                        {astrologerNote.greeting}
-                      </p>
-
-                      {/* 軸心洞察：整份筆記只在講一件事 */}
-                      {astrologerNote.axisInsight && (
-                        <div className="mt-8 pl-5 md:pl-6 border-l-2 border-saffron-500/60 bg-saffron-500/[0.03] rounded-r-lg py-4 pr-4">
-                          <div className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-saffron-400/80 mb-3">
-                            軸心洞察 · 這份筆記其實只在講一件事
-                          </div>
-                          <p className="font-serif text-lg md:text-2xl text-saffron-200 leading-snug italic mb-4">
-                            「{astrologerNote.axisInsight.axis}」
-                          </p>
-                          <p className="font-serif text-[15px] md:text-base text-slate-200 leading-[1.95] md:leading-loose">
-                            {astrologerNote.axisInsight.opener}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* 9 個主題段落 */}
-                      <div className="mt-8 space-y-8">
-                        {astrologerNote.sections.map((s) => (
-                          <div key={s.id}>
-                            <div className="flex items-center gap-3 mb-3">
-                              <span className="text-saffron-400/80 text-lg leading-none">✦</span>
-                              <h4 className="font-serif text-lg md:text-xl text-saffron-200 tracking-wide">
-                                {s.title}
-                              </h4>
-                              <div className="flex-1 h-px bg-gradient-to-r from-saffron-500/20 to-transparent" />
-                            </div>
-                            <p className="font-serif text-[15px] md:text-base text-slate-100/95 leading-[1.95] md:leading-loose pl-1">
-                              {s.body}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* 結語 */}
-                      <div className="mt-10 pt-6 border-t border-saffron-500/20">
-                        <div className="text-xs uppercase tracking-widest text-saffron-400/70 mb-3">
-                          ─ 最後一段 ─
-                        </div>
-                        <p className="font-serif text-[15px] md:text-base text-slate-100 leading-[1.95] md:leading-loose">
-                          {astrologerNote.closing}
-                        </p>
-                      </div>
-
-                      {/* 署名 */}
-                      <div className="mt-8 text-right text-sm text-slate-400/80 font-serif italic">
-                        — 寫於你的命盤之上
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-slate-500 mt-4 leading-relaxed text-center">
-                      💡 這幾段不是模板 — 每段都挑你命盤某個最關鍵的配置來寫。覺得準，是因為這是你的。
-                    </p>
-                  </div>
-                </Section>
-              )}
 
               {/* ②-b 分享卡（IG / 朋友圈 / LINE） */}
               <ShareCardSection
@@ -832,44 +771,31 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ④ Personality — 第一印象 vs 真實的你 */}
+              {/* ④ Personality — 上升 + 自我批判（純敘述） */}
               {lagna && (
                 <Section icon={<Sparkle className="h-4 w-4" />} badge={`上升 · ${chart.ascendant.rashi.chinese}`} title={lagna.tagline}>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <InfoCard label="🪞 朋友眼中的你" body={lagna.firstImpression} />
-                    <InfoCard label="🫥 真實的你（深入認識才知道）" body={lagna.realYou} />
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4 mt-4">
-                    <TagCard icon={<ShieldCheck className="h-4 w-4 text-emerald-400" />} title="讓人愛上你的點" tags={lagna.lovableTraits} tone="good" />
-                    <TagCard icon={<ShieldAlert className="h-4 w-4 text-vermilion-500" />} title="讓人想跟你打架的點" tags={lagna.redFlags} tone="bad" />
-                  </div>
-                  <div className="mt-4 grid md:grid-cols-2 gap-4">
-                    <QuoteBlock icon="👥" title="朋友對你的標籤" body={lagna.socialLabel} />
-                    <QuoteBlock icon="🎯" title="這輩子的功課" body={lagna.lifeLesson} accent />
+                  <div className="max-w-3xl space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
+                    {noteBody('reaction') && <p>{noteBody('reaction')}</p>}
+                    {noteBody('selfCriticism') && <p>{noteBody('selfCriticism')}</p>}
+                    {!noteBody('reaction') && !noteBody('selfCriticism') && (
+                      <>
+                        <p>{lagna.firstImpression}</p>
+                        <p>{lagna.realYou}</p>
+                      </>
+                    )}
                   </div>
                 </Section>
               )}
 
               <div id="love" className="scroll-mt-20 -mt-6" />
-              {/* ④ Moon + Love */}
+              {/* ④ Moon + Love（純敘述） */}
               {moon && (
                 <Section icon={<Heart className="h-4 w-4" />} badge={`月亮 · ${chart.tropical.moon.rashi.chinese}`} title={`你的愛情模式：${moon.theme}`} highlight>
-                  <p className="text-slate-300 leading-relaxed">{moon.emotional}</p>
-                  <div className="grid md:grid-cols-2 gap-3 mt-4">
-                    <InfoCard label="💘 你的戀愛風格" body={moon.loveStyle} />
-                    <InfoCard label="💬 你是怎麼撩人的" body={moon.howYouFlirt} />
-                    <InfoCard label="🚫 你的地雷" body={moon.dealBreaker} />
-                    <InfoCard label="💍 婚姻時機" body={moon.marriageTiming} />
+                  <div className="max-w-3xl space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
+                    {noteBody('intimacy') && <p>{noteBody('intimacy')}</p>}
+                    {noteBody('family') && <p>{noteBody('family')}</p>}
+                    <p className="text-slate-200/90">{moon.emotional}</p>
                   </div>
-                  <div className="mt-4 rounded-xl border border-vermilion-500/20 bg-vermilion-500/5 p-4 text-sm leading-relaxed">
-                    <div className="font-medium text-vermilion-500 mb-1">⚠️ 感情忠告</div>
-                    <div className="text-slate-200">{moon.warning}</div>
-                  </div>
-                  {submittedGender && submittedGender !== 'other' && (
-                    <div className="mt-3 text-xs text-slate-500">
-                      💡 本區解讀適用你找<strong className="text-saffron-400">{partnerTerm}</strong>時的判斷
-                    </div>
-                  )}
                 </Section>
               )}
 
@@ -980,12 +906,17 @@ export default function BirthChart() {
                     <DashaStat label="此大運共" value={`${currentDashaReading.years} 年`} />
                     <DashaStat label="還剩" value={`約 ${currentDasha.yearsRemaining.toFixed(1)} 年`} accent />
                   </div>
-                  <p className="text-slate-200 leading-relaxed text-base mb-2 border-l-2 border-saffron-500/60 pl-4">
+                  <p className="text-slate-200 leading-relaxed text-base mb-5 border-l-2 border-saffron-500/60 pl-4">
                     {currentDashaReading.vibe}
                   </p>
-                  <p className="text-xs text-slate-500 mb-5 pl-4">
-                    <span className="text-saffron-400">Karaka（自然徵象）：</span> {currentDashaReading.karaka}
-                  </p>
+
+                  {/* 財運 prose（占星師口吻） */}
+                  {noteBody('money') && (
+                    <div className="max-w-3xl mb-6 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
+                      <p>{noteBody('money')}</p>
+                    </div>
+                  )}
+
                   <div className="grid md:grid-cols-2 gap-3">
                     <InfoCard label="💼 事業運" body={currentDashaReading.career} />
                     <InfoCard label="💘 感情運" body={currentDashaReading.love} />
@@ -1056,39 +987,7 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ⑦-3 FUTURE 未來運勢（按年齡過濾事件） */}
-              {futurePeriods.length > 0 && (
-                <Section icon={<Telescope className="h-4 w-4" />} badge="未來運勢 · 接下來的大運" title="你未來 50 年的人生地圖">
-                  <p className="text-sm text-slate-400 mb-4">
-                    每個大運切換點就是人生的「翻頁時刻」。事件顯示會根據你那時候的年齡自動調整 — 童年看不到結婚、80 歲不會出現考大學。
-                  </p>
-                  <div className="space-y-3">
-                    {futurePeriods.map((p, i) => {
-                      const r = dashaReadings[p.lord]
-                      const ageStart = ageOf(p.start)
-                      const ageEnd = ageOf(p.end)
-                      const events = getDashaEventsForAge(p.lord, ageStart, ageEnd)
-                      return (
-                        <DashaTimelineCard
-                          key={i}
-                          ageRange={`${ageStart.toFixed(0)} – ${ageEnd.toFixed(0)} 歲`}
-                          dateRange={`${p.start.getFullYear()} – ${p.end.getFullYear()}`}
-                          name={r.name}
-                          nickname={r.nickname}
-                          theme={r.theme}
-                          vibe={r.vibe}
-                          career={r.career}
-                          love={r.love}
-                          money={r.money}
-                          typicalEvents={events}
-                          tone="future"
-                          turningPoint={i === 0}
-                        />
-                      )
-                    })}
-                  </div>
-                </Section>
-              )}
+              {/* ⑦-3 FUTURE 未來運勢 — 已移除（用 ⑦-4 的 LifeStageCard 敘事代替） */}
 
               {/* ⑦-4 人生重要階段發展軌跡 · 全時間軸敘事 */}
               {dashaPeriods && dashaPeriods.length > 0 && (
@@ -1097,6 +996,12 @@ export default function BirthChart() {
                   badge="人生地圖 · Vimshottari 120 年敘事"
                   title="人生每個重要階段的發展軌跡"
                 >
+                  {/* 今生核心課題 prose（占星師口吻） */}
+                  {noteBody('lifeCourse') && (
+                    <div className="max-w-3xl mb-6 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
+                      <p>{noteBody('lifeCourse')}</p>
+                    </div>
+                  )}
                   <p className="text-sm text-slate-400 mb-5 leading-relaxed">
                     你的命盤會依出生時的月亮位置，產生 9 顆行星輪流主政的 120 年大運。每段大運會為你的人生染上不同色調 —
                     <strong className="text-saffron-400">以下每張卡對應一段大運 + 你當時的年齡階段，讀完就等於讀完自己這輩子的劇本綱要</strong>。
@@ -1186,9 +1091,16 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* ⑪ Remedy */}
+              {/* ⑪ Remedy — 開運建議 + 授權/反主流/身體 prose */}
               {remedy && (
                 <Section icon={<Sparkles className="h-4 w-4" />} badge="開運建議" title={`你的守護星是 ${remedy.ruler}`}>
+                  {/* 三段占星師 prose：授權 · 身體 · 反主流 */}
+                  <div className="max-w-3xl space-y-5 mb-6 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
+                    {noteBody('authorization') && <p>{noteBody('authorization')}</p>}
+                    {noteBody('bodyWarning') && <p>{noteBody('bodyWarning')}</p>}
+                    {noteBody('contrarian') && <p>{noteBody('contrarian')}</p>}
+                  </div>
+
                   <div className="grid sm:grid-cols-2 gap-3">
                     <LuckyTile emoji="💎" label="對應寶石" value={remedy.gem} />
                     <LuckyTile emoji="⚙️" label="主管金屬" value={remedy.metal} />
@@ -1262,6 +1174,13 @@ export default function BirthChart() {
                   💡 這是你命盤的完整行星佈局。後續的進階解讀（Yoga、大運、衝突點）都會依這張表計算。
                 </p>
               </Section>
+
+              {/* 結語 — 推你一下（全頁最後） */}
+              {astrologerNote?.closing && (
+                <div className="max-w-3xl mx-auto pt-6 pb-12 font-serif text-[15px] md:text-lg text-slate-100 leading-[1.95] md:leading-loose italic border-t border-saffron-500/20">
+                  <p className="pt-6">{astrologerNote.closing}</p>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -1987,64 +1906,7 @@ function VedicCareerSection({ data }) {
         </Section>
       )}
 
-      {/* 判讀依據（精簡） */}
-      <Section
-        icon={<Briefcase className="h-4 w-4" />}
-        badge="判讀依據"
-        title="古典吠陀事業判讀的 7 個檢查點"
-      >
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-sm text-slate-300 leading-relaxed">
-          <strong className="text-saffron-400">依據 Brihat Parashara Hora Shastra、Phaladeepika、K.N. Rao 派</strong>
-          <ol className="mt-2 space-y-1 list-decimal list-inside text-sm">
-            <li><strong>10 宮 Karma Bhava</strong> — 事業本體的星座</li>
-            <li><strong>10 宮主 Dashamesh</strong> — 落宮、星座、月宿的組合</li>
-            <li><strong>命主星 Lagna Lord</strong> — 三王交叉第一王</li>
-            <li><strong>12 大 Yoga 格局</strong> — 優先於單點判讀</li>
-            <li><strong>Digbala + Moolatrikona + Neecha Bhanga</strong> — 細節尊嚴</li>
-            <li><strong>D10 (Dasamsa) 事業專盤</strong> — 「潛能」vs「實踐」交叉</li>
-            <li><strong>9 大徵象星 + AMK + 當前 Dasha</strong> — 時機與方向</li>
-          </ol>
-        </div>
-      </Section>
-
-      {/* 10 宮本體 */}
-      <Section icon={<Briefcase className="h-4 w-4" />} badge="事業宮本體" title="你的事業宮（第 10 宮）">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">10 宮星座</div>
-            <div className="font-serif text-2xl gradient-text">
-              {foundation.tenthRashi.symbol} {foundation.tenthRashi.chinese}
-            </div>
-            <div className="text-xs text-slate-500 mt-1">{foundation.tenthRashi.name}</div>
-            <div className="text-sm text-slate-300 mt-3 leading-relaxed">
-              由 <strong className="text-saffron-400">{foundation.karmeshPlanet}</strong> 主宰 — 這顆行星在你命盤中的位置決定你的事業方向。
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">10 宮內行星</div>
-            {foundation.tenthOccupants.length === 0 ? (
-              <div className="text-sm text-slate-400">
-                目前沒有行星坐在 10 宮 — 事業全靠 10 宮主星 ({foundation.karmeshPlanet}) 的位置推動。
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {foundation.tenthOccupants.map((o) => (
-                  <div key={o.planet} className="text-sm">
-                    <span className="font-medium text-slate-100">{o.planet}</span>
-                    <span className="text-slate-400 text-xs ml-2">
-                      · {o.rashi.chinese} · {o.nakshatra.name}
-                    </span>
-                    <div className="text-xs text-slate-400 mt-0.5">
-                      影響領域：{o.naturalDomain.join('、')}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </Section>
+      {/* 「判讀依據 7 個檢查點」與「事業宮本體」已移除（太像 AI 儀表板） */}
 
       {/* 10 宮主深度分析 */}
       {karmesh.reading && (
@@ -2268,33 +2130,7 @@ function VedicCareerSection({ data }) {
         </Section>
       )}
 
-      {/* 9 大徵象星 */}
-      <Section
-        icon={<Star className="h-4 w-4" />}
-        badge="9 大自然徵象星"
-        title="9 顆行星的事業力量排行"
-      >
-        <p className="text-sm text-slate-400 mb-4 leading-relaxed">
-          每顆行星都有自然的事業領域（Natural Karaka）。它們在你命盤中的力量，決定你在該領域有多少發揮空間。
-          <strong className="text-saffron-400 ml-1">Saturn 是所有人事業的自然本命星</strong> — 特別留意它的力量。
-        </p>
-
-        <div className="space-y-2">
-          {significators.map((s, idx) => (
-            <SignificatorRow
-              key={s.planet}
-              rank={idx + 1}
-              planet={s.planet}
-              score={s.scoreData.score}
-              reasons={s.scoreData.reasons}
-              karaka={s.karaka}
-              graha={s.graha}
-              dignity={s.dignity}
-              isSaturn={s.planet === 'Saturn'}
-            />
-          ))}
-        </div>
-      </Section>
+      {/* 「9 大徵象星力量排行」已移除（太像 AI 儀表板） */}
 
       {/* AMK */}
       {amatyakaraka && (
