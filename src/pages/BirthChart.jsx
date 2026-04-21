@@ -754,16 +754,21 @@ export default function BirthChart() {
               )}
 
               <div id="career" className="scroll-mt-20 -mt-6" />
-              {/* ⑥-0 事業類別排名（主角 · 排序依命盤嚴格推理） */}
+              {/* ⑥-0 事業適配度排名 — 這是唯一的「推薦什麼職業」來源 */}
               {careerRanked && <CareerRankingSection ranking={careerRanked} />}
 
-              {/* ⑥ 事業深度解析 — 5 個因子交織的多層解讀 */}
+              {/* ⑥ 事業「怎麼工作」的人格解讀（不是推薦職業，是描述你工作時的樣子） */}
               {sun && careerAnalysis && (
                 <Section
                   icon={<Briefcase className="h-4 w-4" />}
-                  badge="事業與財運 · 五因子交織"
-                  title={`你的職場全貌 — ${sun.theme}`}
+                  badge="職場人格 · 你「怎麼工作」"
+                  title="你在職場的 5 個面向"
                 >
+                  <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 mb-5 text-xs text-slate-400 leading-relaxed">
+                    💡 <strong className="text-slate-300">注意：</strong>上方「排名」告訴你<strong className="text-saffron-400">命盤支持哪些事業類別</strong>（最該投入什麼）。
+                    下面這些是<strong className="text-saffron-400">你工作時的人格表現</strong>（不論做什麼職業，你都會這樣）— 兩套資訊各自獨立，但互相補充。
+                  </div>
+
                   <p className="text-slate-300 leading-relaxed border-l-2 border-saffron-500/60 pl-4">
                     {sun.workStyle}
                   </p>
@@ -868,13 +873,8 @@ export default function BirthChart() {
                     </div>
                   )}
 
-                  {/* 7. 職業清單 */}
+                  {/* 7. 賺錢風格 / 成功關鍵 / 陷阱 — 保留（是「怎麼工作」的一部分） */}
                   <div className="grid md:grid-cols-2 gap-4 mt-5">
-                    <TagCard icon={<ShieldCheck className="h-4 w-4 text-emerald-400" />} title="超適合你的職業" tags={sun.bestCareers} tone="good" />
-                    <TagCard icon={<ShieldAlert className="h-4 w-4 text-vermilion-500" />} title="不推薦的職業" tags={sun.avoidCareers} tone="bad" />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4 mt-4">
                     <InfoCard label="💰 你的賺錢風格" body={sun.moneyStyle} />
                     <InfoCard label="🎯 成功關鍵" body={sun.successKey} />
                   </div>
@@ -885,7 +885,7 @@ export default function BirthChart() {
                   </div>
 
                   <p className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
-                    💡 這組解讀結合了 5 個命盤因子：Lagna（職場形象）+ Sun（靈魂召喚）+ Moon（壓力反應）+ 10 宮主宰（事業本質）+ Saturn（天花板）+ 當前大運（時機）。越多維度的交織 = 越個人化的分析。
+                    💡 以上是結合 Lagna（職場形象）× Sun（靈魂召喚）× Moon（壓力反應）× 10 宮主宰（事業本質）× Saturn（天花板）× 當前大運（時機）6 個命盤因子的個人化分析 — 描述「你工作的樣子」，不是「該做什麼職業」（那個看上方排名）。
                   </p>
                 </Section>
               )}
@@ -1715,12 +1715,19 @@ function CareerRankingSection({ ranking }) {
   return (
     <Section
       icon={<Briefcase className="h-4 w-4" />}
-      badge="命盤職業適配度 · 嚴格規則推導"
-      title="依你的命盤排序的事業類別"
+      badge="命盤職業適配度 · 唯一推薦來源"
+      title="依你的命盤排序的 10 個事業類別"
     >
-      <p className="text-sm text-slate-400 mb-5 leading-relaxed">
-        根據 10 個事業類別的<strong className="text-saffron-400">主宰行星</strong>在你命盤中的力量分數排序。分數來源透明：<strong>星座強弱 · 宮位位置 · 事業宮連結 · 當前大運</strong>— 每一分都可點展開看推理。
-      </p>
+      <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-4 mb-5 text-sm text-slate-300 leading-relaxed">
+        <strong className="text-saffron-400">怎麼看這個排行？</strong>
+        <br />
+        這裡排出<strong className="text-slate-100">你的命盤在 10 類事業上的適配度</strong>。分數不是主觀評比，是根據每類的<strong className="text-saffron-400">主宰行星</strong>在你命盤中的強度算出的：
+        <span className="text-slate-400">星座強弱 + 宮位位置 + 事業宮連結 + 當前大運 + 燃燒折減</span>。
+        <br /><br />
+        <strong className="text-emerald-400">✅ 排前 5 的</strong> = 你命盤真正支持、該投入的方向。
+        <strong className="text-vermilion-500 ml-3">❌ 排後 2 的</strong> = 命盤不支持（要做就得比別人多花力氣）。
+        每個類別都可以展開看「為什麼是這個分數」— 完全可追溯到具體行星規則。
+      </div>
 
       {/* Top 5 推薦 */}
       <div className="space-y-3 mb-6">
