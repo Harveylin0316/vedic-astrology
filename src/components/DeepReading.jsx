@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Sparkles, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react'
 import { composeDeepReading } from '../utils/deepReadingComposer.js'
+import MysticalTransition from './MysticalTransition.jsx'
 
 // 簡易 Markdown 渲染器 — 支援 # ## ### **bold** > quote | table | `code` | ---
 function renderMarkdown(md) {
@@ -99,34 +100,46 @@ function renderInline(text, baseKey) {
 
 export default function DeepReading({ chart, birthAge, gender }) {
   const [expanded, setExpanded] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [showTransition, setShowTransition] = useState(false)
+  const [pendingReading, setPendingReading] = useState('')
   const [reading, setReading] = useState('')
   const [ageInput, setAgeInput] = useState(birthAge?.toFixed(0) || '')
   const [situation, setSituation] = useState('')
   const [question, setQuestion] = useState('')
 
   const handleGenerate = () => {
-    setLoading(true)
-    // 用 setTimeout 讓 UI 有反饋感（實際計算是瞬間的）
+    // 立即計算（幾乎即時），但先不顯示
+    try {
+      const md = composeDeepReading(chart, {
+        age: parseInt(ageInput, 10) || birthAge,
+        gender,
+        situation,
+        question
+      })
+      setPendingReading(md)
+      setShowTransition(true) // 啟動神祕過場
+    } catch (err) {
+      console.error('Deep reading error:', err)
+      setReading('生成失敗，請回報錯誤。')
+    }
+  }
+
+  const handleTransitionComplete = () => {
+    setReading(pendingReading)
+    setExpanded(true)
+    setShowTransition(false)
+    // 解讀呈現後，滑動到解讀區塊（稍微下一點才看得到內容）
     setTimeout(() => {
-      try {
-        const md = composeDeepReading(chart, {
-          age: parseInt(ageInput, 10) || birthAge,
-          gender,
-          situation,
-          question
-        })
-        setReading(md)
-        setExpanded(true)
-      } catch (err) {
-        console.error('Deep reading error:', err)
-        setReading('生成失敗，請回報錯誤。')
-      }
-      setLoading(false)
-    }, 400)
+      const el = document.getElementById('deep-reading')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
   }
 
   return (
+    <>
+      {showTransition && (
+        <MysticalTransition onComplete={handleTransitionComplete} duration={1500} />
+      )}
     <div id="deep-reading" className="glass-panel p-6 border-saffron-500/40 bg-gradient-to-br from-saffron-500/5 to-vermilion-500/5">
       <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 mb-2">
         <Sparkles className="h-4 w-4" />
@@ -178,20 +191,11 @@ export default function DeepReading({ chart, birthAge, gender }) {
 
           <button
             onClick={handleGenerate}
-            disabled={loading}
+            disabled={showTransition}
             className="btn-primary w-full mt-5"
           >
-            {loading ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                星辰正在編織解讀...
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-4 w-4" />
-                生成我的深度解讀
-              </>
-            )}
+            <Sparkles className="h-4 w-4" />
+            生成我的深度解讀
           </button>
         </>
       )}
@@ -221,5 +225,6 @@ export default function DeepReading({ chart, birthAge, gender }) {
         </>
       )}
     </div>
+    </>
   )
 }
