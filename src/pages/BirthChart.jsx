@@ -40,6 +40,7 @@ import { trackEvent } from '../components/Analytics.jsx'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
+import { analyzeCareer } from '../utils/careerAnalysis.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import {
@@ -296,6 +297,8 @@ export default function BirthChart() {
     : []
 
   const persona = chart ? buildPersonaSignature(tropLagnaName, tropMoonName) : null
+
+  const careerAnalysis = chart ? analyzeCareer(chart, currentDasha?.lord) : null
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -742,22 +745,136 @@ export default function BirthChart() {
               )}
 
               <div id="career" className="scroll-mt-20 -mt-6" />
-              {/* ⑥ Sun + Career + Money */}
-              {sun && (
-                <Section icon={<Briefcase className="h-4 w-4" />} badge={`太陽 · ${chart.tropical.sun.rashi.chinese}`} title={`事業與財運：${sun.theme}`}>
-                  <p className="text-slate-300 leading-relaxed">{sun.workStyle}</p>
-                  <div className="grid md:grid-cols-2 gap-4 mt-4">
+              {/* ⑥ 事業深度解析 — 5 個因子交織的多層解讀 */}
+              {sun && careerAnalysis && (
+                <Section
+                  icon={<Briefcase className="h-4 w-4" />}
+                  badge="事業與財運 · 五因子交織"
+                  title={`你的職場全貌 — ${sun.theme}`}
+                >
+                  <p className="text-slate-300 leading-relaxed border-l-2 border-saffron-500/60 pl-4">
+                    {sun.workStyle}
+                  </p>
+
+                  {/* 1. Lagna · 別人眼中的你 */}
+                  {careerAnalysis.identity && (
+                    <div className="mt-5 rounded-xl border border-sky-500/25 bg-sky-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-sky-400 font-medium mb-3">
+                        👀 別人眼中的你 · Lagna {chart.tropical.ascendant.rashi.chinese}
+                      </div>
+                      <div className="space-y-2 text-sm leading-relaxed">
+                        <p className="text-slate-100">{careerAnalysis.identity.scene}</p>
+                        <div className="grid sm:grid-cols-2 gap-2 pt-2">
+                          <div className="text-xs text-slate-300">
+                            <span className="text-slate-500">同事說：</span>{careerAnalysis.identity.coworker}
+                          </div>
+                          <div className="text-xs text-slate-300">
+                            <span className="text-slate-500">老闆看：</span>{careerAnalysis.identity.boss}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 2. Sun · 靈魂召喚 */}
+                  {careerAnalysis.soul && (
+                    <div className="mt-4 rounded-xl border border-saffron-500/30 bg-saffron-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 font-medium mb-3">
+                        ☀️ 你靈魂想從工作得到的 · Sun {chart.tropical.sun.rashi.chinese}
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div><span className="text-slate-500">你的召喚：</span><span className="text-slate-100">{careerAnalysis.soul.calling}</span></div>
+                        <div><span className="text-slate-500">真正的勝利感：</span><span className="text-slate-100">{careerAnalysis.soul.realWin}</span></div>
+                        <div><span className="text-vermilion-500">會讓你萎掉的：</span><span className="text-slate-100">{careerAnalysis.soul.whatKills}</span></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 3. Moon · 壓力反應 */}
+                  {careerAnalysis.stress && (
+                    <div className="mt-4 rounded-xl border border-vermilion-500/25 bg-vermilion-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-vermilion-500 font-medium mb-3">
+                        🌙 壓力下的你 · Moon {chart.tropical.moon.rashi.chinese}
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div><span className="text-slate-500">壓力大時：</span><span className="text-slate-100">{careerAnalysis.stress.underPressure}</span></div>
+                        <div><span className="text-slate-500">Burnout 訊號：</span><span className="text-slate-100">{careerAnalysis.stress.burnoutSignal}</span></div>
+                        <div className="pt-2 border-t border-white/5">
+                          <span className="text-vermilion-400">你的職場陰影：</span>
+                          <span className="text-slate-100 ml-1">{careerAnalysis.stress.shadow}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 4. 10th House · 事業宮 */}
+                  {careerAnalysis.tenthHouse?.direction && (
+                    <div className="mt-4 rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-emerald-400 font-medium mb-3">
+                        🏛️ 你的事業宮 · 第 10 宮 = {careerAnalysis.tenthHouse.rashi.chinese}（{careerAnalysis.tenthHouse.lord} 主宰）
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div>
+                          <span className="text-saffron-400 font-medium">{careerAnalysis.tenthHouse.direction.keyword}</span>
+                          <p className="text-slate-100 mt-1">{careerAnalysis.tenthHouse.direction.detail}</p>
+                        </div>
+                        {careerAnalysis.tenthHouse.focus && (
+                          <div className="pt-2 border-t border-white/5 text-xs text-slate-300">
+                            <span className="text-slate-500">事業重心落點（{careerAnalysis.tenthHouse.lord} 在第 {careerAnalysis.tenthHouse.lordHouse} 宮）：</span>
+                            <span className="text-slate-100 ml-1">{careerAnalysis.tenthHouse.focus}</span>
+                          </div>
+                        )}
+                        {careerAnalysis.tenthHouse.tenants.length > 0 && (
+                          <div className="text-xs text-slate-400">
+                            🏠 當前 10 宮有行星：
+                            {careerAnalysis.tenthHouse.tenants.map((t) => (
+                              <span key={t} className="inline-block ml-2 rounded-full bg-white/5 border border-white/10 px-2 py-0.5 text-[11px]">{t}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 5. Saturn · 天花板 */}
+                  {careerAnalysis.saturn?.ceiling && (
+                    <div className="mt-4 rounded-xl border border-slate-500/30 bg-slate-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-slate-300 font-medium mb-3">
+                        🔒 你的職涯天花板 · Saturn 在第 {careerAnalysis.saturn.house} 宮
+                      </div>
+                      <p className="text-sm text-slate-200 leading-relaxed">{careerAnalysis.saturn.ceiling}</p>
+                    </div>
+                  )}
+
+                  {/* 6. Dasha · 當前方向 */}
+                  {careerAnalysis.dasha?.vector && (
+                    <div className="mt-4 rounded-xl border border-saffron-500/25 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-5">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 font-medium mb-3">
+                        ⏳ 你當前大運的事業走向 · {careerAnalysis.dasha.lord} 大運
+                      </div>
+                      <p className="text-sm text-slate-100 leading-relaxed">{careerAnalysis.dasha.vector}</p>
+                    </div>
+                  )}
+
+                  {/* 7. 職業清單 */}
+                  <div className="grid md:grid-cols-2 gap-4 mt-5">
                     <TagCard icon={<ShieldCheck className="h-4 w-4 text-emerald-400" />} title="超適合你的職業" tags={sun.bestCareers} tone="good" />
                     <TagCard icon={<ShieldAlert className="h-4 w-4 text-vermilion-500" />} title="不推薦的職業" tags={sun.avoidCareers} tone="bad" />
                   </div>
+
                   <div className="grid md:grid-cols-2 gap-4 mt-4">
                     <InfoCard label="💰 你的賺錢風格" body={sun.moneyStyle} />
                     <InfoCard label="🎯 成功關鍵" body={sun.successKey} />
                   </div>
+
                   <div className="mt-4 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-4 text-sm leading-relaxed">
                     <div className="font-medium text-saffron-400 mb-1">⚠️ 事業陷阱</div>
                     <div className="text-slate-200">{sun.commonTrap}</div>
                   </div>
+
+                  <p className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
+                    💡 這組解讀結合了 5 個命盤因子：Lagna（職場形象）+ Sun（靈魂召喚）+ Moon（壓力反應）+ 10 宮主宰（事業本質）+ Saturn（天花板）+ 當前大運（時機）。越多維度的交織 = 越個人化的分析。
+                  </p>
                 </Section>
               )}
 
