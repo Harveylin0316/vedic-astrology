@@ -105,6 +105,7 @@ export default function BirthChart() {
   const [submittedUnknownTime, setSubmittedUnknownTime] = useState(false)
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('self')
+  const [closingCopied, setClosingCopied] = useState(false)
 
   // 從 URL 參數還原（永久連結）
   useEffect(() => {
@@ -1064,20 +1065,27 @@ export default function BirthChart() {
                   <div className="mt-10 not-italic flex flex-col sm:flex-row gap-3 justify-center">
                     <button
                       type="button"
-                      onClick={() => {
-                        if (navigator.share) {
-                          navigator.share({
-                            title: '我剛算了我的命盤',
-                            text: `剛算完自己的吠陀命盤，我是 Top ${rarity?.topPercent || '?'}% 的人 😳 你也來算`,
-                            url: window.location.href
-                          })
-                        } else {
-                          copyToClipboard(window.location.href)
+                      onClick={async () => {
+                        const ok = await copyToClipboard(
+                          typeof window !== 'undefined' ? window.location.href : ''
+                        )
+                        if (ok) {
+                          trackEvent('closing_copy_link', { rarity: rarity?.topPercent })
+                          setClosingCopied(true)
+                          setTimeout(() => setClosingCopied(false), 2500)
                         }
                       }}
-                      className="btn-primary"
+                      className="btn-primary min-w-[220px]"
+                      disabled={closingCopied}
                     >
-                      把連結傳給 3 個最好的朋友
+                      {closingCopied ? (
+                        <>
+                          <Check className="h-4 w-4" />
+                          已複製連結
+                        </>
+                      ) : (
+                        '複製連結，傳給 3 個好朋友'
+                      )}
                     </button>
                     <a href="/compatibility" className="btn-ghost">
                       👉 或問 TA 生辰，算你們合盤
