@@ -1139,7 +1139,7 @@ function Section({ icon, badge, title, children, highlight }) {
 function RarityCard({ rarity }) {
   if (!rarity) return null
   const comparison = buildRarityComparison(rarity.topPercent)
-  // 依 plain 標題去重取 top 3-4
+  // 依 plain 標題去重取 top 4
   const uniqueFeatures = []
   const seen = new Set()
   for (const f of rarity.features || []) {
@@ -1151,44 +1151,104 @@ function RarityCard({ rarity }) {
   }
 
   return (
-    <div className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/8 to-vermilion-500/5 border-saffron-500/25 relative overflow-hidden">
-      <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-saffron-500/8 blur-3xl pointer-events-none" />
+    <div className="glass-panel p-6 md:p-8 bg-gradient-to-br from-vermilion-500/10 via-saffron-500/10 to-amber-500/5 border-saffron-500/40 relative overflow-hidden">
+      <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-saffron-500/10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-vermilion-500/10 blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-2xl">
-        <p className="text-sm text-saffron-400/80 font-serif italic mb-3">說一件你可能會想發到 IG 的事 —</p>
+      <div className="relative">
+        <div className="flex items-center gap-2 text-sm text-saffron-400/80 font-serif italic mb-3">
+          <Sparkles className="h-4 w-4" />
+          命盤稀有度指數
+        </div>
 
-        <h2 className="font-serif text-4xl md:text-6xl gradient-text leading-tight mb-2">
-          你比 {(100 - rarity.topPercent).toFixed(1)}% 的人還稀奇
-        </h2>
-
-        <p className="text-slate-200 text-base md:text-lg leading-relaxed mb-5">
-          {comparison}
-        </p>
-
-        {uniqueFeatures.length > 0 && (
-          <div className="space-y-3 mt-6">
-            <p className="text-sm text-saffron-400/80 font-serif italic">
-              你身上那幾個明顯不一樣的地方：
-            </p>
-            <div className="space-y-2">
-              {uniqueFeatures.map((f, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="text-saffron-400 flex-shrink-0 mt-0.5">·</span>
-                  <div className="flex-1">
-                    <div className="text-slate-100">
-                      <span className="font-medium">{f.plain || f.name}</span>
-                      {f.freq && <span className="text-xs text-slate-500 ml-2">（這種人大概 {f.freq}）</span>}
-                    </div>
-                    {f.meaning && <div className="text-sm text-slate-300 leading-relaxed mt-1">{f.meaning}</div>}
-                  </div>
-                </div>
+        <div className="grid md:grid-cols-[auto_1fr] gap-6 items-center">
+          {/* 左：大圓分數 + 星星 */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <svg width="140" height="140" className="transform -rotate-90">
+                <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="60"
+                  fill="none"
+                  stroke="url(#rarity-gradient)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(rarity.score / 100) * 377} 377`}
+                />
+                <defs>
+                  <linearGradient id="rarity-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffc266" />
+                    <stop offset="100%" stopColor="#e34234" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="font-serif text-5xl gradient-text leading-none">{rarity.score}</div>
+                <div className="text-xs text-slate-400 mt-1">/ 100</div>
+              </div>
+            </div>
+            <div className="mt-3 flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} className={`text-lg ${i < rarity.stars ? 'text-saffron-400' : 'text-white/15'}`}>★</span>
               ))}
             </div>
           </div>
-        )}
+
+          {/* 右：tier 標題 + Top X% + 比喻 + 特徵 */}
+          <div className="flex-1">
+            <h3 className="font-serif text-3xl md:text-4xl gradient-text">{rarity.title}</h3>
+            <div className="mt-1 text-lg text-saffron-400">
+              位於全人口 <strong className="font-serif text-2xl">Top {rarity.topPercent}%</strong>
+            </div>
+            <p className="mt-2 text-sm text-slate-300 leading-relaxed">{rarity.note}。</p>
+
+            {/* 人口比較 */}
+            <div className="mt-3 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-3">
+              <div className="text-sm text-saffron-400/80 font-serif italic mb-1.5">
+                放在世界人口裡比比看
+              </div>
+              <div className="text-sm text-slate-200 leading-relaxed">{comparison}</div>
+            </div>
+
+            {/* 關鍵配置（去重取 top 4，不再用花俏的分級邊框） */}
+            {uniqueFeatures.length > 0 && (
+              <div className="mt-4">
+                <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
+                  讓你與眾不同的 {uniqueFeatures.length} 個關鍵配置
+                </div>
+                <div className="space-y-2">
+                  {uniqueFeatures.map((f, i) => (
+                    <div key={i} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-slate-100">
+                            {f.plain || f.name}
+                          </div>
+                          {f.technical && (
+                            <div className="text-[11px] text-slate-500 mt-0.5">{f.technical}</div>
+                          )}
+                        </div>
+                        {f.freq && (
+                          <span className="flex-shrink-0 text-[10px] tabular-nums rounded-full px-2 py-0.5 border border-saffron-500/30 text-saffron-300">
+                            人口 {f.freq}
+                          </span>
+                        )}
+                      </div>
+                      {f.meaning && (
+                        <p className="mt-2 text-xs text-slate-300 leading-relaxed">{f.meaning}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         <p className="text-xs text-slate-500 italic leading-relaxed mt-6 pt-5 border-t border-white/5">
-          ※ 這個「稀奇」不是說你命好或命不好 — 是掃了你盤上 23 種古典吠陀配置（五大偉人瑜伽、財富瑜伽、逆轉型瑜伽、雙光合宿等），依它們在人口裡出現的頻率算的。低分也不是普通，只是「均衡」。
+          ※ 稀有度 ≠「命好 / 命不好」。這是掃了你盤上 23 種古典吠陀配置（五大偉人瑜伽、財富瑜伽、逆轉型瑜伽、雙光合宿等）依人口頻率算的。低分是「均衡型」— 日子反而平穩。
         </p>
       </div>
     </div>
