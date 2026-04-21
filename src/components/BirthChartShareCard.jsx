@@ -1,12 +1,20 @@
 import { forwardRef } from 'react'
+import QRCode from 'qrcode'
 
 // 1080×1080 命盤分享卡 · 專業報告風格
 // 參考：付費 Human Design 報告、專業占星師報告卡
 // 6 個清楚的 Section，金線分隔、typography hierarchy 明確
 const BirthChartShareCard = forwardRef(function BirthChartShareCard(
-  { chart, persona, stamp, city, rarity, punchlines = [] },
+  { chart, persona, stamp, city, rarity, punchlines = [], shareUrl },
   ref
 ) {
+  const effectiveShareUrl =
+    shareUrl ||
+    (typeof window !== 'undefined' ? window.location.href : 'https://vedic-astrology.netlify.app/')
+  const displayUrl = effectiveShareUrl
+    .replace(/^https?:\/\//, '')
+    .replace(/\/$/, '')
+    .split('?')[0]
   const tropAsc = chart.tropical.ascendant.rashi
   const tropSun = chart.tropical.sun.rashi
   const tropMoon = chart.tropical.moon.rashi
@@ -261,54 +269,98 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
         </div>
       )}
 
-      {/* ═══ Section 7: Footer ═══ */}
+      {/* ═══ Section 7: Footer · QR + URL + CTA ═══ */}
       <div
         style={{
           marginTop: 'auto',
-          paddingTop: '20px',
+          paddingTop: '18px',
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
+          alignItems: 'center',
+          gap: '16px',
           zIndex: 2
         }}
       >
-        <div>
+        {/* QR code：掃了直接進站算命盤 */}
+        <div
+          style={{
+            padding: '6px',
+            background: '#ffd580',
+            borderRadius: '6px',
+            flexShrink: 0,
+            display: 'flex'
+          }}
+        >
+          <QrSvg value={effectiveShareUrl} size={88} />
+        </div>
+
+        {/* 中間：CTA + 網址 */}
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
               fontSize: '10px',
-              letterSpacing: '0.2em',
+              letterSpacing: '0.3em',
+              color: '#94a3b8',
+              textTransform: 'uppercase',
+              marginBottom: '4px'
+            }}
+          >
+            Scan · Get Yours in 30s
+          </div>
+          <div
+            style={{
+              fontSize: '22px',
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontWeight: 600,
+              background: 'linear-gradient(90deg, #ffd580, #ffa733)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent',
+              lineHeight: 1.1,
+              letterSpacing: '0.02em'
+            }}
+          >
+            猜你懂嗎？30 秒算你的命盤
+          </div>
+          <div
+            style={{
+              fontSize: '12px',
+              color: '#cbd5e1',
+              marginTop: '4px',
+              letterSpacing: '0.03em',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              wordBreak: 'break-all',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {displayUrl}
+          </div>
+        </div>
+
+        {/* 右側：Methodology 標注（小字） */}
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div
+            style={{
+              fontSize: '9px',
+              letterSpacing: '0.25em',
               color: '#64748b',
               textTransform: 'uppercase'
             }}
           >
             Methodology
           </div>
-          <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '3px', fontFamily: '"Cormorant Garamond", Georgia, serif' }}>
-            Sidereal · Lahiri Ayanamsha
-          </div>
-        </div>
-        <div style={{ textAlign: 'right' }}>
           <div
             style={{
-              fontSize: '10px',
-              letterSpacing: '0.2em',
-              color: '#64748b',
-              textTransform: 'uppercase'
-            }}
-          >
-            Get Yours
-          </div>
-          <div
-            style={{
-              fontSize: '15px',
-              color: '#ffc266',
-              marginTop: '3px',
+              fontSize: '11px',
+              color: '#94a3b8',
+              marginTop: '2px',
               fontFamily: '"Cormorant Garamond", Georgia, serif',
-              fontWeight: 600,
-              letterSpacing: '0.03em'
+              whiteSpace: 'nowrap'
             }}
           >
-            猜你懂嗎？來算你的命盤
+            Sidereal · Lahiri
           </div>
         </div>
       </div>
@@ -531,6 +583,42 @@ function FeatureRow({ feature }) {
         </div>
       )}
     </div>
+  )
+}
+
+// 同步產生 QR SVG — html-to-image 截圖時不會有 async loading 問題
+function QrSvg({ value, size = 88 }) {
+  if (!value) return null
+  let qr
+  try {
+    qr = QRCode.create(value, { errorCorrectionLevel: 'M' })
+  } catch {
+    return null
+  }
+  const count = qr.modules.size
+  const cellSize = size / count
+  const rects = []
+  for (let r = 0; r < count; r++) {
+    for (let c = 0; c < count; c++) {
+      if (qr.modules.get(r, c)) {
+        rects.push(
+          <rect
+            key={`${r}-${c}`}
+            x={c * cellSize}
+            y={r * cellSize}
+            width={cellSize + 0.5}
+            height={cellSize + 0.5}
+            fill="#0a0618"
+          />
+        )
+      }
+    }
+  }
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block' }}>
+      <rect width={size} height={size} fill="#ffd580" />
+      {rects}
+    </svg>
   )
 }
 

@@ -15,7 +15,9 @@ import {
   Flame,
   Swords,
   Link2,
-  Check
+  Check,
+  Share2,
+  Copy
 } from 'lucide-react'
 import { computeVedicChart } from '../utils/vedicCalc.js'
 import { computeCompatibility, getKutaStatus } from '../utils/compatibilityEngine.js'
@@ -28,6 +30,8 @@ import { trackEvent } from '../components/Analytics.jsx'
 import {
   encodeCompatPayload,
   decodeCompatPayload,
+  encodeBirthPayload,
+  decodeBirthPayload,
   replaceUrlParam,
   copyToClipboard
 } from '../utils/permalink.js'
@@ -56,9 +60,27 @@ export default function Compatibility() {
   const [pending, setPending] = useState(null)
   const [result, setResult] = useState(null)
   const [showTransition, setShowTransition] = useState(false)
+  const [inviteMode, setInviteMode] = useState(false)
+  const [inviterName, setInviterName] = useState('')
 
-  // 從 URL 參數還原（永久連結）
+  // 從 URL 參數還原（永久連結 or 邀請模式）
   useEffect(() => {
+    // 邀請模式：?invite=<encoded-inviter>&from=<name>&rel=<relationship>
+    const inviteEncoded = searchParams.get('invite')
+    if (inviteEncoded) {
+      const inviterData = decodeBirthPayload(inviteEncoded)
+      if (inviterData) {
+        setYou(inviterData)
+        const fromName = (searchParams.get('from') || '').trim() || (inviterData.name || '').trim() || '對方'
+        setInviterName(fromName)
+        const rel = searchParams.get('rel')
+        if (rel === 'romantic' || rel === 'family' || rel === 'friend') setRelationship(rel)
+        setInviteMode(true)
+        trackEvent('compatibility_invite_landing', { from: fromName, rel: rel || 'romantic' })
+        return
+      }
+    }
+
     const encoded = searchParams.get('d')
     if (!encoded) return
     const payload = decodeCompatPayload(encoded)
@@ -186,6 +208,23 @@ export default function Compatibility() {
 
       {!result ? (
         <form onSubmit={handleSubmit}>
+          {/* 邀請模式 Banner */}
+          {inviteMode && (
+            <div className="glass-panel p-5 mb-6 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 border-saffron-500/50">
+              <div className="flex items-start gap-3">
+                <div className="text-3xl">💌</div>
+                <div className="flex-1">
+                  <div className="font-serif text-xl md:text-2xl gradient-text leading-tight">
+                    {inviterName} 想跟你算合盤
+                  </div>
+                  <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
+                    TA 已經填好自己的生日 — <strong className="text-saffron-400">你只要填你的，30 秒就有結果</strong>。
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 關係類型 */}
           <div className="glass-panel p-4 mb-6">
             <div className="flex flex-wrap items-center gap-3">
@@ -212,25 +251,34 @@ export default function Compatibility() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <PersonForm
-              person={you}
-              update={updateYou}
-              onCityChange={handleCityChangeFor(setYou)}
-              title={t('compat.person.you')}
-              accent="saffron"
-              t={t}
-              lang={lang}
-            />
+            {inviteMode ? (
+              <InvitedSummaryCard inviterName={inviterName} you={you} />
+            ) : (
+              <PersonForm
+                person={you}
+                update={updateYou}
+                onCityChange={handleCityChangeFor(setYou)}
+                title={t('compat.person.you')}
+                accent="saffron"
+                t={t}
+                lang={lang}
+              />
+            )}
             <PersonForm
               person={them}
               update={updateThem}
               onCityChange={handleCityChangeFor(setThem)}
-              title={t('compat.person.them')}
+              title={inviteMode ? '你的生辰' : t('compat.person.them')}
               accent="vermilion"
               t={t}
               lang={lang}
             />
           </div>
+
+          {/* 裂變鉤子：生成給 TA 的邀請連結（非邀請模式才顯示） */}
+          {!inviteMode && (
+            <InviteLinkButton you={you} relationship={relationship} t={t} />
+          )}
 
           {error && (
             <div className="mt-6 flex items-start gap-2 text-sm text-vermilion-500 bg-vermilion-500/10 border border-vermilion-500/30 rounded-lg p-3">
@@ -415,6 +463,8 @@ function CompatibilityResult({ result, relationship, onReset }) {
       <ShareCardSection
         filename={`${youName}-x-${themName}-合盤.png`}
         title="下載這張卡片分享給 TA"
+        shareTitle={`${youName} × ${themName}：${compat.category}（${compat.percent}% 吻合）`}
+        shareText={`${youName} × ${themName} 吠陀合盤：${compat.category} 💞\n${compat.tagline}\n你們的合盤也算一下？→ ${typeof window !== 'undefined' ? window.location.href : ''}`}
       >
         <CompatibilityShareCard
           result={result}
@@ -615,6 +665,127 @@ function MoonSummary({ person, moon, color }) {
         <div>
           <span className="text-slate-400">主星：</span>
           <span className="text-slate-100">{moon.lord}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ════════════════════════════════════════
+// 邀請模式：對方已填好的摘要卡（取代 PersonForm）
+// ════════════════════════════════════════
+function InvitedSummaryCard({ inviterName, you }) {
+  return (
+    <div className="glass-panel p-5 border-saffron-500/40 bg-saffron-500/5">
+      <div className="text-xs uppercase tracking-widest text-saffron-400 mb-3">
+        {inviterName} 的生辰（已填好）
+      </div>
+      <div className="flex items-center gap-3 py-4">
+        <div className="h-14 w-14 rounded-full bg-gradient-to-br from-saffron-500 to-vermilion-500 flex items-center justify-center text-2xl text-cosmic-950 font-semibold">
+          {inviterName?.[0] || '?'}
+        </div>
+        <div>
+          <div className="font-serif text-xl text-slate-100">{inviterName}</div>
+          <div className="text-xs text-slate-400 mt-0.5">
+            {you.date || '—'} · {you.time || '—'} · {you.city || '—'}
+          </div>
+        </div>
+      </div>
+      <div className="mt-2 rounded-lg bg-saffron-500/10 border border-saffron-500/20 px-3 py-2 text-xs text-saffron-300 leading-relaxed">
+        ✓ {inviterName} 已把資料加密在連結裡 — 你不需要問 TA 任何問題。
+      </div>
+    </div>
+  )
+}
+
+// ════════════════════════════════════════
+// 裂變鉤子：生成邀請連結（病毒傳播主引擎）
+// ════════════════════════════════════════
+function InviteLinkButton({ you, relationship, t }) {
+  const [copied, setCopied] = useState(false)
+  const [status, setStatus] = useState('idle')
+
+  const isReady = !!(you.date && you.time && you.city)
+
+  const buildInviteUrl = () => {
+    const encoded = encodeBirthPayload(you)
+    const params = new URLSearchParams()
+    params.set('invite', encoded)
+    if (you.name) params.set('from', you.name)
+    params.set('rel', relationship || 'romantic')
+    return `${window.location.origin}/compatibility?${params.toString()}`
+  }
+
+  const inviterName = (you.name || '').trim() || '我'
+  const shareText = `${inviterName} 想跟你算合盤 💞\n30 秒填你的生日就能看結果 → `
+
+  const handleShare = async () => {
+    if (!isReady) return
+    setStatus('loading')
+    const url = buildInviteUrl()
+    trackEvent('compatibility_invite_generated', { relationship })
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${inviterName} 想跟你算合盤`,
+          text: shareText,
+          url
+        })
+        trackEvent('compatibility_invite_shared', { method: 'native' })
+        setStatus('idle')
+        return
+      }
+      const ok = await copyToClipboard(shareText + url)
+      if (ok) {
+        setCopied(true)
+        trackEvent('compatibility_invite_shared', { method: 'clipboard' })
+        setTimeout(() => setCopied(false), 2500)
+      }
+      setStatus('idle')
+    } catch (err) {
+      if (err?.name !== 'AbortError') console.error(err)
+      setStatus('idle')
+    }
+  }
+
+  return (
+    <div className="mt-6 rounded-2xl border border-saffron-500/30 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 p-5">
+      <div className="flex items-start gap-3">
+        <div className="text-2xl flex-shrink-0">💌</div>
+        <div className="flex-1 min-w-0">
+          <div className="font-serif text-lg text-saffron-300 leading-tight">
+            不知道 TA 的出生時間？
+          </div>
+          <p className="text-sm text-slate-300 mt-1 leading-relaxed">
+            把<strong className="text-saffron-400">你這邊填好</strong>，生成一個<strong className="text-saffron-400">專屬邀請連結</strong>傳給 TA —
+            TA 點進去只要填自己的生日，30 秒就能看結果。
+          </p>
+          <button
+            type="button"
+            onClick={handleShare}
+            disabled={!isReady || status === 'loading'}
+            className={`mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition ${
+              isReady
+                ? 'bg-gradient-to-r from-saffron-500 to-vermilion-500 text-cosmic-950 hover:shadow-lg hover:shadow-saffron-500/30'
+                : 'bg-white/5 text-slate-500 cursor-not-allowed'
+            }`}
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" /> 連結已複製，快傳給 TA
+              </>
+            ) : (
+              <>
+                <Share2 className="h-4 w-4" />
+                {isReady ? '生成給 TA 的邀請連結' : '先填完你這邊才能生成'}
+              </>
+            )}
+          </button>
+          {!isReady && (
+            <p className="text-[11px] text-slate-500 mt-2">
+              需要先填：生日、出生時間、城市
+            </p>
+          )}
         </div>
       </div>
     </div>

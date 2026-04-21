@@ -5,9 +5,15 @@ import { trackEvent } from './Analytics.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
 
 // 通用 ShareCardSection：預覽縮圖 + 下載 PNG
-// 用法：<ShareCardSection filename="xxx.png"><Card ref={cardRef} /></ShareCardSection>
+// 用法：<ShareCardSection filename="xxx.png" shareText="..." shareTitle="..."><Card ref={cardRef} /></ShareCardSection>
 // children 必須是 forwardRef 元件（會自動接 ref）
-export default function ShareCardSection({ children, filename = 'vedic-chart.png', title }) {
+export default function ShareCardSection({
+  children,
+  filename = 'vedic-chart.png',
+  title,
+  shareTitle,
+  shareText
+}) {
   const { t } = useI18n()
   const cardRef = useRef(null)
   const [status, setStatus] = useState('idle') // idle | loading | success | error
@@ -50,8 +56,8 @@ export default function ShareCardSection({ children, filename = 'vedic-chart.png
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: '我的吠陀命盤',
-          text: '我剛算了自己的吠陀命盤'
+          title: shareTitle || '我的吠陀命盤',
+          text: shareText || '我剛算了自己的吠陀命盤'
         })
         trackEvent('native_share', { filename })
       } else {

@@ -3,7 +3,7 @@ import { useRef, useEffect, useState } from 'react'
 // 自訂時間輸入：時 / 分 兩格自動跳焦
 // 值格式：'HH:MM'（跟 <input type="time"> 相容）
 // 支援語系：中文預設「時 / 分」、英文「HH / MM」
-export default function SmartTimeInput({ value, onChange, required, lang = 'zh-TW' }) {
+export default function SmartTimeInput({ value, onChange, required, lang = 'zh-TW', disabled = false }) {
   const [h, setH] = useState('')
   const [m, setM] = useState('')
   const hRef = useRef(null)
@@ -64,7 +64,13 @@ export default function SmartTimeInput({ value, onChange, required, lang = 'zh-T
     'bg-transparent border-0 outline-none text-center text-slate-100 placeholder:text-slate-500 tabular-nums'
 
   return (
-    <div className="flex items-center gap-1 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 focus-within:border-saffron-500/60 focus-within:ring-2 focus-within:ring-saffron-500/20 transition">
+    <div
+      className={`flex items-center gap-1 rounded-xl border px-3 py-2.5 transition ${
+        disabled
+          ? 'border-white/10 bg-white/[0.02] opacity-50'
+          : 'border-white/15 bg-white/5 focus-within:border-saffron-500/60 focus-within:ring-2 focus-within:ring-saffron-500/20'
+      }`}
+    >
       <input
         ref={hRef}
         type="text"
@@ -74,8 +80,9 @@ export default function SmartTimeInput({ value, onChange, required, lang = 'zh-T
         value={h}
         onChange={handleH}
         placeholder={placeholderH}
-        required={required}
-        className={`${baseInputStyle} w-[3ch]`}
+        required={required && !disabled}
+        disabled={disabled}
+        className={`${baseInputStyle} w-[3ch] disabled:cursor-not-allowed`}
       />
       <span className="text-slate-500">:</span>
       <input
@@ -88,8 +95,9 @@ export default function SmartTimeInput({ value, onChange, required, lang = 'zh-T
         onChange={handleM}
         onKeyDown={handleMKeyDown}
         placeholder={placeholderM}
-        required={required}
-        className={`${baseInputStyle} w-[3ch]`}
+        required={required && !disabled}
+        disabled={disabled}
+        className={`${baseInputStyle} w-[3ch] disabled:cursor-not-allowed`}
       />
     </div>
   )

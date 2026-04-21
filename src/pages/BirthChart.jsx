@@ -84,7 +84,8 @@ const defaultForm = {
   lat: '25.0478',
   lon: '121.5319',
   city: '台北',
-  gender: ''
+  gender: '',
+  unknownTime: false
 }
 
 const elementIcon = { fire: Flame, earth: Mountain, air: Wind, water: Droplets }
@@ -103,6 +104,7 @@ export default function BirthChart() {
   const [submittedCity, setSubmittedCity] = useState('')
   const [submittedStamp, setSubmittedStamp] = useState('')
   const [submittedGender, setSubmittedGender] = useState('')
+  const [submittedUnknownTime, setSubmittedUnknownTime] = useState(false)
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('self')
 
@@ -172,7 +174,8 @@ export default function BirthChart() {
       setPendingMeta({
         city: form.city || `${form.lat}, ${form.lon}`,
         stamp: `${form.date} ${form.time}`,
-        gender: form.gender
+        gender: form.gender,
+        unknownTime: !!form.unknownTime
       })
       setShowTransition(true)
       // 把生辰編進 URL（永久連結）
@@ -192,6 +195,7 @@ export default function BirthChart() {
     setSubmittedCity(pendingMeta.city)
     setSubmittedStamp(pendingMeta.stamp)
     setSubmittedGender(pendingMeta.gender)
+    setSubmittedUnknownTime(!!pendingMeta.unknownTime)
     setShowTransition(false)
     // 轉場結束後滑到頁頂讓命盤從頭呈現
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -381,11 +385,31 @@ export default function BirthChart() {
               <Clock className="h-4 w-4 text-saffron-400" />{t('form.time')} {t('form.time.hint24h')}
             </label>
             <SmartTimeInput
-              required
+              required={!form.unknownTime}
+              disabled={form.unknownTime}
               lang={lang}
               value={form.time}
               onChange={(v) => update('time', v)}
             />
+            <label className="mt-2 flex items-start gap-2 text-xs text-slate-400 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={form.unknownTime}
+                onChange={(e) => {
+                  const checked = e.target.checked
+                  setForm((f) => ({
+                    ...f,
+                    unknownTime: checked,
+                    time: checked ? '12:00' : f.time === '12:00' ? '' : f.time
+                  }))
+                }}
+                className="mt-0.5 h-3.5 w-3.5 rounded border-white/20 bg-white/5 accent-saffron-500"
+              />
+              <span>
+                不知道出生時間？<span className="text-saffron-400">勾這裡用日運模式</span> —
+                仍可算太陽 / 月亮 / Nakshatra，但<strong className="text-slate-300">上升星座</strong>會是估算值（建議問父母後回來重算更準）。
+              </span>
+            </label>
             <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
               {t('form.time.helpText')}
             </p>
@@ -505,6 +529,24 @@ export default function BirthChart() {
                 </div>
               </div>
 
+              {/* ⚠️ 沒輸入出生時間 — 精度提示 + 回訪鉤子 */}
+              {submittedUnknownTime && (
+                <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-slate-200 leading-relaxed">
+                    <div className="font-medium text-amber-300 mb-1">你用的是日運模式（沒輸入出生時間）</div>
+                    <p className="text-slate-300">
+                      太陽 / 月亮 / Nakshatra / Dasha 依然精準 — 但<strong className="text-amber-200">上升星座</strong>跟<strong className="text-amber-200">宮位排列</strong>是估算值，影響個性外顯跟事業宮判讀。
+                      <br />
+                      👉 <span className="text-saffron-400">問到父母（或看出生證明）後，回到本頁重算一次，準度會跳一階。</span>
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* ①-0 稀有度 Hero — 第一眼就給社交貨幣 */}
+              {rarity && <RarityCard rarity={rarity} />}
+
               {/* ① Summary Hero — 靈魂簽名（殼 × 芯） */}
               <div id="self" className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 scroll-mt-20 relative overflow-hidden">
                 {/* 背景裝飾光暈 */}
@@ -558,9 +600,6 @@ export default function BirthChart() {
                   </div>
                 </div>
               </div>
-
-              {/* ①-c 稀有度指數 */}
-              {rarity && <RarityCard rarity={rarity} />}
 
               {/* ① -b 雙系統對照說明 */}
               <div className="glass-panel p-5 bg-white/[0.02] border-white/10">
@@ -642,6 +681,16 @@ export default function BirthChart() {
               <ShareCardSection
                 filename={`我的吠陀命盤-${submittedStamp}.png`}
                 title="下載你的命盤卡"
+                shareTitle={
+                  rarity
+                    ? `我是 Top ${rarity.topPercent}% 的「${rarity.title}」`
+                    : '我的吠陀命盤'
+                }
+                shareText={
+                  rarity
+                    ? `剛算完吠陀命盤，全人口只有 ${rarity.topPercent}% 長這樣 😳\n你也算一下看看是哪種？→ ${typeof window !== 'undefined' ? window.location.href : ''}`
+                    : `剛算了自己的吠陀命盤 ✨\n你也來算看看 → ${typeof window !== 'undefined' ? window.location.href : ''}`
+                }
               >
                 <BirthChartShareCard
                   chart={chart}
@@ -650,6 +699,7 @@ export default function BirthChart() {
                   city={submittedCity}
                   rarity={rarity}
                   punchlines={cardPunchlines}
+                  shareUrl={typeof window !== 'undefined' ? window.location.href : ''}
                 />
               </ShareCardSection>
 
