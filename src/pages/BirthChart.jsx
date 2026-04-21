@@ -630,7 +630,7 @@ export default function BirthChart() {
               >
                 <BirthChartShareCard
                   chart={chart}
-                  keywords={keywords}
+                  persona={persona}
                   stamp={submittedStamp}
                   city={submittedCity}
                   rarity={rarity}
