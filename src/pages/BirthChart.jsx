@@ -40,9 +40,8 @@ import { trackEvent } from '../components/Analytics.jsx'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
-import { analyzeCareer } from '../utils/careerAnalysis.js'
-import { rankCareers } from '../utils/careerRanking.js'
-import { computeEntrepreneurship } from '../utils/entrepreneurScore.js'
+import { analyzeVedicCareer } from '../utils/careerVedic.js'
+import { dignityLabels } from '../data/careerVedicData.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
@@ -296,7 +295,9 @@ export default function BirthChart() {
 
   const persona = chart ? buildPersonaSignature(tropLagnaName, tropMoonName) : null
 
-  const careerAnalysis = chart ? analyzeCareer(chart, currentDasha?.lord) : null
+  const vedicCareer = chart
+    ? analyzeVedicCareer(chart, currentDasha?.lord, currentAD?.lord)
+    : null
 
   const sectionTabs = [
     { id: 'self', label: t('chart.section.self'), icon: '🪞' },
@@ -305,13 +306,6 @@ export default function BirthChart() {
     { id: 'dasha', label: t('chart.section.dasha'), icon: '📅' },
     { id: 'energy', label: t('chart.section.energy'), icon: '🍀' }
   ]
-  const careerRanked = chart
-    ? rankCareers(chart, currentDasha?.lord, currentAD?.lord)
-    : null
-
-  const entrepreneurship = chart
-    ? computeEntrepreneurship(chart, currentDasha?.lord, currentAD?.lord)
-    : null
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -759,146 +753,8 @@ export default function BirthChart() {
               )}
 
               <div id="career" className="scroll-mt-20 -mt-6" />
-              {/* ⑥-0-A 創業 vs 上班 傾向（工作「模式」層面） */}
-              {entrepreneurship && (
-                <EntrepreneurshipSection data={entrepreneurship} />
-              )}
-
-              {/* ⑥-0-B 事業適配度排名 — 事業「類別」層面 */}
-              {careerRanked && <CareerRankingSection ranking={careerRanked} />}
-
-              {/* ⑥ 事業「怎麼工作」的人格解讀（不是推薦職業，是描述你工作時的樣子） */}
-              {sun && careerAnalysis && (
-                <Section
-                  icon={<Briefcase className="h-4 w-4" />}
-                  badge="職場人格 · 你「怎麼工作」"
-                  title="你在職場的 5 個面向"
-                >
-                  <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 mb-5 text-xs text-slate-400 leading-relaxed">
-                    💡 <strong className="text-slate-300">注意：</strong>上方「排名」告訴你<strong className="text-saffron-400">命盤支持哪些事業類別</strong>（最該投入什麼）。
-                    下面這些是<strong className="text-saffron-400">你工作時的人格表現</strong>（不論做什麼職業，你都會這樣）— 兩套資訊各自獨立，但互相補充。
-                  </div>
-
-                  <p className="text-slate-300 leading-relaxed border-l-2 border-saffron-500/60 pl-4">
-                    {sun.workStyle}
-                  </p>
-
-                  {/* 1. Lagna · 別人眼中的你 */}
-                  {careerAnalysis.identity && (
-                    <div className="mt-5 rounded-xl border border-sky-500/25 bg-sky-500/5 p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-sky-400 font-medium mb-3">
-                        👀 別人眼中的你 · Lagna {chart.tropical.ascendant.rashi.chinese}
-                      </div>
-                      <div className="space-y-2 text-sm leading-relaxed">
-                        <p className="text-slate-100">{careerAnalysis.identity.scene}</p>
-                        <div className="grid sm:grid-cols-2 gap-2 pt-2">
-                          <div className="text-xs text-slate-300">
-                            <span className="text-slate-500">同事說：</span>{careerAnalysis.identity.coworker}
-                          </div>
-                          <div className="text-xs text-slate-300">
-                            <span className="text-slate-500">老闆看：</span>{careerAnalysis.identity.boss}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 2. Sun · 靈魂召喚 */}
-                  {careerAnalysis.soul && (
-                    <div className="mt-4 rounded-xl border border-saffron-500/30 bg-saffron-500/5 p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 font-medium mb-3">
-                        ☀️ 你靈魂想從工作得到的 · Sun {chart.tropical.sun.rashi.chinese}
-                      </div>
-                      <div className="space-y-2 text-sm">
-                        <div><span className="text-slate-500">你的召喚：</span><span className="text-slate-100">{careerAnalysis.soul.calling}</span></div>
-                        <div><span className="text-slate-500">真正的勝利感：</span><span className="text-slate-100">{careerAnalysis.soul.realWin}</span></div>
-                        <div><span className="text-vermilion-500">會讓你萎掉的：</span><span className="text-slate-100">{careerAnalysis.soul.whatKills}</span></div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 3. Moon · 壓力反應 */}
-                  {careerAnalysis.stress && (
-                    <div className="mt-4 rounded-xl border border-vermilion-500/25 bg-vermilion-500/5 p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-vermilion-500 font-medium mb-3">
-                        🌙 壓力下的你 · Moon {chart.tropical.moon.rashi.chinese}
-                      </div>
-                      <div className="space-y-2 text-sm">
-                        <div><span className="text-slate-500">壓力大時：</span><span className="text-slate-100">{careerAnalysis.stress.underPressure}</span></div>
-                        <div><span className="text-slate-500">Burnout 訊號：</span><span className="text-slate-100">{careerAnalysis.stress.burnoutSignal}</span></div>
-                        <div className="pt-2 border-t border-white/5">
-                          <span className="text-vermilion-400">你的職場陰影：</span>
-                          <span className="text-slate-100 ml-1">{careerAnalysis.stress.shadow}</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 4. 10th House · 事業宮 */}
-                  {careerAnalysis.tenthHouse?.direction && (
-                    <div className="mt-4 rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-emerald-400 font-medium mb-3">
-                        🏛️ 你的事業宮 · 第 10 宮 = {careerAnalysis.tenthHouse.rashi.chinese}（{careerAnalysis.tenthHouse.lord} 主宰）
-                      </div>
-                      <div className="space-y-2 text-sm">
-                        <div>
-                          <span className="text-saffron-400 font-medium">{careerAnalysis.tenthHouse.direction.keyword}</span>
-                          <p className="text-slate-100 mt-1">{careerAnalysis.tenthHouse.direction.detail}</p>
-                        </div>
-                        {careerAnalysis.tenthHouse.focus && (
-                          <div className="pt-2 border-t border-white/5 text-xs text-slate-300">
-                            <span className="text-slate-500">事業重心落點（{careerAnalysis.tenthHouse.lord} 在第 {careerAnalysis.tenthHouse.lordHouse} 宮）：</span>
-                            <span className="text-slate-100 ml-1">{careerAnalysis.tenthHouse.focus}</span>
-                          </div>
-                        )}
-                        {careerAnalysis.tenthHouse.tenants.length > 0 && (
-                          <div className="text-xs text-slate-400">
-                            🏠 當前 10 宮有行星：
-                            {careerAnalysis.tenthHouse.tenants.map((t) => (
-                              <span key={t} className="inline-block ml-2 rounded-full bg-white/5 border border-white/10 px-2 py-0.5 text-[11px]">{t}</span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 5. Saturn · 天花板 */}
-                  {careerAnalysis.saturn?.ceiling && (
-                    <div className="mt-4 rounded-xl border border-slate-500/30 bg-slate-500/5 p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-slate-300 font-medium mb-3">
-                        🔒 你的職涯天花板 · Saturn 在第 {careerAnalysis.saturn.house} 宮
-                      </div>
-                      <p className="text-sm text-slate-200 leading-relaxed">{careerAnalysis.saturn.ceiling}</p>
-                    </div>
-                  )}
-
-                  {/* 6. Dasha · 當前方向 */}
-                  {careerAnalysis.dasha?.vector && (
-                    <div className="mt-4 rounded-xl border border-saffron-500/25 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-5">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-saffron-400 font-medium mb-3">
-                        ⏳ 你當前大運的事業走向 · {careerAnalysis.dasha.lord} 大運
-                      </div>
-                      <p className="text-sm text-slate-100 leading-relaxed">{careerAnalysis.dasha.vector}</p>
-                    </div>
-                  )}
-
-                  {/* 7. 賺錢風格 / 成功關鍵 / 陷阱 — 保留（是「怎麼工作」的一部分） */}
-                  <div className="grid md:grid-cols-2 gap-4 mt-5">
-                    <InfoCard label="💰 你的賺錢風格" body={sun.moneyStyle} />
-                    <InfoCard label="🎯 成功關鍵" body={sun.successKey} />
-                  </div>
-
-                  <div className="mt-4 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-4 text-sm leading-relaxed">
-                    <div className="font-medium text-saffron-400 mb-1">⚠️ 事業陷阱</div>
-                    <div className="text-slate-200">{sun.commonTrap}</div>
-                  </div>
-
-                  <p className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
-                    💡 以上是結合 Lagna（職場形象）× Sun（靈魂召喚）× Moon（壓力反應）× 10 宮主宰（事業本質）× Saturn（天花板）× 當前大運（時機）6 個命盤因子的個人化分析 — 描述「你工作的樣子」，不是「該做什麼職業」（那個看上方排名）。
-                  </p>
-                </Section>
-              )}
+              {/* ⑥ 事業分析（正統吠陀方法） */}
+              {vedicCareer && <VedicCareerSection data={vedicCareer} />}
 
               <div id="dasha" className="scroll-mt-20 -mt-6" />
               {/* ⑦-0 人生大運地圖 — 完整 120 年 Vimshottari 總覽 */}
@@ -1675,418 +1531,6 @@ function buildRarityComparison(topPercent) {
   return '你的命盤屬於均衡型。這不代表平庸 — 反而是少了極端配置所以「日子比較穩」的類型。'
 }
 
-function EntrepreneurshipSection({ data }) {
-  const { entrepreneurship: ent, employment: emp, diff, verdict } = data
-  const entStars = Math.max(0, Math.min(5, Math.round(ent.score / 2)))
-  const empStars = Math.max(0, Math.min(5, Math.round(emp.score / 2)))
-
-  return (
-    <Section
-      icon={<Briefcase className="h-4 w-4" />}
-      badge="工作模式 · 創業 vs 上班"
-      title="你適合自己做還是上組織？"
-      highlight
-    >
-      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 mb-5 text-sm text-slate-300 leading-relaxed">
-        <strong className="text-saffron-400">這跟下方類別排名不一樣。</strong>
-        <br />
-        創業不是一個「事業類別」— 你可以在美學、商業、研究、任何一類裡創業。
-        這裡評估的是：<strong>你的命盤比較適合「自己做老闆」還是「進組織領薪水」？</strong>
-        兩個分數獨立計算，可以都高、都低、或一高一低。
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <TendencyCard
-          icon="🚀"
-          title="創業傾向"
-          subtitle="自立門戶、自負盈虧"
-          score={ent.score}
-          stars={entStars}
-          reasons={ent.reasons}
-          tone="saffron"
-        />
-        <TendencyCard
-          icon="🏢"
-          title="上班傾向"
-          subtitle="組織內累積、穩定發展"
-          score={emp.score}
-          stars={empStars}
-          reasons={emp.reasons}
-          tone="sky"
-        />
-      </div>
-
-      {/* 判定 */}
-      <div className="mt-5 rounded-xl border border-saffron-500/30 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 p-4">
-        <div className="flex items-start gap-3">
-          <div className="text-2xl">🧭</div>
-          <div>
-            <div className="text-xs uppercase tracking-widest text-saffron-400 font-medium mb-1">
-              命盤判定
-            </div>
-            <p className="text-slate-100 leading-relaxed">{verdict}</p>
-            <p className="text-xs text-slate-500 mt-2">
-              分數差距 {diff > 0 ? '+' : ''}{diff}（創業 {ent.score} · 上班 {emp.score}）
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <p className="mt-4 text-xs text-slate-500 leading-relaxed">
-        💡 創業傾向看：Mars（勇氣）+ Sun（自主）+ Rahu 3/10/11（突破）+ 10/11 宮主強度（自主事業格 + 多元收入）+ Jupiter（貴人智慧）。
-        上班傾向看：Jupiter / Mercury 強（協作）+ Saturn 坐 10（耐組織）+ 6 宮行星（服務導向）+ Moon 在穩定星座。
-      </p>
-    </Section>
-  )
-}
-
-function TendencyCard({ icon, title, subtitle, score, stars, reasons, tone }) {
-  const border = tone === 'saffron' ? 'border-saffron-500/40' : 'border-sky-500/40'
-  const bg = tone === 'saffron' ? 'bg-saffron-500/5' : 'bg-sky-500/5'
-  const text = tone === 'saffron' ? 'text-saffron-400' : 'text-sky-400'
-  const barColor = tone === 'saffron' ? 'bg-saffron-500' : 'bg-sky-500'
-  return (
-    <div className={`rounded-xl border ${border} ${bg} p-4`}>
-      <div className="flex items-start gap-3">
-        <div className="text-3xl flex-shrink-0">{icon}</div>
-        <div className="flex-1 min-w-0">
-          <div className={`text-sm font-medium ${text}`}>{title}</div>
-          <div className="text-[11px] text-slate-400">{subtitle}</div>
-          <div className="mt-2 flex items-center gap-3">
-            <div className={`text-3xl font-serif ${text} tabular-nums`}>{score}</div>
-            <div className="text-xs text-slate-500">/ 10</div>
-            <div className="flex gap-0.5 ml-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span key={i} className={i < stars ? text : 'text-white/10'}>★</span>
-              ))}
-            </div>
-          </div>
-          <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
-            <div className={`h-full rounded-full ${barColor}`} style={{ width: `${(score / 10) * 100}%` }} />
-          </div>
-        </div>
-      </div>
-
-      {reasons.length > 0 && (
-        <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
-          {reasons.map((r, i) => (
-            <div key={i} className="flex items-start gap-2 text-xs">
-              <span className={`flex-shrink-0 tabular-nums font-medium ${text}`}>+{r.points}</span>
-              <span className="text-slate-300">{r.text}</span>
-            </div>
-          ))}
-        </div>
-      )}
-      {reasons.length === 0 && (
-        <div className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500">
-          命盤上沒找到明顯加分因子
-        </div>
-      )}
-    </div>
-  )
-}
-
-function CareerRankingSection({ ranking }) {
-  const [expandedId, setExpandedId] = useState(null)
-  if (!ranking || ranking.length === 0) return null
-
-  const top5 = ranking.slice(0, 5)
-  const bottom2 = ranking.slice(-2).reverse() // 最差 2 個倒序
-
-  const tierColor = (stars) => {
-    if (stars >= 5) return {
-      border: 'border-emerald-500/50',
-      bg: 'bg-gradient-to-br from-emerald-500/15 to-emerald-500/5',
-      text: 'text-emerald-400',
-      star: 'text-emerald-400'
-    }
-    if (stars >= 4) return {
-      border: 'border-saffron-500/40',
-      bg: 'bg-saffron-500/10',
-      text: 'text-saffron-400',
-      star: 'text-saffron-400'
-    }
-    if (stars >= 3) return {
-      border: 'border-white/15',
-      bg: 'bg-white/5',
-      text: 'text-slate-200',
-      star: 'text-saffron-400'
-    }
-    if (stars >= 2) return {
-      border: 'border-white/10',
-      bg: 'bg-white/[0.03]',
-      text: 'text-slate-300',
-      star: 'text-slate-400'
-    }
-    return {
-      border: 'border-vermilion-500/30',
-      bg: 'bg-vermilion-500/5',
-      text: 'text-slate-400',
-      star: 'text-vermilion-500'
-    }
-  }
-
-  const rankBadge = (rank) => {
-    if (rank === 1) return '🥇'
-    if (rank === 2) return '🥈'
-    if (rank === 3) return '🥉'
-    return `#${rank}`
-  }
-
-  return (
-    <Section
-      icon={<Briefcase className="h-4 w-4" />}
-      badge="命盤職業適配度 · 雙維度評分"
-      title="依你的命盤排序的 10 個事業類別"
-    >
-      <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-4 mb-5 text-sm text-slate-300 leading-relaxed">
-        <strong className="text-saffron-400">怎麼看這個排行？</strong>
-        <br />
-        每類事業用<strong className="text-slate-100">兩個維度</strong>打分：
-        <br />
-        <span className="inline-block mt-2">
-          💪 <strong className="text-emerald-400">能力分</strong> — 主宰行星在你命盤中的<strong>實力</strong>（能不能做好？看行星力量）
-        </span>
-        <br />
-        <span className="inline-block mt-1">
-          ❤️ <strong className="text-saffron-400">契合分</strong> — 你的性格元素跟這類事業<strong>合不合</strong>（會不會喜歡？看 Lagna × Sun × Moon 的元素分佈，月亮加權 ×2）
-        </span>
-        <br />
-        <span className="inline-block mt-1">
-          🏆 <strong className="text-vermilion-500">綜合分</strong> — 兩者各 50% 的加權平均（用來排名）
-        </span>
-        <br /><br />
-        <span className="text-xs text-slate-400">
-          例：建築工程（Saturn-led）如果你土星強 → 能力分高、但你月亮是水象 → 契合分低 → 綜合排中間。你能做但不會愛。
-        </span>
-      </div>
-
-      {/* Top 5 推薦 */}
-      <div className="space-y-3 mb-6">
-        <div className="text-xs uppercase tracking-widest text-emerald-400 font-medium">
-          ✅ 最值得你投入的 5 個方向
-        </div>
-        {top5.map((cat) => {
-          const color = tierColor(cat.combinedStars)
-          const isOpen = expandedId === cat.id
-          return (
-            <div key={cat.id} className={`rounded-2xl border ${color.border} ${color.bg} overflow-hidden`}>
-              <button
-                type="button"
-                onClick={() => setExpandedId(isOpen ? null : cat.id)}
-                className="w-full text-left p-4 md:p-5 hover:bg-white/[0.02] transition"
-              >
-                <div className="flex items-start gap-3 md:gap-4">
-                  <div className="flex-shrink-0 flex items-center justify-center h-11 w-11 md:h-12 md:w-12 rounded-xl bg-white/5 border border-white/10 text-xl font-serif">
-                    {rankBadge(cat.rank)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline gap-2 flex-wrap">
-                      <span className="text-2xl flex-shrink-0">{cat.icon}</span>
-                      <h4 className="font-serif text-lg md:text-xl gradient-text">{cat.name}</h4>
-                      <span className={`text-xs font-medium ${color.text}`}>{cat.level}</span>
-                    </div>
-
-                    {/* 雙維度 bars */}
-                    <div className="mt-2 grid grid-cols-2 gap-3">
-                      <DualBar
-                        label="能力"
-                        score={cat.strength}
-                        stars={cat.strengthStars}
-                        emoji="💪"
-                        tone="emerald"
-                      />
-                      <DualBar
-                        label="契合"
-                        score={cat.fit}
-                        stars={cat.fitStars}
-                        emoji="❤️"
-                        tone="saffron"
-                      />
-                    </div>
-
-                    <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-                      <span>🏆 綜合 <strong className="text-slate-200 tabular-nums">{cat.combined}</strong> / 10</span>
-                      <span className="flex gap-0.5 ml-1">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <span key={i} className={i < cat.combinedStars ? color.star : 'text-white/10'}>★</span>
-                        ))}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                      <strong className="text-slate-300">典型職位：</strong>{cat.examples.slice(0, 4).join('、')}...
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 text-slate-400 text-sm">{isOpen ? '▲' : '▼'}</div>
-                </div>
-              </button>
-
-              {isOpen && (
-                <div className="border-t border-white/10 p-4 md:p-5 bg-cosmic-950/30">
-                  {/* 所有職業範例 */}
-                  <div className="mb-4">
-                    <div className="text-xs text-slate-400 mb-2">📋 這類的所有典型職業：</div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {cat.examples.map((e) => (
-                        <span key={e} className="rounded-full bg-white/5 border border-white/10 px-2.5 py-0.5 text-xs text-slate-300">
-                          {e}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* thriveIn */}
-                  <div className="mb-4 text-sm">
-                    <span className="text-emerald-400">🌱 你會在這種環境發光：</span>
-                    <span className="text-slate-200 ml-1">{cat.thriveIn}</span>
-                  </div>
-
-                  {/* 雙維度詳細分解 */}
-                  <div className="grid md:grid-cols-2 gap-3 mb-4">
-                    {/* 能力分解 */}
-                    <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-3">
-                      <div className="text-xs text-emerald-400 font-medium mb-2">💪 能力分 {cat.strength} / 10</div>
-                      <div className="text-[11px] text-slate-400 mb-2">
-                        主宰星 {cat.primaryPlanet.name}（原始分 {cat.primaryPlanet.score}）× 1.0
-                        + 輔助星 {cat.secondaryPlanet.name}（原始分 {cat.secondaryPlanet.score}）× 0.5
-                      </div>
-                      <PlanetReasons
-                        label={`${cat.primaryPlanet.name} (主)`}
-                        reasons={cat.primaryPlanet.reasons}
-                        baseScore={cat.primaryPlanet.score}
-                      />
-                      {cat.secondaryPlanet.reasons.length > 0 && (
-                        <PlanetReasons
-                          label={`${cat.secondaryPlanet.name} (輔)`}
-                          reasons={cat.secondaryPlanet.reasons}
-                          baseScore={cat.secondaryPlanet.score}
-                        />
-                      )}
-                    </div>
-
-                    {/* 契合分解 */}
-                    <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-3">
-                      <div className="text-xs text-saffron-400 font-medium mb-2">❤️ 契合分 {cat.fit} / 10</div>
-                      <div className="text-[11px] text-slate-400 mb-2">
-                        這類需要的元素 vs 你的元素分佈
-                      </div>
-                      <div className="space-y-1.5 text-xs">
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-500">這類元素需求：</span>
-                          <ElementBarMini values={cat.elementAffinity} />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-500">你的元素分佈：</span>
-                          <ElementBarMini values={cat.userElements} />
-                        </div>
-                      </div>
-                      <div className="text-[11px] text-slate-400 mt-2 pt-2 border-t border-white/5">
-                        💡 月亮加權 ×2（情感偏好核心）· 越對得上越契合
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="text-xs text-slate-400 italic">
-                    🏆 綜合分 = 能力 {cat.strength} × 50% + 契合 {cat.fit} × 50% = <strong className="text-saffron-400">{cat.combined} 分</strong>
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
-
-      {/* 底部 2 個 — 不推薦 */}
-      <div className="space-y-3">
-        <div className="text-xs uppercase tracking-widest text-vermilion-500 font-medium">
-          ❌ 命盤不支持的 2 個方向（不代表做不了，但要花更多力氣）
-        </div>
-        {bottom2.map((cat) => {
-          const color = tierColor(cat.combinedStars)
-          return (
-            <div key={cat.id} className={`rounded-xl border ${color.border} ${color.bg} p-3 md:p-4`}>
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 text-2xl">{cat.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-medium text-slate-200">#{cat.rank} · {cat.name}</span>
-                    <span className={`text-xs ${color.text}`}>{cat.level}</span>
-                  </div>
-                  <div className="mt-1 text-xs text-slate-400">
-                    💪 能力 {cat.strength} · ❤️ 契合 {cat.fit} · 🏆 綜合 {cat.combined}
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    {cat.avoidIf && <span className="text-vermilion-400">提醒：{cat.avoidIf}</span>}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* 透明度說明 */}
-      <div className="mt-5 text-xs text-slate-500 leading-relaxed border-t border-white/10 pt-3">
-        💡 <strong className="text-slate-300">完整計分邏輯</strong>：
-        <br />
-        <strong className="text-emerald-400">💪 能力分（0-10）</strong> — 主宰行星在命盤中的力量。規則：
-        自己星座 +3、旺位 +4、陷位 -3；坐角宮 / 三角宮 +2；坐 10 宮 +5；是 10 宮主星 +4；坐財庫宮 +2；當前走此行星大運 +5；燃燒 -2。
-        <br />
-        <strong className="text-saffron-400">❤️ 契合分（0-10）</strong> — 你的 Lagna × Sun × Moon（月亮 ×2）元素分佈 vs 此類事業的元素需求，內積後 normalize。
-        <br />
-        <strong className="text-vermilion-500">🏆 綜合分</strong> = 能力 × 50% + 契合 × 50%。
-        所有推理可展開每個類別看完整計算。
-      </div>
-    </Section>
-  )
-}
-
-// 小條 bar（展開時用）
-function DualBar({ label, score, stars, emoji, tone }) {
-  const barColor = tone === 'emerald' ? 'bg-emerald-500' : 'bg-saffron-500'
-  const textColor = tone === 'emerald' ? 'text-emerald-400' : 'text-saffron-400'
-  return (
-    <div className={`rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2`}>
-      <div className="flex items-baseline justify-between text-xs">
-        <span className="text-slate-300">{emoji} {label}</span>
-        <span className={`tabular-nums font-medium ${textColor}`}>{score} / 10</span>
-      </div>
-      <div className="mt-1.5 h-1.5 rounded-full bg-white/10 overflow-hidden">
-        <div
-          className={`h-full rounded-full ${barColor}`}
-          style={{ width: `${(score / 10) * 100}%` }}
-        />
-      </div>
-    </div>
-  )
-}
-
-// 小元素分佈條
-function ElementBarMini({ values }) {
-  const total = (values.fire || 0) + (values.earth || 0) + (values.air || 0) + (values.water || 0)
-  if (total === 0) return <span className="text-[10px] text-slate-500">—</span>
-  const pct = (v) => (v / total) * 100
-  const items = [
-    { key: 'fire', label: '火', color: '#e34234', v: values.fire || 0 },
-    { key: 'earth', label: '土', color: '#a16207', v: values.earth || 0 },
-    { key: 'air', label: '風', color: '#38bdf8', v: values.air || 0 },
-    { key: 'water', label: '水', color: '#60a5fa', v: values.water || 0 }
-  ]
-  return (
-    <div className="flex items-center gap-1.5">
-      {items.map((it) => (
-        <span key={it.key} className="inline-flex items-center gap-0.5 text-[10px]">
-          <span
-            className="inline-block w-1.5 rounded-sm"
-            style={{ height: `${Math.max(2, Math.min(14, 2 + pct(it.v) * 0.12))}px`, backgroundColor: it.color, opacity: it.v > 0 ? 1 : 0.2 }}
-          />
-          <span className={it.v > 0 ? 'text-slate-300' : 'text-slate-600'}>{it.label}{it.v}</span>
-        </span>
-      ))}
-    </div>
-  )
-}
 
 function PlanetReasons({ label, reasons, baseScore }) {
   if (!reasons || reasons.length === 0) {
@@ -2109,6 +1553,371 @@ function PlanetReasons({ label, reasons, baseScore }) {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════
+// VedicCareerSection — 正統吠陀事業分析 UI
+// ═══════════════════════════════════════════════════
+function VedicCareerSection({ data }) {
+  const { foundation, karmesh, significators, amatyakaraka, dasha } = data
+  const dignityColor = {
+    exalted: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10',
+    own: 'text-saffron-400 border-saffron-500/40 bg-saffron-500/10',
+    moolatrikona: 'text-saffron-400 border-saffron-500/40 bg-saffron-500/10',
+    friendly: 'text-slate-200 border-white/15 bg-white/5',
+    neutral: 'text-slate-300 border-white/10 bg-white/[0.03]',
+    enemy: 'text-amber-400 border-amber-500/30 bg-amber-500/5',
+    debilitated: 'text-vermilion-500 border-vermilion-500/30 bg-vermilion-500/5'
+  }
+
+  return (
+    <>
+      {/* 方法論 intro */}
+      <Section
+        icon={<Briefcase className="h-4 w-4" />}
+        badge="事業分析 · 正統吠陀方法"
+        title="你的事業命格"
+      >
+        <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-4 text-sm text-slate-300 leading-relaxed">
+          <strong className="text-saffron-400">分析邏輯（依 Brihat Parashara Hora Shastra）</strong>
+          <br />
+          1. <strong>第 10 宮 Karma Bhava</strong> — 事業本體
+          <br />
+          2. <strong>10 宮主 Dashamesh</strong> — 最關鍵。它的星座、宮位、月宿決定你的職業樣貌
+          <br />
+          3. <strong>9 大徵象星 Karakas</strong> — 每顆行星對應特定事業領域（Saturn = 事業本命星）
+          <br />
+          4. <strong>Amatyakaraka (AMK)</strong> — Jaimini 派的「事業靈魂星」（度數第 2 高）
+          <br />
+          5. <strong>當前 Dasha</strong> — 時機
+        </div>
+      </Section>
+
+      {/* Part 1: 10 宮本體 */}
+      <Section icon={<Briefcase className="h-4 w-4" />} badge="第 1 部分" title="你的事業宮（第 10 宮）">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">10 宮星座</div>
+            <div className="font-serif text-2xl gradient-text">
+              {foundation.tenthRashi.symbol} {foundation.tenthRashi.chinese}
+            </div>
+            <div className="text-xs text-slate-500 mt-1">{foundation.tenthRashi.name}</div>
+            <div className="text-sm text-slate-300 mt-3 leading-relaxed">
+              由 <strong className="text-saffron-400">{foundation.karmeshPlanet}</strong> 主宰 — 這顆行星在你命盤中的位置決定你的事業方向。
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">10 宮內行星</div>
+            {foundation.tenthOccupants.length === 0 ? (
+              <div className="text-sm text-slate-400">
+                目前沒有行星坐在 10 宮 — 事業全靠 10 宮主星 ({foundation.karmeshPlanet}) 的位置推動。
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {foundation.tenthOccupants.map((o) => (
+                  <div key={o.planet} className="text-sm">
+                    <span className="font-medium text-slate-100">{o.planet}</span>
+                    <span className="text-slate-400 text-xs ml-2">
+                      · {o.rashi.chinese} · {o.nakshatra.name}
+                    </span>
+                    <div className="text-xs text-slate-400 mt-0.5">
+                      影響領域：{o.naturalDomain.join('、')}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </Section>
+
+      {/* Part 2: 10 宮主深度分析 */}
+      {karmesh.reading && (
+        <Section
+          icon={<Sparkles className="h-4 w-4" />}
+          badge="第 2 部分 · 最關鍵"
+          title={karmesh.reading.title}
+          highlight
+        >
+          <div className="mb-5">
+            <div className="text-sm text-saffron-400 mb-1">事業本質</div>
+            <div className="text-lg font-serif text-slate-100">{karmesh.reading.essence}</div>
+            <p className="text-sm text-slate-300 mt-2 leading-relaxed">{karmesh.reading.style}</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-3 mb-5">
+            <InfoCard
+              label={`🪐 ${karmesh.planet} 所在星座`}
+              body={
+                <>
+                  <div className="text-slate-100 font-medium">{karmesh.rashi?.chinese} ({karmesh.rashi?.name})</div>
+                  {karmesh.dignityInfo && (
+                    <div className={`inline-block mt-1.5 rounded-full border px-2 py-0.5 text-[11px] ${dignityColor[karmesh.dignity]}`}>
+                      {karmesh.dignityInfo.label}
+                    </div>
+                  )}
+                  <div className="text-xs text-slate-400 mt-1">{karmesh.dignityInfo?.note}</div>
+                </>
+              }
+            />
+            <InfoCard
+              label={`🏠 ${karmesh.planet} 所在宮位`}
+              body={
+                karmesh.environment ? (
+                  <>
+                    <div className="text-slate-100 font-medium">第 {karmesh.house} 宮</div>
+                    <div className="text-xs text-slate-400 mt-1">{karmesh.environment.meaning}</div>
+                  </>
+                ) : (
+                  <div className="text-slate-400 text-xs">—</div>
+                )
+              }
+            />
+            <InfoCard
+              label={`✨ ${karmesh.planet} 所在月宿`}
+              body={
+                karmesh.nakshatra ? (
+                  <>
+                    <div className="text-slate-100 font-medium">
+                      {karmesh.nakshatra.name} Pada {karmesh.nakshatra.pada}
+                    </div>
+                    <div className="text-xs text-slate-400 mt-1">
+                      月宿主星：<span className="text-saffron-400">{karmesh.nakshatraLord}</span>
+                    </div>
+                    <div className="text-xs text-slate-400 mt-0.5">
+                      → 細節方向：{karmesh.specificDirection?.fineDirection?.domains?.join('、')}
+                    </div>
+                  </>
+                ) : null
+              }
+            />
+          </div>
+
+          <div className="rounded-xl border border-saffron-500/30 bg-saffron-500/5 p-4 mb-4">
+            <div className="text-xs uppercase tracking-widest text-saffron-400 mb-2">
+              🎯 你的命盤推出的職業方向
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {karmesh.reading.coreProfessions.map((p) => (
+                <span key={p} className="rounded-full bg-white/5 border border-white/15 px-3 py-1 text-sm text-slate-100">
+                  {p}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {karmesh.environment && (
+            <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-4 mb-4">
+              <div className="text-xs uppercase tracking-widest text-emerald-400 mb-2">
+                🌱 事業「發生地」 — {karmesh.environment.label}
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed">{karmesh.environment.meaning}</p>
+              {karmesh.environment.best && (
+                <p className="text-xs text-slate-400 mt-2">
+                  ➕ 最適合：{karmesh.environment.best}
+                </p>
+              )}
+              {karmesh.environment.special && (
+                <p className="text-xs text-saffron-400 mt-2">{karmesh.environment.special}</p>
+              )}
+            </div>
+          )}
+
+          {karmesh.specificDirection?.fineDirection && (
+            <div className="rounded-xl border border-sky-500/25 bg-sky-500/5 p-4">
+              <div className="text-xs uppercase tracking-widest text-sky-400 mb-2">
+                🔬 精細方向 — 10 宮主月宿主星 ({karmesh.nakshatraLord})
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed">
+                月宿主星 <strong className="text-sky-300">{karmesh.nakshatraLord}</strong> 的領域「{karmesh.specificDirection.fineDirection.domains?.join('、')}」，
+                會為你的事業加一層色彩 — 例如同是 Mercury 為 10 宮主，
+                在 Rahu 主宰的月宿會偏非典型 / 科技 / 跨國方向。
+              </p>
+            </div>
+          )}
+
+          {karmesh.dignity === 'debilitated' && karmesh.reading.strengthsWhenWeak && (
+            <div className="mt-3 rounded-xl border border-vermilion-500/30 bg-vermilion-500/5 p-3 text-xs text-slate-200">
+              ⚠️ {karmesh.reading.strengthsWhenWeak}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Part 3: 9 大徵象星 */}
+      <Section
+        icon={<Star className="h-4 w-4" />}
+        badge="第 3 部分 · 自然徵象"
+        title="9 顆行星的事業力量排行"
+      >
+        <p className="text-sm text-slate-400 mb-4 leading-relaxed">
+          每顆行星都有自然的事業領域（Natural Karaka）。它們在你命盤中的力量，決定你在該領域有多少發揮空間。
+          <strong className="text-saffron-400 ml-1">Saturn 是所有人事業的自然本命星</strong> — 特別留意它的力量。
+        </p>
+
+        <div className="space-y-2">
+          {significators.map((s, idx) => (
+            <SignificatorRow
+              key={s.planet}
+              rank={idx + 1}
+              planet={s.planet}
+              score={s.scoreData.score}
+              reasons={s.scoreData.reasons}
+              karaka={s.karaka}
+              graha={s.graha}
+              dignity={s.dignity}
+              isSaturn={s.planet === 'Saturn'}
+            />
+          ))}
+        </div>
+      </Section>
+
+      {/* Part 4: AMK */}
+      {amatyakaraka && (
+        <Section
+          icon={<Sparkle className="h-4 w-4" />}
+          badge="第 4 部分 · Jaimini"
+          title="Amatyakaraka · 你的事業靈魂星"
+        >
+          <div className="rounded-xl border border-vermilion-500/30 bg-gradient-to-br from-vermilion-500/10 to-saffron-500/5 p-5">
+            <div className="text-xs uppercase tracking-widest text-vermilion-500 mb-2">
+              AMK · 度數第 2 高的行星
+            </div>
+            <div className="font-serif text-3xl gradient-text mb-2">{amatyakaraka.planet}</div>
+            <div className="text-xs text-slate-400 mb-3">
+              度數 {amatyakaraka.degree?.toFixed(2)}° · AMK 是「靈魂在事業上要走的路」
+            </div>
+            <p className="text-sm text-slate-200 leading-relaxed">
+              你這一世的事業業力課題跟 <strong className="text-saffron-400">{amatyakaraka.planet}</strong> 的領域有關：
+              <span className="text-slate-300 ml-1">{amatyakaraka.karaka?.domains?.join('、')}</span>。
+              就算表面上你做的事不是這個，底層的學習課題也會指向這些。
+            </p>
+            <div className="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
+              <strong>命盤度數排名：</strong>
+              {amatyakaraka.allRanking.slice(0, 4).map((r, i) => (
+                <span key={r.planet} className="ml-2">
+                  {i === 0 ? 'AK' : i === 1 ? 'AMK' : i === 2 ? 'BK' : 'MK'}: {r.planet} ({r.deg.toFixed(1)}°)
+                </span>
+              ))}
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {/* Part 5: 當前 Dasha */}
+      {dasha && (
+        <Section
+          icon={<Clock4 className="h-4 w-4" />}
+          badge="第 5 部分 · 時機"
+          title={`當前大運對事業的影響：${dasha.lord}`}
+        >
+          <div
+            className={`rounded-xl border p-4 ${
+              dasha.isKarmesh
+                ? 'border-emerald-500/40 bg-emerald-500/10'
+                : 'border-saffron-500/25 bg-saffron-500/5'
+            }`}
+          >
+            {dasha.isKarmesh && (
+              <div className="text-xs uppercase tracking-widest text-emerald-400 font-medium mb-2">
+                🎯 你正在走「10 宮主 {dasha.lord}」自己的大運 — 極關鍵時期
+              </div>
+            )}
+            <p className="text-sm text-slate-200 leading-relaxed">{dasha.meaning}</p>
+            {dasha.karaka && (
+              <div className="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
+                此大運的自然領域：{dasha.karaka.domains?.join('、')}
+                <br />
+                對事業的意義：{dasha.karaka.strength_means}
+              </div>
+            )}
+          </div>
+        </Section>
+      )}
+    </>
+  )
+}
+
+function SignificatorRow({ rank, planet, score, reasons, karaka, graha, dignity, isSaturn }) {
+  const [open, setOpen] = useState(false)
+  const stars = Math.max(0, Math.min(5, Math.round(score / 3)))
+  const starColor =
+    stars >= 4 ? 'text-emerald-400' : stars >= 3 ? 'text-saffron-400' : stars >= 2 ? 'text-slate-400' : 'text-vermilion-500'
+
+  return (
+    <div
+      className={`rounded-xl border p-3 md:p-4 ${
+        isSaturn
+          ? 'border-saffron-500/40 bg-saffron-500/5'
+          : stars >= 4
+          ? 'border-emerald-500/30 bg-emerald-500/5'
+          : 'border-white/10 bg-white/[0.03]'
+      }`}
+    >
+      <button type="button" onClick={() => setOpen((o) => !o)} className="w-full text-left">
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex-shrink-0 w-8 text-center font-serif text-sm text-slate-400">
+            #{rank}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-serif text-lg text-saffron-400">{planet}</span>
+              {isSaturn && (
+                <span className="text-[10px] rounded-full bg-saffron-500/20 text-saffron-300 px-2 py-0.5">
+                  事業本命星
+                </span>
+              )}
+              {dignity && dignity !== 'neutral' && (
+                <span className="text-[10px] text-slate-400">
+                  {dignityLabels[dignity]?.label}
+                </span>
+              )}
+            </div>
+            <div className="text-xs text-slate-400 mt-0.5 line-clamp-1">
+              領域：{karaka?.domains?.join('、')}
+            </div>
+            {graha && (
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                {graha.rashi.chinese} · 第 {graha.house} 宮 · {graha.nakshatra.name}
+              </div>
+            )}
+          </div>
+          <div className="flex-shrink-0 flex items-center gap-2">
+            <span className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} className={i < stars ? starColor : 'text-white/10'}>★</span>
+              ))}
+            </span>
+            <span className="text-xs tabular-nums text-slate-400 w-8 text-right">{score}</span>
+            <span className="text-slate-500 text-xs">{open ? '▲' : '▼'}</span>
+          </div>
+        </div>
+      </button>
+
+      {open && (
+        <div className="mt-3 pt-3 border-t border-white/10 text-xs space-y-2">
+          <div className="text-slate-400">
+            <strong className="text-slate-300">{karaka?.strength_means}</strong>
+          </div>
+          {reasons && reasons.length > 0 ? (
+            <div className="space-y-1">
+              {reasons.map((r, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className={`tabular-nums font-mono ${r.points >= 0 ? 'text-emerald-400' : 'text-vermilion-500'}`}>
+                    {r.points >= 0 ? '+' : ''}{r.points}
+                  </span>
+                  <span className="text-slate-300">{r.text}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-slate-500">基礎力量、無特殊加分</div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
