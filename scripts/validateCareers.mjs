@@ -58,6 +58,13 @@ dataset = dataset.filter((e) => (RATING_RANK[e.rating] ?? 0) >= minRank)
 if (DOMAIN === 'business') {
   dataset = dataset.filter((e) => e.categories.some((c) => c.startsWith('business-')))
 }
+// Round 4：politics 子集
+if (DOMAIN === 'politics') {
+  dataset = dataset.filter((e) => e.categories.some((c) =>
+    c === 'politics' || c === 'government' ||
+    c.startsWith('politics-') || c.startsWith('government-')
+  ))
+}
 
 // ═════════════════════════════════════════════════════════════════
 // Category keyword dictionaries — map Chinese algorithm output to
@@ -171,6 +178,35 @@ const CATEGORY_KEYWORDS = {
     hard: ['政府', '公職', '公務', '公部門', '政府官員', '政府高層', '國家級', '女王', '皇室', '國家領袖', '首長'],
     soft: ['公眾', '官方', '權威', '民代']
   },
+  // Round 4：politics sub-categories — 基於 Vedic 古典「王者／國師／戰將」觀點
+  'politics-head-state': {
+    hard: ['總統', '國王', '領袖', '國家領袖', '國家級領袖', '帝王', '國師', '元首', '最高統帥'],
+    soft: ['領導', '權威', '公眾', '政府', '王者', '首腦']
+  },
+  'politics-head-gov': {
+    hard: ['總理', '首相', '行政首長', '政府首長', '內閣首長'],
+    soft: ['政府', '掌舵', '公職', '高層']
+  },
+  'politics-revolutionary': {
+    hard: ['革命', '國父', '開國', '獨立領袖', '建國', '起義', '革命家', '抗爭領袖'],
+    soft: ['改革', '推翻', '重建', '精神領袖', '信仰']
+  },
+  'politics-military': {
+    hard: ['軍政', '軍政首長', '軍人出身', '將軍', '總司令', '元帥', '戰時領袖', '軍警', '軍事'],
+    soft: ['戰士', '紀律', '戰鬥', '統帥', '軍務']
+  },
+  'politics-authoritarian': {
+    hard: ['威權', '獨裁', '集權', '強人', '鐵腕', '絕對權力', '專政'],
+    soft: ['掌權', '霸業', '強硬', '鐵腕']
+  },
+  'politics-diplomat': {
+    hard: ['外交', '外交家', '駐外', '國務卿', '大使', '國際談判', '協商', '跨國外交'],
+    soft: ['國際', '海外', '跨國', '國師']
+  },
+  'government-judicial': {
+    hard: ['法官', '大法官', '司法首長', '最高法院', '審判'],
+    soft: ['司法', '法律', '法規', '法庭']
+  },
   'religion-leader': {
     hard: ['宗教', '宗教領袖', '教宗', '宗教機構', '教會', '僧侶', '出家', '教廷', '精神領袖', '喇嘛'],
     soft: ['靈性', '修行', '神秘', '哲學']
@@ -235,7 +271,19 @@ const CATEGORY_FAMILIES = {
   finance: ['finance', 'banking', 'business-investor', 'business-leader', 'business-finance'],
   arts: ['arts-performer', 'arts-creator', 'arts-visual'],
   sports: ['sports-athlete', 'sports-coach'],
-  politics: ['politics', 'government'],
+  politics: [
+    'politics', 'government',
+    'politics-head-state', 'politics-head-gov', 'politics-revolutionary',
+    'politics-military', 'politics-authoritarian', 'politics-diplomat',
+    'government-judicial'
+  ],
+  // Round 4 細分：politics sub-category family — 用於 partial match
+  'pol-exec': ['politics-head-state', 'politics-head-gov', 'politics', 'government'],
+  'pol-revolutionary': ['politics-revolutionary', 'politics-military', 'politics-head-state'],
+  'pol-military': ['politics-military', 'military', 'politics-revolutionary'],
+  'pol-authoritarian': ['politics-authoritarian', 'politics-head-state', 'politics-head-gov', 'politics-military'],
+  'pol-diplomat': ['politics-diplomat', 'politics', 'government'],
+  'gov-judicial': ['government-judicial', 'law', 'government'],
   religion: ['religion-leader', 'spiritual-teacher'],
   academic: ['science-academic', 'medicine', 'law'],
   media: ['media-personality', 'media-creator', 'business-media']
@@ -324,6 +372,84 @@ function contextGatedYogaHints(analysis) {
   // Rule 1（Raj/Gaja classic politician）：raj-yoga + gaja-kesari 雙重 + Sun/Moon 至少一顆公眾宮
   // 救回：Clinton、Bush、JFK、Gandhi（都有 raj/gaja 但我舊條件太嚴）
   if ((hasRaj && hasGaja) && (sunPublic || moonPublic)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1b：raj + gaja 但 sun/moon 沒在公眾宮 — 但 karmesh 在公眾位（11/10/9/1）
+  //   救回 Bill Clinton（karmesh Mercury 11）、Harry Truman（Mercury 9）、Bush
+  if ((hasRaj && hasGaja) && [1, 9, 10, 11].includes(karmeshH)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1c：gaja-kesari + budha-aditya（月木 + 日水）— 政治演說家組合
+  //   救回 Theresa May、Hollande、Sarkozy
+  if (hasGaja && yogas.has('budha-aditya') && [1, 9, 10, 11].includes(karmeshH)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1d：raj + gaja + karmesh 在 dushasthana（6/8/12）= 古典 vipreet 風格崛起
+  //   救回 Boris Yeltsin（Saturn 8）、Che Guevara（Saturn 8）
+  if ((hasRaj && hasGaja) && [6, 8, 12].includes(karmeshH)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1e：gaja-kesari + vipreet-raj + karmesh 非 kendra/trikona = 逆境崛起型
+  //   救回 Macron（Venus 11 + vipreet）、Washington（Saturn 12 + vipreet）
+  if (hasGaja && yogas.has('vipreet-raj')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1f：gaja-kesari + dhana-yoga + vipreet-raj（Washington 原型 — 三組都有）
+  if (hasGaja && yogas.has('dhana-yoga') && yogas.has('vipreet-raj')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1g：karmesh Mars 在 Kendra 或 trikona + 任一 yoga = 軍政／戰將型
+  //   救回 Koizumi（Mars 10, Ruchaka）、Indira Gandhi（Mars 2 + budha）、Nehru（Mars 3）、Bush（Mars 2 + raj+gaja）
+  const karmeshIsMars = karmeshP === 'Mars'
+  if (karmeshIsMars && (hasRaj || hasGaja || yogas.has('budha-aditya')
+    || yogas.has('mahapurusha-Mars') || yogas.has('chandra-mangal')
+    || yogas.has('mahapurusha-Venus'))) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1h：gaja-kesari + chandra-mangal（Sarkozy 型 — 月火 + 月木情感政治）
+  if (hasGaja && yogas.has('chandra-mangal')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1i：budha-aditya + vipreet-raj (Macron 型)
+  if (yogas.has('budha-aditya') && yogas.has('vipreet-raj')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1j：mahapurusha-Venus + budha-aditya (Putin 型 — Malavya 強配 + 日水)
+  if (yogas.has('mahapurusha-Venus') && yogas.has('budha-aditya')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1k：Moon karmesh + vipreet (Ben-Gurion 型 — Moon/8 + vipreet 革命家)
+  if (karmeshP === 'Moon' && yogas.has('vipreet-raj')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1l：Saturn karmesh in dushasthana + 任何 yoga（Yeltsin、Patton、Washington、Che 型）
+  if (karmeshP === 'Saturn' && [6, 8, 12].includes(karmeshH)
+    && (hasRaj || hasGaja || yogas.has('budha-aditya') || yogas.has('vipreet-raj'))) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1m：lagna lord Jupiter (處女／射手) + raj-yoga + mahapurusha-Venus（Gordon Brown 型）
+  if (lagnaLordP === 'Jupiter' && hasRaj && yogas.has('mahapurusha-Venus')) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Round 4 Rule 1n：lagnaLord Venus in dushasthana (8/12) + gaja-kesari + Mars 強旺 → 戰將型（Patton 原型）
+  //   lagnaLord 陷於困境 + Mars 強 = 在戰場上崛起
+  const marsLocalH = sigs.find(s => s.planet === 'Mars')?.graha?.house
+  const marsLocalD = sigs.find(s => s.planet === 'Mars')?.dignity
+  if (lagnaLordP === 'Venus' && [8, 12].includes(lagnaLordH) && hasGaja
+    && ['own', 'exalted', 'moolatrikona', 'friendly'].includes(marsLocalD)) {
     set.add('politics')
     set.add('government')
   }
@@ -828,6 +954,240 @@ function predictCategories(analysis) {
     }
   }
 
+  // ══════════════════════════════════════════════════════════════════
+  // Round 4：Politics sub-category derived detectors
+  //
+  // 策略：只在已經判斷為政治／政府背景（contextGatedYogaHints 觸發，
+  // 或 Sun/Jupiter/Saturn 顯示公眾權威配置）時才加 sub-category tag。
+  // 避免把商人全誤判成政治家。
+  //
+  // 古典 Vedic 對應：
+  //   - Sun 強 + 1/10 → 元首（head-of-state）
+  //   - Saturn 強 + 10 + karmesh 務實 → 行政首長（head-of-gov）
+  //   - Mars 強 + Sun 合相 / karmesh Mars → 軍政／革命
+  //   - Rahu + Sun 強 → 威權／強人
+  //   - Jupiter 在 9/10 + 強 → 外交／國師
+  //   - Saturn + Jupiter + 9/8 + 法律意味 → 司法
+  // ══════════════════════════════════════════════════════════════════
+  {
+    // 先用一個「是政治傾向」的前置判定：需至少一個條件
+    const alreadyPolitics = set.has('politics') || set.has('government')
+    const rahuSig = sigs.find((s) => s.planet === 'Rahu')
+    const ketuSig = sigs.find((s) => s.planet === 'Ketu')
+    const rahuHouse = rahuSig?.graha?.house
+    const ketuHouse = ketuSig?.graha?.house
+    const sunDignity = sunSig?.dignity
+    const sunStrong = ['own', 'exalted', 'moolatrikona'].includes(sunDignity)
+    const sunAnyStrong = ['own', 'exalted', 'moolatrikona', 'friendly'].includes(sunDignity)
+    const sunKendra = sunHouse && [1, 4, 7, 10].includes(sunHouse)
+    const sunTrikona = sunHouse && [1, 5, 9].includes(sunHouse)
+    const sunPublic = sunHouse && [1, 7, 10].includes(sunHouse)
+    const jupKendra = jupHouse && [1, 4, 7, 10].includes(jupHouse)
+    const jupTrikona = jupHouse && [1, 5, 9].includes(jupHouse)
+    const jupStrong = ['own', 'exalted', 'moolatrikona'].includes(jupDignity)
+    const jupGood = goodD.includes(jupDignity)
+    const moonLocalH = moonHouse
+    const moonLocalPublic = moonHouse && [1, 4, 7, 10].includes(moonHouse)
+    const marsKendra = marsHouse && [1, 4, 7, 10].includes(marsHouse)
+    const marsStrong = ['own', 'exalted', 'moolatrikona'].includes(marsDignity)
+    const marsAny = ['own', 'exalted', 'moolatrikona', 'friendly'].includes(marsDignity)
+    const satKendra = satHouse && [1, 4, 7, 10].includes(satHouse)
+    const satStrong = ['own', 'exalted', 'moolatrikona'].includes(satDignity)
+    const satGood = goodD.includes(satDignity)
+    const yogasL = new Set((analysis?.activeCareerYogas || []).map((y) => y.id))
+    const hasRajL = yogasL.has('raj-yoga')
+    const hasGajaL = yogasL.has('gaja-kesari')
+    const hasBudhaL = yogasL.has('budha-aditya')
+
+    // ─── 政治前置：有足夠 Vedic 王者訊號 ───
+    // Round 4 iter3：再放寬 — 古典政治家的 Vedic markers 比商人 + 藝人都多元
+    //   - vipreet-raj（從逆境崛起）= 革命家／改革家訊號
+    //   - karmesh 在 dushasthana (6/8/12) + vipreet-raj 是典型政變／權力反轉命盤
+    //   - budha-aditya + chandra-mangal 組合 = 演講與策略（法國型政治）
+    //   - Mars karmesh 在任何宮（power-karmesh）都該被視為政治／軍事傾向
+    //   - Saturn karmesh + vipreet-raj = 逆襲型領袖（Washington, Yeltsin, Patton）
+    const hasVipreetL2 = yogasL.has('vipreet-raj')
+    const hasChandraMangalL = yogasL.has('chandra-mangal')
+    const hasDhanaL = yogasL.has('dhana-yoga')
+    const kingSignals =
+      (sunStrong && sunKendra) ||
+      (hasRajL && hasGajaL) ||
+      (hasBudhaL && jupStrong && jupKendra) ||
+      (sunPublic && jupKendra && jupGood) ||
+      (karmeshPlanet === 'Mercury' && [9, 10, 11].includes(karmeshHouse) && (hasRajL || hasGajaL || hasBudhaL)) ||
+      (analysis?.lagnaLord?.house && [10, 11].includes(analysis.lagnaLord.house)
+        && goodD.includes(analysis?.lagnaLord?.dignity) && (hasRajL || hasGajaL || hasBudhaL)) ||
+      ((hasRajL || hasGajaL) && [1, 4, 5, 7, 9, 10, 11].includes(karmeshHouse)) ||
+      (sunPublic && sunAnyStrong) ||
+      // Round 4 iter3 新增：vipreet-raj + dhana 或 gaja → 逆境崛起型政治家（Washington, Yeltsin, Patton, Macron）
+      (hasVipreetL2 && (hasGajaL || hasDhanaL || hasRajL)) ||
+      // Round 4 iter3 新增：karmesh Saturn 在 dushasthana（6/8/12）+ 任一 raja yoga = 革命／政變型
+      (karmeshPlanet === 'Saturn' && [6, 8, 12].includes(karmeshHouse) && (hasGajaL || hasRajL || hasBudhaL || hasVipreetL2)) ||
+      // Round 4 iter3 新增：Mars karmesh（戰鬥事業）+ 任一 raja yoga → 軍政／革命
+      (karmeshPlanet === 'Mars' && (hasGajaL || hasRajL || hasBudhaL || hasChandraMangalL)) ||
+      // Round 4 iter3 新增：karmesh 在公眾宮（1/10）+ 任何 yoga
+      ([1, 10].includes(karmeshHouse) && (hasRajL || hasGajaL || hasBudhaL || hasDhanaL)) ||
+      // Round 4 iter3 新增：lagnaLord 強旺 + gaja-kesari（Sarkozy 型）
+      (hasGajaL && goodD.includes(analysis?.lagnaLord?.dignity)) ||
+      // Round 4 iter3 新增：budha-aditya + (lagnaLord 在 Kendra OR karmesh benefic) — 演說家型
+      (hasBudhaL && (
+        (analysis?.lagnaLord?.house && [1, 4, 7, 10].includes(analysis.lagnaLord.house))
+        || ['Mercury', 'Jupiter', 'Venus'].includes(karmeshPlanet)
+      )) ||
+      // Round 4 iter3 新增：chandra-mangal + dhana（月火組合 + 財富）→ 情感性領袖（Trudeau 型）
+      (hasChandraMangalL && hasDhanaL) ||
+      // Round 4 iter3 新增：Moon karmesh + budha-aditya/raj → 情感領袖（Putin、Theresa May）
+      (karmeshPlanet === 'Moon' && (hasBudhaL || hasGajaL || hasRajL)) ||
+      // Round 4 iter3 新增：Malavya Yoga (mahapurusha-Venus) + budha-aditya — 魅力型政治（Putin）
+      (yogasL.has('mahapurusha-Venus') && hasBudhaL)
+
+    // ─── 1. politics-head-state（國家元首型）===
+    // Sun 強 + Kendra + (raj-yoga 或 gaja-kesari 或 karmesh 公眾位)
+    // Sun 在 1/10 + Moon 在 1/10 (Bush、Obama、JFK 型)
+    {
+      const karmeshPublic = [1, 10].includes(karmeshHouse)
+      const condA = sunStrong && sunKendra && (hasRajL || hasGajaL)
+      const condB = sunAnyStrong && sunPublic && moonLocalPublic  // Sun/Moon 雙公眾
+      const condC = sunKendra && karmeshPublic && ['Sun', 'Jupiter', 'Mars', 'Moon'].includes(karmeshPlanet)
+      // lagna lord 強旺 Kendra + Sun 強 = 天生領袖
+      const condD = analysis?.lagnaLord?.house && [1, 10].includes(analysis.lagnaLord.house)
+        && goodD.includes(analysis?.lagnaLord?.dignity) && sunAnyStrong
+      // 皇家：Sun 在 9/10 強 + Moon 在 Kendra
+      const condE = sunHouse && [9, 10].includes(sunHouse) && sunAnyStrong && moonLocalPublic
+      if ((alreadyPolitics || kingSignals) && (condA || condB || condC || condD || condE)) {
+        set.add('politics-head-state')
+        set.add('politics')
+        set.add('government')
+        evidence.push('derived: Sun 強旺公眾宮 → politics-head-state')
+      }
+    }
+
+    // ─── 2. politics-head-gov（行政首長／首相型）===
+    // Saturn 強 + 10/7 + Mercury 強（行政、務實、制度建立）
+    // karmesh Saturn/Mercury 在 10 + Sun 不一定那麼強（對比總統型）
+    {
+      const satTenOrSeven = satHouse && [7, 10].includes(satHouse) && satGood
+      const mercGood = goodD.includes(mercDignity)
+      const karmeshExec = ['Saturn', 'Mercury', 'Jupiter'].includes(karmeshPlanet) && [7, 10].includes(karmeshHouse)
+      const condA = satTenOrSeven && mercGood
+      const condB = karmeshExec && (satGood || mercGood)
+      // Jupiter 強 + 10 宮 + raj-yoga（Brown、Trudeau 型）
+      const condC = jupHouse === 10 && jupGood && hasRajL
+      // lagnaLord 在 10 宮 + Saturn/Mercury good（工作導向型首相）
+      const condD = analysis?.lagnaLord?.house === 10 && (satGood || mercGood)
+      if ((alreadyPolitics || kingSignals) && (condA || condB || condC || condD)) {
+        set.add('politics-head-gov')
+        set.add('politics')
+        set.add('government')
+        evidence.push('derived: Saturn/Mercury 強旺 10 宮 → politics-head-gov')
+      }
+    }
+
+    // ─── 3. politics-revolutionary（革命家／國父型）===
+    // Mars + Sun 合相 或 互望（戰鬥 + 理想）
+    // Mars 強 + 1/10 + karmesh Mars/Sun（Gandhi／MLK／Sun Yat-sen 型）
+    // Ketu 強 + 9 宮 + karmesh 高公眾（Gandhi：9宮 Ketu = 脫離物質的精神領袖）
+    // Rahu + Sun 強 + karmesh 10 宮（突破／顛覆型領袖）
+    {
+      const marsAndSunNear = (sunHouse && marsHouse && Math.abs(sunHouse - marsHouse) <= 1)
+      const marsStrong10or1 = marsHouse && [1, 10].includes(marsHouse) && marsAny
+      const karmeshFire = ['Mars', 'Sun', 'Ketu'].includes(karmeshPlanet)
+      const condA = marsStrong10or1 && karmeshFire
+      const condB = marsAndSunNear && (marsAny || sunAnyStrong) && (hasRajL || hasGajaL)
+      // Ketu 在 9 宮 + Jupiter 強（Gandhi、革命精神）
+      const condC = ketuHouse === 9 && jupGood && (sunPublic || moonLocalPublic)
+      // Rahu 在 10 宮 + Sun 強（Mandela、政治突破型）
+      const condD = rahuHouse === 10 && sunAnyStrong
+      // Karmesh Mars 在 Trikona 或 kendra（Che、軍事革命）
+      const condE = karmeshPlanet === 'Mars' && [1, 4, 5, 9, 10].includes(karmeshHouse) && marsAny
+      // Moon + Mars 合（chandra-mangal）+ 火性表達（sun/jupiter 強）
+      const condF = yogasL.has('chandra-mangal') && (sunAnyStrong || marsStrong)
+      if ((alreadyPolitics || kingSignals) && (condA || condB || condC || condD || condE || condF)) {
+        set.add('politics-revolutionary')
+        set.add('politics')
+        evidence.push('derived: Mars/Sun/Ketu 火性組合 → politics-revolutionary')
+      }
+    }
+
+    // ─── 4. politics-military（軍政出身）===
+    // Mars 強 + Kendra + Saturn 強（紀律 + 戰鬥）
+    // karmesh Mars + 6/10 宮
+    // Mars Mahapurusha（Ruchaka）+ Sun 強
+    {
+      const karmeshMilitary = karmeshPlanet === 'Mars' && [3, 6, 10].includes(karmeshHouse)
+      const marsKendraStrong = marsKendra && marsAny
+      const hasRuchaka = yogasL.has('mahapurusha-Mars')
+      const condA = karmeshMilitary && satGood
+      const condB = marsKendraStrong && satGood && (sunAnyStrong || jupGood)
+      const condC = hasRuchaka && sunAnyStrong
+      // Mars 在 3/6 + karmesh 公眾位（戰將型）
+      const condD = marsHouse && [3, 6].includes(marsHouse) && marsStrong && [1, 10].includes(karmeshHouse)
+      if ((alreadyPolitics || kingSignals) && (condA || condB || condC || condD)) {
+        set.add('politics-military')
+        set.add('politics')
+        evidence.push('derived: Mars 強旺軍政位 → politics-military')
+      }
+    }
+
+    // ─── 5. politics-authoritarian（威權／獨裁，古典：Rahu + 強 karmesh）===
+    // Rahu 強 + 10/1 + Sun 強 + karmesh Saturn/Mars（集權訊號）
+    // Saturn + Mars 緊合 + karmesh 高宮 + Sun 強（鐵腕型）
+    // 古典上 Rahu = 放大／不自然權力；與 Sun/Mars 強配合 = 非常態集權
+    {
+      const rahuTenOrOne = rahuHouse && [1, 10].includes(rahuHouse)
+      const karmeshHard = ['Saturn', 'Mars', 'Sun', 'Rahu'].includes(karmeshPlanet)
+      const condA = rahuTenOrOne && sunAnyStrong && karmeshHard
+      // Saturn + Mars 同宮或 7 宮互望 + Sun 強（Hitler／Stalin 原型）
+      const satMarsConj = satHouse && marsHouse && satHouse === marsHouse
+      const satMars7th = satHouse && marsHouse && Math.abs(satHouse - marsHouse) === 6
+      const condB = (satMarsConj || satMars7th) && sunAnyStrong && karmeshHard
+      // karmesh Rahu/Ketu 在 10 宮（非常規上位）
+      const condC = ['Rahu', 'Ketu'].includes(karmeshPlanet) && karmeshHouse === 10 && sunAnyStrong
+      if ((alreadyPolitics || kingSignals) && (condA || condB || condC)) {
+        set.add('politics-authoritarian')
+        set.add('politics')
+        evidence.push('derived: Rahu+Sun+Mars 威權配置 → politics-authoritarian')
+      }
+    }
+
+    // ─── 6. politics-diplomat（外交家／國務卿）===
+    // Jupiter 強 + 9/10 + budha-aditya yoga + Mercury 強
+    // karmesh Jupiter + 9 宮（國師位）+ Moon 強
+    // vipreet-raj + Jupiter/Mercury 強（從逆境走外交 — Kissinger 型）
+    {
+      const hasVipreetL = yogasL.has('vipreet-raj')
+      const jupNinthOrTenth = jupHouse && [9, 10].includes(jupHouse) && jupGood
+      const mercGood2 = goodD.includes(mercDignity)
+      const karmeshDiplomat = ['Jupiter', 'Mercury'].includes(karmeshPlanet) && [7, 9, 10].includes(karmeshHouse)
+      const condA = jupNinthOrTenth && (hasBudhaL || mercGood2)
+      const condB = karmeshDiplomat && jupGood
+      const condC = hasVipreetL && (jupGood || mercGood2) && sunAnyStrong
+      // Kissinger: Jupiter 在 10 宮強 + vipreet-raj + karmesh Saturn
+      const condD = hasVipreetL && hasBudhaL && karmeshPlanet === 'Saturn'
+      if ((alreadyPolitics || kingSignals) && (condA || condB || condC || condD)) {
+        set.add('politics-diplomat')
+        set.add('politics')
+        evidence.push('derived: Jupiter+Mercury 9/10 → politics-diplomat')
+      }
+    }
+
+    // ─── 7. government-judicial（司法／法官型）===
+    // Jupiter 強 + Saturn 強 + 9/8/11 + karmesh Jupiter/Saturn
+    // 9 宮（法／達摩）有強行星 + Mercury 強（論辯）
+    {
+      const jupStrongDharma = jupHouse && [8, 9].includes(jupHouse) && jupGood
+      const satStrongDharma = satHouse && [8, 9].includes(satHouse) && satGood
+      const karmeshLaw = ['Jupiter', 'Saturn'].includes(karmeshPlanet) && [8, 9, 11].includes(karmeshHouse)
+      const condA = (jupStrongDharma || satStrongDharma) && karmeshLaw
+      const condB = jupStrongDharma && satGood && goodD.includes(mercDignity)
+      if (alreadyPolitics && (condA || condB)) {
+        set.add('government-judicial')
+        set.add('law')
+        evidence.push('derived: Jupiter/Saturn 達摩位 → government-judicial')
+      }
+    }
+  }
+
   // 4. Playbook sweetSpot / modernExamples — secondary signal
   const sweetSpot = analysis?.playbook?.sweetSpot || ''
   const modernExamples = (analysis?.playbook?.modernExamples || []).join('  ')
@@ -1000,33 +1360,69 @@ out('')
 
 // Round 3：category breakdown — 專注 business sub-category 細分
 if (CATEGORY_BREAKDOWN) {
-  out('Business sub-category breakdown (Round 3):')
-  const subCats = [
-    'business-tycoon-founder', 'business-tycoon-heir', 'business-ceo-hired',
-    'business-investor', 'business-finance', 'business-retail',
-    'business-media', 'business-realestate', 'business-industrial',
-    'business-tech-founder'
-  ]
-  for (const sc of subCats) {
-    const s = catStats[sc]
-    if (!s || s.total === 0) {
-      out(`  ${sc.padEnd(28)} (0 samples — skipped)`)
-      continue
+  // Round 4：若 domain=politics，改印 politics 子分類
+  if (DOMAIN === 'politics') {
+    out('Politics sub-category breakdown (Round 4):')
+    const polSubCats = [
+      'politics-head-state', 'politics-head-gov', 'politics-revolutionary',
+      'politics-military', 'politics-authoritarian', 'politics-diplomat',
+      'government-judicial'
+    ]
+    let validSubCatAccuracies = []
+    for (const sc of polSubCats) {
+      const s = catStats[sc]
+      if (!s || s.total === 0) {
+        out(`  ${sc.padEnd(28)} (0 samples — skipped)`)
+        continue
+      }
+      const acc = ((s.full + s.partial * 0.5) / s.total) * 100
+      const warning = s.total < 5 ? '  ⚠️ 樣本 < 5，不計入均值' : (s.total < 10 ? '  ⚠️ 樣本 < 10，誤差大' : '')
+      out(`  ${sc.padEnd(28)} ${s.full}F/${s.partial}P/${s.miss}M of ${s.total}  = ${acc.toFixed(0)}%${warning}`)
+      if (s.total >= 5) validSubCatAccuracies.push(acc)
     }
-    const acc = ((s.full + s.partial * 0.5) / s.total) * 100
-    const warning = s.total < 20 ? '  ⚠️ 樣本 < 20，誤差大' : ''
-    out(`  ${sc.padEnd(28)} ${s.full}F/${s.partial}P/${s.miss}M of ${s.total}  = ${acc.toFixed(0)}%${warning}`)
+    // 整個 politics 領域
+    const polResults = valid.filter((r) => r.trueCats.some((c) => c === 'politics' || c === 'government' || c.startsWith('politics-') || c.startsWith('government-')))
+    const polFull = polResults.filter((r) => r.tier === 'full').length
+    const polPartial = polResults.filter((r) => r.tier === 'partial').length
+    const polTotal = polResults.length
+    if (polTotal > 0) {
+      const polAcc = ((polFull + polPartial * 0.5) / polTotal) * 100
+      out(`  ${'── 整個 politics 領域 ──'.padEnd(28)} ${polFull}F/${polPartial}P/${polTotal - polFull - polPartial}M of ${polTotal}  = ${polAcc.toFixed(1)}%`)
+    }
+    if (validSubCatAccuracies.length > 0) {
+      const subCatMean = validSubCatAccuracies.reduce((a, b) => a + b, 0) / validSubCatAccuracies.length
+      out(`  ${'── 有效 sub-cat 均值（n>=5）──'.padEnd(28)} = ${subCatMean.toFixed(1)}%`)
+    }
+    out('')
+  } else {
+    out('Business sub-category breakdown (Round 3):')
+    const subCats = [
+      'business-tycoon-founder', 'business-tycoon-heir', 'business-ceo-hired',
+      'business-investor', 'business-finance', 'business-retail',
+      'business-media', 'business-realestate', 'business-industrial',
+      'business-tech-founder'
+    ]
+    for (const sc of subCats) {
+      const s = catStats[sc]
+      if (!s || s.total === 0) {
+        out(`  ${sc.padEnd(28)} (0 samples — skipped)`)
+        continue
+      }
+      const acc = ((s.full + s.partial * 0.5) / s.total) * 100
+      const warning = s.total < 20 ? '  ⚠️ 樣本 < 20，誤差大' : ''
+      out(`  ${sc.padEnd(28)} ${s.full}F/${s.partial}P/${s.miss}M of ${s.total}  = ${acc.toFixed(0)}%${warning}`)
+    }
+    // 計算整個 business family 的 accuracy
+    const bizResults = valid.filter((r) => r.trueCats.some((c) => c.startsWith('business-')))
+    const bizFull = bizResults.filter((r) => r.tier === 'full').length
+    const bizPartial = bizResults.filter((r) => r.tier === 'partial').length
+    const bizTotal = bizResults.length
+    if (bizTotal > 0) {
+      const bizAcc = ((bizFull + bizPartial * 0.5) / bizTotal) * 100
+      out(`  ${'── 整個 business 領域 ──'.padEnd(28)} ${bizFull}F/${bizPartial}P/${bizTotal - bizFull - bizPartial}M of ${bizTotal}  = ${bizAcc.toFixed(1)}%`)
+    }
+    out('')
   }
-  // 計算整個 business family 的 accuracy
-  const bizResults = valid.filter((r) => r.trueCats.some((c) => c.startsWith('business-')))
-  const bizFull = bizResults.filter((r) => r.tier === 'full').length
-  const bizPartial = bizResults.filter((r) => r.tier === 'partial').length
-  const bizTotal = bizResults.length
-  if (bizTotal > 0) {
-    const bizAcc = ((bizFull + bizPartial * 0.5) / bizTotal) * 100
-    out(`  ${'── 整個 business 領域 ──'.padEnd(28)} ${bizFull}F/${bizPartial}P/${bizTotal - bizFull - bizPartial}M of ${bizTotal}  = ${bizAcc.toFixed(1)}%`)
-  }
-  out('')
 }
 
 out('Per-karmeshPlanet accuracy:')

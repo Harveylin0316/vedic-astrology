@@ -1,10 +1,10 @@
 {
-  "total": 284,
-  "valid": 284,
-  "full": 229,
-  "partial": 41,
-  "miss": 14,
-  "accuracy": 0.8785211267605634,
+  "total": 345,
+  "valid": 345,
+  "full": 288,
+  "partial": 46,
+  "miss": 11,
+  "accuracy": 0.9014492753623189,
   "catStats": {
     "business-tech-founder": {
       "full": 55,
@@ -85,16 +85,22 @@
       "total": 7
     },
     "politics": {
-      "full": 12,
-      "partial": 3,
-      "miss": 3,
-      "total": 18
+      "full": 70,
+      "partial": 8,
+      "miss": 0,
+      "total": 78
     },
     "government": {
-      "full": 11,
-      "partial": 0,
-      "miss": 3,
-      "total": 14
+      "full": 49,
+      "partial": 5,
+      "miss": 0,
+      "total": 54
+    },
+    "politics-head-state": {
+      "full": 36,
+      "partial": 3,
+      "miss": 0,
+      "total": 39
     },
     "business-realestate": {
       "full": 11,
@@ -102,11 +108,29 @@
       "miss": 0,
       "total": 17
     },
-    "religion-leader": {
-      "full": 3,
+    "politics-head-gov": {
+      "full": 23,
+      "partial": 3,
+      "miss": 0,
+      "total": 26
+    },
+    "politics-military": {
+      "full": 8,
       "partial": 0,
       "miss": 0,
-      "total": 3
+      "total": 8
+    },
+    "religion-leader": {
+      "full": 5,
+      "partial": 0,
+      "miss": 0,
+      "total": 5
+    },
+    "politics-revolutionary": {
+      "full": 13,
+      "partial": 1,
+      "miss": 0,
+      "total": 14
     },
     "spiritual-teacher": {
       "full": 1,
@@ -126,55 +150,79 @@
       "miss": 0,
       "total": 3
     },
+    "politics-diplomat": {
+      "full": 3,
+      "partial": 0,
+      "miss": 0,
+      "total": 3
+    },
     "business-ceo-hired": {
       "full": 14,
       "partial": 6,
       "miss": 0,
       "total": 20
+    },
+    "politics-authoritarian": {
+      "full": 7,
+      "partial": 0,
+      "miss": 0,
+      "total": 7
+    },
+    "government-judicial": {
+      "full": 1,
+      "partial": 0,
+      "miss": 0,
+      "total": 1
+    },
+    "law": {
+      "full": 1,
+      "partial": 0,
+      "miss": 0,
+      "total": 1
     }
   },
   "planetStats": {
     "Venus": {
+      "full": 49,
+      "partial": 3,
+      "miss": 0,
+      "total": 52
+    },
+    "Mars": {
+      "full": 40,
+      "partial": 5,
+      "miss": 5,
+      "total": 50
+    },
+    "Jupiter": {
+      "full": 33,
+      "partial": 6,
+      "miss": 4,
+      "total": 43
+    },
+    "Moon": {
       "full": 40,
       "partial": 3,
       "miss": 0,
       "total": 43
     },
-    "Mars": {
-      "full": 33,
-      "partial": 5,
-      "miss": 6,
-      "total": 44
-    },
-    "Jupiter": {
-      "full": 26,
-      "partial": 4,
-      "miss": 4,
-      "total": 34
-    },
-    "Moon": {
-      "full": 29,
-      "partial": 3,
-      "miss": 0,
-      "total": 32
-    },
     "Sun": {
-      "full": 26,
+      "full": 31,
       "partial": 4,
-      "miss": 1,
-      "total": 31
-    },
-    "Mercury": {
-      "full": 47,
-      "partial": 15,
-      "miss": 2,
-      "total": 64
-    },
-    "Saturn": {
-      "full": 28,
-      "partial": 7,
       "miss": 1,
       "total": 36
+    },
+    "Mercury": {
+      "full": 58,
+      "partial": 17,
+      "miss": 0,
+      "total": 75
+    },
+    "Saturn": {
+      "full": 37,
+      "partial": 8,
+      "miss": 1,
+      "total": 46
     }
   },
   "results": [
@@ -201,6 +249,7 @@
         "media-personality",
         "business-realestate",
         "business-industrial",
+        "politics-diplomat",
         "exploration"
       ],
       "tier": "full",
@@ -240,6 +289,7 @@
         "business-realestate",
         "business-tech-founder",
         "business-tycoon-heir",
+        "politics-military",
         "tech-creative",
         "science-academic",
         "business-retail",
@@ -287,6 +337,7 @@
         "tech-creative",
         "finance",
         "business-finance",
+        "government-judicial",
         "science-academic",
         "business-retail",
         "media-personality"
@@ -327,6 +378,7 @@
         "business-realestate",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-military",
         "tech-creative",
         "business-retail",
         "arts-creator",
@@ -370,6 +422,8 @@
         "business-finance",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-authoritarian",
         "business-entrepreneur",
         "medicine"
       ],
@@ -398,9 +452,12 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
         "business-tech-founder",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-creator",
@@ -408,7 +465,8 @@
         "finance",
         "banking",
         "business-tycoon-heir",
-        "business-finance"
+        "business-finance",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -444,13 +502,16 @@
         "arts-performer",
         "politics",
         "government",
+        "politics-revolutionary",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -484,6 +545,11 @@
         "medicine",
         "arts-performer",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics",
+        "government",
+        "politics-revolutionary",
+        "politics-military",
         "business-tech-founder"
       ],
       "tier": "full",
@@ -519,8 +585,11 @@
         "business-tycoon-founder",
         "business-tycoon-heir",
         "business-ceo-hired",
+        "politics-revolutionary",
+        "politics",
         "finance",
         "business-finance",
+        "government-judicial",
         "law"
       ],
       "tier": "full",
@@ -555,7 +624,8 @@
         "business-tycoon-founder",
         "business-retail",
         "arts-creator",
-        "media-personality"
+        "media-personality",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -588,8 +658,11 @@
         "politics",
         "media-personality",
         "business-industrial",
+        "politics-head-state",
+        "politics-head-gov",
         "business-tech-founder",
-        "business-leader"
+        "business-leader",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mars",
@@ -621,6 +694,7 @@
         "business-finance",
         "business-investor",
         "business-tycoon-founder",
+        "government-judicial",
         "science-academic",
         "law"
       ],
@@ -694,7 +768,8 @@
         "tech-exec",
         "tech-engineer",
         "business-ceo-hired",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -718,11 +793,14 @@
         "arts-performer"
       ],
       "predicted": [
+        "politics-diplomat",
         "exploration",
         "arts-performer",
         "arts-visual",
         "arts-creator",
         "science-academic",
+        "politics",
+        "government",
         "sports-athlete",
         "business-realestate",
         "business-tycoon-heir",
@@ -807,6 +885,7 @@
         "business-tycoon-founder",
         "tech-creative",
         "business-retail",
+        "government-judicial",
         "science-academic",
         "law",
         "business-media"
@@ -850,7 +929,8 @@
         "tech-engineer",
         "business-ceo-hired",
         "business-media",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -883,6 +963,9 @@
         "business-retail",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-head-gov",
+        "politics",
+        "government",
         "tech-creative",
         "business-media",
         "media-personality",
@@ -920,6 +1003,7 @@
         "government",
         "business-realestate",
         "business-ceo-hired",
+        "politics-head-gov",
         "tech-creative",
         "business-retail",
         "science-academic",
@@ -952,7 +1036,9 @@
         "government",
         "business-leader",
         "arts-performer",
+        "politics",
         "sports-athlete",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -983,14 +1069,20 @@
         "arts-performer"
       ],
       "predicted": [
+        "politics-military",
         "spiritual-teacher",
         "law",
         "military",
         "exploration",
         "science-academic",
         "religion-leader",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
+        "politics-revolutionary",
+        "politics-diplomat",
+        "government-judicial",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -1020,10 +1112,13 @@
       ],
       "predicted": [
         "business-investor",
+        "politics",
+        "government",
         "sports-athlete",
         "business-finance",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-gov",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -1067,6 +1162,7 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-entrepreneur",
+        "government-judicial",
         "business-media",
         "arts-creator",
         "media-creator"
@@ -1104,6 +1200,7 @@
         "sports-athlete",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tech-founder",
         "science-academic",
@@ -1142,11 +1239,16 @@
         "spiritual-teacher",
         "law",
         "arts-performer",
+        "politics",
+        "government",
         "media-personality",
         "business-investor",
         "business-finance",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-revolutionary",
+        "politics-military",
         "business-entrepreneur",
         "business-tech-founder",
         "business-media"
@@ -1181,8 +1283,11 @@
         "arts-creator",
         "media-personality",
         "business-finance",
+        "politics-revolutionary",
+        "politics",
         "tech-creative",
         "finance",
+        "government-judicial",
         "law",
         "business-retail",
         "medicine"
@@ -1220,13 +1325,16 @@
         "business-realestate",
         "business-tycoon-founder",
         "business-ceo-hired",
+        "politics-revolutionary",
+        "politics-diplomat",
         "tech-creative",
         "business-retail",
         "arts-creator",
         "arts-visual",
         "tech-exec",
         "tech-engineer",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -1263,11 +1371,13 @@
         "business-tycoon-founder",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
         "business-entrepreneur",
+        "politics-military",
         "religion-leader"
       ],
       "tier": "full",
@@ -1297,11 +1407,14 @@
         "arts-creator",
         "science-academic",
         "media-personality",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-military",
         "tech-creative",
         "business-retail",
         "arts-visual",
-        "business-entrepreneur",
-        "government"
+        "business-entrepreneur"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -1339,7 +1452,11 @@
         "business-retail",
         "business-realestate",
         "business-tech-founder",
-        "business-tycoon-heir"
+        "business-tycoon-heir",
+        "politics-revolutionary",
+        "politics",
+        "government-judicial",
+        "politics-head-state"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -1367,7 +1484,10 @@
         "business-entrepreneur",
         "business-tycoon-founder",
         "sports-athlete",
+        "politics-military",
         "military",
+        "politics",
+        "government",
         "business-finance",
         "business-tech-founder",
         "science-academic",
@@ -1429,6 +1549,8 @@
       ],
       "predicted": [
         "exploration",
+        "politics",
+        "government",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -1495,9 +1617,13 @@
       ],
       "predicted": [
         "business-investor",
+        "politics",
+        "government",
         "sports-athlete",
         "media-personality",
         "business-tech-founder",
+        "politics-authoritarian",
+        "politics-diplomat",
         "business-entrepreneur",
         "business-tycoon-founder",
         "science-academic",
@@ -1532,8 +1658,10 @@
         "politics",
         "media-personality",
         "business-tycoon-founder",
-        "business-entrepreneur",
+        "politics-diplomat",
+        "government-judicial",
         "law",
+        "business-entrepreneur",
         "media-creator",
         "religion-leader"
       ],
@@ -1556,7 +1684,8 @@
       "name": "Barack Obama",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-state"
       ],
       "predicted": [
         "medicine",
@@ -1567,6 +1696,7 @@
         "media-personality",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-head-state",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -1575,7 +1705,8 @@
         "tech-exec",
         "business-entrepreneur",
         "business-ceo-hired",
-        "business-realestate"
+        "business-realestate",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -1597,7 +1728,8 @@
       "trueCats": [
         "politics",
         "business-realestate",
-        "business-tycoon-heir"
+        "business-tycoon-heir",
+        "politics-head-state"
       ],
       "predicted": [
         "tech-creative",
@@ -1633,11 +1765,14 @@
       "name": "Bill Clinton",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-state"
       ],
       "predicted": [
         "tech-exec",
         "business-tech-founder",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-media",
@@ -1645,7 +1780,7 @@
         "media-personality",
         "media-creator"
       ],
-      "tier": "miss",
+      "tier": "full",
       "karmeshPlanet": "Mercury",
       "karmeshHouse": 11,
       "lagnaLordPlanet": "Mercury",
@@ -1663,12 +1798,15 @@
       "name": "George W. Bush",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-state"
       ],
       "predicted": [
         "business-tycoon-heir",
         "business-industrial",
         "sports-athlete",
+        "politics",
+        "government",
         "arts-performer",
         "business-tech-founder",
         "business-entrepreneur",
@@ -1678,7 +1816,7 @@
         "media-personality",
         "media-creator"
       ],
-      "tier": "miss",
+      "tier": "full",
       "karmeshPlanet": "Mars",
       "karmeshHouse": 2,
       "lagnaLordPlanet": "Moon",
@@ -1695,7 +1833,8 @@
       "name": "John F. Kennedy",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-state"
       ],
       "predicted": [
         "business-investor",
@@ -1709,13 +1848,15 @@
         "arts-creator",
         "politics",
         "government",
+        "politics-revolutionary",
         "tech-creative",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-media",
         "business-tech-founder",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -1736,7 +1877,8 @@
       "name": "Abraham Lincoln",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-state"
       ],
       "predicted": [
         "arts-performer",
@@ -1745,6 +1887,8 @@
         "arts-visual",
         "arts-creator",
         "business-leader",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "tech-creative",
@@ -1753,8 +1897,7 @@
         "business-tycoon-founder",
         "business-tech-founder",
         "business-retail",
-        "business-industrial",
-        "government"
+        "business-industrial"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -1776,7 +1919,8 @@
       "name": "Franklin D. Roosevelt",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-state"
       ],
       "predicted": [
         "finance",
@@ -1789,13 +1933,15 @@
         "arts-performer",
         "business-retail",
         "business-industrial",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-media",
         "business-tech-founder",
         "arts-creator",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -1815,7 +1961,8 @@
       "name": "Margaret Thatcher",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-gov"
       ],
       "predicted": [
         "business-media",
@@ -1841,7 +1988,8 @@
         "business-tycoon-heir",
         "business-ceo-hired",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -1863,7 +2011,9 @@
       "name": "Winston Churchill",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-head-gov",
+        "politics-military"
       ],
       "predicted": [
         "finance",
@@ -1883,7 +2033,8 @@
         "business-media",
         "arts-creator",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -1902,7 +2053,8 @@
       "name": "Mahatma Gandhi",
       "trueCats": [
         "politics",
-        "religion-leader"
+        "religion-leader",
+        "politics-revolutionary"
       ],
       "predicted": [
         "finance",
@@ -1942,7 +2094,9 @@
       "name": "Nelson Mandela",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-revolutionary",
+        "politics-head-state"
       ],
       "predicted": [
         "business-investor",
@@ -1956,12 +2110,13 @@
         "medicine",
         "tech-creative",
         "business-media",
+        "government-judicial",
         "law",
         "media-personality",
         "media-creator",
         "business-retail"
       ],
-      "tier": "miss",
+      "tier": "partial",
       "karmeshPlanet": "Mercury",
       "karmeshHouse": 8,
       "lagnaLordPlanet": "Jupiter",
@@ -1990,9 +2145,14 @@
         "arts-creator",
         "arts-performer",
         "business-tycoon-founder",
+        "politics-head-gov",
+        "politics",
+        "government",
         "tech-creative",
         "business-retail",
-        "arts-visual"
+        "arts-visual",
+        "politics-head-state",
+        "government-judicial"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -2029,9 +2189,12 @@
         "business-tycoon-founder",
         "business-ceo-hired",
         "business-media",
+        "politics-head-gov",
+        "government-judicial",
         "science-academic",
         "law",
-        "media-creator"
+        "media-creator",
+        "politics-head-state"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -2054,6 +2217,8 @@
       ],
       "predicted": [
         "politics",
+        "politics-head-state",
+        "government-judicial",
         "religion-leader",
         "science-academic",
         "law",
@@ -2108,6 +2273,8 @@
         "business-retail",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-military",
+        "politics",
         "tech-creative",
         "arts-creator",
         "arts-visual",
@@ -2143,8 +2310,12 @@
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "business-realestate",
         "business-tycoon-founder",
+        "politics-diplomat",
+        "government-judicial",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -2185,6 +2356,7 @@
         "spiritual-teacher",
         "law",
         "business-tycoon-founder",
+        "politics-diplomat",
         "tech-creative",
         "business-entrepreneur",
         "business-retail",
@@ -2224,6 +2396,7 @@
         "business-realestate",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-head-state",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -2232,7 +2405,8 @@
         "business-entrepreneur",
         "finance",
         "business-tycoon-heir",
-        "business-finance"
+        "business-finance",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -2272,7 +2446,8 @@
         "business-retail",
         "arts-creator",
         "media-personality",
-        "government"
+        "government",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -2347,6 +2522,8 @@
         "arts-creator",
         "arts-visual",
         "business-entrepreneur",
+        "politics-military",
+        "politics-diplomat",
         "exploration"
       ],
       "tier": "full",
@@ -2377,6 +2554,8 @@
         "religion-leader",
         "spiritual-teacher",
         "law",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-realestate",
@@ -2419,8 +2598,12 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-head-gov",
+        "politics-revolutionary",
         "tech-creative",
         "business-entrepreneur",
         "business-tech-founder",
@@ -2466,6 +2649,8 @@
         "business-finance",
         "business-realestate",
         "business-tech-founder",
+        "politics-head-state",
+        "politics-military",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
@@ -2507,10 +2692,13 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics",
         "tech-creative",
         "business-entrepreneur",
         "business-tech-founder",
-        "media-personality"
+        "media-personality",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -2545,6 +2733,7 @@
         "business-tycoon-heir",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-creator",
@@ -2576,8 +2765,12 @@
         "science-academic",
         "religion-leader",
         "spiritual-teacher",
+        "politics",
+        "government",
         "business-ceo-hired",
         "business-leader",
+        "politics-revolutionary",
+        "politics-authoritarian",
         "tech-creative",
         "tech-engineer",
         "business-entrepreneur",
@@ -2613,8 +2806,12 @@
       "predicted": [
         "business-realestate",
         "business-industrial",
+        "politics",
+        "government",
         "sports-athlete",
         "arts-performer",
+        "politics-revolutionary",
+        "politics-diplomat",
         "tech-engineer",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -2653,12 +2850,16 @@
         "military",
         "medicine",
         "arts-performer",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "business-entrepreneur",
-        "science-academic"
+        "science-academic",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -2692,6 +2893,10 @@
         "arts-performer",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics",
+        "government",
+        "politics-military",
         "business-tech-founder",
         "tech-engineer",
         "arts-creator"
@@ -2730,7 +2935,8 @@
         "tech-exec",
         "tech-engineer",
         "business-ceo-hired",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -2766,7 +2972,8 @@
         "business-tech-founder",
         "tech-exec",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -2803,6 +3010,11 @@
         "sports-athlete",
         "business-ceo-hired",
         "business-media",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-revolutionary",
+        "politics-diplomat",
         "business-retail",
         "media-personality",
         "media-creator",
@@ -2879,7 +3091,8 @@
         "tech-engineer",
         "tech-exec",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -2912,6 +3125,8 @@
         "science-academic",
         "sports-athlete",
         "business-finance",
+        "politics-revolutionary",
+        "politics",
         "tech-creative",
         "tech-engineer",
         "business-tycoon-founder",
@@ -2946,6 +3161,8 @@
         "business-media",
         "arts-performer",
         "spiritual-teacher",
+        "politics",
+        "government",
         "sports-athlete",
         "business-industrial",
         "business-tycoon-founder",
@@ -2978,7 +3195,10 @@
       "predicted": [
         "business-retail",
         "arts-visual",
+        "politics",
+        "government",
         "business-tech-founder",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
@@ -3020,6 +3240,7 @@
         "business-media",
         "tech-creative",
         "finance",
+        "government-judicial",
         "law",
         "business-retail",
         "media-creator"
@@ -3052,6 +3273,8 @@
         "religion-leader",
         "spiritual-teacher",
         "law",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "tech-engineer",
@@ -3090,6 +3313,7 @@
         "media-personality",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-authoritarian",
         "tech-creative",
         "tech-engineer",
         "business-entrepreneur",
@@ -3132,6 +3356,8 @@
         "arts-creator",
         "arts-performer",
         "science-academic",
+        "politics-head-state",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-entrepreneur",
@@ -3169,9 +3395,12 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
         "media-personality",
         "business-tech-founder",
-        "science-academic"
+        "science-academic",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -3194,8 +3423,11 @@
         "arts-performer"
       ],
       "predicted": [
+        "politics-military",
         "medicine",
         "military",
+        "politics",
+        "government",
         "sports-athlete",
         "arts-performer",
         "business-finance",
@@ -3232,14 +3464,20 @@
         "business-entrepreneur",
         "arts-creator",
         "tech-exec",
+        "politics",
+        "government",
         "business-tech-founder",
         "business-tycoon-founder",
         "business-ceo-hired",
+        "politics-head-gov",
+        "politics-diplomat",
         "business-media",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
+        "politics-military",
         "religion-leader"
       ],
       "tier": "partial",
@@ -3269,12 +3507,14 @@
         "arts-creator",
         "politics",
         "government",
+        "politics-head-state",
         "religion-leader",
         "business-leader",
         "arts-performer",
         "sports-athlete",
         "business-realestate",
         "business-tycoon-founder",
+        "politics-diplomat",
         "business-entrepreneur",
         "business-tech-founder",
         "media-personality",
@@ -3282,6 +3522,7 @@
         "tech-engineer",
         "business-ceo-hired",
         "business-industrial",
+        "politics-head-gov",
         "medicine"
       ],
       "tier": "full",
@@ -3313,6 +3554,8 @@
         "law",
         "sports-athlete",
         "business-realestate",
+        "politics-diplomat",
+        "politics",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -3354,6 +3597,7 @@
         "business-tycoon-founder",
         "business-ceo-hired",
         "business-media",
+        "politics-head-gov",
         "tech-creative",
         "business-retail",
         "media-personality",
@@ -3395,12 +3639,14 @@
         "business-entrepreneur",
         "arts-creator",
         "tech-exec",
-        "government",
         "politics",
+        "government",
         "business-tech-founder",
         "business-tycoon-founder",
         "business-ceo-hired",
+        "politics-revolutionary",
         "business-media",
+        "government-judicial",
         "media-creator"
       ],
       "tier": "partial",
@@ -3428,6 +3674,7 @@
       ],
       "predicted": [
         "sports-athlete",
+        "politics-military",
         "military",
         "exploration",
         "arts-performer",
@@ -3473,8 +3720,12 @@
         "business-tech-founder",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-state",
+        "politics",
+        "government",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-creator",
@@ -3482,7 +3733,8 @@
         "finance",
         "banking",
         "business-tycoon-heir",
-        "business-finance"
+        "business-finance",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mercury",
@@ -3519,6 +3771,9 @@
         "government",
         "sports-athlete",
         "business-ceo-hired",
+        "politics-head-state",
+        "politics-head-gov",
+        "government-judicial",
         "law",
         "media-personality",
         "media-creator"
@@ -3544,6 +3799,7 @@
         "arts-performer"
       ],
       "predicted": [
+        "politics-military",
         "medicine",
         "military",
         "arts-performer",
@@ -3554,6 +3810,7 @@
         "media-personality",
         "business-investor",
         "business-finance",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-entrepreneur",
@@ -3594,6 +3851,7 @@
         "politics",
         "sports-athlete",
         "business-tycoon-heir",
+        "politics-diplomat",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -3627,8 +3885,12 @@
         "media-personality",
         "business-realestate",
         "business-industrial",
+        "politics-head-state",
+        "politics",
+        "government",
         "finance",
         "business-finance",
+        "government-judicial",
         "science-academic"
       ],
       "tier": "miss",
@@ -3661,6 +3923,8 @@
         "politics",
         "business-investor",
         "business-finance",
+        "politics-head-state",
+        "politics-military",
         "tech-creative",
         "business-retail",
         "arts-creator",
@@ -3702,9 +3966,11 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "business-entrepreneur",
+        "politics-military",
         "religion-leader",
         "exploration"
       ],
@@ -3738,6 +4004,9 @@
         "politics",
         "government",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-revolutionary",
+        "politics-military",
         "business-entrepreneur",
         "business-tech-founder",
         "science-academic",
@@ -3804,6 +4073,7 @@
         "business-tech-founder",
         "business-entrepreneur",
         "business-tycoon-founder",
+        "government-judicial",
         "science-academic",
         "law",
         "exploration"
@@ -3830,10 +4100,13 @@
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "business-tycoon-heir",
         "tech-creative",
         "finance",
         "business-finance",
+        "government-judicial",
         "science-academic",
         "law",
         "business-investor",
@@ -3866,6 +4139,8 @@
         "finance",
         "business-finance",
         "medicine",
+        "politics",
+        "government",
         "arts-performer",
         "business-tech-founder",
         "business-tycoon-founder",
@@ -3902,6 +4177,7 @@
         "politics",
         "government",
         "business-industrial",
+        "politics-diplomat",
         "tech-creative",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -3913,6 +4189,7 @@
         "tech-engineer",
         "business-ceo-hired",
         "business-realestate",
+        "politics-head-gov",
         "exploration"
       ],
       "tier": "full",
@@ -3950,6 +4227,7 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-head-state",
         "business-entrepreneur",
         "business-tech-founder",
         "science-academic",
@@ -3982,6 +4260,7 @@
         "arts-creator",
         "politics",
         "government",
+        "politics-head-state",
         "religion-leader",
         "sports-athlete",
         "business-investor",
@@ -4010,6 +4289,7 @@
       ],
       "predicted": [
         "business-ceo-hired",
+        "politics-head-state",
         "law",
         "science-academic",
         "religion-leader",
@@ -4022,8 +4302,12 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-leader",
+        "politics-head-gov",
+        "politics-revolutionary",
+        "politics-diplomat",
         "business-entrepreneur",
         "finance",
+        "government-judicial",
         "exploration"
       ],
       "tier": "miss",
@@ -4066,6 +4350,7 @@
         "business-finance",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-head-gov",
         "tech-creative",
         "business-entrepreneur",
         "media-personality"
@@ -4096,7 +4381,8 @@
       "trueCats": [
         "politics",
         "government",
-        "arts-performer"
+        "arts-performer",
+        "politics-head-state"
       ],
       "predicted": [
         "media-personality",
@@ -4104,8 +4390,11 @@
         "business-investor",
         "business-finance",
         "business-tech-founder",
+        "politics-revolutionary",
+        "politics",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-creator",
@@ -4127,7 +4416,8 @@
       "name": "Henry Kissinger",
       "trueCats": [
         "politics",
-        "government"
+        "government",
+        "politics-diplomat"
       ],
       "predicted": [
         "business-investor",
@@ -4135,6 +4425,7 @@
         "government",
         "business-finance",
         "business-tycoon-founder",
+        "politics-diplomat",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -4177,6 +4468,7 @@
         "science-academic",
         "business-media",
         "arts-performer",
+        "politics-military",
         "media-personality"
       ],
       "tier": "full",
@@ -4218,7 +4510,8 @@
         "tech-exec",
         "tech-engineer",
         "business-ceo-hired",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -4244,16 +4537,20 @@
         "business-tycoon-founder"
       ],
       "predicted": [
+        "politics-military",
         "medicine",
         "military",
         "business-leader",
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-retail",
         "business-tech-founder",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-entrepreneur",
@@ -4291,6 +4588,8 @@
         "arts-performer",
         "arts-visual",
         "business-tycoon-founder",
+        "politics-military",
+        "politics",
         "tech-creative",
         "business-entrepreneur",
         "arts-creator",
@@ -4333,7 +4632,8 @@
         "tech-exec",
         "tech-engineer",
         "business-ceo-hired",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -4371,12 +4671,15 @@
         "business-tycoon-founder",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-gov",
+        "politics",
+        "government",
         "tech-creative",
         "business-entrepreneur",
         "arts-creator",
         "media-personality",
         "tech-exec",
-        "government"
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -4503,7 +4806,8 @@
         "tech-exec",
         "tech-engineer",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -4550,7 +4854,8 @@
         "tech-exec",
         "tech-engineer",
         "business-ceo-hired",
-        "business-realestate"
+        "business-realestate",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -4584,8 +4889,11 @@
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "tech-creative",
         "business-entrepreneur",
         "media-personality",
@@ -4658,7 +4966,8 @@
         "business-tycoon-founder",
         "tech-creative",
         "business-retail",
-        "science-academic"
+        "science-academic",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -4694,6 +5003,12 @@
         "government",
         "sports-athlete",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-head-gov",
+        "politics-revolutionary",
+        "politics-authoritarian",
+        "politics-diplomat",
+        "government-judicial",
         "business-tech-founder",
         "exploration"
       ],
@@ -4773,7 +5088,8 @@
         "tech-exec",
         "business-leader",
         "business-entrepreneur",
-        "business-ceo-hired"
+        "business-ceo-hired",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -4810,6 +5126,11 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-military",
+        "politics-diplomat",
+        "government-judicial",
+        "law",
         "tech-engineer",
         "business-entrepreneur",
         "business-realestate",
@@ -4853,6 +5174,7 @@
         "media-personality",
         "finance",
         "business-finance",
+        "politics-military",
         "science-academic"
       ],
       "tier": "full",
@@ -4883,13 +5205,17 @@
         "military",
         "medicine",
         "arts-performer",
+        "politics",
+        "government",
         "business-tycoon-heir",
+        "politics-revolutionary",
         "tech-creative",
         "business-retail",
         "arts-creator",
         "arts-visual",
         "science-academic",
         "business-entrepreneur",
+        "politics-military",
         "exploration"
       ],
       "tier": "full",
@@ -4964,6 +5290,8 @@
         "media-personality",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics-diplomat",
         "tech-engineer",
         "business-entrepreneur",
         "business-media",
@@ -5008,6 +5336,7 @@
         "business-tycoon-founder",
         "tech-creative",
         "finance",
+        "government-judicial",
         "law",
         "business-retail",
         "exploration"
@@ -5039,6 +5368,7 @@
         "arts-creator",
         "politics",
         "government",
+        "politics-head-state",
         "religion-leader",
         "sports-athlete",
         "business-tech-founder",
@@ -5075,6 +5405,8 @@
         "business-finance",
         "business-tech-founder",
         "business-tycoon-heir",
+        "politics-head-state",
+        "politics-revolutionary",
         "tech-creative",
         "business-retail",
         "arts-creator",
@@ -5105,10 +5437,15 @@
         "business-industrial",
         "business-leader",
         "arts-performer",
+        "politics",
+        "government",
         "sports-athlete",
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "government-judicial",
+        "law",
         "tech-engineer",
         "business-entrepreneur",
         "business-realestate",
@@ -5146,12 +5483,16 @@
         "military",
         "medicine",
         "arts-performer",
+        "politics",
+        "government",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tech-founder",
         "science-academic",
-        "business-media"
+        "business-media",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -5180,13 +5521,17 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-retail",
         "business-realestate",
         "arts-creator",
         "arts-visual",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Saturn",
@@ -5214,14 +5559,19 @@
         "medicine",
         "sports-athlete",
         "military",
+        "politics",
+        "government",
         "media-personality",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "business-entrepreneur",
         "finance",
         "business-finance",
         "business-tech-founder",
-        "science-academic"
+        "government-judicial",
+        "science-academic",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -5259,7 +5609,8 @@
         "business-media",
         "arts-creator",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -5292,10 +5643,13 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-media",
+        "government-judicial",
         "law",
         "media-creator",
         "business-entrepreneur",
         "politics",
+        "politics-head-state",
+        "politics-military",
         "religion-leader"
       ],
       "tier": "partial",
@@ -5329,12 +5683,16 @@
         "business-finance",
         "business-realestate",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics-diplomat",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
+        "politics-head-state",
         "religion-leader"
       ],
       "tier": "full",
@@ -5368,6 +5726,8 @@
         "sports-athlete",
         "business-finance",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tech-founder",
         "science-academic",
@@ -5438,7 +5798,8 @@
         "arts-creator",
         "arts-visual",
         "science-academic",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -5474,11 +5835,13 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-tycoon-heir",
+        "politics-revolutionary",
+        "politics",
         "tech-creative",
         "business-entrepreneur",
         "arts-creator",
         "media-personality",
-        "politics"
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -5534,6 +5897,7 @@
       ],
       "predicted": [
         "business-entrepreneur",
+        "politics-head-state",
         "religion-leader",
         "spiritual-teacher",
         "science-academic",
@@ -5549,7 +5913,8 @@
         "business-ceo-hired",
         "business-leader",
         "finance",
-        "business-tech-founder"
+        "business-tech-founder",
+        "government-judicial"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -5587,6 +5952,7 @@
         "law",
         "business-investor",
         "business-tycoon-founder",
+        "government-judicial",
         "business-media",
         "arts-creator",
         "exploration"
@@ -5624,10 +5990,14 @@
         "politics",
         "government",
         "sports-athlete",
+        "politics-head-gov",
+        "politics-diplomat",
         "tech-creative",
         "business-retail",
         "medicine",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-head-state",
+        "government-judicial"
       ],
       "tier": "partial",
       "karmeshPlanet": "Moon",
@@ -5660,8 +6030,11 @@
         "exploration",
         "arts-performer",
         "business-tycoon-founder",
+        "politics-military",
+        "politics",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -5693,6 +6066,7 @@
         "politics",
         "government",
         "business-tech-founder",
+        "politics-head-state",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
@@ -5700,7 +6074,8 @@
         "business-entrepreneur",
         "business-ceo-hired",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "partial",
       "karmeshPlanet": "Venus",
@@ -5730,12 +6105,20 @@
         "law",
         "business-leader",
         "arts-performer",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-realestate",
         "business-tech-founder",
         "business-tycoon-founder",
         "business-tycoon-heir",
+        "politics-head-state",
+        "politics-head-gov",
+        "politics-revolutionary",
+        "politics-military",
+        "politics-authoritarian",
+        "government-judicial",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -5776,10 +6159,13 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics",
         "tech-engineer",
         "business-entrepreneur",
         "business-realestate",
         "business-tech-founder",
+        "politics-military",
         "law",
         "military",
         "exploration"
@@ -5806,6 +6192,7 @@
       ],
       "predicted": [
         "politics",
+        "government",
         "sports-athlete",
         "arts-performer",
         "business-investor",
@@ -5841,6 +6228,8 @@
         "finance",
         "business-finance",
         "medicine",
+        "politics",
+        "government",
         "arts-performer",
         "business-tech-founder",
         "business-tycoon-founder",
@@ -5888,13 +6277,18 @@
         "business-tycoon-heir",
         "business-ceo-hired",
         "business-media",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-diplomat",
         "tech-creative",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
         "business-retail",
-        "politics",
+        "politics-head-state",
         "religion-leader"
       ],
       "tier": "full",
@@ -5928,6 +6322,8 @@
         "arts-performer",
         "politics",
         "government",
+        "politics-head-state",
+        "politics-revolutionary",
         "tech-engineer",
         "business-retail",
         "arts-creator",
@@ -5935,7 +6331,8 @@
         "business-entrepreneur",
         "business-ceo-hired",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -5966,6 +6363,8 @@
         "business-finance",
         "exploration",
         "business-tech-founder",
+        "politics-revolutionary",
+        "politics",
         "business-media",
         "arts-creator",
         "media-personality",
@@ -5992,6 +6391,7 @@
         "business-tech-founder"
       ],
       "predicted": [
+        "politics-military",
         "spiritual-teacher",
         "law",
         "military",
@@ -6039,6 +6439,9 @@
         "tech-exec",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-military",
+        "politics-diplomat",
         "business-media",
         "media-creator",
         "law"
@@ -6136,6 +6539,7 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
         "arts-performer",
         "business-investor",
         "business-finance",
@@ -6144,7 +6548,8 @@
         "tech-engineer",
         "business-entrepreneur",
         "business-tycoon-founder",
-        "business-realestate"
+        "business-realestate",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Saturn",
@@ -6174,10 +6579,13 @@
         "religion-leader",
         "spiritual-teacher",
         "law",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "media-personality",
         "media-creator"
       ],
@@ -6247,6 +6655,7 @@
         "business-investor",
         "business-realestate",
         "business-tech-founder",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-media",
@@ -6283,11 +6692,13 @@
         "medicine",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mercury",
@@ -6317,6 +6728,7 @@
         "politics",
         "government",
         "business-tycoon-heir",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -6325,7 +6737,8 @@
         "tech-engineer",
         "business-ceo-hired",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -6350,12 +6763,14 @@
       ],
       "predicted": [
         "government",
+        "politics",
         "sports-athlete",
         "arts-performer",
         "business-investor",
         "business-finance",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -6430,6 +6845,7 @@
         "science-academic",
         "business-tycoon-founder",
         "business-ceo-hired",
+        "politics-head-gov",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -6473,9 +6889,13 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
         "business-tech-founder",
         "business-media",
-        "arts-performer"
+        "arts-performer",
+        "politics-head-state",
+        "government-judicial"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -6504,6 +6924,7 @@
         "business-entrepreneur",
         "business-tycoon-founder",
         "sports-athlete",
+        "politics-military",
         "military",
         "government",
         "politics",
@@ -6543,6 +6964,8 @@
         "sports-athlete",
         "business-realestate",
         "business-tycoon-heir",
+        "politics-head-gov",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -6584,13 +7007,18 @@
         "business-investor",
         "business-finance",
         "business-realestate",
+        "politics-head-gov",
+        "politics-revolutionary",
         "business-media",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
         "business-entrepreneur",
-        "business-ceo-hired"
+        "business-ceo-hired",
+        "politics-head-state",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -6629,7 +7057,8 @@
         "tech-engineer",
         "business-entrepreneur",
         "business-realestate",
-        "business-tech-founder"
+        "business-tech-founder",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -6657,6 +7086,8 @@
       "predicted": [
         "business-retail",
         "arts-visual",
+        "politics",
+        "government",
         "business-realestate",
         "business-tech-founder",
         "business-tycoon-heir",
@@ -6693,6 +7124,8 @@
         "business-finance",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-authoritarian",
+        "politics-diplomat",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -6726,11 +7159,14 @@
       "predicted": [
         "sports-athlete",
         "law",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
         "business-ceo-hired",
         "business-leader",
+        "politics-military",
         "tech-engineer",
         "business-entrepreneur",
         "business-tech-founder",
@@ -6767,12 +7203,16 @@
         "arts-performer",
         "politics",
         "government",
+        "politics-diplomat",
+        "government-judicial",
+        "law",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
         "media-personality",
         "tech-engineer",
-        "arts-creator"
+        "arts-creator",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -6804,6 +7244,8 @@
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "sports-athlete",
         "business-investor",
         "business-finance",
@@ -6811,8 +7253,7 @@
         "business-tycoon-founder",
         "tech-creative",
         "business-entrepreneur",
-        "media-personality",
-        "politics"
+        "media-personality"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -6910,6 +7351,7 @@
         "politics",
         "government",
         "sports-athlete",
+        "politics-diplomat",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
@@ -6945,12 +7387,14 @@
         "government",
         "business-investor",
         "business-finance",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-media",
         "arts-creator",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mercury",
@@ -6985,11 +7429,14 @@
         "arts-performer",
         "arts-creator",
         "science-academic",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-military",
         "tech-creative",
         "business-retail",
         "arts-visual",
-        "business-entrepreneur",
-        "government"
+        "business-entrepreneur"
       ],
       "tier": "partial",
       "karmeshPlanet": "Moon",
@@ -7014,6 +7461,7 @@
       ],
       "predicted": [
         "business-entrepreneur",
+        "politics-head-state",
         "religion-leader",
         "spiritual-teacher",
         "science-academic",
@@ -7031,7 +7479,8 @@
         "business-leader",
         "tech-creative",
         "finance",
-        "business-retail"
+        "business-retail",
+        "government-judicial"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -7072,6 +7521,7 @@
         "business-investor",
         "business-finance",
         "business-tech-founder",
+        "politics-revolutionary",
         "tech-creative",
         "business-retail",
         "arts-creator",
@@ -7080,6 +7530,7 @@
         "tech-exec",
         "tech-engineer",
         "business-ceo-hired",
+        "politics-head-gov",
         "exploration"
       ],
       "tier": "full",
@@ -7122,12 +7573,17 @@
         "business-tycoon-founder",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-gov",
+        "politics-revolutionary",
         "business-media",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-head-state",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -7154,6 +7610,7 @@
       ],
       "predicted": [
         "politics",
+        "government",
         "sports-athlete",
         "business-investor",
         "business-finance",
@@ -7185,16 +7642,20 @@
       "predicted": [
         "business-retail",
         "arts-visual",
+        "politics-diplomat",
         "exploration",
         "sports-athlete",
         "military",
         "medicine",
         "business-leader",
         "arts-performer",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-military",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
@@ -7240,9 +7701,11 @@
         "business-finance",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "media-personality",
         "media-creator",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -7275,7 +7738,8 @@
         "business-tycoon-heir",
         "business-entrepreneur",
         "business-tech-founder",
-        "media-personality"
+        "media-personality",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -7336,9 +7800,12 @@
         "tech-creative",
         "sports-athlete",
         "sports-coach",
+        "politics",
+        "government",
         "arts-performer",
         "business-investor",
         "business-finance",
+        "politics-authoritarian",
         "tech-engineer",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -7408,9 +7875,13 @@
         "business-investor",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics",
         "business-entrepreneur",
+        "government-judicial",
         "science-academic",
-        "law"
+        "law",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -7441,6 +7912,8 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
         "arts-performer",
         "business-industrial",
         "business-tycoon-founder",
@@ -7449,7 +7922,7 @@
         "tech-creative",
         "tech-engineer",
         "arts-creator",
-        "government"
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -7519,6 +7992,7 @@
         "exploration",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -7556,6 +8030,7 @@
         "business-tycoon-founder",
         "business-tycoon-heir",
         "business-ceo-hired",
+        "politics-head-gov",
         "tech-engineer",
         "business-entrepreneur",
         "business-realestate",
@@ -7593,14 +8068,19 @@
         "religion-leader",
         "spiritual-teacher",
         "law",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
+        "politics-head-gov",
         "tech-creative",
         "business-media",
+        "government-judicial",
         "media-personality",
         "media-creator",
         "business-ceo-hired",
-        "business-retail"
+        "business-retail",
+        "politics-head-state"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -7636,7 +8116,9 @@
         "finance",
         "business-tycoon-founder",
         "business-tech-founder",
-        "science-academic"
+        "government-judicial",
+        "science-academic",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -7669,8 +8151,11 @@
         "medicine",
         "business-industrial",
         "business-tycoon-heir",
+        "politics-authoritarian",
+        "politics",
         "business-tech-founder",
         "business-media",
+        "politics-military",
         "media-personality"
       ],
       "tier": "full",
@@ -7741,6 +8226,7 @@
         "business-leader",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -7770,9 +8256,12 @@
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -7814,9 +8303,11 @@
         "business-tycoon-founder",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "media-personality",
         "media-creator",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-head-state"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mercury",
@@ -7854,7 +8345,8 @@
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-realestate",
-        "business-tech-founder"
+        "business-tech-founder",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -7889,6 +8381,7 @@
         "business-finance",
         "business-tycoon-founder",
         "business-ceo-hired",
+        "politics-head-gov",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -7896,6 +8389,7 @@
         "arts-creator",
         "arts-visual",
         "tech-exec",
+        "politics-diplomat",
         "exploration"
       ],
       "tier": "full",
@@ -7931,6 +8425,7 @@
         "business-ceo-hired",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -7970,6 +8465,7 @@
         "government",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -8003,10 +8499,13 @@
       "predicted": [
         "law",
         "medicine",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-industrial",
         "finance",
+        "government-judicial",
         "science-academic"
       ],
       "tier": "full",
@@ -8031,6 +8530,7 @@
       ],
       "predicted": [
         "business-ceo-hired",
+        "politics-head-state",
         "law",
         "science-academic",
         "religion-leader",
@@ -8042,7 +8542,9 @@
         "business-finance",
         "business-tycoon-founder",
         "business-leader",
-        "finance"
+        "politics-diplomat",
+        "finance",
+        "government-judicial"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -8068,6 +8570,8 @@
       ],
       "predicted": [
         "politics",
+        "politics-head-state",
+        "government-judicial",
         "religion-leader",
         "science-academic",
         "law",
@@ -8078,9 +8582,12 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics-diplomat",
         "business-entrepreneur",
         "finance",
-        "business-tech-founder"
+        "business-tech-founder",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -8112,12 +8619,15 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics-revolutionary",
+        "politics",
         "tech-creative",
         "tech-engineer",
         "business-retail",
         "arts-creator",
         "arts-visual",
         "business-entrepreneur",
+        "politics-military",
         "exploration"
       ],
       "tier": "partial",
@@ -8153,6 +8663,7 @@
         "finance",
         "business-finance",
         "business-retail",
+        "government-judicial",
         "law"
       ],
       "tier": "partial",
@@ -8187,6 +8698,8 @@
         "business-tycoon-founder",
         "business-tycoon-heir",
         "business-ceo-hired",
+        "politics-head-gov",
+        "politics-military",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
@@ -8226,6 +8739,7 @@
         "politics",
         "media-personality",
         "business-tycoon-heir",
+        "politics-authoritarian",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -8233,6 +8747,7 @@
         "arts-creator",
         "arts-visual",
         "business-entrepreneur",
+        "politics-military",
         "exploration"
       ],
       "tier": "full",
@@ -8261,10 +8776,15 @@
         "business-entrepreneur",
         "business-tycoon-founder",
         "sports-athlete",
+        "politics-military",
         "military",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-tech-founder",
+        "politics-head-gov",
+        "politics-revolutionary",
         "science-academic",
         "business-leader",
         "business-media",
@@ -8306,7 +8826,8 @@
         "business-retail",
         "arts-creator",
         "media-personality",
-        "politics"
+        "politics",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -8339,6 +8860,8 @@
         "business-investor",
         "business-finance",
         "business-tech-founder",
+        "politics-head-state",
+        "politics-diplomat",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
@@ -8346,7 +8869,8 @@
         "business-entrepreneur",
         "business-ceo-hired",
         "business-realestate",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -8469,12 +8993,15 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics",
+        "government",
         "arts-performer",
         "business-investor",
         "business-finance",
         "business-tech-founder",
         "science-academic",
         "business-media",
+        "politics-military",
         "media-personality"
       ],
       "tier": "full",
@@ -8511,6 +9038,8 @@
         "business-investor",
         "business-tech-founder",
         "business-tycoon-founder",
+        "government-judicial",
+        "law",
         "tech-engineer",
         "business-media",
         "arts-creator",
@@ -8581,7 +9110,9 @@
         "military",
         "medicine",
         "arts-performer",
-        "business-tech-founder"
+        "business-tech-founder",
+        "politics-head-state",
+        "government-judicial"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mars",
@@ -8607,9 +9138,14 @@
       "predicted": [
         "religion-leader",
         "law",
+        "politics",
+        "government",
         "sports-athlete",
         "arts-performer",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics-diplomat",
+        "government-judicial",
         "tech-engineer",
         "business-entrepreneur",
         "business-realestate",
@@ -8644,8 +9180,11 @@
         "exploration",
         "arts-performer",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -8688,8 +9227,11 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-ceo-hired",
+        "politics-head-gov",
+        "politics-diplomat",
         "finance",
         "business-finance",
+        "government-judicial",
         "media-personality"
       ],
       "tier": "full",
@@ -8769,6 +9311,8 @@
         "business-tycoon-founder",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-state",
+        "politics-diplomat",
         "tech-creative",
         "arts-creator"
       ],
@@ -8945,6 +9489,9 @@
         "business-investor",
         "business-finance",
         "business-tech-founder",
+        "politics-head-gov",
+        "politics",
+        "government",
         "tech-creative",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -8952,7 +9499,7 @@
         "media-personality",
         "tech-exec",
         "business-ceo-hired",
-        "government"
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -8979,6 +9526,8 @@
       ],
       "predicted": [
         "politics",
+        "politics-head-state",
+        "government-judicial",
         "religion-leader",
         "science-academic",
         "law",
@@ -8989,6 +9538,8 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics-diplomat",
         "tech-engineer",
         "finance",
         "business-realestate",
@@ -9033,7 +9584,8 @@
         "business-media",
         "arts-creator",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -9069,8 +9621,10 @@
         "finance",
         "business-tycoon-founder",
         "business-tech-founder",
+        "government-judicial",
         "science-academic",
-        "law"
+        "law",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -9179,12 +9733,15 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-tycoon-heir",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-military",
         "tech-creative",
         "tech-engineer",
         "arts-creator",
         "arts-visual",
-        "business-industrial",
-        "government"
+        "business-industrial"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -9216,6 +9773,9 @@
         "arts-performer",
         "arts-creator",
         "business-tech-founder",
+        "politics-head-gov",
+        "politics",
+        "government",
         "tech-creative",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -9223,7 +9783,7 @@
         "tech-exec",
         "business-leader",
         "business-ceo-hired",
-        "government"
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -9258,11 +9818,13 @@
         "medicine",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
         "business-entrepreneur",
+        "politics-military",
         "religion-leader"
       ],
       "tier": "full",
@@ -9340,6 +9902,7 @@
         "medicine",
         "politics",
         "government",
+        "politics-revolutionary",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -9381,6 +9944,7 @@
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-tech-founder",
+        "politics-military",
         "science-academic",
         "military",
         "exploration"
@@ -9412,6 +9976,7 @@
         "sports-athlete",
         "business-investor",
         "business-finance",
+        "politics-diplomat",
         "tech-creative",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -9482,6 +10047,8 @@
         "religion-leader",
         "spiritual-teacher",
         "law",
+        "politics",
+        "government",
         "arts-performer",
         "business-investor",
         "business-finance",
@@ -9490,8 +10057,7 @@
         "business-entrepreneur",
         "business-tycoon-founder",
         "arts-creator",
-        "media-personality",
-        "politics"
+        "media-personality"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -9527,6 +10093,7 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-head-state",
         "business-entrepreneur",
         "business-tech-founder",
         "science-academic",
@@ -9568,7 +10135,8 @@
         "business-tycoon-founder",
         "media-personality",
         "tech-engineer",
-        "arts-creator"
+        "arts-creator",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Sun",
@@ -9602,11 +10170,13 @@
         "arts-creator",
         "business-investor",
         "business-media",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mercury",
@@ -9646,6 +10216,7 @@
         "business-realestate",
         "arts-visual",
         "business-entrepreneur",
+        "politics-military",
         "exploration"
       ],
       "tier": "partial",
@@ -9673,6 +10244,7 @@
       ],
       "predicted": [
         "business-entrepreneur",
+        "politics-head-state",
         "religion-leader",
         "spiritual-teacher",
         "sports-athlete",
@@ -9683,8 +10255,12 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-tycoon-heir",
+        "politics",
+        "government",
         "finance",
         "business-finance",
+        "government-judicial",
+        "politics-military",
         "exploration"
       ],
       "tier": "full",
@@ -9764,10 +10340,11 @@
         "business-investor",
         "business-finance",
         "business-media",
+        "politics-military",
+        "politics",
         "tech-creative",
         "business-entrepreneur",
-        "media-personality",
-        "politics"
+        "media-personality"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -9804,6 +10381,8 @@
         "media-personality",
         "business-investor",
         "business-finance",
+        "politics-head-gov",
+        "politics-revolutionary",
         "tech-creative",
         "business-retail",
         "arts-creator",
@@ -9850,6 +10429,7 @@
         "business-finance",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-gov",
         "tech-creative",
         "business-entrepreneur",
         "business-tycoon-founder",
@@ -9896,6 +10476,8 @@
         "business-investor",
         "business-finance",
         "business-tycoon-heir",
+        "politics-head-gov",
+        "politics-revolutionary",
         "tech-creative",
         "business-retail",
         "arts-visual",
@@ -9935,7 +10517,10 @@
         "business-entrepreneur",
         "business-retail",
         "arts-visual",
+        "politics",
+        "government",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "tech-creative",
         "arts-creator",
         "media-personality",
@@ -9971,10 +10556,12 @@
         "business-tycoon-heir",
         "business-ceo-hired",
         "business-leader",
+        "politics-head-gov",
         "business-entrepreneur",
         "finance",
         "business-tycoon-founder",
         "business-finance",
+        "government-judicial",
         "science-academic",
         "law",
         "tech-creative",
@@ -10017,7 +10604,8 @@
         "business-retail",
         "arts-creator",
         "arts-visual",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -10049,14 +10637,20 @@
         "medicine",
         "business-investor",
         "business-finance",
+        "politics-head-gov",
+        "politics",
+        "government",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
         "business-entrepreneur",
-        "business-ceo-hired"
+        "business-ceo-hired",
+        "politics-head-state",
+        "politics-military"
       ],
       "tier": "partial",
       "karmeshPlanet": "Mercury",
@@ -10092,6 +10686,7 @@
         "business-industrial",
         "tech-engineer",
         "finance",
+        "government-judicial",
         "science-academic",
         "business-realestate"
       ],
@@ -10134,7 +10729,9 @@
         "business-tycoon-founder",
         "tech-engineer",
         "business-retail",
-        "arts-creator"
+        "arts-creator",
+        "politics-head-state",
+        "government-judicial"
       ],
       "tier": "partial",
       "karmeshPlanet": "Venus",
@@ -10167,7 +10764,10 @@
         "sports-athlete",
         "military",
         "medicine",
+        "politics-revolutionary",
+        "politics",
         "tech-creative",
+        "government-judicial",
         "science-academic",
         "law",
         "tech-exec",
@@ -10255,6 +10855,9 @@
         "government",
         "media-personality",
         "business-ceo-hired",
+        "politics-head-state",
+        "politics-revolutionary",
+        "politics-military",
         "business-entrepreneur"
       ],
       "tier": "full",
@@ -10294,6 +10897,13 @@
         "business-tech-founder",
         "business-tycoon-founder",
         "business-tycoon-heir",
+        "politics-head-state",
+        "politics",
+        "government",
+        "politics-head-gov",
+        "politics-revolutionary",
+        "politics-military",
+        "politics-authoritarian",
         "tech-creative",
         "tech-engineer",
         "business-retail",
@@ -10332,8 +10942,10 @@
         "politics",
         "media-personality",
         "arts-performer",
+        "politics-revolutionary",
         "business-entrepreneur",
         "business-tycoon-founder",
+        "government-judicial",
         "science-academic",
         "law",
         "tech-exec",
@@ -10377,7 +10989,8 @@
         "tech-engineer",
         "business-tycoon-heir",
         "business-ceo-hired",
-        "business-industrial"
+        "business-industrial",
+        "politics-head-gov"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -10449,6 +11062,7 @@
         "arts-creator",
         "business-ceo-hired",
         "business-media",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
@@ -10496,6 +11110,7 @@
         "tech-engineer",
         "business-ceo-hired",
         "business-industrial",
+        "politics-head-gov",
         "medicine"
       ],
       "tier": "full",
@@ -10527,11 +11142,14 @@
         "military",
         "medicine",
         "business-industrial",
+        "politics-authoritarian",
+        "politics",
         "tech-engineer",
         "business-entrepreneur",
         "business-tycoon-founder",
         "business-realestate",
-        "business-tech-founder"
+        "business-tech-founder",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -10556,8 +11174,13 @@
         "finance",
         "business-finance",
         "exploration",
+        "politics",
+        "government",
         "business-investor",
         "business-tech-founder",
+        "politics-revolutionary",
+        "government-judicial",
+        "law",
         "business-media",
         "arts-creator",
         "media-personality",
@@ -10583,6 +11206,7 @@
       ],
       "predicted": [
         "business-ceo-hired",
+        "politics-head-state",
         "law",
         "science-academic",
         "religion-leader",
@@ -10593,8 +11217,13 @@
         "business-investor",
         "business-finance",
         "business-tycoon-founder",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-diplomat",
         "tech-engineer",
-        "finance"
+        "finance",
+        "government-judicial"
       ],
       "tier": "partial",
       "karmeshPlanet": "Jupiter",
@@ -10631,7 +11260,9 @@
         "business-tycoon-founder",
         "business-finance",
         "business-tech-founder",
-        "science-academic"
+        "government-judicial",
+        "science-academic",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -10655,6 +11286,7 @@
       ],
       "predicted": [
         "business-entrepreneur",
+        "politics-head-state",
         "religion-leader",
         "spiritual-teacher",
         "sports-athlete",
@@ -10663,18 +11295,22 @@
         "arts-performer",
         "arts-visual",
         "arts-creator",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-industrial",
         "business-ceo-hired",
         "business-leader",
         "finance",
+        "government-judicial",
         "science-academic",
         "law",
         "tech-exec",
         "business-retail",
         "business-media",
-        "business-tech-founder"
+        "business-tech-founder",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -10708,14 +11344,20 @@
         "business-investor",
         "business-finance",
         "business-realestate",
+        "politics-head-gov",
+        "politics",
+        "government",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "science-academic",
         "law",
         "media-personality",
         "media-creator",
         "business-entrepreneur",
-        "business-ceo-hired"
+        "business-ceo-hired",
+        "politics-head-state",
+        "politics-military"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -10750,6 +11392,8 @@
         "business-finance",
         "business-industrial",
         "business-tycoon-founder",
+        "politics-head-state",
+        "politics-revolutionary",
         "tech-creative",
         "business-entrepreneur",
         "business-retail",
@@ -10784,6 +11428,8 @@
       "predicted": [
         "sports-athlete",
         "medicine",
+        "politics",
+        "government",
         "business-investor",
         "business-finance",
         "business-entrepreneur",
@@ -10825,10 +11471,12 @@
         "business-investor",
         "business-finance",
         "business-media",
+        "politics-head-gov",
+        "politics",
+        "government",
         "tech-creative",
         "business-entrepreneur",
-        "media-personality",
-        "politics"
+        "media-personality"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -10869,10 +11517,13 @@
         "government",
         "business-tech-founder",
         "business-tycoon-founder",
+        "politics-revolutionary",
         "business-media",
         "arts-creator",
+        "government-judicial",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "politics-head-state"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -10932,6 +11583,2496 @@
       ],
       "activeYogas": [
         "budha-aditya"
+      ]
+    },
+    {
+      "name": "George Washington",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state",
+        "politics-military",
+        "politics-revolutionary"
+      ],
+      "predicted": [
+        "business-realestate",
+        "business-industrial",
+        "exploration",
+        "politics",
+        "government",
+        "sports-athlete",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-tech-founder",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 8,
+      "dashaLord": null,
+      "karmeshReading": "海外建設／養老院／長期幕後 — 遠方的長年工作",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Thomas Jefferson",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-visual",
+        "government",
+        "politics",
+        "media-personality",
+        "business-tech-founder",
+        "business-tycoon-heir",
+        "politics-head-state",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "arts-creator",
+        "finance",
+        "business-finance",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 8,
+      "dashaLord": null,
+      "karmeshReading": "公眾美學／皇室級精品／官方代言 — 美 × 權威",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Theodore Roosevelt",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "religion-leader",
+        "exploration",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "finance",
+        "business-finance",
+        "government-judicial",
+        "science-academic",
+        "law",
+        "tech-creative",
+        "business-investor",
+        "business-media",
+        "arts-creator"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 5,
+      "dashaLord": null,
+      "karmeshReading": "海外教育／僧侶／慈善家 — 純粹智慧追尋",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Woodrow Wilson",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "arts-creator",
+        "arts-performer",
+        "government",
+        "politics",
+        "business-investor",
+        "business-finance",
+        "business-tycoon-founder",
+        "business-tycoon-heir",
+        "politics-revolutionary",
+        "business-entrepreneur",
+        "business-media",
+        "business-tech-founder",
+        "media-personality",
+        "media-creator",
+        "politics-head-state",
+        "politics-military",
+        "government-judicial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 4,
+      "dashaLord": null,
+      "karmeshReading": "教育／家居服務／本地商業 — 根植於地方的商業",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "budha-aditya",
+        "chandra-mangal",
+        "dhana-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Dwight Eisenhower",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state",
+        "politics-military"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-visual",
+        "business-tech-founder",
+        "business-tycoon-heir",
+        "tech-creative",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "arts-creator",
+        "media-personality",
+        "government"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 4,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 2,
+      "dashaLord": null,
+      "karmeshReading": "美學居家／婚紗／花藝 — 美感根植家園",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Harry Truman",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-performer",
+        "arts-visual",
+        "exploration",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "politics-diplomat",
+        "business-media",
+        "arts-creator",
+        "government-judicial",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 9,
+      "dashaLord": null,
+      "karmeshReading": "國際演藝／海外音樂／跨國時尚表演 — 智識 × 藝術",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Lyndon B. Johnson",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-tycoon-heir",
+        "business-industrial",
+        "sports-athlete",
+        "government",
+        "politics",
+        "media-personality",
+        "business-finance",
+        "politics-revolutionary",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-tech-founder",
+        "science-academic"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Venus",
+      "karmeshReading": "家族工業／武器／機械承襲 — 繼承技術與體能型家業",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Richard Nixon",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "arts-visual",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "business-leader",
+        "arts-performer",
+        "arts-creator",
+        "sports-athlete",
+        "business-investor",
+        "business-finance",
+        "business-tycoon-founder",
+        "business-ceo-hired",
+        "politics-revolutionary",
+        "politics",
+        "tech-creative",
+        "business-entrepreneur",
+        "business-retail",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Moon",
+      "karmeshReading": "婚顧／婚紗／合夥藝術 — 靠關係變美",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "dhana-yoga",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Jimmy Carter",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "exploration",
+        "business-leader",
+        "arts-performer",
+        "government",
+        "politics",
+        "media-personality",
+        "sports-athlete",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-media",
+        "arts-creator",
+        "media-creator",
+        "business-realestate",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Mars",
+      "karmeshReading": "海外貿易／跨國會計／翻譯 — 跨境智識工作者",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "George H. W. Bush",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-visual",
+        "arts-performer",
+        "business-realestate",
+        "business-tech-founder",
+        "business-tycoon-heir",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "tech-creative",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "arts-creator",
+        "media-personality",
+        "tech-exec",
+        "business-leader",
+        "business-ceo-hired"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Venus",
+      "karmeshReading": "時尚人脈／美學社群經濟 — 品味網絡",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Joe Biden",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "media-personality",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "government",
+        "sports-athlete",
+        "business-tycoon-founder",
+        "politics-head-state",
+        "politics-head-gov",
+        "politics-revolutionary",
+        "politics-authoritarian",
+        "politics-diplomat",
+        "government-judicial",
+        "business-tech-founder",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Saturn",
+      "karmeshReading": "個人品牌 × 權威 — 以名字跟臉變現的公眾人物型",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Hillary Clinton",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-diplomat"
+      ],
+      "predicted": [
+        "business-media",
+        "arts-performer",
+        "spiritual-teacher",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "sports-athlete",
+        "business-finance",
+        "business-tycoon-founder",
+        "tech-creative",
+        "business-retail",
+        "science-academic",
+        "medicine",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Moon",
+      "karmeshReading": "兒少教育／娛樂／療癒／社群娛樂創作",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Kamala Harris",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "religion-leader",
+        "exploration",
+        "business-leader",
+        "arts-performer",
+        "business-tech-founder",
+        "finance",
+        "business-finance",
+        "government-judicial",
+        "science-academic",
+        "law",
+        "tech-creative",
+        "business-investor",
+        "business-media",
+        "business-realestate",
+        "business-industrial",
+        "arts-creator"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Rahu",
+      "karmeshReading": "海外教育／僧侶／慈善家 — 純粹智慧追尋",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Tony Blair",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "religion-leader",
+        "exploration",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "government",
+        "politics",
+        "media-personality",
+        "business-investor",
+        "business-finance",
+        "business-realestate",
+        "tech-creative",
+        "finance",
+        "government-judicial",
+        "science-academic",
+        "law",
+        "tech-exec",
+        "business-retail",
+        "business-media",
+        "business-tech-founder"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Mercury",
+      "karmeshReading": "海外教育／僧侶／慈善家 — 純粹智慧追尋",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "David Cameron",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "finance",
+        "business-tycoon-heir",
+        "business-finance",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "arts-performer",
+        "business-investor",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "business-media",
+        "arts-creator",
+        "government-judicial",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Moon",
+      "karmeshReading": "家族金融／語言／聲音變現 — 繼承家族商道 + 口才",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Gordon Brown",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "religion-leader",
+        "exploration",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "tech-creative",
+        "finance",
+        "business-finance",
+        "business-retail",
+        "government-judicial",
+        "science-academic",
+        "law",
+        "business-media"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Rahu",
+      "karmeshReading": "海外教育／僧侶／慈善家 — 純粹智慧追尋",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Theresa May",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-media",
+        "arts-performer",
+        "media-personality",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "粉絲經濟／社群變現／大眾收入型事業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Boris Johnson",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-performer",
+        "arts-visual",
+        "exploration",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "politics-diplomat",
+        "politics",
+        "business-media",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Mercury",
+      "karmeshReading": "國際演藝／海外音樂／跨國時尚表演 — 智識 × 藝術",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Angela Merkel",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-media",
+        "arts-creator",
+        "politics",
+        "government",
+        "politics-head-state",
+        "religion-leader",
+        "sports-athlete",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-tech-founder",
+        "media-personality",
+        "business-tycoon-heir",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Mercury",
+      "karmeshReading": "教育體制／出版／宗教／高等政府 — 國師型",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Helmut Kohl",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "media-personality",
+        "politics-revolutionary",
+        "politics",
+        "business-media",
+        "arts-creator",
+        "government-judicial",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Venus",
+      "karmeshReading": "諮詢顧問／公關／跨界合作 — 靠談判變現",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Willy Brandt",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-ceo-hired",
+        "politics-head-state",
+        "law",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "arts-creator",
+        "arts-performer",
+        "sports-athlete",
+        "media-personality",
+        "business-realestate",
+        "business-tycoon-founder",
+        "business-leader",
+        "politics",
+        "government",
+        "politics-head-gov",
+        "politics-diplomat",
+        "finance",
+        "business-finance",
+        "government-judicial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Mercury",
+      "karmeshReading": "法律／教育／顧問掌舵型 — 智慧型領袖",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "kemadruma",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Olaf Scholz",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "arts-performer",
+        "sports-athlete",
+        "exploration",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "politics-head-gov",
+        "politics-revolutionary",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-tech-founder",
+        "science-academic",
+        "business-leader",
+        "business-media",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Saturn",
+      "karmeshReading": "國際運動巨星／動作巨星（SRK 型）／武術表演",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Charles de Gaulle",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state",
+        "politics-military"
+      ],
+      "predicted": [
+        "medicine",
+        "sports-athlete",
+        "military",
+        "arts-performer",
+        "business-realestate",
+        "business-industrial",
+        "business-tycoon-heir",
+        "politics-military",
+        "politics",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 2,
+      "dashaLord": null,
+      "karmeshReading": "護理／客服／心理諮商／食品檢驗 — 照顧型職業",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "François Mitterrand",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "media-personality",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "business-leader",
+        "business-entrepreneur",
+        "arts-creator",
+        "tech-exec",
+        "arts-performer",
+        "business-industrial",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "business-tycoon-heir",
+        "politics-revolutionary",
+        "politics",
+        "politics-military",
+        "business-media",
+        "media-creator",
+        "law"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Moon",
+      "karmeshReading": "知名寫手／個人 KOL／品牌代言人 — 靠嘴巴 + 臉變現",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mercury",
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Jacques Chirac",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-leader",
+        "business-ceo-hired",
+        "business-retail",
+        "business-media",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "politics-head-state",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Saturn",
+      "karmeshReading": "時尚／娛樂／高端品牌 CEO — 美感之巔",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "mahapurusha-Saturn",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Nicolas Sarkozy",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "medicine",
+        "politics",
+        "government",
+        "business-industrial",
+        "business-media",
+        "arts-creator",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 6,
+      "dashaLord": "Mars",
+      "karmeshReading": "會計／稽核／分析／醫療諮詢 — 精算師型",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "chandra-mangal"
+      ]
+    },
+    {
+      "name": "Emmanuel Macron",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-visual",
+        "politics",
+        "government",
+        "business-realestate",
+        "business-tech-founder",
+        "tech-creative",
+        "tech-engineer",
+        "arts-creator",
+        "finance",
+        "business-finance",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Rahu",
+      "karmeshReading": "時尚人脈／美學社群經濟 — 品味網絡",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "François Hollande",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-tech-founder",
+        "business-leader",
+        "arts-performer",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "business-realestate",
+        "politics-revolutionary",
+        "politics-military",
+        "tech-engineer",
+        "business-media",
+        "arts-creator",
+        "media-personality",
+        "media-creator",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Saturn",
+      "karmeshReading": "平台經濟／多元副業／仲介 — 網絡節點型事業",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal"
+      ]
+    },
+    {
+      "name": "Vladimir Putin",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state",
+        "politics-authoritarian"
+      ],
+      "predicted": [
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "sports-athlete",
+        "military",
+        "politics",
+        "government",
+        "business-tycoon-founder",
+        "tech-creative",
+        "business-retail",
+        "science-academic",
+        "business-entrepreneur",
+        "business-media"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Mercury",
+      "karmeshReading": "心理治療／靈媒／失物尋回 — 情感深度工作",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Mikhail Gorbachev",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-entrepreneur",
+        "politics-head-state",
+        "religion-leader",
+        "spiritual-teacher",
+        "science-academic",
+        "law",
+        "business-tycoon-heir",
+        "finance",
+        "business-finance",
+        "government-judicial",
+        "business-media",
+        "arts-creator",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 1,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 9,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "教師／顧問／精神領袖型個人品牌 — 智慧變現",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "chandra-mangal",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Boris Yeltsin",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "medicine",
+        "politics",
+        "government",
+        "tech-creative",
+        "tech-engineer",
+        "business-retail",
+        "business-realestate",
+        "arts-creator",
+        "arts-visual"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 8,
+      "dashaLord": "Mars",
+      "karmeshReading": "殯葬／保險／遺產／重症醫療 — 深重職業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Justin Trudeau",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "medicine",
+        "business-industrial",
+        "business-tycoon-founder",
+        "business-tycoon-heir",
+        "politics-revolutionary",
+        "politics",
+        "tech-creative",
+        "business-entrepreneur",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "media-personality",
+        "arts-performer"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Sun",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Mars",
+      "karmeshReading": "醫美／美容醫療／疾病美容 — 美感解決問題",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "chandra-mangal",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Pierre Trudeau",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-leader",
+        "business-tycoon-founder",
+        "business-media",
+        "arts-performer",
+        "media-personality",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "business-industrial",
+        "business-ceo-hired",
+        "politics-head-state",
+        "politics-head-gov",
+        "politics-diplomat",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "government-judicial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 11,
+      "dashaLord": "Mercury",
+      "karmeshReading": "大眾偶像／女性品牌／民生霸業 — 公眾滋養者",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter",
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Malcolm Turnbull",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-retail",
+        "arts-visual",
+        "business-leader",
+        "arts-performer",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "law",
+        "spiritual-teacher",
+        "politics",
+        "government",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "business-ceo-hired",
+        "politics-head-gov",
+        "politics-military",
+        "tech-creative",
+        "tech-engineer",
+        "arts-creator",
+        "business-entrepreneur",
+        "business-realestate",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Saturn",
+      "karmeshReading": "時尚人脈／美學社群經濟 — 品味網絡",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "mahapurusha-Jupiter",
+        "mahapurusha-Saturn",
+        "budha-aditya",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "John Howard",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-realestate",
+        "business-industrial",
+        "exploration",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "business-investor",
+        "business-finance",
+        "tech-creative",
+        "tech-engineer",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "business-tycoon-heir",
+        "arts-performer"
+      ],
+      "tier": "partial",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Rahu",
+      "karmeshReading": "海外建設／養老院／長期幕後 — 遠方的長年工作",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Jawaharlal Nehru",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov",
+        "politics-revolutionary"
+      ],
+      "predicted": [
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "arts-creator",
+        "arts-performer",
+        "arts-visual",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "politics",
+        "government",
+        "business-realestate",
+        "business-tycoon-heir",
+        "politics-head-state",
+        "tech-creative",
+        "business-tech-founder",
+        "science-academic",
+        "business-retail",
+        "business-media",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Mercury",
+      "karmeshReading": "白手起家戰將 — 業務衝刺／工程寫作／衝鋒型創業",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Venus"
+      ]
+    },
+    {
+      "name": "Indira Gandhi",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "business-tycoon-heir",
+        "business-industrial",
+        "sports-athlete",
+        "politics",
+        "government",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-tech-founder",
+        "science-academic",
+        "business-media",
+        "medicine"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Venus",
+      "karmeshReading": "家族工業／武器／機械承襲 — 繼承技術與體能型家業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Narendra Modi",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "politics",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "arts-performer",
+        "government",
+        "business-investor",
+        "business-finance",
+        "business-realestate",
+        "business-tycoon-founder",
+        "business-tycoon-heir",
+        "politics-revolutionary",
+        "business-entrepreneur",
+        "business-tech-founder",
+        "media-personality",
+        "politics-military"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Mars",
+      "karmeshReading": "政界權貴／多元收入／高層人脈經營者",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "budha-aditya",
+        "chandra-mangal",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Manmohan Singh",
+      "trueCats": [
+        "politics",
+        "government",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "arts-visual",
+        "business-leader",
+        "arts-performer",
+        "politics",
+        "government",
+        "business-tycoon-founder",
+        "business-ceo-hired",
+        "government-judicial",
+        "law",
+        "tech-creative",
+        "tech-engineer",
+        "business-retail",
+        "arts-creator",
+        "tech-exec",
+        "business-entrepreneur",
+        "business-realestate",
+        "business-industrial",
+        "politics-head-gov"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Venus",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Saturn",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Jupiter",
+      "karmeshReading": "婚顧／婚紗／合夥藝術 — 靠關係變美",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn",
+        "budha-aditya",
+        "chandra-mangal"
+      ]
+    },
+    {
+      "name": "Sun Yat-sen",
+      "trueCats": [
+        "politics",
+        "politics-revolutionary",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-media",
+        "media-personality",
+        "media-creator",
+        "business-leader",
+        "arts-performer",
+        "politics",
+        "government",
+        "business-tycoon-heir",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "medicine",
+        "tech-exec",
+        "tech-engineer",
+        "business-ceo-hired",
+        "business-realestate",
+        "business-industrial",
+        "politics-head-gov"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 3,
+      "dashaLord": null,
+      "karmeshReading": "媒體／自媒體／社群經營 — 靠內容滋養大眾",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn"
+      ]
+    },
+    {
+      "name": "Ho Chi Minh",
+      "trueCats": [
+        "politics",
+        "politics-revolutionary",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "tech-creative",
+        "sports-athlete",
+        "sports-coach",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "military",
+        "medicine",
+        "politics",
+        "government",
+        "business-investor",
+        "business-finance",
+        "business-tycoon-founder",
+        "business-ceo-hired",
+        "business-leader",
+        "politics-revolutionary",
+        "business-entrepreneur",
+        "business-tech-founder",
+        "science-academic",
+        "business-retail",
+        "business-media",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 11,
+      "dashaLord": null,
+      "karmeshReading": "運動教練／電競／子女競爭 — 「鬥技型」創造",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Martin Luther King Jr.",
+      "trueCats": [
+        "politics",
+        "religion-leader",
+        "politics-revolutionary"
+      ],
+      "predicted": [
+        "religion-leader",
+        "law",
+        "sports-athlete",
+        "arts-performer",
+        "business-investor",
+        "business-finance",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-realestate",
+        "business-tech-founder",
+        "business-tycoon-heir",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Rahu",
+      "karmeshReading": "法律／傳統教育／宗教機構 — 體制型長者",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Malcolm X",
+      "trueCats": [
+        "politics",
+        "politics-revolutionary",
+        "religion-leader"
+      ],
+      "predicted": [
+        "tech-creative",
+        "business-investor",
+        "business-media",
+        "arts-creator",
+        "business-leader",
+        "arts-performer",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "business-finance",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "government-judicial",
+        "media-personality",
+        "media-creator",
+        "business-entrepreneur",
+        "business-realestate",
+        "business-industrial",
+        "politics-head-state"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 5,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 1,
+      "dashaLord": "Saturn",
+      "karmeshReading": "教學／出版／智力遊戲／投資 — 把知識變成產品",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "mahapurusha-Jupiter"
+      ]
+    },
+    {
+      "name": "Adolf Hitler",
+      "trueCats": [
+        "politics",
+        "politics-authoritarian",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-media",
+        "media-personality",
+        "media-creator",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "government",
+        "politics",
+        "arts-performer",
+        "business-investor",
+        "business-finance",
+        "politics-head-state",
+        "politics-revolutionary",
+        "politics-military",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 3,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Venus",
+      "karmeshReading": "媒體／自媒體／社群經營 — 靠內容滋養大眾",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "政府 / 公職 / 名譽"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "gaja-kesari",
+        "budha-aditya",
+        "raj-yoga",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Joseph Stalin",
+      "trueCats": [
+        "politics",
+        "politics-authoritarian",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "business-tycoon-heir",
+        "government",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "arts-performer",
+        "business-tycoon-founder",
+        "politics-head-state",
+        "politics",
+        "politics-revolutionary",
+        "politics-military",
+        "business-entrepreneur",
+        "business-tech-founder",
+        "media-personality"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 1,
+      "dashaLord": null,
+      "karmeshReading": "家族聲望／公職世家／繼承型權威 — 透過「家名」立業",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Benito Mussolini",
+      "trueCats": [
+        "politics",
+        "politics-authoritarian",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "medicine",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "arts-creator",
+        "arts-performer",
+        "media-personality",
+        "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics",
+        "tech-creative",
+        "business-retail",
+        "arts-visual",
+        "sports-athlete",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 9,
+      "dashaLord": null,
+      "karmeshReading": "心理治療／靈媒／失物尋回 — 情感深度工作",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "chandra-mangal",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Mao Zedong",
+      "trueCats": [
+        "politics",
+        "politics-authoritarian",
+        "politics-revolutionary",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "exploration",
+        "business-leader",
+        "arts-performer",
+        "politics",
+        "government",
+        "media-personality",
+        "business-investor",
+        "business-retail",
+        "business-tycoon-founder",
+        "politics-diplomat",
+        "business-media",
+        "arts-creator",
+        "government-judicial",
+        "science-academic",
+        "law",
+        "media-creator",
+        "business-realestate",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mercury",
+      "karmeshHouse": 12,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 5,
+      "dashaLord": "Mercury",
+      "karmeshReading": "海外貿易／跨國會計／翻譯 — 跨境智識工作者",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "kemadruma",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Fidel Castro",
+      "trueCats": [
+        "politics",
+        "politics-revolutionary",
+        "politics-authoritarian",
+        "politics-head-state"
+      ],
+      "predicted": [
+        "religion-leader",
+        "science-academic",
+        "business-leader",
+        "arts-performer",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "politics",
+        "government",
+        "business-finance",
+        "business-realestate",
+        "finance",
+        "government-judicial",
+        "law",
+        "business-tycoon-heir",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Venus",
+      "karmeshReading": "研究／遺產／宗教深度／占星 — 深奧智慧",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Che Guevara",
+      "trueCats": [
+        "politics",
+        "politics-revolutionary",
+        "politics-military"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "medicine",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "politics",
+        "government",
+        "sports-athlete",
+        "business-tech-founder",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-realestate",
+        "business-retail",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Saturn",
+      "karmeshReading": "殯葬／保險／遺產／重症醫療 — 深重職業",
+      "karakaOverrides": [
+        "演藝 / 藝術 / 時尚",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "David Ben-Gurion",
+      "trueCats": [
+        "politics",
+        "politics-revolutionary",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "medicine",
+        "sports-athlete",
+        "military",
+        "politics",
+        "government",
+        "business-tech-founder",
+        "business-tycoon-founder",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "business-entrepreneur",
+        "politics-military",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 12,
+      "dashaLord": null,
+      "karmeshReading": "心理治療／靈媒／失物尋回 — 情感深度工作",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Golda Meir",
+      "trueCats": [
+        "politics",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "medicine",
+        "government",
+        "politics",
+        "media-personality",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "sports-athlete",
+        "business-retail",
+        "business-tycoon-founder",
+        "politics-head-state",
+        "politics-diplomat",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-realestate",
+        "business-tech-founder",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 8,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 12,
+      "dashaLord": null,
+      "karmeshReading": "殯葬／保險／遺產／重症醫療 — 深重職業",
+      "karakaOverrides": [
+        "政府 / 公職 / 名譽",
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "budha-aditya",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Shimon Peres",
+      "trueCats": [
+        "politics",
+        "politics-head-state",
+        "politics-diplomat"
+      ],
+      "predicted": [
+        "medicine",
+        "arts-creator",
+        "arts-performer",
+        "science-academic",
+        "sports-athlete",
+        "media-personality",
+        "business-tech-founder",
+        "politics-head-gov",
+        "politics",
+        "government",
+        "politics-revolutionary",
+        "tech-creative",
+        "business-retail",
+        "arts-visual",
+        "tech-exec",
+        "business-leader",
+        "business-ceo-hired"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 10,
+      "dashaLord": "Saturn",
+      "karmeshReading": "護理／客服／心理諮商／食品檢驗 — 照顧型職業",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "dhana-yoga",
+        "kemadruma",
+        "saraswati"
+      ]
+    },
+    {
+      "name": "Benazir Bhutto",
+      "trueCats": [
+        "politics",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "government",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "politics",
+        "arts-performer",
+        "business-industrial",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-realestate",
+        "business-tech-founder",
+        "arts-creator",
+        "politics-military"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Mercury",
+      "karmeshReading": "法規／稽核／公務／矯正服務 — Saturn 喜歡處理麻煩",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "raj-yoga"
+      ]
+    },
+    {
+      "name": "Kim Dae-jung",
+      "trueCats": [
+        "politics",
+        "politics-head-state",
+        "politics-revolutionary"
+      ],
+      "predicted": [
+        "finance",
+        "business-finance",
+        "law",
+        "business-leader",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "politics",
+        "government",
+        "sports-athlete",
+        "business-tycoon-founder",
+        "business-ceo-hired",
+        "politics-head-gov",
+        "politics-authoritarian",
+        "tech-creative",
+        "tech-engineer",
+        "business-entrepreneur",
+        "business-realestate",
+        "business-tech-founder",
+        "tech-exec",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 7,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 7,
+      "dashaLord": "Mercury",
+      "karmeshReading": "★ 長期合夥／保險／法律事務所 — Saturn 自在位",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設",
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "mahapurusha-Saturn"
+      ]
+    },
+    {
+      "name": "Shinzo Abe",
+      "trueCats": [
+        "politics",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "politics",
+        "science-academic",
+        "religion-leader",
+        "spiritual-teacher",
+        "law",
+        "arts-performer",
+        "arts-visual",
+        "arts-creator",
+        "sports-athlete",
+        "business-investor",
+        "business-finance",
+        "politics-diplomat",
+        "government-judicial",
+        "business-entrepreneur",
+        "business-tycoon-founder",
+        "business-tech-founder",
+        "media-personality",
+        "business-tycoon-heir",
+        "business-industrial"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Sun",
+      "karmeshHouse": 11,
+      "lagnaLordPlanet": "Mars",
+      "lagnaLordHouse": 2,
+      "dashaLord": "Venus",
+      "karmeshReading": "政界權貴／多元收入／高層人脈經營者",
+      "karakaOverrides": [
+        "教學 / 宗教 / 法律",
+        "演藝 / 藝術 / 時尚"
+      ],
+      "activeYogas": [
+        "budha-aditya"
+      ]
+    },
+    {
+      "name": "Junichiro Koizumi",
+      "trueCats": [
+        "politics",
+        "politics-head-gov"
+      ],
+      "predicted": [
+        "tech-exec",
+        "business-leader",
+        "business-ceo-hired",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "arts-performer",
+        "politics",
+        "government",
+        "business-industrial",
+        "business-tycoon-founder",
+        "politics-revolutionary",
+        "politics-military",
+        "politics-authoritarian",
+        "business-entrepreneur",
+        "business-tech-founder",
+        "science-academic",
+        "business-media",
+        "media-personality",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Mars",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Moon",
+      "lagnaLordHouse": 3,
+      "dashaLord": "Mercury",
+      "karmeshReading": "指揮官／CEO 武將型 — 帶兵的 CEO",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科"
+      ],
+      "activeYogas": [
+        "mahapurusha-Mars",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "Luiz Inácio Lula da Silva",
+      "trueCats": [
+        "politics",
+        "politics-head-state",
+        "politics-revolutionary"
+      ],
+      "predicted": [
+        "business-leader",
+        "business-tycoon-founder",
+        "business-media",
+        "arts-performer",
+        "media-personality",
+        "politics",
+        "government",
+        "sports-athlete",
+        "business-ceo-hired",
+        "politics-head-state",
+        "tech-creative",
+        "business-retail",
+        "arts-creator",
+        "arts-visual",
+        "science-academic",
+        "medicine",
+        "exploration"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Moon",
+      "karmeshHouse": 10,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 12,
+      "dashaLord": "Mars",
+      "karmeshReading": "大眾偶像／女性品牌／民生霸業 — 公眾滋養者",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "budha-aditya",
+        "chandra-mangal",
+        "vipreet-raj"
+      ]
+    },
+    {
+      "name": "Hugo Chavez",
+      "trueCats": [
+        "politics",
+        "politics-head-state",
+        "politics-authoritarian",
+        "politics-military"
+      ],
+      "predicted": [
+        "government",
+        "business-leader",
+        "arts-performer",
+        "politics",
+        "business-industrial",
+        "business-tycoon-founder",
+        "business-tycoon-heir",
+        "tech-creative",
+        "tech-engineer",
+        "business-retail",
+        "business-realestate",
+        "arts-creator",
+        "arts-visual",
+        "media-creator"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 4,
+      "dashaLord": "Venus",
+      "karmeshReading": "法規／稽核／公務／矯正服務 — Saturn 喜歡處理麻煩",
+      "karakaOverrides": [
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "gaja-kesari",
+        "dhana-yoga"
+      ]
+    },
+    {
+      "name": "Douglas MacArthur",
+      "trueCats": [
+        "politics",
+        "politics-military"
+      ],
+      "predicted": [
+        "politics",
+        "politics-head-state",
+        "government-judicial",
+        "religion-leader",
+        "science-academic",
+        "law",
+        "sports-athlete",
+        "military",
+        "medicine",
+        "spiritual-teacher",
+        "business-industrial",
+        "finance",
+        "business-finance",
+        "business-entrepreneur",
+        "business-investor",
+        "politics-military"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 9,
+      "lagnaLordPlanet": "Mercury",
+      "lagnaLordHouse": 8,
+      "dashaLord": null,
+      "karmeshReading": "★ 最強位 — 大學院長／教廷／國師 / 法官",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "教學 / 宗教 / 法律"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "kemadruma"
+      ]
+    },
+    {
+      "name": "George S. Patton",
+      "trueCats": [
+        "politics",
+        "politics-military"
+      ],
+      "predicted": [
+        "finance",
+        "business-tycoon-heir",
+        "business-finance",
+        "business-realestate",
+        "politics",
+        "government",
+        "tech-creative",
+        "tech-engineer",
+        "business-retail",
+        "arts-creator",
+        "arts-visual"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Saturn",
+      "karmeshHouse": 2,
+      "lagnaLordPlanet": "Venus",
+      "lagnaLordHouse": 8,
+      "dashaLord": null,
+      "karmeshReading": "家族基業／傳統金融／長青產業 — 世代承襲",
+      "karakaOverrides": [],
+      "activeYogas": [
+        "gaja-kesari"
+      ]
+    },
+    {
+      "name": "Ruth Bader Ginsburg",
+      "trueCats": [
+        "government",
+        "government-judicial",
+        "law"
+      ],
+      "predicted": [
+        "law",
+        "medicine",
+        "sports-athlete",
+        "military",
+        "business-leader",
+        "arts-performer",
+        "politics",
+        "government",
+        "media-personality",
+        "business-investor",
+        "business-finance",
+        "business-industrial",
+        "business-tycoon-founder",
+        "business-entrepreneur",
+        "finance",
+        "business-tech-founder",
+        "government-judicial",
+        "science-academic",
+        "politics-military"
+      ],
+      "tier": "full",
+      "karmeshPlanet": "Jupiter",
+      "karmeshHouse": 6,
+      "lagnaLordPlanet": "Jupiter",
+      "lagnaLordHouse": 6,
+      "dashaLord": "Moon",
+      "karmeshReading": "法律／醫療／慈善／服務型專業",
+      "karakaOverrides": [
+        "運動 / 軍警 / 外科",
+        "工業 / 重工 / 長期建設"
+      ],
+      "activeYogas": [
+        "budha-aditya",
+        "raj-yoga",
+        "kemadruma"
       ]
     }
   ]
