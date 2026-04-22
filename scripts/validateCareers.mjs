@@ -441,6 +441,31 @@ function predictCategories(analysis) {
     })
   }
 
+  // 2b. D10 (事業專盤) 10 lord — 補救原本從 narrative secondary tier 流出的 D10 keyword
+  //     Pyramid 重構後 secondary 只在 karaka strong 時才顯示，D10 不再進 narrative。
+  //     但 D10 仍是古典 BPHS 「實踐層」的重要訊號 → 這裡直接從結構欄位讀入當 hint。
+  if (analysis?.d10?.tenthLord && analysis.d10.tenthLord !== analysis?.karmesh?.planet) {
+    const d10Hints = KARAKA_CATEGORY_HINTS[analysis.d10.tenthLord] || []
+    d10Hints.forEach((c) => {
+      if (!set.has(c)) {
+        set.add(c)
+        evidence.push(`d10-10-lord ${analysis.d10.tenthLord} → ${c}`)
+      }
+    })
+  }
+
+  // 2c. 當前 Dasha lord 非 karmesh → 也加 planet-based hint
+  //     原本 secondary dasha tier 流出的訊息；Pyramid B 策略拿掉 secondary 後直接讀結構欄
+  if (analysis?.dasha?.lord && !analysis.dasha.isKarmesh) {
+    const dashaHints = KARAKA_CATEGORY_HINTS[analysis.dasha.lord] || []
+    dashaHints.forEach((c) => {
+      if (!set.has(c)) {
+        set.add(c)
+        evidence.push(`current-dasha ${analysis.dasha.lord} → ${c}`)
+      }
+    })
+  }
+
   // 3. Active career yogas — strong ones add category hints
   for (const yoga of analysis?.activeCareerYogas || []) {
     const hints = YOGA_CATEGORY_HINTS[yoga.id]

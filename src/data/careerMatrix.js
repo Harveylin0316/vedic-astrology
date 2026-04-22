@@ -723,65 +723,35 @@ export function resolvePrimarySecondary(analysis) {
   }
 
   // ─── SECONDARY ───────────────────────────────────────
-  // 優先順序：D10 不一致 > karaka override 強且方向不同 > dasha override
+  // 策略：只在 Karaka Override 達到 'strong' 級別時才顯示 secondary。
+  // （原本 D10 / Dasha / Lagna-Lord 升格三個觸發條件拿掉 — 測試顯示會讓
+  //  98.7% 的人都看到 secondary，失去「訊號衝突時才出現」的原意。
+  //  只保留真正壓倒性的 Karaka override 作為 secondary 觸發 → 預期約 10-15% 觸發率。）
   let secondary = null
 
-  // Case a: D10 override
-  if (d10 && !d10.agreement && d10.tenthLord && d10.tenthLord !== karmeshPlanet) {
-    const d10Direction = planetDirection[d10.tenthLord]
-    if (d10Direction && d10Direction !== karmeshDirection) {
-      secondary = {
-        layer: 'secondary',
-        label: '副軸 · 你執行起來的樣子',
-        planet: d10.tenthLord,
-        direction: d10Direction,
-        source: 'd10',
-        why: `D10（事業實踐專盤）10 宮主是 ${d10.tenthLord} — 你「想做的」是 ${karmeshPlanet}，但「實際做成」是靠 ${d10.tenthLord} 那股勁`,
-        keyFacts: [`D10 10 宮主 ${d10.tenthLord}`, `D1 10 宮主 ${karmeshPlanet}（潛能層 vs 實踐層）`],
-        integrationAdvice: `在主軸裡挑「能讓 ${d10.tenthLord} 那股能量發揮」的版本 — 不是換軌道，是換版本`
-      }
-    }
-  }
-
-  // Case b: Karaka override（只有當還沒被 D10 覆蓋時）
-  if (!secondary && karakaOverrides.length) {
+  if (karakaOverrides.length) {
     const topOverride = karakaOverrides[0]
-    const ovPlanet = topOverride.id?.replace('karaka-override-', '')
-    const ovPlanetKey = ovPlanet ? ovPlanet.charAt(0).toUpperCase() + ovPlanet.slice(1) : null
-    const ovDirection = planetDirection[ovPlanetKey]
-    // 必須方向不同 + 不是 karmesh 本尊 + 不是 Lagna Lord 本尊（避免重複）
-    if (
-      ovPlanetKey &&
-      ovPlanetKey !== karmeshPlanet &&
-      ovDirection &&
-      ovDirection !== karmeshDirection
-    ) {
-      secondary = {
-        layer: 'secondary',
-        label: '副軸 · 你的靈魂能量',
-        planet: ovPlanetKey,
-        direction: ovDirection,
-        source: 'karaka',
-        why: topOverride.source || `Karaka ${ovPlanetKey} 強到壓過常規判讀`,
-        keyFacts: [`Karaka Override: ${topOverride.category}`],
-        integrationAdvice: `把 ${topOverride.category} 當副業或長線目標 — 不搶主軸位置，但不能不做`
-      }
-    }
-  }
-
-  // Case c: Dasha override（當前走非 karmesh 的強 karaka Dasha）
-  if (!secondary && dasha?.lord && !dasha.isKarmesh) {
-    const dashaDir = planetDirection[dasha.lord]
-    if (dashaDir && dashaDir !== karmeshDirection) {
-      secondary = {
-        layer: 'secondary',
-        label: '副軸 · 當前大運的執行色彩',
-        planet: dasha.lord,
-        direction: dashaDir,
-        source: 'dasha',
-        why: `你正在走 ${dasha.lord} 大運 — 這個主題現在被放大`,
-        keyFacts: [`當前 ${dasha.lord} 大運`],
-        integrationAdvice: `這幾年選工作時，在主軸裡挑帶 ${dasha.lord} 調性的版本會特別順`
+    // 嚴格門檻：必須 strong 級別的 karaka override 才觸發
+    if (topOverride.strength === 'strong') {
+      const ovPlanet = topOverride.id?.replace('karaka-override-', '')
+      const ovPlanetKey = ovPlanet ? ovPlanet.charAt(0).toUpperCase() + ovPlanet.slice(1) : null
+      const ovDirection = planetDirection[ovPlanetKey]
+      if (
+        ovPlanetKey &&
+        ovPlanetKey !== karmeshPlanet &&
+        ovDirection &&
+        ovDirection !== karmeshDirection
+      ) {
+        secondary = {
+          layer: 'secondary',
+          label: '副軸 · 你的靈魂能量',
+          planet: ovPlanetKey,
+          direction: ovDirection,
+          source: 'karaka',
+          why: topOverride.source || `Karaka ${ovPlanetKey} 強到壓過常規判讀`,
+          keyFacts: [`Karaka Override: ${topOverride.category}`],
+          integrationAdvice: `把 ${topOverride.category} 當副業或長線目標 — 不搶主軸位置，但不能不做`
+        }
       }
     }
   }
@@ -807,26 +777,8 @@ export function resolvePrimarySecondary(analysis) {
         reading: llReading
       }
     }
-    // 若 Lagna Lord 在吉宮且尚未被指派為 secondary，且方向不同於 karmesh，可升格
-    else if (
-      !secondary &&
-      [1, 4, 5, 7, 9, 10, 11].includes(llHouse) &&
-      llDirection &&
-      llDirection !== karmeshDirection
-    ) {
-      const llReading = selectKarmeshReading(ll.planet, llHouse, karmeshContext)
-      secondary = {
-        layer: 'secondary',
-        label: '副軸 · 命主星加乘',
-        planet: ll.planet,
-        direction: llDirection,
-        source: 'lagna-lord',
-        why: `命主星 ${ll.planet} 落第 ${llHouse} 宮（吉宮） — 你「想做的」方向不同於 10 宮主指的「會成就你的」方向`,
-        keyFacts: [`Lagna Lord ${ll.planet} in ${llHouse}th`],
-        integrationAdvice: `可以把 ${ll.planet} 的能量當副線推 — 不一定要正職`,
-        reading: llReading
-      }
-    }
+    // 原本有「Lagna Lord 在吉宮升格 secondary」的 case，
+    // 策略 B 採「只有 Karaka strong 才顯示 secondary」— 這段拿掉。
   }
 
   return { primary, secondary, avoid }
