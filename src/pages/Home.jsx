@@ -35,11 +35,11 @@ export default function Home() {
               </Link>
               <Link
                 to="/compatibility"
-                className="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-vermilion-500 to-vermilion-400 text-cosmic-950 px-5 py-4 font-semibold shadow-lg shadow-vermilion-500/20 hover:shadow-vermilion-500/40 hover:scale-[1.02] transition-all"
+                className="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-rose-400 via-vermilion-400 to-vermilion-500 text-white px-5 py-4 font-semibold shadow-lg shadow-vermilion-500/40 hover:shadow-vermilion-400/60 hover:scale-[1.02] transition-all"
               >
-                <Heart className="h-5 w-5" />
+                <Heart className="h-5 w-5 fill-white/20" />
                 <span className="whitespace-nowrap">{t('home.hero.cta.compat')}</span>
-                <ArrowRight className="h-4 w-4 opacity-60 group-hover:translate-x-0.5 transition" />
+                <ArrowRight className="h-4 w-4 opacity-70 group-hover:translate-x-0.5 transition" />
               </Link>
             </div>
 

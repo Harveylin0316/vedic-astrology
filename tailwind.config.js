@@ -21,8 +21,14 @@ export default {
           600: '#e68a00'
         },
         vermilion: {
+          300: '#ff9182',
+          400: '#f56658',
           500: '#e34234',
           600: '#c12f22'
+        },
+        rose: {
+          400: '#fb7185',
+          500: '#f43f5e'
         }
       },
       backgroundImage: {
