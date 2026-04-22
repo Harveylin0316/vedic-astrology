@@ -332,32 +332,42 @@ export const karakaOverrideReadings = {
   Mars: {
     id: 'karaka-override-mars',
     category: '運動 / 軍警 / 外科',
+    energy: '戰士能量（對手、速度、膽量）',
     verdict: '運動員型 · 戰士型職業身份',
-    implication: '不論 10 宮主指哪方向，你命盤中 Mars 強到足以讓「運動／軍警／外科／體力型創業」成為核心身份。Mars 主導的案例常在「靠身體／靠膽量」的領域發光。'
+    implication: '不論 10 宮主指哪方向，你命盤中 Mars 強到足以讓「運動／軍警／外科／體力型創業」成為核心身份。Mars 主導的案例常在「靠身體／靠膽量」的領域發光。',
+    integrationAdvice: '在主軸職位裡挑「有對手、能快速反饋、需要體力或膽量」的版本 — 不是叫你去當外科或軍警，是你執行時需要「戰士能量」才不會悶。像 Growth／成長型 PM、新創 COO、業務 VP、需要實戰的營運角色。'
   },
   Venus: {
     id: 'karaka-override-venus',
     category: '演藝 / 藝術 / 時尚',
+    energy: '美感能量（品味、魅力、人味）',
     verdict: '藝術家／表演者型職業身份',
-    implication: '不論 10 宮主指哪方向，你命盤中 Venus 強到足以讓「演藝／音樂／時尚／美感產業」成為核心身份。Venus 主導的案例常在「靠美感／靠魅力」的領域發光。'
+    implication: '不論 10 宮主指哪方向，你命盤中 Venus 強到足以讓「演藝／音樂／時尚／美感產業」成為核心身份。Venus 主導的案例常在「靠美感／靠魅力」的領域發光。',
+    integrationAdvice: '在主軸職位裡挑「有美感、重品味、跟人打交道」的版本 — 不是叫你去當設計師或歌手，是你執行時需要「美感 + 人味」才發揮得出來。像品牌型 PM、客戶關係重的顧問、有設計敏感度的產品角色。'
   },
   Saturn: {
     id: 'karaka-override-saturn',
     category: '工業 / 重工 / 長期建設',
+    energy: '結構能量（耐力、紀律、10 年磨一劍）',
     verdict: '工業家／體系建設者型職業身份',
-    implication: '不論 10 宮主指哪方向，你命盤中 Saturn 強到足以讓「工業／重工／基礎建設／長期體系」成為核心身份。Saturn 主導的案例常走「10 年磨一劍」路線、晚發但不敗。'
+    implication: '不論 10 宮主指哪方向，你命盤中 Saturn 強到足以讓「工業／重工／基礎建設／長期體系」成為核心身份。Saturn 主導的案例常走「10 年磨一劍」路線、晚發但不敗。',
+    integrationAdvice: '在主軸職位裡挑「長期穩、結構紮實、不怕慢」的版本 — 不是叫你去蓋建築或做重工，是你執行時需要「結構感 + 耐力」才走得遠。像資深 PM、Infra／平台工程、家業繼承、體制內長期專案。'
   },
   Jupiter: {
     id: 'karaka-override-jupiter',
     category: '教學 / 宗教 / 法律',
+    energy: '導師能量（帶人、教學、被請教）',
     verdict: '智者／導師／宗教領袖型職業身份',
-    implication: '不論 10 宮主指哪方向，你命盤中 Jupiter 強到足以讓「教學／宗教／法律／哲學／智慧指導」成為核心身份。Jupiter 主導的案例常在「智慧傳承」的領域發光。'
+    implication: '不論 10 宮主指哪方向，你命盤中 Jupiter 強到足以讓「教學／宗教／法律／哲學／智慧指導」成為核心身份。Jupiter 主導的案例常在「智慧傳承」的領域發光。',
+    integrationAdvice: '在主軸職位裡挑「能帶人、能教學、能被請教」的版本 — 不是叫你去當老師或法官，是你執行時需要「智慧傳承」的位置才有意義感。像顧問、帶團隊的主管、寫作出版、知識付費、mentor 角色。'
   },
   Sun: {
     id: 'karaka-override-sun',
     category: '政府 / 公職 / 名譽',
+    energy: '權威能量（被看見、有頭銜、代表機構）',
     verdict: '權威型／公職型職業身份',
-    implication: '不論 10 宮主指哪方向，你命盤中 Sun 強到足以讓「政府／公職／名譽位置／公眾人物」成為核心身份。'
+    implication: '不論 10 宮主指哪方向，你命盤中 Sun 強到足以讓「政府／公職／名譽位置／公眾人物」成為核心身份。',
+    integrationAdvice: '在主軸職位裡挑「能代表機構、有頭銜、被看見」的版本 — 不是叫你去當公務員，是你執行時需要「有掌控感 + 被看見」才不萎。像部門主管、公司發言人、創辦人、品牌負責人。'
   }
 }
 
@@ -742,15 +752,22 @@ export function resolvePrimarySecondary(analysis) {
         ovDirection &&
         ovDirection !== karmeshDirection
       ) {
+        // 從 karakaOverrideReadings 拿 energy + integrationAdvice（能量特徵而非職業類別）
+        const detail = karakaOverrideReadings[ovPlanetKey]
         secondary = {
           layer: 'secondary',
-          label: '副軸 · 你的靈魂能量',
+          label: '副軸 · 你的執行風格',
           planet: ovPlanetKey,
           direction: ovDirection,
           source: 'karaka',
           why: topOverride.source || `Karaka ${ovPlanetKey} 強到壓過常規判讀`,
-          keyFacts: [`Karaka Override: ${topOverride.category}`],
-          integrationAdvice: `把 ${topOverride.category} 當副業或長線目標 — 不搶主軸位置，但不能不做`
+          energy: detail?.energy || null,
+          keyFacts: [
+            detail?.energy ? `${ovPlanetKey} 能量：${detail.energy}` : `Karaka Override: ${topOverride.category}`
+          ],
+          // 使用「能量特徵」版本的建議，避免字面謬誤（如叫用戶去當外科／運動員）
+          integrationAdvice: detail?.integrationAdvice ||
+            `把 ${ovPlanetKey} 的能量特徵當作主軸職位的「挑版本」依據 — 不是轉行做別的`
         }
       }
     }

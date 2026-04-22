@@ -1,10 +1,10 @@
 {
   "total": 388,
   "valid": 388,
-  "full": 329,
-  "partial": 54,
+  "full": 330,
+  "partial": 53,
   "miss": 5,
-  "accuracy": 0.9175257731958762,
+  "accuracy": 0.9188144329896907,
   "catStats": {
     "business-tech-founder": {
       "full": 54,
@@ -31,14 +31,14 @@
       "total": 31
     },
     "business-finance": {
-      "full": 33,
-      "partial": 5,
+      "full": 34,
+      "partial": 4,
       "miss": 0,
       "total": 38
     },
     "business-tycoon-heir": {
-      "full": 15,
-      "partial": 11,
+      "full": 16,
+      "partial": 10,
       "miss": 0,
       "total": 26
     },
@@ -243,8 +243,8 @@
   },
   "planetStats": {
     "Venus": {
-      "full": 57,
-      "partial": 7,
+      "full": 58,
+      "partial": 6,
       "miss": 1,
       "total": 65
     },
@@ -311,6 +311,7 @@
         "tech-engineer",
         "business-realestate",
         "arts-creator",
+        "business-tycoon-heir",
         "business-industrial"
       ],
       "tier": "full",
@@ -414,7 +415,8 @@
         "business-retail",
         "government-judicial",
         "science-academic",
-        "media-creator"
+        "media-creator",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -464,6 +466,7 @@
         "science-academic",
         "tech-exec",
         "business-entrepreneur",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
@@ -946,7 +949,8 @@
         "business-retail",
         "business-media",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -1075,6 +1079,7 @@
         "business-tech-founder",
         "sports-coach",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
@@ -1259,7 +1264,9 @@
         "business-tycoon-founder",
         "business-tech-founder",
         "sports-athlete",
-        "sports-coach"
+        "sports-coach",
+        "business-media",
+        "arts-creator"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -1533,6 +1540,7 @@
         "arts-visual-photographer",
         "tech-engineer",
         "tech-exec",
+        "business-tycoon-heir",
         "business-industrial",
         "politics-head-gov"
       ],
@@ -1964,6 +1972,7 @@
         "arts-visual",
         "arts-visual-photographer",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "politics-head-gov"
       ],
@@ -2250,6 +2259,7 @@
         "business-realestate",
         "medicine",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
@@ -2426,6 +2436,7 @@
         "finance",
         "business-finance",
         "government-judicial",
+        "business-media",
         "politics-head-state"
       ],
       "tier": "full",
@@ -2519,7 +2530,8 @@
         "business-finance",
         "business-retail",
         "media-creator",
-        "business-media"
+        "business-media",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -2644,7 +2656,8 @@
         "business-tycoon-founder",
         "politics-diplomat",
         "arts-performer-film-actor",
-        "business-entrepreneur"
+        "business-entrepreneur",
+        "business-tech-founder"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -2908,7 +2921,8 @@
         "business-retail",
         "business-media",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -3312,6 +3326,7 @@
         "business-tech-founder",
         "sports-coach",
         "tech-exec",
+        "business-tycoon-heir",
         "business-industrial",
         "politics-head-gov"
       ],
@@ -3457,6 +3472,7 @@
         "tech-engineer",
         "business-realestate",
         "tech-exec",
+        "business-tycoon-heir",
         "business-industrial",
         "politics-head-gov"
       ],
@@ -3507,7 +3523,8 @@
         "business-retail",
         "business-realestate",
         "business-industrial",
-        "business-media"
+        "business-media",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -3672,6 +3689,8 @@
         "business-tech-founder",
         "sports-coach",
         "government-judicial",
+        "business-media",
+        "arts-creator",
         "exploration"
       ],
       "tier": "full",
@@ -3759,7 +3778,8 @@
         "tech-engineer",
         "business-entrepreneur",
         "business-tycoon-founder",
-        "business-industrial"
+        "business-industrial",
+        "business-tech-founder"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -3940,6 +3960,7 @@
         "media-personality",
         "media-creator",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov",
@@ -3988,7 +4009,8 @@
         "business-media",
         "government-judicial",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-creator"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -4151,7 +4173,8 @@
         "business-media",
         "law",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Mercury",
@@ -4653,7 +4676,8 @@
         "science-academic",
         "law",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -4734,6 +4758,7 @@
         "arts-creator",
         "arts-visual",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "politics-head-gov"
       ],
@@ -5135,6 +5160,7 @@
         "business-realestate",
         "sports-athlete",
         "sports-coach",
+        "business-tycoon-heir",
         "business-industrial"
       ],
       "tier": "full",
@@ -5467,6 +5493,7 @@
         "media-personality",
         "media-creator",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "politics-head-gov"
       ],
@@ -5598,6 +5625,7 @@
         "tech-creative",
         "business-retail",
         "science-academic",
+        "arts-performer-musician-singer",
         "politics-military"
       ],
       "tier": "full",
@@ -5649,6 +5677,7 @@
         "business-media",
         "business-tech-founder",
         "media-creator",
+        "arts-creator",
         "exploration"
       ],
       "tier": "full",
@@ -6813,11 +6842,12 @@
         "business-realestate",
         "arts-creator",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
       ],
-      "tier": "partial",
+      "tier": "full",
       "karmeshPlanet": "Venus",
       "karmeshHouse": 11,
       "lagnaLordPlanet": "Saturn",
@@ -7090,6 +7120,7 @@
         "arts-creator",
         "arts-visual-photographer",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
@@ -7181,7 +7212,8 @@
         "business-tech-founder",
         "sports-athlete",
         "sports-coach",
-        "government-judicial"
+        "government-judicial",
+        "business-media"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -7731,6 +7763,7 @@
         "business-tech-founder",
         "sports-coach",
         "government-judicial",
+        "business-media",
         "politics-head-state"
       ],
       "tier": "full",
@@ -8175,7 +8208,8 @@
         "government",
         "government-judicial",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-creator"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -9238,7 +9272,8 @@
         "tech-creative",
         "tech-engineer",
         "business-retail",
-        "business-realestate"
+        "business-realestate",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Saturn",
@@ -9458,6 +9493,7 @@
         "law",
         "media-personality",
         "media-creator",
+        "business-tycoon-heir",
         "business-industrial"
       ],
       "tier": "full",
@@ -9890,6 +9926,7 @@
         "business-realestate",
         "arts-creator",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
@@ -10082,6 +10119,7 @@
         "arts-creator-writer",
         "media-personality",
         "media-creator",
+        "business-tycoon-heir",
         "business-industrial"
       ],
       "tier": "full",
@@ -10155,6 +10193,7 @@
         "business-tech-founder",
         "sports-coach",
         "government-judicial",
+        "business-media",
         "politics-head-state"
       ],
       "tier": "partial",
@@ -10372,7 +10411,8 @@
         "arts-visual-painter",
         "tech-creative",
         "arts-creator",
-        "arts-visual-photographer"
+        "arts-visual-photographer",
+        "business-tech-founder"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -11081,6 +11121,7 @@
         "business-tech-founder",
         "media-personality",
         "media-creator",
+        "arts-performer-musician-singer",
         "exploration"
       ],
       "tier": "full",
@@ -11423,7 +11464,8 @@
         "government",
         "government-judicial",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-creator"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -11818,7 +11860,8 @@
         "business-realestate",
         "government-judicial",
         "science-academic",
-        "media-creator"
+        "media-creator",
+        "business-tycoon-heir"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -11864,6 +11907,7 @@
         "arts-creator",
         "arts-visual-photographer",
         "government-judicial",
+        "business-media",
         "politics-head-state"
       ],
       "tier": "partial",
@@ -11954,7 +11998,8 @@
         "arts-visual-photographer",
         "tech-creative",
         "business-retail",
-        "science-academic"
+        "science-academic",
+        "arts-performer-musician-singer"
       ],
       "tier": "partial",
       "karmeshPlanet": "Moon",
@@ -12010,7 +12055,8 @@
         "finance",
         "business-finance",
         "sports-coach",
-        "government-judicial"
+        "government-judicial",
+        "arts-creator"
       ],
       "tier": "full",
       "karmeshPlanet": "Mars",
@@ -12143,6 +12189,7 @@
         "media-personality",
         "media-creator",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov"
@@ -12280,6 +12327,7 @@
         "sports-coach",
         "medicine",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-media",
         "business-industrial",
@@ -12593,7 +12641,8 @@
         "tech-creative",
         "business-retail",
         "science-academic",
-        "business-media"
+        "business-media",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -13136,7 +13185,8 @@
         "finance",
         "business-retail",
         "arts-visual-photographer",
-        "government-judicial"
+        "government-judicial",
+        "business-media"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -13276,6 +13326,7 @@
         "business-media",
         "business-tech-founder",
         "media-creator",
+        "arts-creator",
         "exploration"
       ],
       "tier": "full",
@@ -13405,7 +13456,8 @@
         "science-academic",
         "law",
         "media-creator",
-        "business-media"
+        "business-media",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Jupiter",
@@ -14220,7 +14272,8 @@
         "arts-performer-comedian",
         "arts-creator-writer",
         "finance",
-        "government-judicial"
+        "government-judicial",
+        "arts-creator"
       ],
       "tier": "full",
       "karmeshPlanet": "Moon",
@@ -14277,6 +14330,7 @@
         "business-realestate",
         "arts-creator",
         "business-entrepreneur",
+        "business-tycoon-heir",
         "business-industrial",
         "politics-head-state",
         "government-judicial"
@@ -14327,7 +14381,8 @@
         "tech-engineer",
         "finance",
         "arts-creator",
-        "government-judicial"
+        "government-judicial",
+        "business-media"
       ],
       "tier": "partial",
       "karmeshPlanet": "Saturn",
@@ -14504,6 +14559,7 @@
         "arts-creator",
         "arts-visual-photographer",
         "tech-exec",
+        "business-tycoon-heir",
         "business-industrial",
         "politics-head-gov"
       ],
@@ -14675,6 +14731,7 @@
         "business-realestate",
         "media-personality",
         "media-creator",
+        "business-tycoon-heir",
         "business-industrial",
         "politics-head-state",
         "government-judicial"
@@ -14859,6 +14916,7 @@
         "arts-creator-writer",
         "law",
         "media-creator",
+        "business-tycoon-heir",
         "business-industrial"
       ],
       "tier": "full",
@@ -14906,6 +14964,7 @@
         "government-judicial",
         "law",
         "media-creator",
+        "business-tycoon-heir",
         "business-industrial"
       ],
       "tier": "full",
@@ -14957,6 +15016,7 @@
         "business-retail",
         "business-realestate",
         "business-industrial",
+        "arts-performer-musician-singer",
         "exploration"
       ],
       "tier": "full",
@@ -15821,7 +15881,8 @@
         "business-media",
         "government",
         "media-personality",
-        "media-creator"
+        "media-creator",
+        "arts-performer-musician-singer"
       ],
       "tier": "full",
       "karmeshPlanet": "Sun",
@@ -15870,6 +15931,7 @@
         "arts-creator",
         "tech-exec",
         "business-entrepreneur",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "business-industrial",
         "politics-head-gov",
@@ -16362,7 +16424,8 @@
         "arts-creator-director",
         "arts-visual-painter",
         "tech-creative",
-        "arts-visual-photographer"
+        "arts-visual-photographer",
+        "business-tech-founder"
       ],
       "tier": "full",
       "karmeshPlanet": "Venus",
@@ -16637,6 +16700,7 @@
         "tech-engineer",
         "business-realestate",
         "tech-exec",
+        "business-tycoon-heir",
         "business-ceo-hired",
         "politics-head-gov"
       ],
