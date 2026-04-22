@@ -112,10 +112,10 @@ export default function ViralTriptych({ chart, persona, rarity, vedicCareer, ast
 
   return (
     <section className="relative py-16 md:py-20 px-6 md:px-10 border-y border-gold-500/15 bg-ink-900/30">
-      {/* 章節 header — 沿用現有章節風格 */}
+      {/* 章節 header */}
       <div className="relative z-10 max-w-5xl mx-auto">
         <div className="text-center mb-10">
-          <div className="chapter-eyebrow mb-3">Triptych · 三聯病毒卡</div>
+          <div className="chapter-eyebrow mb-3">Triptychon</div>
           <h3
             className="font-serif text-gold-200 tracking-tight leading-[0.95]"
             style={{
@@ -124,7 +124,7 @@ export default function ViralTriptych({ chart, persona, rarity, vedicCareer, ast
               fontVariationSettings: '"opsz" 144, "wght" 500'
             }}
           >
-            三張卡 · 給 IG 限動
+            三聯肖像
           </h3>
           <div className="flex items-center justify-center gap-4 mt-6 text-gold-400/50">
             <span className="h-px w-20 bg-gold-500/30" />
@@ -132,7 +132,7 @@ export default function ViralTriptych({ chart, persona, rarity, vedicCareer, ast
             <span className="h-px w-20 bg-gold-500/30" />
           </div>
           <p className="epigraph max-w-xl mx-auto mt-4">
-            愛情 · 事業 · 稀有度 — 一次下載三張，發 IG 限動連發。
+            你命盤的三個切面 — 月亮、太陽、與你自己。
           </p>
         </div>
 
@@ -195,7 +195,7 @@ export default function ViralTriptych({ chart, persona, rarity, vedicCareer, ast
             {status === 'idle' && (
               <>
                 <Download className="h-4 w-4" />
-                下載全部三張 · IG Story ready
+                保存三聯肖像
               </>
             )}
           </button>
