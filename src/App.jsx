@@ -4,6 +4,8 @@ import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Starfield from './components/Starfield.jsx'
 import Analytics from './components/Analytics.jsx'
+import CustomCursor from './components/CustomCursor.jsx'
+import GrandIntro from './components/GrandIntro.jsx'
 
 // 主要路徑 eager 保留（Home / BirthChart / Compatibility 最常用）
 import Home from './pages/Home.jsx'
@@ -26,6 +28,8 @@ function FallbackLoader() {
 export default function App() {
   return (
     <div className="relative min-h-screen flex flex-col">
+      <GrandIntro />
+      <CustomCursor />
       <Analytics />
       <Starfield />
       <Navbar />

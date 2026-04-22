@@ -306,6 +306,149 @@
 .corner-ornaments::before { top: 12px; left: 12px; }
 .corner-ornaments::after { bottom: 12px; right: 12px; }
 
+/* ─── Custom Cursor：隱藏系統游標（僅 pointer:fine 裝置） ─── */
+@media (pointer: fine) {
+  html.custom-cursor-on,
+  html.custom-cursor-on * {
+    cursor: none !important;
+  }
+}
+
+/* ─── 曼陀羅旋轉（給 GrandIntro 用） ─── */
+@keyframes mandalaSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Parallax：巨型羅馬數字與 Devanagari 跟主內容不同速度 ─── */
+.parallax-slow {
+  transform: translateY(var(--parallax-y, 0));
+  transition: transform 0.05s linear;
+  will-change: transform;
+}
+
+/* ─── 多樣化裝飾分隔線 ─── */
+/* 雙線 */
+.rule-double {
+  height: 1px;
+  background: rgba(201, 169, 97, 0.35);
+  position: relative;
+}
+.rule-double::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(201, 169, 97, 0.2);
+}
+
+/* 波浪 */
+.rule-wave {
+  height: 16px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'><path d='M 0 8 Q 25 0 50 8 T 100 8 T 150 8 T 200 8' fill='none' stroke='%23c9a961' stroke-width='1' opacity='0.5'/></svg>");
+  background-repeat: repeat-x;
+  background-size: 200px 16px;
+}
+
+/* 花線（菱形 + 線）*/
+.rule-floral {
+  position: relative;
+  text-align: center;
+  color: rgba(201, 169, 97, 0.55);
+}
+.rule-floral::before,
+.rule-floral::after {
+  content: '';
+  display: inline-block;
+  width: 30%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201, 169, 97, 0.4), transparent);
+  vertical-align: middle;
+  margin: 0 1em;
+}
+.rule-floral span {
+  font-family: 'EB Garamond', serif;
+  font-size: 18px;
+}
+
+/* 三線 */
+.rule-triple {
+  position: relative;
+  height: 6px;
+}
+.rule-triple::before,
+.rule-triple::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(201, 169, 97, 0.25);
+}
+.rule-triple::before { top: 0; }
+.rule-triple::after { top: 5px; }
+.rule-triple > span {
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 40%;
+  right: 40%;
+  height: 1px;
+  background: rgba(201, 169, 97, 0.55);
+}
+
+/* Illuminated drop cap（增強版：有 SVG 框） */
+.drop-cap-illuminated::first-letter {
+  font-family: 'Fraunces', 'EB Garamond', serif;
+  font-variation-settings: "opsz" 144, "wght" 700, "SOFT" 80;
+  font-size: 6rem;
+  line-height: 0.85;
+  float: left;
+  padding: 0.3rem 0.7rem 0.1rem 0;
+  color: #8b1f38;
+  text-shadow: 1px 1px 0 rgba(201, 169, 97, 0.4);
+}
+
+/* 段落內的小 ornament */
+.para-ornament::after {
+  content: '❦';
+  color: rgba(201, 169, 97, 0.45);
+  margin-left: 0.5em;
+  font-family: 'EB Garamond', serif;
+}
+
+/* 紙漿纖維紋理（更細緻） */
+.bg-paper-fiber {
+  position: relative;
+}
+.bg-paper-fiber::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><filter id='fiber'><feTurbulence type='turbulence' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.78 0 0 0 0 0.66 0 0 0 0 0.38 0 0 0 0.04 0'/></filter><rect width='500' height='500' filter='url(%23fiber)'/></svg>");
+  background-size: 500px 500px;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Section opener pane：章節全螢幕入口 ─── */
+.section-opener {
+  @apply relative min-h-[80vh] md:min-h-[92vh] flex flex-col justify-center items-center text-center px-6 md:px-12 overflow-hidden;
+}
+
+/* 滾動提示（向下箭頭 + 字） */
+.scroll-cue {
+  @apply absolute bottom-8 left-1/2 -translate-x-1/2 font-caps text-[10px] uppercase tracking-[0.4em] text-gold-500/60 flex flex-col items-center gap-2;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
+  50% { transform: translate(-50%, 6px); opacity: 1; }
+}
+
 /* ─── 滾動條：金箔色 ─── */
 ::-webkit-scrollbar {
   width: 10px;
@@ -326,6 +469,38 @@
 ::selection {
   background: rgba(201, 169, 97, 0.35);
   color: #0a0806;
+}
+
+/* ─── 全域圓角降級：SaaS 圓角 → 印刷硬角（保留 rounded-full） ─── */
+.rounded-xl:not(.rounded-full),
+.rounded-2xl:not(.rounded-full),
+.rounded-3xl:not(.rounded-full) {
+  border-radius: 2px !important;
+}
+.rounded-lg:not(.rounded-full) {
+  border-radius: 2px !important;
+}
+
+/* 去 SaaS focus ring（改成下劃線） */
+input:focus,
+textarea:focus,
+select:focus {
+  --tw-ring-shadow: none !important;
+  --tw-ring-offset-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* 按鈕去 hover:scale（全域） */
+button:hover,
+a:hover,
+[role="button"]:hover {
+  transform: none !important;
+}
+.btn-primary:hover,
+.btn-sindoor:hover,
+.btn-ghost:hover,
+.btn-seal:hover {
+  transform: none !important;
 }
 
 /* 強制所有黃道 / 行星符號用文字模式渲染（避免瀏覽器 emoji fallback 紫色） */

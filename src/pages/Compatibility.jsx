@@ -187,11 +187,45 @@ export default function Compatibility() {
         <MysticalTransition onComplete={handleTransitionComplete} duration={1500} />
       )}
 
-      <div className="text-center mb-10">
-        <h1 className="section-title">{t('compat.pageTitle')}</h1>
-        <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
-          {t('compat.pageSubtitle')}
-        </p>
+      <div className="relative mb-20 pt-10 pb-14 overflow-hidden">
+        {/* 左貼邊巨型羅馬數字 VIII（Compatibility 在 Vol. VIII） */}
+        <div
+          className="giant-numeral absolute left-[-30px] md:left-[-50px] top-[-10%] z-0"
+          aria-hidden="true"
+        >
+          III
+        </div>
+        {/* Devanagari 浮動裝飾 */}
+        <div
+          className="sanskrit-decoration absolute right-[-40px] bottom-[-10%] z-0"
+          aria-hidden="true"
+        >
+          प्रेम
+        </div>
+
+        <div className="relative z-10 text-center max-w-4xl mx-auto">
+          <div className="font-caps text-[10px] md:text-xs uppercase tracking-[0.5em] text-gold-500 mb-6">
+            Vol.&nbsp;III &nbsp;·&nbsp; Karmikae Congruentia
+          </div>
+          <h1
+            className="font-serif leading-[0.95] text-parchment-50 tracking-tight mb-8"
+            style={{
+              fontSize: 'clamp(48px, 9vw, 144px)',
+              fontWeight: 600,
+              fontVariationSettings: '"opsz" 144, "wght" 600, "SOFT" 30'
+            }}
+          >
+            {t('compat.pageTitle')}
+          </h1>
+          <div className="flex items-center justify-center gap-4 mb-6 text-gold-400/60">
+            <span className="h-px w-20 bg-gold-500/40" />
+            <span className="font-serif text-lg">✦</span>
+            <span className="h-px w-20 bg-gold-500/40" />
+          </div>
+          <p className="epigraph max-w-xl mx-auto">
+            {t('compat.pageSubtitle')}
+          </p>
+        </div>
       </div>
 
       {!result ? (

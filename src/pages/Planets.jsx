@@ -6,11 +6,43 @@ export default function Planets() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <div className="text-center mb-10">
-        <h1 className="section-title">Navagraha · 九大行星</h1>
-        <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
-          吠陀占星的 9 個天體：七曜加上月亮南北交點 Rahu 與 Ketu，是命盤的主要能量來源。
-        </p>
+      <div className="relative mb-16 pt-10 pb-10 overflow-hidden">
+        <div
+          className="giant-numeral absolute left-[-30px] md:left-[-50px] top-[-10%] z-0"
+          aria-hidden="true"
+        >
+          V
+        </div>
+        <div
+          className="sanskrit-decoration absolute right-[-40px] bottom-[-10%] z-0 hidden md:block"
+          aria-hidden="true"
+        >
+          ग्रह
+        </div>
+
+        <div className="relative z-10 text-center max-w-4xl mx-auto">
+          <div className="font-caps text-[10px] md:text-xs uppercase tracking-[0.5em] text-gold-500 mb-6">
+            Vol.&nbsp;V &nbsp;·&nbsp; Navagraha
+          </div>
+          <h1
+            className="font-serif leading-[0.95] text-parchment-50 tracking-tight mb-8"
+            style={{
+              fontSize: 'clamp(44px, 8vw, 128px)',
+              fontWeight: 600,
+              fontVariationSettings: '"opsz" 144, "wght" 600, "SOFT" 30'
+            }}
+          >
+            九大行星
+          </h1>
+          <div className="flex items-center justify-center gap-4 mb-6 text-gold-400/60">
+            <span className="h-px w-20 bg-gold-500/40" />
+            <span className="font-serif text-lg">✦</span>
+            <span className="h-px w-20 bg-gold-500/40" />
+          </div>
+          <p className="epigraph max-w-xl mx-auto">
+            吠陀占星的 9 個天體：七曜加上月亮南北交點 Rahu 與 Ketu，是命盤的主要能量來源。
+          </p>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-[280px_1fr] gap-6">
