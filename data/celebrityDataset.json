@@ -825,5 +825,412 @@
     "rating": "C",
     "categories": ["finance", "business-investor"],
     "career": "橋水基金創辦人"
+  },
+
+  {
+    "name": "Tom Brady",
+    "birth": { "year": 1977, "month": 8, "day": 3, "hour": 14, "minute": 30, "tz": -7, "lat": 37.5485, "lon": -121.9886 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "美式足球 QB",
+    "notes": "Astrodatabank A rating"
+  },
+  {
+    "name": "Novak Djokovic",
+    "birth": { "year": 1987, "month": 5, "day": 22, "hour": 23, "minute": 25, "tz": 2, "lat": 44.8176, "lon": 20.4569 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "網球選手",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Shaquille O'Neal",
+    "birth": { "year": 1972, "month": 3, "day": 6, "hour": 7, "minute": 10, "tz": -5, "lat": 30.4515, "lon": -91.1871 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "NBA 籃球",
+    "notes": "Astrodatabank A"
+  },
+  {
+    "name": "Magic Johnson",
+    "birth": { "year": 1959, "month": 8, "day": 14, "hour": 13, "minute": 56, "tz": -5, "lat": 42.7325, "lon": -84.5555 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "NBA 籃球",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Wayne Gretzky",
+    "birth": { "year": 1961, "month": 1, "day": 26, "hour": 20, "minute": 15, "tz": -5, "lat": 43.1394, "lon": -80.2644 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "NHL 冰球"
+  },
+  {
+    "name": "Jack Nicklaus",
+    "birth": { "year": 1940, "month": 1, "day": 21, "hour": 6, "minute": 30, "tz": -5, "lat": 39.9612, "lon": -82.9988 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "高爾夫傳奇"
+  },
+  {
+    "name": "Bruce Lee",
+    "birth": { "year": 1940, "month": 11, "day": 27, "hour": 7, "minute": 12, "tz": -8, "lat": 37.7749, "lon": -122.4194 },
+    "rating": "AA",
+    "categories": ["sports-athlete", "arts-performer"],
+    "career": "武術家／動作明星",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Michael Schumacher",
+    "birth": { "year": 1969, "month": 1, "day": 3, "hour": 13, "minute": 45, "tz": 1, "lat": 50.8333, "lon": 6.9167 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "F1 賽車手"
+  },
+  {
+    "name": "Ayrton Senna",
+    "birth": { "year": 1960, "month": 3, "day": 21, "hour": 2, "minute": 35, "tz": -3, "lat": -23.5505, "lon": -46.6333 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "F1 賽車手",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Kareem Abdul-Jabbar",
+    "birth": { "year": 1947, "month": 4, "day": 16, "hour": 19, "minute": 55, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "NBA 籃球",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Larry Bird",
+    "birth": { "year": 1956, "month": 12, "day": 7, "hour": 12, "minute": 0, "tz": -5, "lat": 38.5548, "lon": -87.2739 },
+    "rating": "C",
+    "categories": ["sports-athlete"],
+    "career": "NBA 籃球"
+  },
+  {
+    "name": "Mia Hamm",
+    "birth": { "year": 1972, "month": 3, "day": 17, "hour": 13, "minute": 45, "tz": -6, "lat": 32.7555, "lon": -97.3308 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "女子足球"
+  },
+  {
+    "name": "Martina Navratilova",
+    "birth": { "year": 1956, "month": 10, "day": 18, "hour": 16, "minute": 40, "tz": 1, "lat": 50.0755, "lon": 14.4378 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "網球傳奇",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "David Beckham",
+    "birth": { "year": 1975, "month": 5, "day": 2, "hour": 6, "minute": 17, "tz": 1, "lat": 51.5906, "lon": 0.1119 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "英格蘭足球",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Zinedine Zidane",
+    "birth": { "year": 1972, "month": 6, "day": 23, "hour": 2, "minute": 0, "tz": 1, "lat": 43.2965, "lon": 5.3698 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "法國足球"
+  },
+  {
+    "name": "Joe Montana",
+    "birth": { "year": 1956, "month": 6, "day": 11, "hour": 9, "minute": 23, "tz": -5, "lat": 40.1717, "lon": -79.9014 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "美式足球 QB",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Billie Jean King",
+    "birth": { "year": 1943, "month": 11, "day": 22, "hour": 11, "minute": 45, "tz": -8, "lat": 33.7701, "lon": -118.1937 },
+    "rating": "AA",
+    "categories": ["sports-athlete"],
+    "career": "網球選手",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Bjorn Borg",
+    "birth": { "year": 1956, "month": 6, "day": 6, "hour": 19, "minute": 30, "tz": 1, "lat": 59.1986, "lon": 17.6258 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "網球傳奇"
+  },
+  {
+    "name": "Jackie Robinson",
+    "birth": { "year": 1919, "month": 1, "day": 31, "hour": 18, "minute": 30, "tz": -6, "lat": 30.9585, "lon": -83.7571 },
+    "rating": "A",
+    "categories": ["sports-athlete"],
+    "career": "棒球傳奇"
+  },
+  {
+    "name": "Michael Johnson",
+    "birth": { "year": 1967, "month": 9, "day": 13, "hour": 12, "minute": 0, "tz": -6, "lat": 32.7767, "lon": -96.797 },
+    "rating": "C",
+    "categories": ["sports-athlete"],
+    "career": "短跑奧運金牌"
+  },
+
+  {
+    "name": "Julia Roberts",
+    "birth": { "year": 1967, "month": 10, "day": 28, "hour": 0, "minute": 16, "tz": -5, "lat": 33.4334, "lon": -84.185 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "電影演員",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Nicole Kidman",
+    "birth": { "year": 1967, "month": 6, "day": 20, "hour": 15, "minute": 13, "tz": 10, "lat": -21.3099, "lon": -157.8581 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Sandra Bullock",
+    "birth": { "year": 1964, "month": 7, "day": 26, "hour": 15, "minute": 15, "tz": -5, "lat": 38.7808, "lon": -77.1869 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Denzel Washington",
+    "birth": { "year": 1954, "month": 12, "day": 28, "hour": 6, "minute": 20, "tz": -5, "lat": 40.9126, "lon": -73.7824 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Harrison Ford",
+    "birth": { "year": 1942, "month": 7, "day": 13, "hour": 11, "minute": 41, "tz": -5, "lat": 41.8781, "lon": -87.6298 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "電影演員",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Kate Winslet",
+    "birth": { "year": 1975, "month": 10, "day": 5, "hour": 7, "minute": 15, "tz": 1, "lat": 51.5553, "lon": -0.7472 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Cate Blanchett",
+    "birth": { "year": 1969, "month": 5, "day": 14, "hour": 15, "minute": 30, "tz": 10, "lat": -37.8136, "lon": 144.9631 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Anthony Hopkins",
+    "birth": { "year": 1937, "month": 12, "day": 31, "hour": 9, "minute": 15, "tz": 0, "lat": 51.6214, "lon": -3.9436 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "電影演員",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Sean Connery",
+    "birth": { "year": 1930, "month": 8, "day": 25, "hour": 18, "minute": 5, "tz": 1, "lat": 55.9533, "lon": -3.1883 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "電影演員",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Audrey Hepburn",
+    "birth": { "year": 1929, "month": 5, "day": 4, "hour": 3, "minute": 0, "tz": 1, "lat": 50.8503, "lon": 4.3517 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Elizabeth Taylor",
+    "birth": { "year": 1932, "month": 2, "day": 27, "hour": 2, "minute": 15, "tz": 0, "lat": 51.5606, "lon": -0.202 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "電影演員",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Humphrey Bogart",
+    "birth": { "year": 1899, "month": 12, "day": 25, "hour": 17, "minute": 45, "tz": -5, "lat": 40.7128, "lon": -74.006 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "電影演員"
+  },
+  {
+    "name": "Charlie Chaplin",
+    "birth": { "year": 1889, "month": 4, "day": 16, "hour": 20, "minute": 0, "tz": 0, "lat": 51.5074, "lon": -0.1278 },
+    "rating": "A",
+    "categories": ["arts-performer", "arts-creator"],
+    "career": "電影演員／導演"
+  },
+  {
+    "name": "Elton John",
+    "birth": { "year": 1947, "month": 3, "day": 25, "hour": 3, "minute": 0, "tz": 0, "lat": 51.6255, "lon": -0.3499 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "歌手／鋼琴家"
+  },
+  {
+    "name": "Celine Dion",
+    "birth": { "year": 1968, "month": 3, "day": 30, "hour": 12, "minute": 15, "tz": -5, "lat": 45.8167, "lon": -73.4333 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "歌手"
+  },
+  {
+    "name": "Bruno Mars",
+    "birth": { "year": 1985, "month": 10, "day": 8, "hour": 6, "minute": 35, "tz": -10, "lat": 21.3069, "lon": -157.8583 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "歌手"
+  },
+  {
+    "name": "Drake",
+    "birth": { "year": 1986, "month": 10, "day": 24, "hour": 13, "minute": 45, "tz": -4, "lat": 43.6532, "lon": -79.3832 },
+    "rating": "C",
+    "categories": ["arts-performer"],
+    "career": "饒舌歌手"
+  },
+  {
+    "name": "Adele",
+    "birth": { "year": 1988, "month": 5, "day": 5, "hour": 8, "minute": 19, "tz": 1, "lat": 51.4393, "lon": -0.1147 },
+    "rating": "AA",
+    "categories": ["arts-performer"],
+    "career": "歌手",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Bob Marley",
+    "birth": { "year": 1945, "month": 2, "day": 6, "hour": 14, "minute": 30, "tz": -5, "lat": 18.2667, "lon": -77.1333 },
+    "rating": "A",
+    "categories": ["arts-performer"],
+    "career": "雷鬼歌手"
+  },
+
+  {
+    "name": "Sam Walton",
+    "birth": { "year": 1918, "month": 3, "day": 29, "hour": 9, "minute": 0, "tz": -6, "lat": 36.3265, "lon": -92.3693 },
+    "rating": "C",
+    "categories": ["business-entrepreneur", "business-leader"],
+    "career": "Walmart 創辦人"
+  },
+  {
+    "name": "Ray Kroc",
+    "birth": { "year": 1902, "month": 10, "day": 5, "hour": 6, "minute": 0, "tz": -6, "lat": 41.8781, "lon": -87.6298 },
+    "rating": "C",
+    "categories": ["business-entrepreneur", "business-leader"],
+    "career": "McDonald's 帝國創辦者"
+  },
+  {
+    "name": "Rupert Murdoch",
+    "birth": { "year": 1931, "month": 3, "day": 11, "hour": 11, "minute": 59, "tz": 10, "lat": -37.8136, "lon": 144.9631 },
+    "rating": "A",
+    "categories": ["business-leader", "media-personality"],
+    "career": "新聞集團"
+  },
+  {
+    "name": "Michael Dell",
+    "birth": { "year": 1965, "month": 2, "day": 23, "hour": 17, "minute": 50, "tz": -6, "lat": 29.7604, "lon": -95.3698 },
+    "rating": "A",
+    "categories": ["tech-exec", "business-entrepreneur"],
+    "career": "Dell 創辦人"
+  },
+  {
+    "name": "Sergey Brin",
+    "birth": { "year": 1973, "month": 8, "day": 21, "hour": 10, "minute": 0, "tz": 3, "lat": 55.7558, "lon": 37.6173 },
+    "rating": "C",
+    "categories": ["tech-exec", "business-entrepreneur", "tech-engineer"],
+    "career": "Google 共同創辦人"
+  },
+  {
+    "name": "Sundar Pichai",
+    "birth": { "year": 1972, "month": 6, "day": 10, "hour": 7, "minute": 30, "tz": 5.5, "lat": 12.9716, "lon": 77.5946 },
+    "rating": "C",
+    "categories": ["tech-exec", "business-leader"],
+    "career": "Google CEO"
+  },
+  {
+    "name": "Tim Cook",
+    "birth": { "year": 1960, "month": 11, "day": 1, "hour": 7, "minute": 0, "tz": -6, "lat": 32.4609, "lon": -84.9877 },
+    "rating": "C",
+    "categories": ["tech-exec", "business-leader"],
+    "career": "Apple CEO"
+  },
+  {
+    "name": "Satya Nadella",
+    "birth": { "year": 1967, "month": 8, "day": 19, "hour": 7, "minute": 0, "tz": 5.5, "lat": 17.385, "lon": 78.4867 },
+    "rating": "C",
+    "categories": ["tech-exec", "business-leader"],
+    "career": "Microsoft CEO"
+  },
+  {
+    "name": "Charlie Munger",
+    "birth": { "year": 1924, "month": 1, "day": 1, "hour": 12, "minute": 0, "tz": -6, "lat": 41.2565, "lon": -95.9345 },
+    "rating": "C",
+    "categories": ["business-investor", "finance"],
+    "career": "Berkshire Hathaway 副主席"
+  },
+
+  {
+    "name": "Richard Feynman",
+    "birth": { "year": 1918, "month": 5, "day": 11, "hour": 12, "minute": 0, "tz": -4, "lat": 40.7282, "lon": -74.0776 },
+    "rating": "A",
+    "categories": ["science-academic"],
+    "career": "物理學家"
+  },
+  {
+    "name": "Christopher Nolan",
+    "birth": { "year": 1970, "month": 7, "day": 30, "hour": 12, "minute": 0, "tz": 1, "lat": 51.5074, "lon": -0.1278 },
+    "rating": "C",
+    "categories": ["arts-creator"],
+    "career": "電影導演"
+  },
+  {
+    "name": "Alfred Hitchcock",
+    "birth": { "year": 1899, "month": 8, "day": 13, "hour": 16, "minute": 0, "tz": 0, "lat": 51.5439, "lon": 0.1111 },
+    "rating": "A",
+    "categories": ["arts-creator"],
+    "career": "電影導演"
+  },
+  {
+    "name": "Salvador Dali",
+    "birth": { "year": 1904, "month": 5, "day": 11, "hour": 8, "minute": 45, "tz": 0, "lat": 42.2671, "lon": 2.9641 },
+    "rating": "A",
+    "categories": ["arts-visual"],
+    "career": "畫家"
+  },
+  {
+    "name": "Giorgio Armani",
+    "birth": { "year": 1934, "month": 7, "day": 11, "hour": 10, "minute": 0, "tz": 2, "lat": 45.0526, "lon": 9.6929 },
+    "rating": "C",
+    "categories": ["arts-visual", "business-entrepreneur"],
+    "career": "時裝設計師"
+  },
+  {
+    "name": "Ronald Reagan",
+    "birth": { "year": 1911, "month": 2, "day": 6, "hour": 4, "minute": 16, "tz": -6, "lat": 41.4486, "lon": -89.4126 },
+    "rating": "AA",
+    "categories": ["politics", "government", "arts-performer"],
+    "career": "美國總統／前演員",
+    "notes": "Astrodatabank AA"
+  },
+  {
+    "name": "Henry Kissinger",
+    "birth": { "year": 1923, "month": 5, "day": 27, "hour": 5, "minute": 30, "tz": 1, "lat": 49.1275, "lon": 10.1194 },
+    "rating": "A",
+    "categories": ["politics", "government"],
+    "career": "美國國務卿"
   }
 ]

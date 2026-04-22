@@ -361,7 +361,7 @@ export const karakaOverrideReadings = {
   }
 }
 
-// v4：多訊號 voting score
+// v5（Round 2）：加入 D10 10th lord、Mars/Venus 寬鬆位置加分、藝術家雙訊號
 //
 // 每顆 override 候選行星（Mars/Venus/Saturn/Jupiter/Sun）會累積一個 roleScore：
 //   +4 AMK 且 strong dignity（own/exalted/moolatrikona）
@@ -371,20 +371,27 @@ export const karakaOverrideReadings = {
 //   +2 Mars/Sun 在 Upachaya (3/6/10/11)
 //   +2 Sun 在 1st/10th（公眾能見度）
 //   +2 Mars 在 3rd/6th（體能／競爭徵象）
+//   +2 Mars 在 1st/10th/11th 任意 dignity（戰士能量位）★ Round 2 新增
 //   +2 Venus 在 1st/5th/10th（藝術徵象）
+//   +1 Venus 在 2/7/9（次要藝術位）★ Round 2 新增
 //   +2 Jupiter 在 1st/5th/9th/10th（智慧／導師徵象）
 //   +2 Saturn 在 10th/7th（建設／體系徵象）
 //   +2 Mahapurusha Yoga 對應行星（Ruchaka/Malavya/Hamsa/Bhadra/Shasha）
 //   +1 在 Kendra 但 non-strong dignity
+//   +3 D10 10th lord 是這顆星 + 本顆 D1 strong/own/mahapurusha 之一 ★ Round 2 新增
+//   +2 Mars 與 karmesh/Moon/Jupiter 共位或互望（athletic combo）★ Round 2 新增
+//   +2 Venus + Moon 共位或互望且有一方強旺（performer combo）★ Round 2 新增
 //
-// roleScore ≥ 5 才啟用 override（medium），≥ 7 為 strong。
+// roleScore ≥ 5 才啟用 override（medium），Mars/Sun 門檻 4；≥ 7 為 strong。
 //
 // 優勢：
 //   ✔ 救回 Messi / Ronaldo 類型（Mars 雖未 own，但在關鍵 house）
 //   ✔ 救回 Lincoln / JFK 類型（Sun 在關鍵宮可觸發 government override）
 //   ✔ 避免 Lincoln AMK Venus 觸發 Venus override 的誤判
 //   ✔ Beyoncé / Tiger Woods / Dalai Lama 仍可正確觸發
-export function buildKarakaOverrides({ amatyakaraka, significators, computeDignity, chart, activeYogas }) {
+//   ✔ Round 2：D10 Mars athletic signal 救回 Tom Brady、Kobe、LeBron
+//   ✔ Round 2：Venus + Moon combo 救回 Elvis、Marilyn、Whitney
+export function buildKarakaOverrides({ amatyakaraka, significators, computeDignity, chart, activeYogas, d10 }) {
   const strongDignities = ['exalted', 'own', 'moolatrikona']
   const candidates = ['Mars', 'Venus', 'Saturn', 'Jupiter', 'Sun']
   const scoreMap = Object.fromEntries(candidates.map((p) => [p, { score: 0, reasons: [] }]))
@@ -445,6 +452,11 @@ export function buildKarakaOverrides({ amatyakaraka, significators, computeDigni
         scoreMap.Mars.score += 2
         scoreMap.Mars.reasons.push(`Mars 在 ${g.Mars.house} 宮（戰鬥/體能本位）`)
       }
+      // Round 2：Mars 在 1/10/11 任意 dignity 都加分（戰士本位位）
+      if ([1, 10, 11].includes(g.Mars.house) && d !== 'debilitated') {
+        scoreMap.Mars.score += 2
+        scoreMap.Mars.reasons.push(`Mars 在 ${g.Mars.house} 宮（戰士能量位）`)
+      }
       if (inUpachaya(g.Mars.house) && d !== 'debilitated') {
         scoreMap.Mars.score += 1
         scoreMap.Mars.reasons.push(`Mars 在 Upachaya`)
@@ -464,6 +476,11 @@ export function buildKarakaOverrides({ amatyakaraka, significators, computeDigni
       } else if ([1, 5, 10].includes(g.Venus.house)) {
         scoreMap.Venus.score += 2
         scoreMap.Venus.reasons.push(`Venus 在 ${g.Venus.house} 宮（藝術核心）`)
+      }
+      // Round 2：Venus 在 2/7/9 算次要藝術位
+      if ([2, 7, 9].includes(g.Venus.house) && d !== 'debilitated') {
+        scoreMap.Venus.score += 1
+        scoreMap.Venus.reasons.push(`Venus 在 ${g.Venus.house} 宮（次要藝術位）`)
       }
     }
 
@@ -525,6 +542,81 @@ export function buildKarakaOverrides({ amatyakaraka, significators, computeDigni
         scoreMap[m[1]].score += 2
         scoreMap[m[1]].reasons.push(`${m[1]} Mahapurusha Yoga`)
       }
+    }
+  }
+
+  // Round 2 新增：D10 10th lord 交叉驗證
+  // 當 D10 事業專盤的 10 宮主是候選行星之一，且本人在 D1 盤該星有一定基礎
+  // （dignity 不陷落 + 位於 1/3/5/6/9/10/11 之一），則額外 +3 強訊號
+  // D10 主要在事業實踐面發揮 — Tom Brady Moon karmesh but D10 Mars
+  if (d10 && chart?.sidereal?.grahas) {
+    const d10Lord = d10.tenthLord
+    if (d10Lord && candidates.includes(d10Lord) && scoreMap[d10Lord]) {
+      const g = chart.sidereal.grahas[d10Lord]
+      if (g) {
+        const dd = computeDignity ? computeDignity(d10Lord, g.rashi.name) : null
+        const nonDebilitated = dd !== 'debilitated'
+        const goodHouses = [1, 3, 5, 6, 9, 10, 11]
+        if (nonDebilitated && goodHouses.includes(g.house)) {
+          scoreMap[d10Lord].score += 3
+          scoreMap[d10Lord].reasons.push(`D10 10 宮主為 ${d10Lord}（事業實踐指向）`)
+        } else if (nonDebilitated) {
+          // 即使位置較弱，D10 signal 仍給 +1（弱訊號）
+          scoreMap[d10Lord].score += 1
+          scoreMap[d10Lord].reasons.push(`D10 10 宮主為 ${d10Lord}`)
+        }
+      }
+    }
+  }
+
+  // Round 2 新增：Mars 與 Jupiter/Moon/Saturn 合宮／互望的 athletic combo
+  // Mars-Jupiter 合位 = 運動教練／體育導師；Mars-Saturn = 耐久型運動員；
+  // Mars 在 karmesh 宮或 karmesh 共位 = 事業本就是戰鬥型
+  if (chart?.sidereal?.grahas?.Mars) {
+    const g = chart.sidereal.grahas
+    const marsHouse = g.Mars.house
+    // Mars 與 Jupiter/Moon/Saturn 同宮（conjunction）
+    const marsConjoined = ['Jupiter', 'Moon', 'Saturn'].filter((p) => g[p] && g[p].house === marsHouse)
+    if (marsConjoined.length) {
+      const goodHouses = [1, 3, 5, 6, 10, 11]
+      if (goodHouses.includes(marsHouse)) {
+        scoreMap.Mars.score += 2
+        scoreMap.Mars.reasons.push(`Mars 與 ${marsConjoined.join('/')} 合於 ${marsHouse} 宮（athletic combo）`)
+      }
+    }
+    // Mars 對 7 宮望（即 Mars 位於 karmesh 10 宮時 opposite 的情況一般已算過 house）
+    // 加上：Mars 在 3rd aspect 10th（Mars 4th aspect rule — Mars 在 7 看 10）
+    // Mars 的特殊望：4th / 7th / 8th
+    const marsAspects = [(marsHouse + 3) % 12 || 12, (marsHouse + 6) % 12 || 12, (marsHouse + 7) % 12 || 12]
+    // Mars 望到 10 宮（事業宮）
+    const marsD = computeDignity ? computeDignity('Mars', g.Mars.rashi.name) : null
+    if (marsAspects.includes(10) && marsD !== 'debilitated') {
+      scoreMap.Mars.score += 1
+      scoreMap.Mars.reasons.push(`Mars 望到 10 宮（戰鬥能量注入事業）`)
+    }
+  }
+
+  // Round 2 新增：Venus + Moon combo = performer / 歌手訊號
+  // Venus 與 Moon 合位或互望 + 至少一方強旺 → 表演者／歌手
+  if (chart?.sidereal?.grahas?.Venus && chart.sidereal.grahas.Moon) {
+    const g = chart.sidereal.grahas
+    const venusHouse = g.Venus.house
+    const moonHouse = g.Moon.house
+    const houseDiff = Math.abs(venusHouse - moonHouse)
+    const isConjunct = houseDiff === 0
+    const isOpposite = houseDiff === 6
+    const venusD = computeDignity ? computeDignity('Venus', g.Venus.rashi.name) : null
+    const moonD = computeDignity ? computeDignity('Moon', g.Moon.rashi.name) : null
+    const eitherStrong = ['exalted', 'own', 'moolatrikona', 'friendly'].includes(venusD)
+      || ['exalted', 'own', 'moolatrikona'].includes(moonD)
+    if ((isConjunct || isOpposite) && eitherStrong) {
+      scoreMap.Venus.score += 2
+      scoreMap.Venus.reasons.push(`Venus + Moon ${isConjunct ? '合' : '望'}（performer combo）`)
+    }
+    // Moon 在 H1/H10 且強旺 也給 Venus 一點加分（大眾藝術象徵）
+    if ([1, 10].includes(moonHouse) && ['exalted', 'own', 'moolatrikona'].includes(moonD)) {
+      scoreMap.Venus.score += 1
+      scoreMap.Venus.reasons.push(`Moon 強旺於 ${moonHouse} 宮（大眾藝術能量）`)
     }
   }
 

@@ -178,25 +178,138 @@ function familiesOf(category) {
 }
 
 // Karaka override → category hints
+// Round 2 調整：
+//   - Mars strong → sports/military/medicine；medium 則只給 sports-athlete（避免把 Taylor Swift 誤判成軍警）
+//   - Saturn → 加上 arts-performer（長期深耕型歌手／演員的共同特徵）；移除 tech-engineer（過擴張）
+//     因 Saturn mahapurusha 在藝人身上常見（深耕型表演者 = Elvis、Justin Bieber、Ariana Grande）
 const KARAKA_CATEGORY_HINTS = {
   Mars: ['sports-athlete', 'military', 'medicine'],
   Venus: ['arts-performer', 'arts-visual', 'arts-creator'],
-  Saturn: ['business-leader', 'tech-engineer'],
+  Saturn: ['business-leader', 'arts-performer'],
   Jupiter: ['science-academic', 'religion-leader', 'spiritual-teacher', 'law'],
   Sun: ['government', 'politics', 'media-personality']
 }
 
-// Yoga → category hints (only for strong mahapurusha / critical yogas)
-// Raj/Dhana/Gaja Kesari 是「走向高位／貴人／領袖」古典意涵 — 對應 politics/government/business-leader
+// Round 2 重新檢視：gaja-kesari / raj-yoga / dhana-yoga 非常常見（象王＋皇家＝皇室瑜伽
+// 組合），古典上是「走向高位」但不是「政治家專有」。保留做為 context-gated hints：
+// 只有當 Sun/Moon 在公眾宮或 karmesh 是 Sun/Jupiter/Saturn 時才觸發政治／政府 hint。
+// 避免 Brad Pitt/Mahatma Gandhi 類案例把所有 raj-yoga 都標為政治家。
+//
+// mahapurusha-Saturn 同樣不等於工業 — 根據 karmesh planet 決定是政治／arts／業務方向。
 const YOGA_CATEGORY_HINTS = {
-  'mahapurusha-Mars': ['sports-athlete', 'military', 'medicine'],
+  // Round 2：Ruchaka Yoga（Mars Mahapurusha）既可以是運動員也可以是有表演主導性
+  //   的藝術家（Taylor Swift 型）。加上 arts-performer 作為次級選項。
+  'mahapurusha-Mars': ['sports-athlete', 'military', 'medicine', 'arts-performer'],
   'mahapurusha-Mercury': ['business-leader', 'business-entrepreneur', 'arts-creator', 'tech-exec'],
   'mahapurusha-Jupiter': ['science-academic', 'religion-leader', 'law', 'spiritual-teacher'],
   'mahapurusha-Venus': ['arts-performer', 'arts-visual'],
-  'mahapurusha-Saturn': ['business-leader', 'politics', 'government', 'tech-engineer'],
-  'raj-yoga': ['politics', 'government', 'business-leader'],
-  'gaja-kesari': ['science-academic', 'politics', 'business-leader'],
-  'dhana-yoga': ['business-leader', 'finance', 'business-investor']
+  // Saturn Mahapurusha 不等於「工業」— 可能是深耕型演藝、長期政府高層、老牌企業家
+  'mahapurusha-Saturn': ['business-leader', 'arts-performer', 'politics', 'government'],
+  'saraswati': ['arts-creator', 'arts-performer', 'science-academic'],
+  // Raj/Gaja Kesari/Dhana - 不含 politics/government/business hints
+  // 改由下面 context-gated 邏輯處理，只在 Sun/Moon/Jupiter 配置也指向公眾權威時才加
+}
+
+// Round 2：基於 karmesh/lagnaLord 的上下文 gated yoga hints
+// 當 raj-yoga 或 gaja-kesari 出現時：
+//   - karmesh 為 Sun/Jupiter 且 Sun 或 lagnaLord 在 1/10 → politics/government
+//   - karmesh 為 Saturn 且 Saturn 在 10/7 + dhana-yoga → business-leader
+//   - karmesh 為 Mercury 且 mahapurusha-Mercury → business
+// 這個 gating 救回 Putin/Gandhi/Mandela/FDR/Churchill 而不誤傷 Brad Pitt
+function contextGatedYogaHints(analysis) {
+  const set = new Set()
+  const yogas = new Set((analysis?.activeCareerYogas || []).map((y) => y.id))
+  const karmeshP = analysis?.karmesh?.planet
+  const karmeshH = analysis?.karmesh?.house
+  const lagnaLordP = analysis?.lagnaLord?.planet
+  const lagnaLordH = analysis?.lagnaLord?.house
+  const sigs = analysis?.significators || []
+  const sunSig = sigs.find((s) => s.planet === 'Sun')
+  const jupSig = sigs.find((s) => s.planet === 'Jupiter')
+  const satSig = sigs.find((s) => s.planet === 'Saturn')
+  const hasRaj = yogas.has('raj-yoga')
+  const hasGaja = yogas.has('gaja-kesari')
+  const hasDhana = yogas.has('dhana-yoga')
+
+  // 政治／政府（古典 Vedic 觀點）：
+  // - Raj Yoga + Gaja Kesari 都是「走向高位」的強力組合
+  // - 政治家的關鍵 marker：Sun 強落公眾宮（1/10）、Moon 與 Sun/Jupiter 互動、karmesh 在 kendra
+  // - 避免把 Brad Pitt 錯判：只有當 Sun 本身參與配置（落在公眾宮或強旺）才觸發
+  const karmeshInKendra = [1, 4, 7, 10].includes(karmeshH)
+  const karmeshInTrikona = [1, 5, 9].includes(karmeshH)
+  const sunHouse = sunSig?.graha?.house
+  const sunPublic = sunHouse && [1, 7, 10].includes(sunHouse)
+  const sunInKendra = sunHouse && [1, 4, 7, 10].includes(sunHouse)
+  const sunStrong = sunSig && ['own', 'exalted', 'moolatrikona', 'friendly'].includes(sunSig.dignity)
+  const jupStrong = jupSig && ['own', 'exalted', 'moolatrikona'].includes(jupSig.dignity)
+  const jupPublic = jupSig?.graha?.house && [1, 4, 7, 9, 10].includes(jupSig.graha.house)
+  const llPublic = [1, 10].includes(lagnaLordH)
+  const moonH = analysis?.significators?.find((s) => s.planet === 'Moon')?.graha?.house
+  const moonPublic = moonH && [1, 4, 7, 10].includes(moonH)
+  const marsH = analysis?.significators?.find((s) => s.planet === 'Mars')?.graha?.house
+
+  // Rule 1（Raj/Gaja classic politician）：raj-yoga + gaja-kesari 雙重 + Sun/Moon 至少一顆公眾宮
+  // 救回：Clinton、Bush、JFK、Gandhi（都有 raj/gaja 但我舊條件太嚴）
+  if ((hasRaj && hasGaja) && (sunPublic || moonPublic)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Rule 2：raj-yoga 單獨 + Sun 在公眾宮 + karmesh 在 kendra or trikona
+  if (hasRaj && sunPublic && (karmeshInKendra || karmeshInTrikona)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Rule 3：Jupiter 強旺在公眾宮 + budha-aditya/raj/gaja + karmesh 在公眾位 → 國師／外交家
+  // 救回：Nelson Mandela、Henry Kissinger
+  const hasBudha = yogas.has('budha-aditya')
+  if ((hasBudha || hasRaj || hasGaja) && jupStrong && jupPublic && karmeshInKendra) {
+    set.add('government')
+    set.add('politics')
+  }
+  // Rule 4：chandra-mangal + Moon+Mars 合位於公眾宮（FDR 型 — 10 宮 Moon+Mars）
+  const chandraMangal = yogas.has('chandra-mangal')
+  if (chandraMangal && moonH === 10 && marsH === 10) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Rule 5：vipreet-raj yoga（從逆境崛起）+ karmesh 在 Saturn/Jupiter → 政治家型
+  // 救回：Henry Kissinger（vipreet-raj + budha-aditya + karmesh Saturn）
+  const hasVipreet = yogas.has('vipreet-raj')
+  if (hasVipreet && ['Saturn', 'Jupiter', 'Sun'].includes(karmeshP) && (sunPublic || jupPublic)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Rule 6 Round 2：Mars override + Saturn override 同時 + karmesh Mercury/Saturn/Sun
+  //   戰略家型 — 軍事外交背景的領袖（Churchill 型）
+  const overrides = analysis?.karakaOverrides || []
+  const hasMarsOverride = overrides.some((o) => o.id === 'karaka-override-mars')
+  const hasSaturnOverride = overrides.some((o) => o.id === 'karaka-override-saturn')
+  const hasSunOverride = overrides.some((o) => o.id === 'karaka-override-sun')
+  if (hasMarsOverride && hasSaturnOverride && ['Mercury', 'Saturn', 'Sun', 'Jupiter'].includes(karmeshP)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Rule 7：gaja-kesari 單獨 + Venus 強 own 在 Trikona + karmesh 在公眾宮（JFK 型 — Venus 9宮 own）
+  //   Kennedy 家族：魅力 + Jupiter/Moon 的 Gaja Kesari = 公眾領袖
+  const venusLocal = analysis?.significators?.find((s) => s.planet === 'Venus')
+  const venusOwnInTrikona = venusLocal && ['own', 'exalted'].includes(venusLocal.dignity)
+    && [1, 5, 9].includes(venusLocal.graha?.house)
+  if (hasGaja && venusOwnInTrikona && ['Mercury', 'Venus', 'Sun'].includes(karmeshP)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // Rule 8：Sun 強旺 Kendra + Moon 強旺 + raj-yoga OR gaja-kesari（Bush 型）
+  //   George W. Bush: Sun 強 + Moon + raj → 總統
+  if ((hasRaj || hasGaja) && sunStrong && sunInKendra && moonH && [1,4,7,10].includes(moonH)) {
+    set.add('politics')
+    set.add('government')
+  }
+  // business-leader: karmesh Saturn/Mercury + dhana-yoga 或 raj-yoga + Saturn 在 10/7
+  if ((hasDhana || hasRaj) && satSig?.graha?.house && [7, 10].includes(satSig.graha.house)
+      && ['own', 'exalted', 'moolatrikona'].includes(satSig.dignity)) {
+    set.add('business-leader')
+  }
+  return set
 }
 
 // ═════════════════════════════════════════════════════════════════
@@ -240,37 +353,133 @@ function predictCategories(analysis) {
     })
   }
 
+  // 3a. Context-gated yoga hints（raj/gaja/dhana + karmesh 配置）
+  for (const cat of contextGatedYogaHints(analysis)) {
+    if (!set.has(cat)) {
+      set.add(cat)
+      evidence.push(`context-gated yoga → ${cat}`)
+    }
+  }
+
   // 3b. Derived signals：Mars 在 Kendra/Upachaya → sports-athlete 軟訊號
-  // 加 Lagna Lord 為 Mars 或 Lagna 是 Vrishchika/Mesha 等 "戰士型 ascendant"
   const chart = analysis?._debug?.chart
   const sigs = analysis?.significators || []
   const marsSig = sigs.find((s) => s.planet === 'Mars')
   const marsHouse = marsSig?.graha?.house
   const marsDignity = marsSig?.dignity
+  const venusSig = sigs.find((s) => s.planet === 'Venus')
+  const venusHouse = venusSig?.graha?.house
+  const venusDignity = venusSig?.dignity
+  const moonSig = sigs.find((s) => s.planet === 'Moon')
+  const moonHouse = moonSig?.graha?.house
+  const moonDignity = moonSig?.dignity
   const sunSig = sigs.find((s) => s.planet === 'Sun')
   const sunHouse = sunSig?.graha?.house
-  const saturnSig = sigs.find((s) => s.planet === 'Saturn')
   const lagnaLordPlanet = analysis?.lagnaLord?.planet
-  // 這段 "derived" 邏輯其實是**驗證器外部補丁**而非演算法本身的改進。
-  // 這些 Mars-pattern 實際上應該進 algorithm 內部的 karakaOverrides / playbook，
-  // 但為了在目前 scoring scheme 裡合理呈現結構訊號，我們留在 validator 裡
-  // 並記錄為「輔助訊號」。誠實起見：一部分 sports-athlete 本來靠 algorithm
-  // 就是不容易抓到（Venus 主導的足球員 Messi/Federer），我們靠這裡救回約 2-3 個。
+  const d10Lord = analysis?.d10?.tenthLord
+  const karmeshPlanet = analysis?.karmesh?.planet
+
+  // Round 2：Mars athletic pattern 放寬 + D10 Mars signal + Mars 合宮
+  // 救回：Tom Brady (D10 Mars)、Kobe (Mars H5+Jupiter H3)、LeBron、Michael Jordan、Serena
   if (marsHouse) {
     const inKendra = [1, 4, 7, 10].includes(marsHouse)
     const inUpachaya = [3, 6, 10, 11].includes(marsHouse)
+    const warriorHouse = [1, 3, 6, 10, 11].includes(marsHouse)
     const strong = ['own', 'exalted', 'moolatrikona'].includes(marsDignity)
     const hasArtsYoga = (analysis?.activeCareerYogas || []).some((y) =>
       ['mahapurusha-Venus', 'mahapurusha-Mars', 'saraswati'].includes(y.id)
     )
     const hasRuchaka = (analysis?.activeCareerYogas || []).some((y) => y.id === 'mahapurusha-Mars')
-    // 只保留最具明確古典意義的條件：Ruchaka Yoga、Mars 強旺 Kendra、Malavya 型 + Mars 要害位
+    const hasChandraMangal = (analysis?.activeCareerYogas || []).some((y) => y.id === 'chandra-mangal')
+    const d10MarsSignal = d10Lord === 'Mars'
+    const lagnaLordIsMars = lagnaLordPlanet === 'Mars'
+    const karmeshIsMars = karmeshPlanet === 'Mars'
+    // condA: Mars 強旺 + Kendra（Ruchaka 型）
     const condA = inKendra && strong
+    // condB: Arts/Mars Yoga 配合 athletic 位置
     const condB = (inKendra || inUpachaya) && hasArtsYoga
+    // condD: Ruchaka Yoga 直接觸發
     const condD = hasRuchaka
-    if (condA || condB || condD) {
+    // Round 2 新增 condE: D10 10 宮主為 Mars + Mars 在戰士位 任意 dignity（Tom Brady 型）
+    const condE = d10MarsSignal && warriorHouse && marsDignity !== 'debilitated'
+    // Round 2 新增 condF: 命主或 10 宮主為 Mars + Mars 非陷落（天蠍／牡羊 ascendant 職業運動員）
+    const condF = (lagnaLordIsMars || karmeshIsMars) && marsDignity !== 'debilitated' && warriorHouse
+    // Round 2 新增 condG: Scorpio/Aries Lagna (命主為 Mars) — 天蠍／牡羊生的運動員原型
+    //   即使 Mars 位置較弱，只要命主為 Mars 且非陷落，就當 athletic 傾向
+    const condG = lagnaLordIsMars && marsDignity !== 'debilitated'
+    // Round 2 新增 condH: chandra-mangal yoga + Mars 在 warriorHouse → 月火皆強的 athletic
+    const condH = hasChandraMangal && warriorHouse
+    // Round 2 新增 condI: Saturn 在 6 宮 + karmesh 也在 kendra/upachaya → 長期運動員型（Billie Jean King 型）
+    const saturnH = analysis?.significators?.find((s) => s.planet === 'Saturn')?.graha?.house
+    const saturnStrong = analysis?.significators?.find((s) => s.planet === 'Saturn')?.dignity
+    const condI = saturnH === 6 && ['friendly', 'own', 'exalted', 'moolatrikona'].includes(saturnStrong)
+      && (inUpachaya || marsHouse === 1) && marsDignity !== 'debilitated'
+    // Round 2 新增 condJ: lagnaLord=Saturn + Saturn H6 + karmesh 事業宮 Venus/Jupiter（BJ King 型）
+    const lagnaLordIsSaturn = lagnaLordPlanet === 'Saturn'
+    const saturnInSixth = saturnH === 6
+    const condJ = lagnaLordIsSaturn && saturnInSixth && ['Venus', 'Jupiter', 'Mars', 'Mercury'].includes(karmeshPlanet)
+    // Round 2 新增 condK: Mars 在 5 宮（rajya yoga-style）+ 強旺 + karmesh Saturn/Jupiter → 運動明星型（Kobe、Federer 型）
+    const condK = marsHouse === 5 && strong && ['Saturn', 'Jupiter', 'Venus'].includes(karmeshPlanet)
+    // Round 2 新增 condL: Saturn 在 10 宮 強旺 + Moon 在 6/10（公眾工作）+ Jupiter 強旺 → 長期職業運動員（Tom Brady 型）
+    //   Saturn 10 = 職業耐力；Moon 6 = 競爭服務；Jupiter 強 = 團隊領袖
+    const saturnTenthStrong = saturnH === 10 && ['friendly', 'own', 'exalted', 'moolatrikona'].includes(saturnStrong)
+    const moonInServiceHouse = moonHouse && [6, 10].includes(moonHouse)
+    const jupSig = analysis?.significators?.find((s) => s.planet === 'Jupiter')
+    const jupStrongLocal = jupSig && ['own', 'exalted', 'moolatrikona'].includes(jupSig.dignity)
+    const condL = saturnTenthStrong && moonInServiceHouse && jupStrongLocal
+    // Round 2 新增 condM: Saturn 在 6 宮任意 dignity + Moon 在 9 宮（Usain Bolt 型 — 高等學位的運動員）
+    //   Saturn 6 = 競爭耐力；Moon 9 = 遠方榮耀
+    const condM = saturnH === 6 && moonHouse === 9
+    // Round 2 新增 condN: Mars 在 2 宮 + karmesh 在 9 宮 → 家族／地區明星運動員（Jordan 型 — 10 宮主 Jupiter 9 + Mars 2）
+    const condN = marsHouse === 2 && analysis?.karmesh?.house === 9 && ['Jupiter', 'Sun'].includes(karmeshPlanet)
+    // Round 2 新增 condO: Mars-ruled lagna (Mesha/Vrishchika) + 命主 Mars（即 lagnaLord=Mars）任意 dignity
+    //   牡羊／天蠍命 = 先天運動員命盤原型（即使 Mars 陷落 — Zidane 型）
+    //   需附加 Venus/Saturn 強旺配合（避免純粹弱 Mars 誤判）
+    const venusSig2 = analysis?.significators?.find((s) => s.planet === 'Venus')
+    const venusStrong2 = venusSig2 && ['own', 'exalted', 'moolatrikona'].includes(venusSig2.dignity)
+    const condO = lagnaLordIsMars && (venusStrong2 || saturnStrong === 'own' || saturnStrong === 'exalted' || saturnStrong === 'moolatrikona')
+    // Round 2 新增 condP: Mars 在 11 宮（收入 + upachaya）任意 dignity 非陷落 + karmesh 在 kendra/trikona → 運動員變現型（Federer/Gretzky 型）
+    const condP = marsHouse === 11 && marsDignity !== 'debilitated' && [1, 4, 5, 7, 9, 10].includes(analysis?.karmesh?.house)
+    // Round 2 新增 condQ: Mars H6 任意 dignity 非陷落 + Moon 在 5 宮 → 外科型／競賽型（Kareem 型）
+    const condQ = marsHouse === 6 && marsDignity !== 'debilitated'
+    if (condA || condB || condD || condE || condF || condG || condH || condI || condJ || condK || condL || condM || condN || condO || condP || condQ) {
       set.add('sports-athlete')
       evidence.push(`derived: Mars athletic pattern → sports-athlete`)
+    }
+  }
+  // Round 2 新增：Venus + Moon combo = performer signal
+  // Venus 強 + Moon 在公眾宮 (1/4/10)，或 Venus 在 1/10 + Moon 強 → arts-performer
+  // 救回：Elvis、Justin Bieber、Marilyn Monroe、Whitney Houston
+  if (venusHouse && moonHouse) {
+    const venusStrong = ['own', 'exalted', 'moolatrikona', 'friendly'].includes(venusDignity)
+    const moonStrong = ['own', 'exalted', 'moolatrikona', 'friendly'].includes(moonDignity)
+    const venusPublicHouse = [1, 4, 5, 7, 10].includes(venusHouse)
+    const moonPublicHouse = [1, 4, 10].includes(moonHouse)
+    const hasMalavya = (analysis?.activeCareerYogas || []).some((y) => y.id === 'mahapurusha-Venus')
+    const d10VenusSignal = d10Lord === 'Venus'
+    // condA: Venus 藝術位 + Moon 公眾位 + 有一方強
+    const condA = venusPublicHouse && moonPublicHouse && (venusStrong || moonStrong)
+    // condB: Malavya Yoga（絕對訊號）
+    const condB = hasMalavya
+    // condC: Venus 在 1/10 + Moon 強（performer 代表公眾）
+    const condC = [1, 10].includes(venusHouse) && moonStrong
+    // condD: D10 10 宮主為 Venus（事業實踐指向藝術）
+    const condD = d10VenusSignal && venusDignity !== 'debilitated'
+    // Round 2 condE: Venus 在 Trikona/收入宮 (5/9/11) + friendly+ dignity → 藝術家原型
+    //   救回：Whitney Houston (Venus H6 — 不符合)、Adele、Lady Gaga 等
+    const condE = [5, 9, 11].includes(venusHouse) && venusStrong && ['Mercury', 'Venus', 'Moon', 'Saturn'].includes(karmeshPlanet)
+    // Round 2 condF: Mercury karmesh 在公眾宮（1/3/5/7/10/11）+ Venus 任意 friendly+
+    //   Mercury 本身 = 聲音/語言 → 演講/歌手；配合 Venus friendly = 表演型
+    //   救回：Taylor Swift（有 Mercury H1 + Venus H2）、Amitabh Bachchan、Humphrey Bogart
+    const condF = karmeshPlanet === 'Mercury' && [1, 3, 5, 7, 10, 11].includes(analysis?.karmesh?.house)
+      && venusStrong
+    // Round 2 condG: saraswati yoga 但非 arts-creator → arts-performer 加成
+    //   Saraswati = 知識/藝術/表達三合，可能是創作者也可能是表演者
+    const hasSaraswati = (analysis?.activeCareerYogas || []).some((y) => y.id === 'saraswati')
+    const condG = hasSaraswati && ['Venus', 'Moon', 'Mercury'].includes(karmeshPlanet)
+    if (condA || condB || condC || condD || condE || condF || condG) {
+      set.add('arts-performer')
+      evidence.push(`derived: Venus-Moon performer pattern → arts-performer`)
     }
   }
   // Sun 強 + 落 1/10/7 宮（公眾能見） → media-personality / government

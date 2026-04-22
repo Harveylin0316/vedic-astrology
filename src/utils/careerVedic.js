@@ -248,11 +248,13 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     }
   }
 
-  // ════ 第 8 部分：Karaka Overrides（v4：多訊號 voting）════
+  // ════ 第 8 部分：Karaka Overrides（v5 Round 2：多訊號 voting + D10 交叉）════
   // 不再只看 AMK/Top-Significator 的 dignity，而是綜合：
   //   - AMK/Top-3 的強度
-  //   - 行星所在 house 的事業意義（Mars 3/6、Sun 1/10、Venus 1/5/10、Jupiter 1/5/9/10、Saturn 7/10）
+  //   - 行星所在 house 的事業意義（Mars 3/6/10/11、Sun 1/10、Venus 1/5/10、Jupiter 1/5/9/10、Saturn 7/10）
   //   - Mahapurusha Yoga 加成
+  //   - D10 10 宮主交叉驗證（Round 2 新增）
+  //   - Mars 合宮 / Venus+Moon combo（Round 2 新增）
   const karakaOverrides = buildKarakaOverrides({
     amatyakaraka: amk.amatyakaraka
       ? {
@@ -263,7 +265,8 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     significators: significatorRanking,
     computeDignity,
     chart,
-    activeYogas: allYogas
+    activeYogas: allYogas,
+    d10: d10Karmesh
   })
 
   // Strong significators 列表供 selectKarmeshReading 做雙重確認
