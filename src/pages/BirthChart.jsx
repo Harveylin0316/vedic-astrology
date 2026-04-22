@@ -26,6 +26,7 @@ import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import ExportFullReading from '../components/ExportFullReading.jsx'
+import ViralTriptych from '../components/ViralTriptych.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
 import { useSectionViewTracker } from '../hooks/useSectionViewTracker.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
@@ -668,6 +669,16 @@ export default function BirthChart() {
                   shareUrl={typeof window !== 'undefined' ? window.location.href : ''}
                 />
               </ShareCardSection>
+
+              {/* ②-c 三聯病毒卡（IG Story ready）— 愛情 / 事業 / 稀有度 */}
+              <ViralTriptych
+                chart={chart}
+                persona={persona}
+                rarity={rarity}
+                vedicCareer={vedicCareer}
+                astrologerNote={astrologerNote}
+                shareUrl={typeof window !== 'undefined' ? window.location.href : ''}
+              />
 
               {/* 完整占星師筆記 */}
               {astrologerNote && (
