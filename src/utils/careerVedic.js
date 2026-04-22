@@ -32,6 +32,7 @@ import {
 } from '../data/careerMatrix.js'
 import { synthesizeCareerPlaybook } from '../data/careerPlaybook.js'
 import { detectCareerSubCategory } from '../data/careerSubCategoryDetector.js'
+import { buildAntardashaWindow } from '../data/antardashaWindow.js'
 import { computeDasamsa } from './vedicCalc.js'
 
 // ═══════════════════════════════════════════════
@@ -102,7 +103,7 @@ export function computeAmatyakaraka(chart) {
 // ═══════════════════════════════════════════════
 // 主分析函數（v2）
 // ═══════════════════════════════════════════════
-export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord = null) {
+export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord = null, currentADMonthsRemaining = null) {
   // ════ 第 0 部分：Yogas（重要！優先於單點判讀）════
   const allYogas = detectYogas(chart)
   // 只挑事業相關的 yoga（且有對應的 career reading）
@@ -341,6 +342,19 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     pyramid: narrative?.pyramid || null
   })
 
+  // ════ 第 10 部分：小運窗口（純加法 · 不影響 pyramid 判決）════
+  // AD 不進事業主軸判決（AD 只持續幾個月～2 年，不該改寫「這輩子該做什麼」）
+  // 只輸出「接下來 X 個月該把心力放哪」的時間感建議
+  const antardashaWindow = (currentDashaLord && currentADLord && currentADMonthsRemaining != null)
+    ? buildAntardashaWindow({
+        mdLord: currentDashaLord,
+        adLord: currentADLord,
+        monthsRemaining: currentADMonthsRemaining,
+        karakaOverrides,
+        pyramid: narrative?.pyramid || null
+      })
+    : null
+
   return {
     // 最核心：合成敘事（放在 UI 最上面）
     narrative,
@@ -394,6 +408,8 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     // 第 7 部分
     d10: d10Karmesh,
     // Sub-category 偵測（business / politics 細分）— 也在 top-level 露出
-    subCategoryDetection
+    subCategoryDetection,
+    // 第 10 部分：小運窗口（「接下來 X 個月該動哪」）— 不影響主軸判決
+    antardashaWindow
   }
 }

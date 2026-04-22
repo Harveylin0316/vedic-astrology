@@ -41,7 +41,7 @@ export const planetAsKarmesh = {
     title: '木星當事業主宰',
     essence: '智慧、傳承、法律、信仰',
     coreProfessions: ['大學教授 / 教師', '律師 / 法官', '財務顧問 / 銀行高階', '心理師 / 諮商', '出版 / 宗教', '政治（搭配 Sun）', '中央銀行 / 金融監管', '慈善 / NGO'],
-    style: '事業依賴你的「智慧」被人信服 — 適合帶人、當 mentor、寫書、當顧問。',
+    style: '事業依賴你的「智慧」被人信服 — 適合帶人、當導師、寫書、當顧問。',
     strengthsWhenWeak: '木星落於 Makara → 過度樂觀 / 理論過剩；需要踏實驗證才不空轉。'
   },
   Venus: {

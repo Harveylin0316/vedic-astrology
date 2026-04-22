@@ -40,13 +40,13 @@ export const careerEnergyByPlanet = {
   },
   Mercury: {
     energy: '需要「用腦袋 + 嘴巴 + 多線並行」的工作',
-    modernExamples: ['產品經理', '業務／BD', '作家／自媒體', '投資分析', '律師', '顧問', '獵頭', '教師／講師'],
+    modernExamples: ['產品經理', '業務／業務開發', '作家／自媒體', '投資分析', '律師', '顧問', '獵頭', '教師／講師'],
     sweetSpot: '用語言或數字把事情搞定'
   },
   Jupiter: {
     energy: '需要「傳承、智慧、有影響力」的工作',
     modernExamples: ['大學教授', '法官／資深律師', '金融高階', '主編', 'Podcast 主持', '心理師', 'NGO 創辦人', '投資人'],
-    sweetSpot: '當 mentor 不當 operator'
+    sweetSpot: '當導師不當操盤手'
   },
   Venus: {
     energy: '需要「美感、享受、跟人打交道」的工作',
@@ -55,7 +55,7 @@ export const careerEnergyByPlanet = {
   },
   Saturn: {
     energy: '需要「長期耕耘、扎實結構、不怕慢」的工作',
-    modernExamples: ['資深 PM', 'Infra／平台工程', '建築師', '產品工業設計', '編輯', '法律事務所', '公部門高階', '家業繼承'],
+    modernExamples: ['資深 PM', '基礎架構／平台工程', '建築師', '產品工業設計', '編輯', '法律事務所', '公部門高階', '家業繼承'],
     sweetSpot: '做會存在十年的東西'
   },
   Rahu: {

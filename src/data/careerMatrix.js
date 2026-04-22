@@ -335,7 +335,7 @@ export const karakaOverrideReadings = {
     energy: '戰士能量（對手、速度、膽量）',
     verdict: '運動員型 · 戰士型職業身份',
     implication: '不論 10 宮主指哪方向，你命盤中 Mars 強到足以讓「運動／軍警／外科／體力型創業」成為核心身份。Mars 主導的案例常在「靠身體／靠膽量」的領域發光。',
-    integrationAdvice: '在主軸職位裡挑「有對手、能快速反饋、需要體力或膽量」的版本 — 不是叫你去當外科或軍警，是你執行時需要「戰士能量」才不會悶。像 Growth／成長型 PM、新創 COO、業務 VP、需要實戰的營運角色。'
+    integrationAdvice: '在主軸職位裡挑「有對手、能快速反饋、需要體力或膽量」的版本 — 不是叫你去當外科或軍警，是你執行時需要「戰士能量」才不會悶。像成長型 PM、新創 COO、業務 VP、需要實戰的營運角色。'
   },
   Venus: {
     id: 'karaka-override-venus',
@@ -351,7 +351,7 @@ export const karakaOverrideReadings = {
     energy: '結構能量（耐力、紀律、10 年磨一劍）',
     verdict: '工業家／體系建設者型職業身份',
     implication: '不論 10 宮主指哪方向，你命盤中 Saturn 強到足以讓「工業／重工／基礎建設／長期體系」成為核心身份。Saturn 主導的案例常走「10 年磨一劍」路線、晚發但不敗。',
-    integrationAdvice: '在主軸職位裡挑「長期穩、結構紮實、不怕慢」的版本 — 不是叫你去蓋建築或做重工，是你執行時需要「結構感 + 耐力」才走得遠。像資深 PM、Infra／平台工程、家業繼承、體制內長期專案。'
+    integrationAdvice: '在主軸職位裡挑「長期穩、結構紮實、不怕慢」的版本 — 不是叫你去蓋建築或做重工，是你執行時需要「結構感 + 耐力」才走得遠。像資深 PM、基礎架構／平台工程、家業繼承、體制內長期專案。'
   },
   Jupiter: {
     id: 'karaka-override-jupiter',
@@ -359,7 +359,7 @@ export const karakaOverrideReadings = {
     energy: '導師能量（帶人、教學、被請教）',
     verdict: '智者／導師／宗教領袖型職業身份',
     implication: '不論 10 宮主指哪方向，你命盤中 Jupiter 強到足以讓「教學／宗教／法律／哲學／智慧指導」成為核心身份。Jupiter 主導的案例常在「智慧傳承」的領域發光。',
-    integrationAdvice: '在主軸職位裡挑「能帶人、能教學、能被請教」的版本 — 不是叫你去當老師或法官，是你執行時需要「智慧傳承」的位置才有意義感。像顧問、帶團隊的主管、寫作出版、知識付費、mentor 角色。'
+    integrationAdvice: '在主軸職位裡挑「能帶人、能教學、能被請教」的版本 — 不是叫你去當老師或法官，是你執行時需要「智慧傳承」的位置才有意義感。像顧問、帶團隊的主管、寫作出版、知識付費、導師型的角色。'
   },
   Sun: {
     id: 'karaka-override-sun',

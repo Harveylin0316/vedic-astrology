@@ -236,7 +236,7 @@ export const sunReadings = {
   Mesha: {
     theme: '衝刺型 · 不當老大會悶死',
     workStyle: '討厭被管、喜歡成為第一個做到的人。壓力下反而爆發力強。',
-    bestCareers: ['CEO / 創業者', '業務總監', '急診 / 外科醫師', '運動員 / 教練', '消防 / 警察 / 軍人', '房仲 top sales'],
+    bestCareers: ['CEO / 創業者', '業務總監', '急診 / 外科醫師', '運動員 / 教練', '消防 / 警察 / 軍人', '頂尖房仲'],
     avoidCareers: ['會計出納', '圖書館 / 文書', '例行客服'],
     moneyStyle: '賺得快花得也快。偏財運（業績、獎金、投資）強於正財。',
     successKey: '找一個能當「頭」的位置，不適合當螺絲釘',

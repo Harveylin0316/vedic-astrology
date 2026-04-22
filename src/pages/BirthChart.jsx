@@ -309,7 +309,12 @@ export default function BirthChart() {
     : []
 
   const vedicCareer = chart
-    ? analyzeVedicCareer(chart, currentDasha?.lord, currentAD?.lord)
+    ? analyzeVedicCareer(
+        chart,
+        currentDasha?.lord,
+        currentAD?.lord,
+        currentAD?.yearsRemaining != null ? currentAD.yearsRemaining * 12 : null
+      )
     : null
 
   const astrologerNote = chart ? buildAstrologerNote(chart, persona) : null
@@ -929,6 +934,46 @@ export default function BirthChart() {
                           </div>
                         )}
 
+                        {/* 小運窗口 — 接下來 X 個月該動哪 */}
+                        {vedicCareer.antardashaWindow && (
+                          <div className={`rounded-xl border p-4 ${
+                            vedicCareer.antardashaWindow.resonance?.tier === 'primary'
+                              ? 'border-emerald-500/30 bg-emerald-500/5'
+                              : vedicCareer.antardashaWindow.resonance?.tier === 'secondary'
+                              ? 'border-saffron-500/25 bg-saffron-500/5'
+                              : 'border-slate-600/30 bg-slate-800/30'
+                          }`}>
+                            <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
+                              接下來這段期間的動作建議
+                            </div>
+                            <p className="text-base text-slate-100 leading-relaxed mb-2">
+                              <span className="text-saffron-200 font-medium">
+                                {vedicCareer.antardashaWindow.headline}
+                              </span>
+                            </p>
+                            <p className="text-sm text-slate-400 italic leading-relaxed mb-3">
+                              {vedicCareer.antardashaWindow.pairingNote}
+                            </p>
+                            <div className="space-y-2">
+                              <p className="text-[15px] text-slate-100 leading-relaxed">
+                                <span className="text-saffron-300 font-medium">該做 · </span>
+                                {vedicCareer.antardashaWindow.focus}
+                              </p>
+                              {vedicCareer.antardashaWindow.caution && (
+                                <p className="text-[15px] text-slate-300 leading-relaxed">
+                                  <span className="text-vermilion-400 font-medium">小心 · </span>
+                                  {vedicCareer.antardashaWindow.caution}
+                                </p>
+                              )}
+                              {vedicCareer.antardashaWindow.resonance?.note && (
+                                <p className="text-sm text-emerald-300/90 leading-relaxed pt-2 border-t border-slate-700/50 italic">
+                                  {vedicCareer.antardashaWindow.resonance.note}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                         {/* 下一步具體 action */}
                         {vedicCareer.playbook.actions?.length > 0 && (
                           <div>
@@ -1084,7 +1129,7 @@ export default function BirthChart() {
                           已複製連結
                         </>
                       ) : (
-                        '複製連結，傳給 3 個好朋友'
+                        '複製連結'
                       )}
                     </button>
                     <a href="/compatibility" className="btn-ghost">
