@@ -70,14 +70,14 @@ function randomBirth() {
 }
 
 // ─── Helpers ───
-// 宣稱值與 rarityIndex.js 的 scoreTier 保持同步（2026 Round 4 校準後）
+// 宣稱值與 rarityIndex.js 的 scoreTier 保持同步（Round 5 · 嚴格 detector 校準後）
 const CLAIMED_RATES = {
-  '傳奇級命盤': 0.7,
-  '極稀有': 3,
-  '非常稀有': 8.5,
-  '稀有': 27,
-  '有特色': 66,
-  '較為平均': 97,
+  '傳奇級命盤': 0.6,
+  '極稀有': 2,
+  '非常稀有': 6,
+  '稀有': 18,
+  '有特色': 51,
+  '較為平均': 91,
   '樸實型': 100
 }
 

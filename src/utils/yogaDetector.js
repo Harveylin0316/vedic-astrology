@@ -82,7 +82,18 @@ function detectParivartana(grahas) {
 }
 
 // 主要 Yoga 偵測邏輯
-export function detectYogas(chart) {
+//
+// @param {Object} chart
+// @param {Object} [options]
+//   - strict: boolean — 嚴格模式（用於 rarity 計算，讓古典 yoga 真的少見）
+//     · Mahapurusha：只接受 exalted，不接受 own-sign
+//     · Gaja Kesari：Moon 與 Jupiter 都不能 debilitated
+//     · Parivartana：只計 Kendra / Trikona 宮位的互換
+//     · Budha Aditya：Mercury 不能被 Sun 焚燒（>= 6° 分隔）
+//     · Raj Yoga：兩個 lord 都必須 non-debilitated
+//   - 事業判讀（analyzeVedicCareer）用預設 permissive 模式，不受 strict 影響
+export function detectYogas(chart, options = {}) {
+  const { strict = false } = options
   const yogas = []
   const g = chart.sidereal.grahas
   const ascLord = rashiLord(chart.sidereal.ascendant.rashi.name)
@@ -90,17 +101,19 @@ export function detectYogas(chart) {
   // ═════ 1-5. Panchamahapurusha Yoga（五大偉人瑜伽）═════
   for (const [planet, yogaName] of Object.entries(PANCHAMAHAPURUSHA)) {
     const graha = g[planet]
-    const isInOwnOrExalt =
-      (OWN_SIGNS[planet] || []).includes(graha.rashi.name) ||
-      EXALTATION[planet] === graha.rashi.name
+    const isExalted = EXALTATION[planet] === graha.rashi.name
+    const isOwnSign = (OWN_SIGNS[planet] || []).includes(graha.rashi.name)
+    const isInOwnOrExalt = isExalted || isOwnSign
     const isInKendra = KENDRA.includes(graha.house)
-    if (isInOwnOrExalt && isInKendra) {
+    // strict: 只接受 exalted（真正罕見的古典定義）
+    const qualifies = strict ? (isExalted && isInKendra) : (isInOwnOrExalt && isInKendra)
+    if (qualifies) {
       yogas.push({
         id: `mahapurusha-${planet}`,
         name: `${yogaName} Yoga`,
         type: 'benefic',
         rarity: 'uncommon',
-        signature: `${planet} 在 ${graha.rashi.chinese}（本宮/旺宮）落第 ${graha.house} 宮`,
+        signature: `${planet} 在 ${graha.rashi.chinese}（${isExalted ? '旺宮' : '本宮'}）落第 ${graha.house} 宮`,
         meaning: mahapurushaMeaning(yogaName),
         prediction: mahapurushaPrediction(yogaName)
       })
@@ -113,7 +126,12 @@ export function detectYogas(chart) {
     const moonHouse = g.Moon.house
     const jupHouse = g.Jupiter.house
     const diff = ((jupHouse - moonHouse + 12) % 12) + 1
-    if ([1, 4, 7, 10].includes(diff)) {
+    const inKendra = [1, 4, 7, 10].includes(diff)
+    // strict: 要求 Moon 跟 Jupiter 都不 debilitated（Parashara 派）
+    const moonDebilitated = g.Moon.rashi.name === DEBILITATION.Moon
+    const jupDebilitated = g.Jupiter.rashi.name === DEBILITATION.Jupiter
+    const qualifies = strict ? (inKendra && !moonDebilitated && !jupDebilitated) : inKendra
+    if (qualifies) {
       yogas.push({
         id: 'gaja-kesari',
         name: 'Gaja Kesari 象王瑜伽',
@@ -128,16 +146,26 @@ export function detectYogas(chart) {
 
   // ═════ 7. Budha Aditya Yoga（水太陽同宮）═════
   // Sun + Mercury 同宮 → 智慧與表達力強
-  if (g.Sun.house === g.Mercury.house) {
-    yogas.push({
-      id: 'budha-aditya',
-      name: 'Budha Aditya Yoga 水太陽',
-      type: 'benefic',
-      rarity: 'common',
-      signature: `太陽和水星同在第 ${g.Sun.house} 宮`,
-      meaning: '智慧＋表達力＋權威的組合',
-      prediction: '你頭腦清晰、能把想法說出來讓人信服。適合學者、作家、演講者、知識型工作。'
-    })
+  // strict: Mercury 不能被 Sun 焚燒（> 6° 分隔），否則水星力量消失
+  {
+    const sameHouse = g.Sun.house === g.Mercury.house
+    let qualifies = sameHouse
+    if (strict && sameHouse) {
+      const lonDiff = Math.abs(g.Sun.longitude - g.Mercury.longitude)
+      const separation = Math.min(lonDiff, 360 - lonDiff)
+      qualifies = separation >= 6 // 水星離太陽 >=6° 才算非焚燒
+    }
+    if (qualifies) {
+      yogas.push({
+        id: 'budha-aditya',
+        name: 'Budha Aditya Yoga 水太陽',
+        type: 'benefic',
+        rarity: 'common',
+        signature: `太陽和水星同在第 ${g.Sun.house} 宮`,
+        meaning: '智慧＋表達力＋權威的組合',
+        prediction: '你頭腦清晰、能把想法說出來讓人信服。適合學者、作家、演講者、知識型工作。'
+      })
+    }
   }
 
   // ═════ 8. Chandra Mangal Yoga（月火瑜伽）═════
@@ -157,12 +185,22 @@ export function detectYogas(chart) {
   // ═════ 9. Raj Yoga（Kendra + Trikona 宮主結合）═════
   // Lagna/4/7/10 宮主 與 1/5/9 宮主同宮、互視、互換 → 皇家運勢
   // 簡化偵測：Lagna 主（1 宮主）與 5 或 9 宮主同宮或互換
+  // strict: 兩個 lord 都必須非 debilitated
   {
     const lord1 = rashiLord(chart.sidereal.houses[0].rashi.name)
     const lord5 = rashiLord(chart.sidereal.houses[4].rashi.name)
     const lord9 = rashiLord(chart.sidereal.houses[8].rashi.name)
-    const hit = [lord5, lord9].some((l) => l && g[lord1] && g[l] && g[lord1].house === g[l].house)
-    if (hit) {
+    const candidates = [lord5, lord9].filter((l) => l && g[lord1] && g[l] && g[lord1].house === g[l].house)
+    const hit = candidates.length > 0
+    let qualifies = hit
+    if (strict && hit) {
+      // 兩 lord 都不能 debilitated
+      const lord1Debil = g[lord1].rashi.name === DEBILITATION[lord1]
+      const matchLord = candidates[0]
+      const matchLordDebil = g[matchLord].rashi.name === DEBILITATION[matchLord]
+      qualifies = !lord1Debil && !matchLordDebil
+    }
+    if (qualifies) {
       yogas.push({
         id: 'raj-yoga',
         name: 'Raj Yoga 皇家瑜伽',
@@ -217,7 +255,15 @@ export function detectYogas(chart) {
   }
 
   // ═════ 12. Parivartana Yoga（相互交換）═════
+  // strict: 只算落在 Kendra (1/4/7/10) 或 Trikona (1/5/9) 的互換
+  //         （其他宮位的互換不屬於古典 Raja Parivartana）
   detectParivartana(g).forEach(({ p1, p2, r1, r2 }) => {
+    if (strict) {
+      const goodHouses = [1, 4, 5, 7, 9, 10]
+      if (!(goodHouses.includes(g[p1].house) && goodHouses.includes(g[p2].house))) {
+        return
+      }
+    }
     yogas.push({
       id: `parivartana-${p1}-${p2}`,
       name: `${p1}-${p2} Parivartana 交換瑜伽`,
@@ -231,16 +277,26 @@ export function detectYogas(chart) {
 
   // ═════ 13. Neecha Bhanga Raja Yoga（挫折轉化）═════
   // 有行星在 Debilitation 星座 + 另一行星能「解救」它（同宮或守星座的主星在 Kendra）
-  for (const [planet, debilSign] of Object.entries(DEBILITATION)) {
-    if (!g[planet]) continue
+  // strict 模式：只計 7 classical planets（不含 Rahu/Ketu）
+  //             且解救者必須 non-debilitated + 在 Kendra（需雙條件）
+  const debilPlanets = strict
+    ? ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']
+    : Object.keys(DEBILITATION)
+  for (const planet of debilPlanets) {
+    const debilSign = DEBILITATION[planet]
+    if (!g[planet] || !debilSign) continue
     if (g[planet].rashi.name === debilSign) {
-      // 檢查解救：debilSign 的主星 或 該行星旺升主星 在 Kendra
       const debilSignLord = rashiLord(debilSign)
       const exaltSign = EXALTATION[planet]
       const exaltSignLord = rashiLord(exaltSign)
-      const redemption =
-        (debilSignLord && g[debilSignLord] && KENDRA.includes(g[debilSignLord].house)) ||
-        (exaltSignLord && g[exaltSignLord] && KENDRA.includes(g[exaltSignLord].house))
+      const rescuerOk = (lord) => {
+        if (!lord || !g[lord]) return false
+        if (!KENDRA.includes(g[lord].house)) return false
+        // strict: rescuer 本身不能也 debilitated
+        if (strict && DEBILITATION[lord] === g[lord].rashi.name) return false
+        return true
+      }
+      const redemption = rescuerOk(debilSignLord) || rescuerOk(exaltSignLord)
       if (redemption) {
         yogas.push({
           id: `neecha-bhanga-${planet}`,

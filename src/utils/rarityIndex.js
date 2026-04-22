@@ -196,8 +196,10 @@ function getWeightForFinding(finding) {
 }
 
 export function computeRarityIndex(chart) {
-  const yogas = detectYogas(chart)
-  const rareConfigs = detectRareConfigs(chart)
+  // 嚴格模式：只偵測古典意義上真正稀有的 yoga
+  // （事業判讀呼叫 detectYogas(chart) 不傳 options，繼續用 permissive 模式）
+  const yogas = detectYogas(chart, { strict: true })
+  const rareConfigs = detectRareConfigs(chart, { strict: true })
   const allFindings = [...yogas, ...rareConfigs]
 
   let score = BASE_SCORE
@@ -273,11 +275,11 @@ function scoreTier(rawScore) {
   //   - Round 4: 用 raw 分判 tier — clamp 100 的人不再全擠進「傳奇」
   //     目標：傳奇 <1% / 極稀有 3-5% / 非常稀有 10-15% / 稀有 25-35%
   //   - note 文案兼顧金字塔中下段用戶體感（避免「我很普通」的挫折感）
-  if (rawScore >= 106) return { topPercent: 0.7, stars: 5, title: '傳奇級命盤', note: '140 個人裡不到 1 個跟你一樣' }
-  if (rawScore >= 92) return { topPercent: 3, stars: 5, title: '極稀有', note: '30 個人裡才出現 1 個' }
-  if (rawScore >= 80) return { topPercent: 8.5, stars: 4, title: '非常稀有', note: '大約 12 個人裡 1 個' }
-  if (rawScore >= 66) return { topPercent: 27, stars: 4, title: '稀有', note: '3-4 個人裡 1 個' }
-  if (rawScore >= 55) return { topPercent: 66, stars: 3, title: '有特色', note: '算是偏特別的那一群' }
-  if (rawScore >= 46) return { topPercent: 97, stars: 2, title: '較為平均', note: '命盤沒有極端配置 — 你是那個平衡、可靠、不出亂子的類型' }
+  if (rawScore >= 106) return { topPercent: 0.6, stars: 5, title: '傳奇級命盤', note: '160 個人裡不到 1 個跟你一樣' }
+  if (rawScore >= 92) return { topPercent: 2, stars: 5, title: '極稀有', note: '50 個人裡才出現 1 個' }
+  if (rawScore >= 80) return { topPercent: 6, stars: 4, title: '非常稀有', note: '大約 16 個人裡 1 個' }
+  if (rawScore >= 66) return { topPercent: 18, stars: 4, title: '稀有', note: '5-6 個人裡 1 個' }
+  if (rawScore >= 55) return { topPercent: 51, stars: 3, title: '有特色', note: '算是偏特別的那一群' }
+  if (rawScore >= 46) return { topPercent: 91, stars: 2, title: '較為平均', note: '命盤沒有極端配置 — 你是那個平衡、可靠、不出亂子的類型' }
   return { topPercent: 100, stars: 2, title: '樸實型', note: '本命走低調路線 — 不追求光環，人生靜水深流' }
 }

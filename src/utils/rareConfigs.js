@@ -16,7 +16,13 @@ const RASHI_MODALITIES = {
   Mithuna: 'mutable', Kanya: 'mutable', Dhanu: 'mutable', Meena: 'mutable'
 }
 
-export function detectRareConfigs(chart) {
+// @param {Object} chart
+// @param {Object} [options]
+//   - strict: boolean — 嚴格模式（rarity 用，事業不用）
+//     · Stellium：4+ 行星同宮才算（不含 Rahu/Ketu）
+//     · Moon Strong：加要求「月亮至少不受凶星夾擊」（保守做法不檢，維持 rashi 本位判）
+export function detectRareConfigs(chart, options = {}) {
+  const { strict = false } = options
   const configs = []
   const g = chart.sidereal.grahas
 
@@ -63,17 +69,19 @@ export function detectRareConfigs(chart) {
     })
   }
 
-  // ═════ 4. Stellium（3+ 行星同宮）═════
+  // ═════ 4. Stellium（3+ 或 strict 下 4+ 行星同宮）═════
+  // strict: 門檻 4 顆（古典稀有度），非 strict: 3 顆（permissive）
+  const stelliumThreshold = strict ? 4 : 3
   const houseCounts = {}
   for (const p of ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']) {
     const h = g[p].house
     houseCounts[h] = (houseCounts[h] || 0) + 1
   }
   for (const [house, count] of Object.entries(houseCounts)) {
-    if (count >= 3) {
+    if (count >= stelliumThreshold) {
       configs.push({
         id: `stellium-${house}`,
-        name: `第 ${house} 宮 Stellium（三星聚`,
+        name: `第 ${house} 宮 Stellium（${count}星聚）`,
         type: 'special',
         rarity: 'uncommon',
         signature: `${count} 顆行星同聚於第 ${house} 宮`,
