@@ -548,12 +548,9 @@ export default function BirthChart() {
                 </div>
               )}
 
-              <div id="self" className="scroll-mt-20 -mt-6" />
+              <div id="self" className="scroll-mt-28 -mt-6" />
 
-              {/* ①-a 稀有度 — 第一眼就看到社交貨幣 */}
-              {rarity && <RarityCard rarity={rarity} />}
-
-              {/* ①-b 靈魂簽名（殼 × 芯） */}
+              {/* ①-a 靈魂簽名（殼 × 芯）— 我是誰先於我有多特別 */}
               <div className="glass-panel p-6 md:p-10 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/5 border-saffron-500/30 relative overflow-hidden">
                 {/* 背景裝飾光暈 */}
                 <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-saffron-500/10 blur-3xl pointer-events-none" />
@@ -607,6 +604,9 @@ export default function BirthChart() {
                 </div>
               </div>
 
+              {/* ①-b 稀有度 — 在靈魂簽名之後揭曉「我有多特別」 */}
+              {rarity && <RarityCard rarity={rarity} />}
+
               {/* ②-b 分享卡（IG / 朋友圈 / LINE）— 緊鄰在 Hero + 稀有度之下 */}
               <ShareCardSection
                 filename={`我的吠陀命盤-${submittedStamp}.png`}
@@ -637,7 +637,7 @@ export default function BirthChart() {
               {/* 📜 完整占星師筆記 */}
               {astrologerNote && (
                 <>
-                  <div id="note" className="scroll-mt-20 -mt-6" />
+                  <div id="note" className="scroll-mt-28 -mt-6" />
                   <Section icon={<Sparkle className="h-4 w-4" />} badge="占星師手記" title="命盤跟你說的事" highlight>
                     <div className="max-w-3xl mx-auto">
                       <div className="relative rounded-2xl border border-saffron-500/20 bg-gradient-to-br from-saffron-500/[0.06] via-saffron-500/[0.02] to-white/[0.02] p-6 md:p-10">
@@ -695,7 +695,7 @@ export default function BirthChart() {
               )}
 
               {/* 💘 愛情章 */}
-              <div id="love" className="scroll-mt-20 -mt-6" />
+              <div id="love" className="scroll-mt-28 -mt-6" />
               {moon && (
                 <Section icon={<Heart className="h-4 w-4" />} badge="愛情" title={`你的愛情模式：${moon.theme}`} highlight>
                   <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
@@ -729,7 +729,7 @@ export default function BirthChart() {
               )}
 
               {/* 💼 事業章 */}
-              <div id="career" className="scroll-mt-20 -mt-6" />
+              <div id="career" className="scroll-mt-28 -mt-6" />
               {vedicCareer && (
                 <Section icon={<Briefcase className="h-4 w-4" />} badge="事業" title="你的事業命格" highlight>
                   <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
@@ -904,7 +904,7 @@ export default function BirthChart() {
               )}
 
               {/* 🏥 健康章 */}
-              <div id="health" className="scroll-mt-20 -mt-6" />
+              <div id="health" className="scroll-mt-28 -mt-6" />
               <Section icon={<ShieldCheck className="h-4 w-4" />} badge="健康" title="你的身體與精神的使用說明">
                 <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
                   {noteBody('bodyWarning') && <p>{noteBody('bodyWarning')}</p>}
@@ -937,7 +937,7 @@ export default function BirthChart() {
               </Section>
 
               {/* 🔮 運勢章 */}
-              <div id="fortune" className="scroll-mt-20 -mt-6" />
+              <div id="fortune" className="scroll-mt-28 -mt-6" />
               {currentDasha && currentDashaReading && (
                 <Section icon={<Clock4 className="h-4 w-4" />} badge="運勢" title={`你現在正走：${currentDashaReading.name}（${currentDashaReading.nickname}）`}>
                   <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">

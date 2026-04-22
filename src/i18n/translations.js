@@ -14,14 +14,14 @@ export const translations = {
     'nav.brandSubtitle': 'Vedic Astrology',
 
     // Home
-    'home.hero.tagline': 'Jyotish · 光明之學',
+    'home.hero.tagline': 'Jyotish · 3000 年沒過時的占星',
     'home.hero.title1': '為什麼你是你？',
     'home.hero.title2': '3000 年印度占星給答案',
     'home.hero.description': '吠陀占星用 108 種月宿 × 9 顆行星 × 120 年大運，告訴你：為什麼你總是 X、什麼時候會 Y、跟誰合不合。比 12 星座細 9 倍，準到你自己都驚嚇。',
     'home.hero.cta.chart': '開始排命盤',
     'home.hero.cta.nakshatra': '探索 Nakshatra',
     'home.features.title': '開啟你的星象之旅',
-    'home.features.subtitle': '四個核心功能，由古老吠陀智慧編織而成。',
+    'home.features.subtitle': '四塊，一次看懂你自己。',
     'home.features.new': 'NEW',
     'home.features.enter': '進入',
     'home.features.compatibility.title': '雙人合盤',
@@ -33,7 +33,7 @@ export const translations = {
     'home.features.planets.title': '九大行星 Navagraha',
     'home.features.planets.desc': '吠陀用 9 顆行星（多出 Rahu / Ketu）— 看哪顆在主宰你的財、愛、事業。',
     'home.concepts.title': '什麼是吠陀占星？',
-    'home.concepts.body1': '源於印度吠陀經典的 Jyotish，字面意為「光明之學」。它使用 sidereal 恆星黃道（而非西方的 tropical 回歸黃道），並以月亮為中心來理解心智與情感。',
+    'home.concepts.body1': 'Jyotish 是吠陀占星的正式名稱。它跟西方占星用的座標不一樣（恆星 sidereal vs 回歸 tropical），特別看重月亮 — 因為月亮代表的是你情緒上的「自動反應」，不是你嘴上說的那個自己。',
     'home.concepts.body2': '',
     'home.cta.title': '30 秒看懂你為什麼是你',
     'home.cta.description': '填出生日期、時間、地點 — 你的命盤、人格簽名、大運時間軸、稀有度指數，一次產出。',
@@ -116,7 +116,7 @@ export const translations = {
     'share.spec': 'PNG · 1080×1080（IG 標準尺寸）',
 
     // Footer
-    'footer.tagline': '源自印度數千年智慧的天文占星系統。以 sidereal zodiac、27 Nakshatra、九大行星 Graha 揭示靈魂的旅程。',
+    'footer.tagline': '3000 年前印度人就在用的占星系統。用 27 月宿、9 行星、120 年大運看你這輩子的節奏。',
     'footer.keyConcepts': '重要觀念',
     'footer.concept1': 'Rashi · 12 星座',
     'footer.concept2': 'Nakshatra · 27 月宿',
@@ -148,14 +148,14 @@ export const translations = {
     'nav.brandSubtitle': 'Jyotish',
 
     // Home
-    'home.hero.tagline': 'Jyotish · Science of Light',
+    'home.hero.tagline': 'Jyotish · 3000 years and still reads you',
     'home.hero.title1': 'Why are you, you?',
     'home.hero.title2': '3000 years of Vedic wisdom answers',
     'home.hero.description': 'Vedic astrology uses 108 Nakshatra Padas × 9 planets × 120-year Dasha cycles to tell you: why you always do X, when Y will happen, who you click with. 9× more precise than 12 Western signs.',
     'home.hero.cta.chart': 'Calculate My Chart',
     'home.hero.cta.nakshatra': 'Explore Nakshatras',
     'home.features.title': 'Start Your Cosmic Journey',
-    'home.features.subtitle': 'Four core features built on ancient Vedic wisdom.',
+    'home.features.subtitle': 'Four lenses — one pass through who you actually are.',
     'home.features.new': 'NEW',
     'home.features.enter': 'Open',
     'home.features.compatibility.title': 'Compatibility',
@@ -167,7 +167,7 @@ export const translations = {
     'home.features.planets.title': 'Navagraha · 9 Planets',
     'home.features.planets.desc': 'Vedic uses 9 planets (including Rahu/Ketu) — see which one rules your money, love and career.',
     'home.concepts.title': 'What is Vedic Astrology?',
-    'home.concepts.body1': 'Rooted in ancient Indian scripture, Jyotish literally means "science of light". It uses the sidereal zodiac (not the tropical one of Western astrology) and centers the Moon to understand mind and emotion.',
+    'home.concepts.body1': 'Jyotish is the formal name for Vedic astrology. It uses a different coordinate system from Western astrology (sidereal vs tropical) and puts the Moon at the center — because the Moon shows how you actually react, not the version of yourself you describe out loud.',
     'home.concepts.body2': '',
     'home.cta.title': 'See why you are you, in 30 seconds',
     'home.cta.description': 'Enter birth date, time, and location — your chart, soul signature, Dasha timeline, rarity index will all appear at once.',
@@ -250,7 +250,7 @@ export const translations = {
     'share.spec': 'PNG · 1080×1080 (Instagram size)',
 
     // Footer
-    'footer.tagline': 'An ancient Indian astrological system revealing the soul\'s journey through the sidereal zodiac, 27 Nakshatras, and 9 Grahas.',
+    'footer.tagline': 'The astrology system Indians have used for 3000 years. 27 lunar mansions, 9 planets, and 120-year Dasha cycles to read the rhythm of your life.',
     'footer.keyConcepts': 'Key Concepts',
     'footer.concept1': 'Rashi · 12 Signs',
     'footer.concept2': 'Nakshatra · 27 Lunar Mansions',

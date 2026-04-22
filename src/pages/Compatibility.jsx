@@ -794,6 +794,9 @@ function InviteLinkButton({ you, relationship, t }) {
               需要先填：生日、出生時間、城市
             </p>
           )}
+          <p className="mt-2 text-xs text-slate-500 leading-relaxed">
+            💡 不知道 TA 的出生時間？先用中午 12:00 估算也可以 — 太陽、月亮、稀有度都算得出，只有上升星座會是估算值。
+          </p>
         </div>
       </div>
     </div>

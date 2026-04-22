@@ -1,79 +1,80 @@
 # 吠陀占星 · Vedic Astrology
 
-一個以古老 Jyotish Shastra 智慧打造的現代占星網站。純靜態、無需任何 API key — 輸入出生資料後在瀏覽器本地計算命盤並顯示完整解讀文字。
+輸入生辰，30 秒看你的命盤 — 愛情模式、事業命格、大運時機、稀有度指數。純本地計算、不收個資、0 API key、0 後端。
 
-## 功能
+## 能做什麼
 
-- **吠陀命盤** — 以 Lahiri ayanamsha 計算 sidereal 恆星黃道的太陽、月亮、Lagna 上升點
-- **完整解讀** — 根據 Lagna / 太陽 / 月亮所在 Rashi 與 Nakshatra，顯示預先撰寫的性格與能量分析
-- **元素平衡** — 分析火 / 土 / 風 / 水的比例，給出建議
-- **能量建議** — 提供寶石、金屬、曼陀羅、主管日等傳統遺方
-- **27 Nakshatra** — 完整月宿系統，含守護神、主管行星、特質
-- **九大行星 Navagraha** — Surya 到 Ketu 的完整介紹
+- **命盤分析** — Tropical 回歸黃道 + Sidereal 恆星黃道雙系統（Lahiri ayanamsha），含 Lagna 上升、太陽、月亮、九大行星
+- **愛情 / 事業 / 健康 / 運勢四章深度解讀** — 針對每塊人生主題生成長篇敘事段落
+- **占星師筆記** — 以軸心洞察為骨幹，加上 9 個主題段落，模擬一對一 consultation 口吻
+- **事業 sub-category 偵測** — 25 個身份判讀：business 10 個 + politics 7 個 + arts 8 個，比「你適合當老師」更具體
+- **命盤稀有度指數** — Top X% 排名，並以古典 23 種 Yoga 組合（Raja Yoga、Dhana Yoga、Gaja Kesari 等）判定 tier
+- **分享卡** — 1080×1080 IG postcard 風格，含 QR code + CTA，一鍵下載或複製連結
+- **雙人合盤** — 吠陀 Ashta Kuta 8 因子 36 分制，配合邀請連結讓 TA 填完自動合算
+- **中英雙語** — UI 完整翻譯，解讀文字逐步擴充
+
+## 驗證準確率
+
+事業演算法在 388 名人 dataset 上做過多輪回測，目前 sub-category 分數：
+
+| 類別 | 樣本 | 準確率 |
+| --- | --- | --- |
+| Business | 10 項身份 | 91.9% |
+| Politics | 7 項身份 | 95.1% |
+| Arts | 8 項身份 | 93.5% |
+| Full dataset | 388 人 | 92.8% |
+
+驗證 pipeline 可重複跑：
+
+```bash
+node scripts/validateCareers.mjs
+```
+
+每輪結果會寫到 `reports/` 供 diff 比較。
 
 ## 技術棧
 
-- Vite + React 18（JavaScript）
-- Tailwind CSS v3
-- Lucide React icons
-- React Router v6
-- **無後端、無 API key**，部署即用
+- **Vite + React 18** — JavaScript，無 TypeScript 負擔
+- **Tailwind CSS v3** — utility-first，搭配 saffron / vermilion / cosmic 自訂色票
+- **React Router v6** — 多頁路由
+- **純本地計算** — simplified Kepler solver，精度 ±1-2°（教學級）
+- **0 API key、0 後端、0 資料庫** — 全部算在瀏覽器，隱私零外洩
+- **Netlify 部署** — `netlify.toml` 內已設好，push 即部署
 
-## 快速開始
+## 本地跑
 
 ```bash
 npm install
-npm run dev                   # Vite 開發伺服器
+npm run dev      # Vite dev server
+npm run build    # 產 dist/
 ```
-
-## 部署到 Netlify（透過 GitHub）
-
-1. 到 [Netlify](https://app.netlify.com/) → Add new site → Import from Git
-2. 選擇你的 GitHub repo
-3. Build 設定由 `netlify.toml` 自動偵測（`npm run build`、publish `dist`）
-4. 點 **Deploy**，完成
-
-無須設定任何環境變數。
 
 ## 專案結構
 
 ```
 .
-├── public/
-│   └── favicon.svg
 ├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── Footer.jsx
-│   │   ├── Starfield.jsx
-│   │   └── ChartWheel.jsx
-│   ├── data/
-│   │   ├── rashis.js            # 12 星座
-│   │   ├── nakshatras.js        # 27 月宿
-│   │   ├── planets.js           # 9 行星
-│   │   └── interpretations.js   # 規則式解讀資料
-│   ├── pages/
-│   │   ├── Home.jsx
-│   │   ├── BirthChart.jsx       # 命盤 + 解讀
-│   │   ├── Nakshatras.jsx
-│   │   ├── Planets.jsx
-│   │   └── NotFound.jsx
-│   ├── utils/
-│   │   └── vedicCalc.js         # 天文計算（Lahiri ayanamsha 等）
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
+│   ├── pages/           # Home / BirthChart / Compatibility / Nakshatras / Planets / NotFound
+│   ├── components/      # Navbar, Footer, ChartWheel, Starfield, ShareCard 系列 等
+│   ├── data/            # rashis, nakshatras, planets, careerMatrix, lagnaMoonCombos, astrologerNote 等靜態字典
+│   ├── utils/           # vedicCalc, careerVedic, compatibilityEngine, rarityIndex, yogaDetector 等計算核心
+│   └── i18n/            # 雙語字典
+├── scripts/             # validateCareers.mjs, inspectOne.mjs, auditMars.mjs
+├── data/                # celebrityDataset.json（驗證用）
+├── reports/             # 歷次驗證報告
+├── public/              # favicon.svg（og-image.png 待製作）
 ├── index.html
-├── vite.config.js
-├── tailwind.config.js
-├── postcss.config.js
 ├── netlify.toml
 └── package.json
 ```
 
+## TODO
+
+- `public/og-image.png`（1200×630）尚未製作 — 主視覺可參考命盤分享卡風格（saffron / vermilion gradient + 吠陀符號 + "看你命盤跟你說的事"）
+
 ## 計算精度說明
 
-`vedicCalc.js` 採用簡化的天文公式，精度約 ±0.5°–1°，適用於教學與自我探索。如需專業級 natal chart，建議整合 Swiss Ephemeris。
+`vedicCalc.js` 採用簡化的 Kepler 公式，精度約 ±1-2°，適用於教學與自我探索。Nakshatra 判定、Dasha 時間軸、稀有度排名皆基於這個精度等級，與專業 Swiss Ephemeris 有極小差異但日常使用足夠。
 
 ## 免責聲明
 
