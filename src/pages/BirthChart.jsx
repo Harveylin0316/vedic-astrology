@@ -16,7 +16,7 @@ import {
   Link2,
   Check
 } from 'lucide-react'
-import { cities, findCity } from '../data/cities.js'
+import { findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
@@ -32,6 +32,7 @@ import { analyzeVedicCareer } from '../utils/careerVedic.js'
 import { dignityLabels } from '../data/careerVedicData.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
+import SmartCityInput from '../components/SmartCityInput.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
 import {
   encodeBirthPayload,
@@ -137,21 +138,7 @@ export default function BirthChart() {
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
-  // 城市 autocomplete：選到已知城市自動填 lat/lon/tz
-  const handleCityChange = (value) => {
-    const matched = findCity(value)
-    if (matched) {
-      setForm((f) => ({
-        ...f,
-        city: matched.name,
-        lat: String(matched.lat),
-        lon: String(matched.lon),
-        tz: String(matched.tz)
-      }))
-    } else {
-      setForm((f) => ({ ...f, city: value }))
-    }
-  }
+  // 城市選擇：由 SmartCityInput 內部處理
 
   const handleCompute = (e) => {
     e.preventDefault()
@@ -427,35 +414,25 @@ export default function BirthChart() {
             </p>
           </div>
 
-          {/* 城市（含 autocomplete） */}
+          {/* 出生城市（搜尋 + 熱門快選） */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
               <MapPin className="h-4 w-4 text-saffron-400" />{t('form.city')}
-              <span className="text-xs text-slate-500 ml-auto">{t('form.city.hint')}</span>
+              <span className="text-xs text-slate-500 ml-auto">點一下會自動帶經緯度 + 時區</span>
             </label>
-            <input
-              type="text"
-              list="city-list"
-              placeholder="台北、Tokyo、New York…"
-              className="input-field"
+            <SmartCityInput
               value={form.city}
-              onChange={(e) => handleCityChange(e.target.value)}
+              onSelectCity={(c) =>
+                setForm((f) => ({
+                  ...f,
+                  city: c.name,
+                  lat: String(c.lat),
+                  lon: String(c.lon),
+                  tz: String(c.tz)
+                }))
+              }
+              onFreeText={(txt) => setForm((f) => ({ ...f, city: txt }))}
             />
-            <datalist id="city-list">
-              {cities.map((c) => (
-                <option key={c.name} value={c.name}>{c.display}</option>
-              ))}
-            </datalist>
-            {findCity(form.city) && (
-              <div className="mt-1.5 text-[11px] text-emerald-400">
-                ✓ {t('form.city.autoFilled')} {findCity(form.city).lat.toFixed(2)}°N / {findCity(form.city).lon.toFixed(2)}°E · UTC{form.tz >= 0 ? '+' : ''}{form.tz}
-              </div>
-            )}
-            {!findCity(form.city) && form.city && (
-              <div className="mt-1.5 text-[11px] text-slate-400">
-                {t('form.city.notFound')}
-              </div>
-            )}
           </div>
 
           {/* 進階設定 */}

@@ -22,7 +22,7 @@ import {
 import { computeVedicChart } from '../utils/vedicCalc.js'
 import { computeCompatibility, getKutaStatus } from '../utils/compatibilityEngine.js'
 import { buildCompatibilityNarrative, CATEGORY_META } from '../data/compatibilityReadings.js'
-import { cities, findCity } from '../data/cities.js'
+// cities / findCity 由 SmartCityInput 內部處理，不需 import
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import CompatibilityShareCard from '../components/CompatibilityShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
@@ -37,6 +37,7 @@ import {
 } from '../utils/permalink.js'
 import SmartDateInput from '../components/SmartDateInput.jsx'
 import SmartTimeInput from '../components/SmartTimeInput.jsx'
+import SmartCityInput from '../components/SmartCityInput.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
 
 const emptyPerson = () => ({
@@ -127,20 +128,6 @@ export default function Compatibility() {
   const updateYou = (k, v) => setYou((p) => ({ ...p, [k]: v }))
   const updateThem = (k, v) => setThem((p) => ({ ...p, [k]: v }))
 
-  const handleCityChangeFor = (setter) => (value) => {
-    const matched = findCity(value)
-    if (matched) {
-      setter((p) => ({
-        ...p,
-        city: matched.name,
-        lat: String(matched.lat),
-        lon: String(matched.lon),
-        tz: String(matched.tz)
-      }))
-    } else {
-      setter((p) => ({ ...p, city: value }))
-    }
-  }
 
   const computeChartFor = (person) => {
     const [year, month, day] = person.date.split('-').map(Number)
@@ -257,7 +244,7 @@ export default function Compatibility() {
               <PersonForm
                 person={you}
                 update={updateYou}
-                onCityChange={handleCityChangeFor(setYou)}
+                setPerson={setYou}
                 title={t('compat.person.you')}
                 accent="saffron"
                 t={t}
@@ -267,7 +254,7 @@ export default function Compatibility() {
             <PersonForm
               person={them}
               update={updateThem}
-              onCityChange={handleCityChangeFor(setThem)}
+              setPerson={setThem}
               title={inviteMode ? '你的生辰' : t('compat.person.them')}
               accent="vermilion"
               t={t}
@@ -313,7 +300,16 @@ export default function Compatibility() {
 // ════════════════════════════════════════
 // 單人表單
 // ════════════════════════════════════════
-function PersonForm({ person, update, onCityChange, title, accent, t, lang }) {
+function PersonForm({ person, update, setPerson, title, accent, t, lang }) {
+  const handleSelectCity = (c) =>
+    setPerson((p) => ({
+      ...p,
+      city: c.name,
+      lat: String(c.lat),
+      lon: String(c.lon),
+      tz: String(c.tz)
+    }))
+  const handleFreeText = (txt) => setPerson((p) => ({ ...p, city: txt }))
   const accentClasses =
     accent === 'saffron'
       ? 'border-saffron-500/40 bg-saffron-500/5'
@@ -396,27 +392,11 @@ function PersonForm({ person, update, onCityChange, title, accent, t, lang }) {
             <MapPin className="h-4 w-4" />
             {t('form.city')}
           </label>
-          <input
-            type="text"
-            list={`${title}-cities`}
+          <SmartCityInput
             value={person.city}
-            onChange={(e) => onCityChange(e.target.value)}
-            placeholder="台北、高雄、Tokyo..."
-            className="input-field"
+            onSelectCity={handleSelectCity}
+            onFreeText={handleFreeText}
           />
-          <datalist id={`${title}-cities`}>
-            {cities.map((c) => (
-              <option key={c.name} value={c.name}>
-                {c.display}
-              </option>
-            ))}
-          </datalist>
-          {findCity(person.city) && (
-            <div className="mt-1 text-[11px] text-emerald-400">
-              ✓ {t('form.city.autoFilled')} (UTC{person.tz >= 0 ? '+' : ''}
-              {person.tz})
-            </div>
-          )}
         </div>
       </div>
     </div>
