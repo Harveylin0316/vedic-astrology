@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   Sparkles,
@@ -25,6 +25,7 @@ import { findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
+import ExportFullReading from '../components/ExportFullReading.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
 import { useSectionViewTracker } from '../hooks/useSectionViewTracker.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
@@ -114,6 +115,8 @@ export default function BirthChart() {
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('self')
   const [closingCopied, setClosingCopied] = useState(false)
+  // 整份解讀匯出用的 ref — 會包住所有章節 + 結尾
+  const fullReadingRef = useRef(null)
 
   // 從 URL 參數還原（永久連結）
   useEffect(() => {
@@ -542,7 +545,7 @@ export default function BirthChart() {
           {!chart ? (
             <WelcomePanel />
           ) : (
-            <>
+            <div ref={fullReadingRef}>
               {/* ⓪ Sticky Section Nav — 古籍目錄感 */}
               <div className="sticky top-0 z-20 -mx-6 px-6 py-3 bg-ink-950/90 backdrop-blur-sm border-b border-gold-500/20">
                 <div className="flex gap-0 overflow-x-auto scrollbar-none">
@@ -1143,39 +1146,53 @@ export default function BirthChart() {
                   <p className="pt-6">{astrologerNote.closing}</p>
 
                   {/* 分享 CTA */}
-                  <div className="mt-10 not-italic flex flex-col sm:flex-row gap-3 justify-center">
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const ok = await copyToClipboard(
-                          typeof window !== 'undefined' ? window.location.href : ''
-                        )
-                        if (ok) {
-                          trackEvent('closing_copy_link', { rarity: rarity?.topPercent })
-                          setClosingCopied(true)
-                          setTimeout(() => setClosingCopied(false), 2500)
-                        }
-                      }}
-                      className="btn-primary min-w-[220px]"
-                      disabled={closingCopied}
-                    >
-                      {closingCopied ? (
-                        <>
-                          <Check className="h-4 w-4" />
-                          已複製連結
-                        </>
-                      ) : (
-                        '複製連結'
-                      )}
-                    </button>
-                    <a href="/compatibility" className="btn-ghost">
-                      <ArrowRight className="h-4 w-4" />
-                      或問 TA 生辰，算你們合盤
-                    </a>
+                  <div className="mt-10 not-italic flex flex-col items-center gap-4" data-export-skip>
+                    {/* 主行動：把整份存成照片 */}
+                    <ExportFullReading
+                      targetRef={fullReadingRef}
+                      className="btn-primary min-w-[280px]"
+                      label="把整份解讀存成照片"
+                    />
+
+                    <p className="font-caps text-[10px] uppercase tracking-[0.4em] text-gold-500/60">
+                      一張完整 PNG · 包含所有章節
+                    </p>
+
+                    {/* 次要行動 */}
+                    <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const ok = await copyToClipboard(
+                            typeof window !== 'undefined' ? window.location.href : ''
+                          )
+                          if (ok) {
+                            trackEvent('closing_copy_link', { rarity: rarity?.topPercent })
+                            setClosingCopied(true)
+                            setTimeout(() => setClosingCopied(false), 2500)
+                          }
+                        }}
+                        className="btn-ghost"
+                        disabled={closingCopied}
+                      >
+                        {closingCopied ? (
+                          <>
+                            <Check className="h-4 w-4" />
+                            已複製連結
+                          </>
+                        ) : (
+                          '複製連結'
+                        )}
+                      </button>
+                      <a href="/compatibility" className="btn-ghost">
+                        <ArrowRight className="h-4 w-4" />
+                        或問 TA 生辰，算你們合盤
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
       </div>
