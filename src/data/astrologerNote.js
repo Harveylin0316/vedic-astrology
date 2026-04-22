@@ -235,14 +235,14 @@ export const closings = {
 // ═════════════════════════════════════════════════════════════
 export const sectionTitles = {
   family: '關於你的家',
-  intimacy: '關於你在親密關係裡',
-  reaction: '關於你的反應跟講話',
-  selfCriticism: '關於你對自己的嚴厲',
-  authorization: '關於你可以的',
+  intimacy: '在親密關係裡的你',
+  reaction: '你說話的方式',
+  selfCriticism: '你對自己的嚴厲',
+  authorization: '你其實可以的',
   money: '關於錢',
   bodyWarning: '關於身體',
-  contrarian: '我知道你不想聽',
-  lifeCourse: '關於今生的核心課題'
+  contrarian: '那些你不必委屈的',
+  lifeCourse: '你這輩子要面對的'
 }
 
 // ═════════════════════════════════════════════════════════════

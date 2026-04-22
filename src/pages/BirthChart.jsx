@@ -682,7 +682,7 @@ export default function BirthChart() {
               {/* 💘 愛情章 */}
               <div id="love" className="scroll-mt-28 -mt-6" />
               {moon && (
-                <Section icon={<Heart className="h-4 w-4" />} badge="愛情" title={`你的愛情模式：${moon.theme}`} highlight>
+                <Section icon={<Heart className="h-4 w-4" />} badge="愛情" title={moon.theme} highlight>
                   <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
                     {noteBody('intimacy') && <p>{noteBody('intimacy')}</p>}
                     {noteBody('family') && <p>{noteBody('family')}</p>}

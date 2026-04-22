@@ -109,7 +109,7 @@ export const translations = {
     // Share card
     'share.title': '分享你的結果',
     'share.description': '下載這張圖，直接發 IG、小紅書、朋友圈、LINE 群。',
-    'share.downloadBtn': '下載分享圖',
+    'share.downloadBtn': '下載',
     'share.downloadingBtn': '產圖中...',
     'share.downloadedBtn': '已下載',
     'share.nativeBtn': '分享給朋友',

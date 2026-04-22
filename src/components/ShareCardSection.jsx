@@ -1,13 +1,11 @@
-import { useRef, useState, cloneElement, isValidElement } from 'react'
+import { useRef, useState, useEffect, cloneElement, isValidElement } from 'react'
 import { toPng } from 'html-to-image'
 import { Download, Share2, Check, Loader2, X, Link2 } from 'lucide-react'
 import { trackEvent } from './Analytics.jsx'
 import { useI18n } from '../i18n/I18nProvider.jsx'
 import { copyToClipboard } from '../utils/permalink.js'
 
-// 通用 ShareCardSection：預覽縮圖 + 下載 PNG
-// 用法：<ShareCardSection filename="xxx.png" shareText="..." shareTitle="..."><Card ref={cardRef} /></ShareCardSection>
-// children 必須是 forwardRef 元件（會自動接 ref）
+// 通用 ShareCardSection：預覽縮圖 + 下載 PNG + 複製連結
 export default function ShareCardSection({
   children,
   filename = 'vedic-chart.png',
@@ -17,13 +15,28 @@ export default function ShareCardSection({
 }) {
   const { t } = useI18n()
   const cardRef = useRef(null)
+  const previewWrapperRef = useRef(null)
   const [status, setStatus] = useState('idle') // idle | loading | success | error
-  const [previewImage, setPreviewImage] = useState(null) // 手機長按儲存的 modal
-  const [linkCopied, setLinkCopied] = useState(false) // 「已複製連結」小 toast 狀態
+  const [previewImage, setPreviewImage] = useState(null) // fallback modal
+  const [linkCopied, setLinkCopied] = useState(false)
+  const [scale, setScale] = useState(0.5)
   const displayTitle = title || t('share.title')
 
   const isMobile =
     typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+  // 🔧 Responsive scale — 依預覽容器寬度動態計算（修正手機跑版）
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined' || !previewWrapperRef.current) return
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width
+        if (w > 0) setScale(w / 1080)
+      }
+    })
+    observer.observe(previewWrapperRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   const renderCard = async () => {
     return await toPng(cardRef.current, {
@@ -33,8 +46,6 @@ export default function ShareCardSection({
     })
   }
 
-  // iOS Safari 不支援 data URL 的 <a download> 直接下載。
-  // 解法：手機端先嘗試 navigator.share（檔案），失敗則顯示 modal 讓用戶長按儲存。
   const handleDownload = async () => {
     if (!cardRef.current) return
     setStatus('loading')
@@ -42,7 +53,7 @@ export default function ShareCardSection({
       const dataUrl = await renderCard()
 
       if (isMobile) {
-        // 手機：優先用 native share（含檔案）
+        // 手機：用 navigator.share 觸發系統分享單 → 用戶選「儲存到相簿」一步完成
         if (navigator.share && navigator.canShare) {
           try {
             const blob = await (await fetch(dataUrl)).blob()
@@ -62,10 +73,9 @@ export default function ShareCardSection({
               setStatus('idle')
               return
             }
-            // 其他錯誤 → fallback 到 modal
           }
         }
-        // Fallback：展示 modal，讓用戶長按儲存（iOS 標準流程）
+        // 不支援 navigator.share 的舊手機 → modal fallback
         setPreviewImage(dataUrl)
         setStatus('idle')
         trackEvent('mobile_longpress_modal', { filename })
@@ -87,7 +97,6 @@ export default function ShareCardSection({
     }
   }
 
-  // 直接複製連結，不觸發 navigator.share（避免系統分享選單打斷節奏）
   const handleCopyLink = async () => {
     if (typeof window === 'undefined') return
     const ok = await copyToClipboard(window.location.href)
@@ -98,7 +107,6 @@ export default function ShareCardSection({
     }
   }
 
-  // 複製 children 並注入 ref（正確做法）
   const childWithRef = isValidElement(children) ? cloneElement(children, { ref: cardRef }) : children
 
   return (
@@ -113,18 +121,19 @@ export default function ShareCardSection({
           {t('share.description')}
         </p>
 
-        {/* 隱藏的 1080×1080 卡片（實際截圖來源）+ 縮小預覽 */}
-        <div className="relative mx-auto" style={{ maxWidth: '540px' }}>
+        {/* 預覽縮圖 — 使用 ResizeObserver 動態 scale 修正手機跑版 */}
+        <div
+          ref={previewWrapperRef}
+          className="relative mx-auto w-full"
+          style={{ maxWidth: '540px' }}
+        >
           <div
-            className="overflow-hidden rounded-2xl shadow-2xl border border-white/10"
-            style={{
-              aspectRatio: '1 / 1',
-              position: 'relative'
-            }}
+            className="overflow-hidden rounded-2xl shadow-2xl border border-white/10 relative"
+            style={{ aspectRatio: '1 / 1' }}
           >
             <div
               style={{
-                transform: 'scale(0.5)',
+                transform: `scale(${scale})`,
                 transformOrigin: 'top left',
                 width: '1080px',
                 height: '1080px',
@@ -144,7 +153,7 @@ export default function ShareCardSection({
             type="button"
             onClick={handleCopyLink}
             disabled={linkCopied}
-            className="btn-ghost min-w-[160px]"
+            className="btn-ghost min-w-[140px]"
           >
             {linkCopied ? (
               <>
@@ -154,7 +163,7 @@ export default function ShareCardSection({
             ) : (
               <>
                 <Link2 className="h-4 w-4" />
-                複製連結給朋友
+                複製連結
               </>
             )}
           </button>
@@ -162,7 +171,7 @@ export default function ShareCardSection({
             type="button"
             onClick={handleDownload}
             disabled={status === 'loading'}
-            className="btn-primary"
+            className="btn-primary min-w-[120px]"
           >
             {status === 'loading' ? (
               <>
@@ -177,18 +186,18 @@ export default function ShareCardSection({
             ) : (
               <>
                 <Download className="h-4 w-4" />
-                {isMobile ? '儲存到相簿' : t('share.downloadBtn')}
+                下載
               </>
             )}
           </button>
         </div>
 
         <p className="text-xs text-slate-500 mt-3">
-          {isMobile ? '手機端會打開預覽 → 長按圖片選「儲存影像」' : t('share.spec')}
+          {isMobile ? '手機端會跳系統分享 → 選「儲存影像」即可存到相簿' : t('share.spec')}
         </p>
       </div>
 
-      {/* 「已複製連結」小 toast（右下角浮現） */}
+      {/* 「已複製連結」小 toast */}
       {linkCopied && (
         <div
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 rounded-full bg-emerald-500/95 text-white px-5 py-2.5 text-sm font-medium shadow-xl flex items-center gap-2 animate-[fadeIn_0.2s_ease-out]"
@@ -200,7 +209,7 @@ export default function ShareCardSection({
         </div>
       )}
 
-      {/* 手機長按儲存 Modal */}
+      {/* fallback：不支援 navigator.share 的舊手機才會打到這裡 */}
       {previewImage && (
         <div
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex flex-col items-center justify-center p-4 overflow-auto"
