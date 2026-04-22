@@ -9,7 +9,8 @@
 //   node scripts/sampleRarityDistribution.mjs --n=5000     # 自訂樣本數
 //   node scripts/sampleRarityDistribution.mjs --seed=42    # 固定隨機種子（可重現）
 
-import { computeVedicChart } from '../src/utils/vedicCalc.js'
+import { computeVedicChart, computeVimshottariDasha, getCurrentDasha, computeAntardashas, getCurrentAntardasha } from '../src/utils/vedicCalc.js'
+import { analyzeVedicCareer } from '../src/utils/careerVedic.js'
 import { computeRarityIndex } from '../src/utils/rarityIndex.js'
 
 const argv = process.argv.slice(2)
@@ -117,7 +118,12 @@ for (let i = 0; i < N; i++) {
       lat: birth.lat,
       lon: birth.lon
     })
-    const rarity = computeRarityIndex(chart)
+    // 模擬 BirthChart.jsx：rarity 接收 vedicCareer
+    const dasha = computeVimshottariDasha(chart)
+    const curDasha = dasha?.length ? getCurrentDasha(dasha) : null
+    const curAD = curDasha ? getCurrentAntardasha(computeAntardashas(curDasha)) : null
+    const vc = analyzeVedicCareer(chart, curDasha?.lord || null, curAD?.lord || null)
+    const rarity = computeRarityIndex(chart, vc)
     scoreDistribution.push(rarity.score)
     const tierKey = `${rarity.title} (≥${tierThreshold(rarity.title)})`
     tierCounts[tierKey] = (tierCounts[tierKey] || 0) + 1

@@ -292,7 +292,8 @@ export default function BirthChart() {
       })
     : null
 
-  const rarity = chart ? computeRarityIndex(chart) : null
+  // rarity 在 vedicCareer 之後計算（見下方）— 先宣告佔位讓後面引用不出錯
+  // const rarity 會在 vedicCareer 後重新賦值
 
   const signatures = chart
     ? renderSignatureSentences({
@@ -322,6 +323,10 @@ export default function BirthChart() {
         currentAD?.yearsRemaining != null ? currentAD.yearsRemaining * 12 : null
       )
     : null
+
+  // rarity 依賴 vedicCareer 的結構訊號（karmesh / karaka / pyramid / d10）加分
+  // 這樣「命盤稀有度」會跟「事業強度」同步
+  const rarity = chart ? computeRarityIndex(chart, vedicCareer) : null
 
   const astrologerNote = chart ? buildAstrologerNote(chart, persona) : null
   // 取得某段筆記 body 的小工具（把筆記內容散佈到對應 section 用）

@@ -195,7 +195,39 @@ function getWeightForFinding(finding) {
   return null
 }
 
-export function computeRarityIndex(chart) {
+// ═══════════════════════════════════════════════════════════════
+// 事業強度信號加分表（2026 Round 6 · 實證校準後）
+//
+// 原意：讓 rarity 跟事業判讀同步，避免 Bill Gates 只是「較為平均」。
+//
+// 實證現實（celebrity 391 vs random 3000 lift 分析）：
+//   幾乎所有事業結構信號的 lift 都接近 1.0 ±0.2。這意味著吠陀命盤
+//   能預測「事業方向」（91.9%），但**不能預測「事業高度」**。
+//   Bill Gates 與普通商店老闆在 karmesh/karaka 結構上沒統計差異。
+//
+// 因此權重全部校準到 lift-based（3-5 分），避免 random 人群爆分到傳奇。
+// 用戶若要 Bill Gates = 傳奇，實質上需要 editorial override 而非公式。
+// ═══════════════════════════════════════════════════════════════
+const CAREER_POWER_WEIGHTS = {
+  // 有弱 lift 的 signals（celebrity 略多於 random）
+  karmeshMoolatrikona: { weight: 4, plain: '10 宮主根本位 · 事業基底紮實', meaning: 'Karmesh 落在 Moolatrikona — 接近本宮力量，事業根基極深。' },
+  karmeshDigbala: { weight: 3, plain: '10 宮主方向力 · 能被看見', meaning: 'Karmesh 達到 Digbala 位置 — 事業有自然的能見度加持。' },
+
+  // 中性 signals（lift ≈ 1）— 權重保持 3 分代表「有訊號但不稀有」
+  karakaOverrideStrong: { weight: 3, plain: '本命核心能量壓倒性強', meaning: '某顆 karaka 強到足以重寫你的事業身份 — 這是命盤最有個性的訊號。' },
+  karakaOverrideMedium: { weight: 2, plain: '本命核心能量明顯', meaning: '某顆 karaka 足夠強到成為事業副軸。' },
+  d10Agreement: { weight: 3, plain: 'D10 與 D1 事業同軸', meaning: '你的事業「想做」跟「會做」指向同一顆星 — 事業穩定度訊號。' },
+  karmeshOwn: { weight: 3, plain: '10 宮主本宮 · 事業主線清晰', meaning: 'Karmesh 在本宮站穩 — 事業方向不會飄、能走長遠。' },
+  karmeshKendraTrikona: { weight: 2, plain: '10 宮主在吉宮', meaning: 'Karmesh 落在 Kendra 或 Trikona — 結構優勢。' },
+  lagnaLordExaltedOrOwn: { weight: 3, plain: '命主星力量飽滿', meaning: 'Lagna Lord 在旺宮或本宮 — 自我驅動力有本錢。' },
+  lagnaLordKendraTrikona: { weight: 2, plain: '命主星在吉宮', meaning: 'Lagna Lord 在吉位 — 把「想做」跟「能做」接起來。' },
+  manyCareerYogas: { weight: 2, plain: '多重事業瑜伽疊加', meaning: '命盤有多個古典事業配置集中加乘。' },
+
+  // 反訊號（lift < 0.85）— celebrity 反而較少，但為保留命盤資訊給最低分
+  karmeshExalted: { weight: 2, plain: '10 宮主旺位', meaning: 'Karmesh 在旺宮（古典強事業位，但實證在 celebrity 群中並不顯著）。' }
+}
+
+export function computeRarityIndex(chart, vedicCareer = null) {
   // 嚴格模式：只偵測古典意義上真正稀有的 yoga
   // （事業判讀呼叫 detectYogas(chart) 不傳 options，繼續用 permissive 模式）
   const yogas = detectYogas(chart, { strict: true })
@@ -228,6 +260,12 @@ export function computeRarityIndex(chart) {
       signature: f.signature
     })
   })
+
+  // ═══ 事業強度加分層 ═══
+  // 如果傳入了 vedicCareer（從 analyzeVedicCareer 的結果），讀它的結構訊號
+  if (vedicCareer) {
+    addCareerPowerSignals(vedicCareer, features, (w) => { score += w })
+  }
 
   // Moon Pada 基礎稀有
   score += 3
@@ -263,6 +301,83 @@ export function computeRarityIndex(chart) {
     rawScore,
     ...tier,
     features: deduped
+  }
+}
+
+// ═══ 事業強度訊號：讀 vedicCareer 結果加分 ═══
+//
+// 不動 analyzeVedicCareer 邏輯，純讀取它產出的結構信號
+function addCareerPowerSignals(vc, features, addScore) {
+  const KENDRA = [1, 4, 7, 10]
+  const TRIKONA = [5, 9]  // 1 已在 KENDRA
+  const pushFeature = (key, weight) => {
+    const spec = CAREER_POWER_WEIGHTS[key]
+    if (!spec) return
+    features.push({
+      name: spec.plain,
+      plain: spec.plain,
+      technical: `Career signal: ${key}`,
+      meaning: spec.meaning,
+      freq: '基於事業判讀',
+      weight,
+      type: 'career-power',
+      signature: key
+    })
+    addScore(weight)
+  }
+
+  // ─── Karmesh (10 宮主) dignity + 位置 ───
+  const k = vc.karmesh
+  if (k && k.planet) {
+    const d = k.dignity
+    const dd = k.dignityDetails || {}
+    if (d === 'exalted') {
+      pushFeature('karmeshExalted', CAREER_POWER_WEIGHTS.karmeshExalted.weight)
+    } else if (dd.moolatrikona) {
+      pushFeature('karmeshMoolatrikona', CAREER_POWER_WEIGHTS.karmeshMoolatrikona.weight)
+    } else if (d === 'own') {
+      pushFeature('karmeshOwn', CAREER_POWER_WEIGHTS.karmeshOwn.weight)
+    }
+    if (k.house && ([...KENDRA, ...TRIKONA].includes(k.house)) && d !== 'exalted' && d !== 'own') {
+      // 已經 exalted/own 的不重複加「在吉宮」分
+      pushFeature('karmeshKendraTrikona', CAREER_POWER_WEIGHTS.karmeshKendraTrikona.weight)
+    }
+    if (dd.digbala) {
+      pushFeature('karmeshDigbala', CAREER_POWER_WEIGHTS.karmeshDigbala.weight)
+    }
+  }
+
+  // ─── Karaka Overrides 強度 ───
+  const overrides = vc.karakaOverrides || []
+  const topOverride = overrides[0]
+  if (topOverride) {
+    if (topOverride.strength === 'strong') {
+      pushFeature('karakaOverrideStrong', CAREER_POWER_WEIGHTS.karakaOverrideStrong.weight)
+    } else if (topOverride.strength === 'medium') {
+      pushFeature('karakaOverrideMedium', CAREER_POWER_WEIGHTS.karakaOverrideMedium.weight)
+    }
+  }
+
+  // ─── Lagna Lord 位置 ───
+  const ll = vc.lagnaLord
+  if (ll && ll.planet) {
+    const llD = ll.dignity
+    if (llD === 'exalted' || llD === 'own') {
+      pushFeature('lagnaLordExaltedOrOwn', CAREER_POWER_WEIGHTS.lagnaLordExaltedOrOwn.weight)
+    } else if (ll.house && [...KENDRA, ...TRIKONA].includes(ll.house)) {
+      pushFeature('lagnaLordKendraTrikona', CAREER_POWER_WEIGHTS.lagnaLordKendraTrikona.weight)
+    }
+  }
+
+  // ─── D10 與 D1 一致性（agreement = D10 10 宮主等於 D1 10 宮主）───
+  if (vc.d10 && vc.d10.agreement) {
+    pushFeature('d10Agreement', CAREER_POWER_WEIGHTS.d10Agreement.weight)
+  }
+
+  // ─── 多重 career yogas ───
+  const careerYogas = vc.activeCareerYogas || []
+  if (careerYogas.length >= 3) {
+    pushFeature('manyCareerYogas', CAREER_POWER_WEIGHTS.manyCareerYogas.weight)
   }
 }
 
