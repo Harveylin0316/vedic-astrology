@@ -1,5 +1,4 @@
 import { forwardRef } from 'react'
-import { CATEGORY_META } from '../data/compatibilityReadings.js'
 
 // 1080×1080 方形分享卡（IG Post / 朋友圈 / 小紅書通用）
 // 用於 html-to-image 截圖下載
@@ -8,7 +7,6 @@ const CompatibilityShareCard = forwardRef(function CompatibilityShareCard(
   ref
 ) {
   const { compat, narrative } = result
-  const meta = CATEGORY_META[compat.category] || CATEGORY_META['互補型配對']
 
   return (
     <div
@@ -125,9 +123,8 @@ const CompatibilityShareCard = forwardRef(function CompatibilityShareCard(
         </div>
       </div>
 
-      {/* 超大 icon + category */}
+      {/* Category 標題 */}
       <div style={{ textAlign: 'center', marginBottom: '20px', zIndex: 1 }}>
-        <div style={{ fontSize: '100px', lineHeight: 1, marginBottom: '10px' }}>{meta.icon}</div>
         <div
           style={{
             fontSize: '72px',
@@ -200,9 +197,9 @@ const CompatibilityShareCard = forwardRef(function CompatibilityShareCard(
           fontFamily: 'Inter, system-ui, sans-serif'
         }}
       >
-        <NarrativeBlock emoji="💘" label="為什麼吸引" text={narrative.attract} />
-        <NarrativeBlock emoji="⚔️" label="會吵什麼" text={narrative.fight} />
-        <NarrativeBlock emoji="💕" label="如何長久" text={narrative.last} />
+        <NarrativeBlock label="為什麼吸引" text={narrative.attract} />
+        <NarrativeBlock label="會吵什麼" text={narrative.fight} />
+        <NarrativeBlock label="如何長久" text={narrative.last} />
       </div>
 
       {/* 底部 */}
@@ -229,7 +226,7 @@ const CompatibilityShareCard = forwardRef(function CompatibilityShareCard(
   )
 })
 
-function NarrativeBlock({ emoji, label, text }) {
+function NarrativeBlock({ label, text }) {
   return (
     <div
       style={{
@@ -241,7 +238,6 @@ function NarrativeBlock({ emoji, label, text }) {
         flexDirection: 'column'
       }}
     >
-      <div style={{ fontSize: '28px', marginBottom: '8px' }}>{emoji}</div>
       <div
         style={{
           fontSize: '12px',

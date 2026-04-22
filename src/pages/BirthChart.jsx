@@ -14,7 +14,12 @@ import {
   Settings2,
   UserRound,
   Link2,
-  Check
+  Check,
+  User,
+  ScrollText,
+  Stethoscope,
+  Eye,
+  ArrowRight
 } from 'lucide-react'
 import { findCity } from '../data/cities.js'
 import MysticalTransition from '../components/MysticalTransition.jsx'
@@ -312,12 +317,12 @@ export default function BirthChart() {
   const noteBody = (id) => astrologerNote?.sections?.find((s) => s.id === id)?.body || null
 
   const sectionTabs = [
-    { id: 'self', label: t('chart.section.self'), icon: '🪞' },
-    { id: 'note', label: t('chart.section.note'), icon: '📜' },
-    { id: 'love', label: t('chart.section.love'), icon: '💘' },
-    { id: 'career', label: t('chart.section.career'), icon: '💼' },
-    { id: 'health', label: t('chart.section.health'), icon: '🏥' },
-    { id: 'fortune', label: t('chart.section.fortune'), icon: '🔮' }
+    { id: 'self', label: t('chart.section.self'), Icon: User },
+    { id: 'note', label: t('chart.section.note'), Icon: ScrollText },
+    { id: 'love', label: t('chart.section.love'), Icon: Heart },
+    { id: 'career', label: t('chart.section.career'), Icon: Briefcase },
+    { id: 'health', label: t('chart.section.health'), Icon: Stethoscope },
+    { id: 'fortune', label: t('chart.section.fortune'), Icon: Eye }
   ]
 
   return (
@@ -505,20 +510,20 @@ export default function BirthChart() {
                       key={s.id}
                       type="button"
                       onClick={() => scrollToSection(s.id)}
-                      className={`flex-shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+                      className={`flex-shrink-0 inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm font-medium transition ${
                         activeTab === s.id
                           ? 'border-saffron-500 bg-saffron-500/15 text-saffron-400'
                           : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
                       }`}
                     >
-                      <span className="mr-1.5">{s.icon}</span>
+                      <s.Icon className="h-3.5 w-3.5" />
                       {s.label}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* ⚠️ 沒輸入出生時間 — 精度提示 + 回訪鉤子 */}
+              {/* 沒輸入出生時間 — 精度提示 + 回訪鉤子 */}
               {submittedUnknownTime && (
                 <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 flex items-start gap-3">
                   <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
@@ -527,7 +532,7 @@ export default function BirthChart() {
                     <p className="text-slate-300">
                       太陽 / 月亮 / Nakshatra / Dasha 依然精準 — 但<strong className="text-amber-200">上升星座</strong>跟<strong className="text-amber-200">宮位排列</strong>是估算值，影響個性外顯跟事業宮判讀。
                       <br />
-                      👉 <span className="text-saffron-400">問到父母（或看出生證明）後，回到本頁重算一次，準度會跳一階。</span>
+                      <span className="text-saffron-400">問到父母（或看出生證明）後，回到本頁重算一次，準度會跳一階。</span>
                     </p>
                   </div>
                 </div>
@@ -603,8 +608,8 @@ export default function BirthChart() {
                 }
                 shareText={
                   rarity
-                    ? `剛算完吠陀命盤，全人口只有 ${rarity.topPercent}% 長這樣 😳\n你也算一下看看是哪種？→ ${typeof window !== 'undefined' ? window.location.href : ''}`
-                    : `剛算了自己的吠陀命盤 ✨\n你也來算看看 → ${typeof window !== 'undefined' ? window.location.href : ''}`
+                    ? `剛算完吠陀命盤，全人口只有 ${rarity.topPercent}% 長這樣。\n你也算一下看看是哪種？→ ${typeof window !== 'undefined' ? window.location.href : ''}`
+                    : `剛算了自己的吠陀命盤，你也來算看看 → ${typeof window !== 'undefined' ? window.location.href : ''}`
                 }
               >
                 <BirthChartShareCard
@@ -619,7 +624,7 @@ export default function BirthChart() {
                 />
               </ShareCardSection>
 
-              {/* 📜 完整占星師筆記 */}
+              {/* 完整占星師筆記 */}
               {astrologerNote && (
                 <>
                   <div id="note" className="scroll-mt-28 -mt-6" />
@@ -648,7 +653,7 @@ export default function BirthChart() {
                           {astrologerNote.sections.map((s) => (
                             <div key={s.id}>
                               <div className="flex items-center gap-3 mb-3">
-                                <span className="text-saffron-400/80 text-lg leading-none">✦</span>
+                                <span className="text-saffron-400/80 text-lg leading-none">·</span>
                                 <h4 className="font-serif text-lg md:text-xl text-saffron-200">{s.title}</h4>
                                 <div className="flex-1 h-px bg-gradient-to-r from-saffron-500/20 to-transparent" />
                               </div>
@@ -679,7 +684,7 @@ export default function BirthChart() {
                 </>
               )}
 
-              {/* 💘 愛情章 */}
+              {/* 愛情章 */}
               <div id="love" className="scroll-mt-28 -mt-6" />
               {moon && (
                 <Section icon={<Heart className="h-4 w-4" />} badge="愛情" title={moon.theme} highlight>
@@ -713,7 +718,7 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* 💼 事業章 */}
+              {/* 事業章 */}
               <div id="career" className="scroll-mt-28 -mt-6" />
               {vedicCareer && (
                 <Section icon={<Briefcase className="h-4 w-4" />} badge="事業" title="你的事業命格" highlight>
@@ -817,7 +822,7 @@ export default function BirthChart() {
                         {vedicCareer.playbook.avoid && (
                           <div>
                             <div className="text-sm text-amber-400/90 font-serif italic mb-2">
-                              ⚠️ 千萬別進這種環境
+                              千萬別進這種環境
                             </div>
                             <p className="text-base text-slate-100 leading-relaxed">
                               {vedicCareer.playbook.avoid}
@@ -888,7 +893,7 @@ export default function BirthChart() {
                 </Section>
               )}
 
-              {/* 🏥 健康章 */}
+              {/* 健康章 */}
               <div id="health" className="scroll-mt-28 -mt-6" />
               <Section icon={<ShieldCheck className="h-4 w-4" />} badge="健康" title="你的身體與精神的使用說明">
                 <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
@@ -921,7 +926,7 @@ export default function BirthChart() {
                 </div>
               </Section>
 
-              {/* 🔮 運勢章 */}
+              {/* 運勢章 */}
               <div id="fortune" className="scroll-mt-28 -mt-6" />
               {currentDasha && currentDashaReading && (
                 <Section icon={<Clock4 className="h-4 w-4" />} badge="運勢" title={`你現在正走：${currentDashaReading.name}（${currentDashaReading.nickname}）`}>
@@ -998,7 +1003,8 @@ export default function BirthChart() {
                       )}
                     </button>
                     <a href="/compatibility" className="btn-ghost">
-                      👉 或問 TA 生辰，算你們合盤
+                      <ArrowRight className="h-4 w-4" />
+                      或問 TA 生辰，算你們合盤
                     </a>
                   </div>
                 </div>

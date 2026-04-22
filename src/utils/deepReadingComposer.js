@@ -97,7 +97,7 @@ export function composeDeepReading(chart, userContext) {
   if (signatures.length > 0) {
     const pick = signatures.slice(0, 3)
     pick.forEach((s, i) => {
-      lines.push(`### ★ 斷言 ${i + 1} · ${s.type}`)
+      lines.push(`### 斷言 ${i + 1} · ${s.type}`)
       lines.push(`**${s.text}**`)
       lines.push(``)
     })
@@ -108,8 +108,13 @@ export function composeDeepReading(chart, userContext) {
   lines.push(``)
   if (topFindings.length > 0) {
     topFindings.forEach((f) => {
-      const icon = f.type === 'benefic' ? '✨' : f.type === 'malefic' || f.type === 'challenging' ? '⚠️' : '🔮'
-      lines.push(`### ${icon} ${f.name}`)
+      const tag =
+        f.type === 'benefic'
+          ? '[吉]'
+          : f.type === 'malefic' || f.type === 'challenging'
+            ? '[警]'
+            : '[異]'
+      lines.push(`### ${tag} ${f.name}`)
       lines.push(`*${f.signature}*`)
       lines.push(``)
       lines.push(`${f.prediction}`)
@@ -118,7 +123,7 @@ export function composeDeepReading(chart, userContext) {
   } else {
     // 若無特殊配置，用 Lagna-Moon 關係 fallback
     if (combo) {
-      lines.push(`### ✨ ${combo.theme}`)
+      lines.push(`### ${combo.theme}`)
       lines.push(combo.body)
       lines.push(``)
     }
@@ -126,10 +131,10 @@ export function composeDeepReading(chart, userContext) {
 
   // 月宿 Pada 深度
   if (padaReading) {
-    lines.push(`### 🌙 你的月宿人格（${sidMoonNakshatra.name} Pada ${sidMoonNakshatra.pada}）`)
+    lines.push(`### 你的月宿人格（${sidMoonNakshatra.name} Pada ${sidMoonNakshatra.pada}）`)
     lines.push(`**${padaReading.theme}** — ${padaReading.body}`)
     lines.push(``)
-    lines.push(`> 💡 戳心點：${padaReading.hotspot}`)
+    lines.push(`> 戳心點：${padaReading.hotspot}`)
     lines.push(``)
   }
 

@@ -23,7 +23,7 @@ export const karmeshMatrix = {
     7: '外交／公關／代言／合夥掌權型 — 站在台前代表機構',
     8: '保險／研究／情報／深度調查型權威',
     9: '教育體制／出版／宗教／高等政府 — 國師型',
-    10: '★ 本位最強 — 政府／CEO／公眾人物，事業即人生主軸',
+    10: '本位最強 — 政府／CEO／公眾人物，事業即人生主軸',
     11: '政界權貴／多元收入／高層人脈經營者',
     12: '海外派駐／隱居權威／幕後領導 — 在遠方或不曝光處掌權'
   },
@@ -52,7 +52,7 @@ export const karmeshMatrix = {
       withMercury: '運動解說／體育寫手／競技策略家',
       withJupiter: '運動哲學家／武術宗師／體育教育'
     },
-    6: '★ 外科／軍警／消防／衝突處理 — Mars 最強之位',
+    6: '外科／軍警／消防／衝突處理 — Mars 最強之位',
     7: '競爭型合夥／談判／運動經紀／律師',
     8: '外科急診／武術／秘密警務 — 處理危險與劇烈變動',
     9: {
@@ -93,7 +93,7 @@ export const karmeshMatrix = {
       withJupiter: '學術殿堂／哲學大師／國際宗教領袖 — 最正統智識'
     },
     10: {
-      default: '★ 商業帝國／科技／行銷管理 — 強力商業位',
+      default: '商業帝國／科技／行銷管理 — 強力商業位',
       withVenus: '娛樂／時尚／藝術商業帝國 — 美感變商業',
       withMars: '運動商業／體育帝國／競技事業 — 戰士型商業',
       withSaturn: '傳統工業／重工／建設集團 — 長期型商業',
@@ -111,7 +111,7 @@ export const karmeshMatrix = {
     6: '法律／醫療／慈善／服務型專業',
     7: '法律合夥／婚姻諮詢／跨界導師 — 公眾導師',
     8: '研究／遺產／宗教深度／占星 — 深奧智慧',
-    9: '★ 最強位 — 大學院長／教廷／國師 / 法官',
+    9: '最強位 — 大學院長／教廷／國師 / 法官',
     10: '法律／教育／顧問掌舵型 — 智慧型領袖',
     11: '金融高層／基金會／慈善網絡 — 智慧變財富',
     12: '海外教育／僧侶／慈善家 — 純粹智慧追尋'
@@ -153,10 +153,10 @@ export const karmeshMatrix = {
     4: '建築／房產開發／傳統製造 — 扎根型',
     5: '教育體制／保守投資／規矩教學',
     6: '法規／稽核／公務／矯正服務 — Saturn 喜歡處理麻煩',
-    7: '★ 長期合夥／保險／法律事務所 — Saturn 自在位',
+    7: '長期合夥／保險／法律事務所 — Saturn 自在位',
     8: '殯葬／保險／遺產／重症醫療 — 深重職業',
     9: '法律／傳統教育／宗教機構 — 體制型長者',
-    10: '★ 大型企業／政府高層／長期統帥 — 強到無懸念',
+    10: '大型企業／政府高層／長期統帥 — 強到無懸念',
     11: '多年累積的收入／礦業／老牌 — 時間是朋友',
     12: '海外建設／養老院／長期幕後 — 遠方的長年工作'
   },
@@ -170,7 +170,7 @@ export const karmeshMatrix = {
     7: '跨國合夥／網紅聯名／外籍伴侶事業',
     8: '神秘學／非法邊界／深層研究 — Rahu 自在',
     9: '海外高教／宗教創新／跨文化教學',
-    10: '★ 非主流成就／創投／科技霸業 — Rahu 頂點',
+    10: '非主流成就／創投／科技霸業 — Rahu 頂點',
     11: '加密／病毒式收入／海外人脈 — 爆發型財富',
     12: '長期海外／隱居／跨國幕後 — Rahu 本位'
   },
@@ -186,7 +186,7 @@ export const karmeshMatrix = {
     9: '宗教／哲學／深層研究 — 智者幕後',
     10: '獨特專業／純技術型成就 — 低調掌權',
     11: '意外財／小眾粉絲／深度社群',
-    12: '★ 出家／修行／極端幕後 — Ketu 純淨位'
+    12: '出家／修行／極端幕後 — Ketu 純淨位'
   }
 }
 
@@ -371,26 +371,26 @@ export const karakaOverrideReadings = {
 //   +2 Mars/Sun 在 Upachaya (3/6/10/11)
 //   +2 Sun 在 1st/10th（公眾能見度）
 //   +2 Mars 在 3rd/6th（體能／競爭徵象）
-//   +2 Mars 在 1st/10th/11th 任意 dignity（戰士能量位）★ Round 2 新增
+//   +2 Mars 在 1st/10th/11th 任意 dignity（戰士能量位） [Round 2 新增]
 //   +2 Venus 在 1st/5th/10th（藝術徵象）
-//   +1 Venus 在 2/7/9（次要藝術位）★ Round 2 新增
+//   +1 Venus 在 2/7/9（次要藝術位） [Round 2 新增]
 //   +2 Jupiter 在 1st/5th/9th/10th（智慧／導師徵象）
 //   +2 Saturn 在 10th/7th（建設／體系徵象）
 //   +2 Mahapurusha Yoga 對應行星（Ruchaka/Malavya/Hamsa/Bhadra/Shasha）
 //   +1 在 Kendra 但 non-strong dignity
-//   +3 D10 10th lord 是這顆星 + 本顆 D1 strong/own/mahapurusha 之一 ★ Round 2 新增
-//   +2 Mars 與 karmesh/Moon/Jupiter 共位或互望（athletic combo）★ Round 2 新增
-//   +2 Venus + Moon 共位或互望且有一方強旺（performer combo）★ Round 2 新增
+//   +3 D10 10th lord 是這顆星 + 本顆 D1 strong/own/mahapurusha 之一 [Round 2 新增]
+//   +2 Mars 與 karmesh/Moon/Jupiter 共位或互望（athletic combo） [Round 2 新增]
+//   +2 Venus + Moon 共位或互望且有一方強旺（performer combo） [Round 2 新增]
 //
 // roleScore ≥ 5 才啟用 override（medium），Mars/Sun 門檻 4；≥ 7 為 strong。
 //
 // 優勢：
-//   ✔ 救回 Messi / Ronaldo 類型（Mars 雖未 own，但在關鍵 house）
-//   ✔ 救回 Lincoln / JFK 類型（Sun 在關鍵宮可觸發 government override）
-//   ✔ 避免 Lincoln AMK Venus 觸發 Venus override 的誤判
-//   ✔ Beyoncé / Tiger Woods / Dalai Lama 仍可正確觸發
-//   ✔ Round 2：D10 Mars athletic signal 救回 Tom Brady、Kobe、LeBron
-//   ✔ Round 2：Venus + Moon combo 救回 Elvis、Marilyn、Whitney
+//   -救回 Messi / Ronaldo 類型（Mars 雖未 own，但在關鍵 house）
+//   -救回 Lincoln / JFK 類型（Sun 在關鍵宮可觸發 government override）
+//   -避免 Lincoln AMK Venus 觸發 Venus override 的誤判
+//   -Beyoncé / Tiger Woods / Dalai Lama 仍可正確觸發
+//   -Round 2：D10 Mars athletic signal 救回 Tom Brady、Kobe、LeBron
+//   -Round 2：Venus + Moon combo 救回 Elvis、Marilyn、Whitney
 export function buildKarakaOverrides({ amatyakaraka, significators, computeDignity, chart, activeYogas, d10 }) {
   const strongDignities = ['exalted', 'own', 'moolatrikona']
   const candidates = ['Mars', 'Venus', 'Saturn', 'Jupiter', 'Sun']
@@ -709,7 +709,7 @@ export function synthesizeCareerNarrative(analysis) {
   if (karakaOverrides?.length) {
     const top = karakaOverrides[0]
     parts.push(
-      `⚡ Karaka 加權 — ${top.source}。這代表：${top.implication}`
+      `Karaka 加權 — ${top.source}。這代表：${top.implication}`
     )
   }
 
@@ -721,7 +721,7 @@ export function synthesizeCareerNarrative(analysis) {
       )
     } else {
       parts.push(
-        `⚠️ D10（事業專盤）與 D1 方向分歧：D1 潛能指向 ${karmesh.planet}，但 D10 實踐是 ${d10.tenthLord} 主導 — 你可能「想做 A 但最後靠 B 成功」，兩條路線都是你的真相。`
+        `D10（事業專盤）與 D1 方向分歧：D1 潛能指向 ${karmesh.planet}，但 D10 實踐是 ${d10.tenthLord} 主導 — 你可能「想做 A 但最後靠 B 成功」，兩條路線都是你的真相。`
       )
     }
   }

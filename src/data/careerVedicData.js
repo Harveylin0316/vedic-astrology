@@ -57,7 +57,7 @@ export const planetAsKarmesh = {
     coreProfessions: ['建築師 / 工程師', '不動產開發', '重工 / 製造業', '政府 / 公營事業', '法律 / 保險 / 稅務', '礦業 / 石油', '傳統工藝', '殯葬 / 老人相關'],
     style: '10 年磨一劍的事業 — 你不會年輕爆紅，但過了 35 歲會穩到讓人嫉妒。',
     strengthsWhenWeak: 'Saturn 燃燒或陷於 Mesha → 紀律不穩、事業延遲更重；需要刻意建立日常結構。',
-    special: '⚠️ Saturn 是所有人事業的自然徵象星（Karaka） — 無論你的 10 宮主是什麼，Saturn 在命盤中的力量都深刻影響你的事業成就。'
+    special: '注意：Saturn 是所有人事業的自然徵象星（Karaka） — 無論你的 10 宮主是什麼，Saturn 在命盤中的力量都深刻影響你的事業成就。'
   },
   Rahu: {
     title: '羅睺當事業主宰（非典型）',
@@ -128,7 +128,7 @@ export const karmeshInHouse = {
     label: '10 宮主落第 10 宮（本位 — 最強）',
     meaning: '自立事業、社會聲望型的命格。事業是你人生最突出的一環。',
     best: '政府 / 公職、管理職、公眾人物、事業型的主軸角色',
-    special: '★ 這是事業最吉的位置之一，Raman 派稱「自立格」'
+    special: '這是事業最吉的位置之一，Raman 派稱「自立格」'
   },
   11: {
     label: '10 宮主落第 11 宮（收入 / 人脈 / 願望）',

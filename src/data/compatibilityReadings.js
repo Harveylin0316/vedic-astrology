@@ -179,11 +179,11 @@ function extraInsights(result, chartA, chartB, nameA, nameB) {
   return extras
 }
 
-// 分級 tagline/icon
+// 分級 meta（color 供 UI 使用）
 export const CATEGORY_META = {
-  '天作之合': { icon: '💫', color: 'emerald' },
-  '極佳配對': { icon: '✨', color: 'saffron' },
-  '互補型配對': { icon: '🌗', color: 'blue' },
-  '磨合型配對': { icon: '⚙️', color: 'amber' },
-  '挑戰型配對': { icon: '⚡', color: 'vermilion' }
+  '天作之合': { color: 'emerald' },
+  '極佳配對': { color: 'saffron' },
+  '互補型配對': { color: 'blue' },
+  '磨合型配對': { color: 'amber' },
+  '挑戰型配對': { color: 'vermilion' }
 }

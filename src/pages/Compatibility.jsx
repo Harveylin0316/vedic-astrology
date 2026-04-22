@@ -11,17 +11,18 @@ import {
   Sparkle,
   ShieldCheck,
   ShieldAlert,
+  ShieldQuestion,
   ArrowRight,
   Flame,
   Swords,
   Link2,
   Check,
   Share2,
-  Copy
+  Mail
 } from 'lucide-react'
 import { computeVedicChart } from '../utils/vedicCalc.js'
 import { computeCompatibility, getKutaStatus } from '../utils/compatibilityEngine.js'
-import { buildCompatibilityNarrative, CATEGORY_META } from '../data/compatibilityReadings.js'
+import { buildCompatibilityNarrative } from '../data/compatibilityReadings.js'
 // cities / findCity 由 SmartCityInput 內部處理，不需 import
 import MysticalTransition from '../components/MysticalTransition.jsx'
 import CompatibilityShareCard from '../components/CompatibilityShareCard.jsx'
@@ -199,7 +200,7 @@ export default function Compatibility() {
           {inviteMode && (
             <div className="glass-panel p-5 mb-6 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 border-saffron-500/50">
               <div className="flex items-start gap-3">
-                <div className="text-3xl">💌</div>
+                <Mail className="h-7 w-7 text-saffron-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <div className="font-serif text-xl md:text-2xl gradient-text leading-tight">
                     {inviterName} 想跟你算合盤
@@ -409,7 +410,6 @@ function PersonForm({ person, update, setPerson, title, accent, t, lang }) {
 function CompatibilityResult({ result, relationship, onReset }) {
   const { t } = useI18n()
   const { compat, narrative, you, them } = result
-  const meta = CATEGORY_META[compat.category] || CATEGORY_META['互補型配對']
 
   const youName = you.name || '你'
   const themName = them.name || 'TA'
@@ -418,7 +418,6 @@ function CompatibilityResult({ result, relationship, onReset }) {
     <div className="space-y-6">
       {/* 總分 Hero */}
       <div className="glass-panel p-8 text-center bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 border-saffron-500/40">
-        <div className="text-6xl mb-3">{meta.icon}</div>
         <div className="text-xs uppercase tracking-widest text-slate-400 mb-1">
           {youName} × {themName}
         </div>
@@ -444,7 +443,7 @@ function CompatibilityResult({ result, relationship, onReset }) {
         filename={`${youName}-x-${themName}-合盤.png`}
         title="下載這張卡片分享給 TA"
         shareTitle={`${youName} × ${themName}：${compat.category}（${compat.percent}% 吻合）`}
-        shareText={`${youName} × ${themName} 吠陀合盤：${compat.category} 💞\n${compat.tagline}\n你們的合盤也算一下？→ ${typeof window !== 'undefined' ? window.location.href : ''}`}
+        shareText={`${youName} × ${themName} 吠陀合盤：${compat.category}\n${compat.tagline}\n你們的合盤也算一下？→ ${typeof window !== 'undefined' ? window.location.href : ''}`}
       >
         <CompatibilityShareCard
           result={result}
@@ -485,7 +484,10 @@ function CompatibilityResult({ result, relationship, onReset }) {
         <div className="grid md:grid-cols-2 gap-6">
           {/* 天生對拍 */}
           <div>
-            <h4 className="font-serif text-lg text-emerald-400 mb-3">❤️ 天生對拍的地方</h4>
+            <h4 className="font-serif text-lg text-emerald-400 mb-3 inline-flex items-center gap-2">
+              <Heart className="h-4 w-4" />
+              天生對拍的地方
+            </h4>
             <div className="space-y-3">
               {compat.kutas
                 .filter((k) => {
@@ -509,7 +511,10 @@ function CompatibilityResult({ result, relationship, onReset }) {
 
           {/* 會打架 */}
           <div>
-            <h4 className="font-serif text-lg text-vermilion-500 mb-3">⚠️ 容易打架的地方</h4>
+            <h4 className="font-serif text-lg text-vermilion-500 mb-3 inline-flex items-center gap-2">
+              <ShieldAlert className="h-4 w-4" />
+              容易打架的地方
+            </h4>
             <div className="space-y-3">
               {compat.kutas
                 .filter((k) => {
@@ -679,8 +684,9 @@ function InvitedSummaryCard({ inviterName, you }) {
           </div>
         </div>
       </div>
-      <div className="mt-2 rounded-lg bg-saffron-500/10 border border-saffron-500/20 px-3 py-2 text-xs text-saffron-300 leading-relaxed">
-        ✓ {inviterName} 已把資料加密在連結裡 — 你不需要問 TA 任何問題。
+      <div className="mt-2 rounded-lg bg-saffron-500/10 border border-saffron-500/20 px-3 py-2 text-xs text-saffron-300 leading-relaxed inline-flex items-center gap-2">
+        <Check className="h-3.5 w-3.5 flex-shrink-0" />
+        <span>{inviterName} 已把資料加密在連結裡 — 你不需要問 TA 任何問題。</span>
       </div>
     </div>
   )
@@ -705,7 +711,7 @@ function InviteLinkButton({ you, relationship, t }) {
   }
 
   const inviterName = (you.name || '').trim() || '我'
-  const shareText = `${inviterName} 想跟你算合盤 💞\n30 秒填你的生日就能看結果 → `
+  const shareText = `${inviterName} 想跟你算合盤\n30 秒填你的生日就能看結果 → `
 
   const handleShare = async () => {
     if (!isReady) return
@@ -739,7 +745,7 @@ function InviteLinkButton({ you, relationship, t }) {
   return (
     <div className="mt-6 rounded-2xl border border-saffron-500/30 bg-gradient-to-br from-saffron-500/10 to-vermilion-500/10 p-5">
       <div className="flex items-start gap-3">
-        <div className="text-2xl flex-shrink-0">💌</div>
+        <Mail className="h-6 w-6 text-saffron-400 flex-shrink-0 mt-0.5" />
         <div className="flex-1 min-w-0">
           <div className="font-serif text-lg text-saffron-300 leading-tight">
             不知道 TA 的出生時間？
@@ -775,7 +781,7 @@ function InviteLinkButton({ you, relationship, t }) {
             </p>
           )}
           <p className="mt-2 text-xs text-slate-500 leading-relaxed">
-            💡 不知道 TA 的出生時間？先用中午 12:00 估算也可以 — 太陽、月亮、稀有度都算得出，只有上升星座會是估算值。
+            提醒：不知道 TA 的出生時間？先用中午 12:00 估算也可以 — 太陽、月亮、稀有度都算得出，只有上升星座會是估算值。
           </p>
         </div>
       </div>

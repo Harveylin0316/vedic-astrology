@@ -25,7 +25,7 @@ export default function ShareCardSection({
   const isMobile =
     typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
-  // 🔧 Responsive scale — 依預覽容器寬度動態計算（修正手機跑版）
+  // Responsive scale — 依預覽容器寬度動態計算（修正手機跑版）
   useEffect(() => {
     if (typeof ResizeObserver === 'undefined' || !previewWrapperRef.current) return
     const observer = new ResizeObserver((entries) => {
@@ -228,7 +228,7 @@ export default function ShareCardSection({
           <div className="w-full max-w-md flex flex-col items-center">
             <div className="rounded-xl border border-saffron-500/40 bg-saffron-500/10 px-4 py-3 mb-5 text-center">
               <p className="text-sm text-saffron-300 font-medium leading-relaxed">
-                📱 長按下方圖片
+                長按下方圖片
               </p>
               <p className="text-xs text-slate-300 mt-1">
                 選「儲存影像」即可存到相簿

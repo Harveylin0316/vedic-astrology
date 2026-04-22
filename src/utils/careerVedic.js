@@ -1,12 +1,12 @@
 // 正統吠陀事業分析引擎 · v2 (增強版)
 //
 // v2 相對 v1 的升級：
-//   ✅ 加入 Lagna Lord（命主星）分析 — 古典 K.N. Rao 派三王交叉第一王
-//   ✅ 加入 Yoga 偵測 → 事業啟示 (override 單點判讀)
-//   ✅ D10 (Dasamsa) 事業專盤交叉驗證
-//   ✅ 尊嚴 Dignity 擴展：Moolatrikona / Digbala / Neecha Bhanga 解消
-//   ✅ 108 組合矩陣（9 行星 × 12 宮）取代原本 9×1 + 12×1 並列
-//   ✅ Synthesized Narrative：把所有發現組合成「像專業占星師寫的」一段話
+//   -加入 Lagna Lord（命主星）分析 — 古典 K.N. Rao 派三王交叉第一王
+//   -加入 Yoga 偵測 → 事業啟示 (override 單點判讀)
+//   -D10 (Dasamsa) 事業專盤交叉驗證
+//   -尊嚴 Dignity 擴展：Moolatrikona / Digbala / Neecha Bhanga 解消
+//   -108 組合矩陣（9 行星 × 12 宮）取代原本 9×1 + 12×1 並列
+//   -Synthesized Narrative：把所有發現組合成「像專業占星師寫的」一段話
 //
 // 依據：Brihat Parashara Hora Shastra + Phaladeepika + K.N. Rao + B.V. Raman
 

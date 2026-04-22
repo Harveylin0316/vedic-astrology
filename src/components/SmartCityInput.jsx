@@ -149,7 +149,7 @@ export default function SmartCityInput({ value, onSelectCity, onFreeText }) {
       )}
       {!matched && query && !open && (
         <div className="mt-1.5 text-[11px] text-amber-400">
-          ⚠️ 沒匹配到內建城市 — 會用你輸入的文字當地名，但經緯度 / 時區請到「進階設定」確認
+          沒匹配到內建城市 — 會用你輸入的文字當地名，但經緯度 / 時區請到「進階設定」確認
         </div>
       )}
 
