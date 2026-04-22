@@ -43,7 +43,7 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
       }`}
       style={{
         background:
-          'radial-gradient(ellipse at center, rgba(20,11,46,0.95) 0%, rgba(10,6,24,0.98) 70%)',
+          'radial-gradient(ellipse at center, rgba(20,18,16,0.95) 0%, rgba(10,8,6,0.98) 70%)',
         backdropFilter: 'blur(20px)'
       }}
     >
@@ -52,7 +52,7 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
         className="absolute inset-0 pointer-events-none animate-pulse"
         style={{
           background:
-            'radial-gradient(circle at center, rgba(255,194,102,0.15) 0%, transparent 50%)'
+            'radial-gradient(circle at center, rgba(201,169,97,0.15) 0%, transparent 50%)'
         }}
       />
 
@@ -71,7 +71,7 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
               animationDelay: `${p.delay}s`,
               '--angle': `${p.angle}deg`,
               '--distance': `${p.distance}px`,
-              boxShadow: '0 0 8px rgba(255,194,102,0.8)'
+              boxShadow: '0 0 8px rgba(201,169,97,0.8)'
             }}
           />
         ))}
@@ -87,12 +87,12 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
         >
           <defs>
             <radialGradient id="mandalaGlow" cx="50%" cy="50%">
-              <stop offset="0%" stopColor="#ffc266" stopOpacity="0.8" />
+              <stop offset="0%" stopColor="#c9a961" stopOpacity="0.8" />
               <stop offset="100%" stopColor="#e34234" stopOpacity="0.3" />
             </radialGradient>
           </defs>
-          <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,194,102,0.4)" strokeWidth="1" strokeDasharray="4 8" />
-          <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255,194,102,0.3)" strokeWidth="1" />
+          <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(201,169,97,0.4)" strokeWidth="1" strokeDasharray="4 8" />
+          <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(201,169,97,0.3)" strokeWidth="1" />
           {Array.from({ length: 12 }).map((_, i) => {
             const a = (i * 30 - 90) * (Math.PI / 180)
             const x1 = 200 + Math.cos(a) * 120
@@ -106,12 +106,12 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="rgba(255,194,102,0.5)"
+                stroke="rgba(201,169,97,0.5)"
                 strokeWidth="1.5"
               />
             )
           })}
-          {['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'].map((sym, i) => {
+          {['\u2648','\u2649','\u264A','\u264B','\u264C','\u264D','\u264E','\u264F','\u2650','\u2651','\u2652','\u2653'].map((sym, i) => {
             const a = (i * 30 - 75) * (Math.PI / 180)
             const x = 200 + Math.cos(a) * 165
             const y = 200 + Math.sin(a) * 165
@@ -122,10 +122,12 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
                 y={y}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="#ffc266"
+                fill="#c9a961"
                 fontSize="14"
+                fontFamily="'EB Garamond', serif"
+                style={{ fontVariantEmoji: 'text' }}
               >
-                {sym}
+                {sym}{'\uFE0E'}
               </text>
             )
           })}
@@ -140,7 +142,7 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
           <polygon
             points="200,80 320,200 200,320 80,200"
             fill="none"
-            stroke="rgba(255,194,102,0.6)"
+            stroke="rgba(201,169,97,0.6)"
             strokeWidth="1.5"
           />
           <polygon
@@ -159,7 +161,7 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
                 cx={x}
                 cy={y}
                 r="3"
-                fill="#ffc266"
+                fill="#c9a961"
                 opacity="0.8"
               />
             )
@@ -178,14 +180,14 @@ export default function MysticalTransition({ onComplete, duration = 1500 }) {
             className="absolute inset-0 rounded-full"
             style={{
               background:
-                'radial-gradient(circle, rgba(255,194,102,0.35) 0%, transparent 70%)',
+                'radial-gradient(circle, rgba(201,169,97,0.35) 0%, transparent 70%)',
               filter: 'blur(10px)'
             }}
           />
           <span
             className="relative font-serif text-6xl gradient-text"
             style={{
-              filter: 'drop-shadow(0 0 12px rgba(255,194,102,0.6))',
+              filter: 'drop-shadow(0 0 12px rgba(201,169,97,0.6))',
               animation: 'omBreath 2s ease-in-out infinite'
             }}
           >

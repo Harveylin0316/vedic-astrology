@@ -338,36 +338,48 @@ export default function BirthChart() {
           duration={1500}
         />
       )}
-      <div className="text-center mb-10">
-        <h1 className="section-title">{t('chart.pageTitle')}</h1>
-        <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm">
+      <div className="text-center mb-14 pt-6">
+        <div className="font-display text-[10px] uppercase tracking-[0.45em] text-gold-500 mb-4">
+          Vol.&nbsp;II · Natale Speculum
+        </div>
+        <h1 className="font-serif text-[42px] md:text-[72px] leading-[1.05] text-parchment-50 tracking-tight">
+          {t('chart.pageTitle')}
+        </h1>
+        <div className="flex items-center justify-center gap-3 mt-5 mb-5 text-gold-400/60">
+          <span className="h-px w-14 bg-gold-500/40" />
+          <span className="font-serif">✦</span>
+          <span className="h-px w-14 bg-gold-500/40" />
+        </div>
+        <p className="font-body italic text-parchment-200/70 max-w-xl mx-auto text-[15px] leading-[1.8]">
           {t('chart.pageSubtitle')}
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
         {/* Form */}
-        <form onSubmit={handleCompute} className="glass-panel p-6 space-y-5 h-fit lg:sticky lg:top-6">
+        <form onSubmit={handleCompute} className="relative border border-gold-500/25 bg-ink-900/60 inset-border p-6 md:p-7 space-y-5 h-fit lg:sticky lg:top-6">
           {/* 性別 */}
           <div>
             <label className="flex items-center gap-2 text-sm text-slate-300 mb-2">
               <UserRound className="h-4 w-4 text-saffron-400" />{t('form.gender')}
               <span className="text-xs text-slate-500 ml-auto">{t('form.gender.hint')}</span>
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-0 border border-gold-500/25">
               {[
                 { v: 'male', label: t('form.gender.male') },
                 { v: 'female', label: t('form.gender.female') },
                 { v: 'other', label: t('form.gender.other') }
-              ].map((opt) => (
+              ].map((opt, idx) => (
                 <button
                   key={opt.v}
                   type="button"
                   onClick={() => update('gender', opt.v)}
-                  className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
+                  className={`px-3 py-3 font-display text-[11px] uppercase tracking-[0.25em] transition ${
+                    idx > 0 ? 'border-l border-gold-500/25' : ''
+                  } ${
                     form.gender === opt.v
-                      ? 'border-saffron-500 bg-saffron-500/10 text-saffron-400'
-                      : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                      ? 'bg-gold-300 text-ink-950'
+                      : 'bg-transparent text-parchment-200/70 hover:text-gold-200 hover:bg-gold-500/5'
                   }`}
                 >
                   {opt.label}
@@ -450,15 +462,15 @@ export default function BirthChart() {
             <button
               type="button"
               onClick={() => setShowAdvanced((v) => !v)}
-              className="flex items-center gap-2 text-xs text-slate-400 hover:text-saffron-400 transition"
+              className="flex items-center gap-2 font-display text-[10px] uppercase tracking-[0.3em] text-gold-500 hover:text-gold-300 transition"
             >
-              <Settings2 className="h-3.5 w-3.5" />
+              <Settings2 className="h-3 w-3" />
               {showAdvanced ? t('form.advanced.hide') : t('form.advanced.show')}
             </button>
             {showAdvanced && (
-              <div className="mt-3 space-y-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+              <div className="mt-3 space-y-3 border border-gold-500/20 bg-ink-950/40 p-4">
                 <div>
-                  <label className="text-xs text-slate-300 mb-1.5 block">{t('form.tz')} UTC±</label>
+                  <label className="text-xs text-parchment-200/70 mb-1.5 block">{t('form.tz')} UTC±</label>
                   <input
                     type="number"
                     step="0.5"
@@ -468,17 +480,17 @@ export default function BirthChart() {
                     onChange={(e) => update('tz', e.target.value)}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs text-slate-300 mb-1.5 block">{t('form.lat')} °N</label>
+                    <label className="text-xs text-parchment-200/70 mb-1.5 block">{t('form.lat')} °N</label>
                     <input type="number" step="0.001" required className="input-field text-sm" value={form.lat} onChange={(e) => update('lat', e.target.value)} />
                   </div>
                   <div>
-                    <label className="text-xs text-slate-300 mb-1.5 block">{t('form.lon')} °E</label>
+                    <label className="text-xs text-parchment-200/70 mb-1.5 block">{t('form.lon')} °E</label>
                     <input type="number" step="0.001" required className="input-field text-sm" value={form.lon} onChange={(e) => update('lon', e.target.value)} />
                   </div>
                 </div>
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <p className="text-[11px] text-parchment-200/50 leading-relaxed italic">
                   {t('form.advanced.tip')}
                 </p>
               </div>
@@ -486,17 +498,16 @@ export default function BirthChart() {
           </div>
 
           {error && (
-            <div className="flex items-start gap-2 text-sm text-vermilion-500 bg-vermilion-500/10 border border-vermilion-500/30 rounded-lg p-3">
+            <div className="flex items-start gap-2 text-sm text-sindoor-400 bg-sindoor-500/10 border border-sindoor-500/35 p-3">
               <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />{error}
             </div>
           )}
 
           <button type="submit" className="btn-primary w-full">
-            <Sparkles className="h-4 w-4" />
             {t('form.submit.chart')}
           </button>
 
-          <p className="text-xs text-slate-500 leading-relaxed text-center">
+          <p className="font-display text-[9px] uppercase tracking-[0.4em] text-gold-500/60 text-center">
             {t('form.privacy')}
           </p>
         </form>
@@ -507,22 +518,22 @@ export default function BirthChart() {
             <WelcomePanel />
           ) : (
             <>
-              {/* ⓪ Sticky Section Nav — 讓使用者快速在區塊間跳 */}
-              <div className="sticky top-0 z-20 -mx-6 px-6 py-3 bg-cosmic-950/80 backdrop-blur-md border-b border-white/10">
-                <div className="flex gap-2 overflow-x-auto scrollbar-none">
-                  {sectionTabs.map((s) => (
+              {/* ⓪ Sticky Section Nav — 古籍目錄感 */}
+              <div className="sticky top-0 z-20 -mx-6 px-6 py-3 bg-ink-950/90 backdrop-blur-sm border-b border-gold-500/20">
+                <div className="flex gap-0 overflow-x-auto scrollbar-none">
+                  {sectionTabs.map((s, i) => (
                     <button
                       key={s.id}
                       type="button"
                       onClick={() => scrollToSection(s.id)}
-                      className={`flex-shrink-0 inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+                      className={`flex-shrink-0 px-4 py-1.5 font-display text-[11px] uppercase tracking-[0.3em] transition border-b-2 ${
                         activeTab === s.id
-                          ? 'border-saffron-500 bg-saffron-500/15 text-saffron-400'
-                          : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                          ? 'text-gold-300 border-gold-300'
+                          : 'text-parchment-200/55 border-transparent hover:text-gold-200'
                       }`}
                     >
-                      <s.Icon className="h-3.5 w-3.5" />
                       {s.label}
+                      {i < sectionTabs.length - 1 && <span className="ml-4 text-gold-500/30">·</span>}
                     </button>
                   ))}
                 </div>
@@ -1153,39 +1164,75 @@ export default function BirthChart() {
 
 function WelcomePanel() {
   return (
-    <div className="glass-panel p-8 md:p-12 text-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-radial from-saffron-500/5 via-transparent to-transparent pointer-events-none" />
+    <div className="relative border border-gold-500/20 bg-ink-900/50 p-10 md:p-14 text-center overflow-hidden inset-border">
+      {/* 角落四個金箔符號 — 古籍邊章感 */}
+      <span className="absolute left-4 top-4 text-gold-400/50 font-serif text-lg">✦</span>
+      <span className="absolute right-4 top-4 text-gold-400/50 font-serif text-lg">✦</span>
+      <span className="absolute left-4 bottom-4 text-gold-400/50 font-serif text-lg">✦</span>
+      <span className="absolute right-4 bottom-4 text-gold-400/50 font-serif text-lg">✦</span>
 
       <div className="relative max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 text-xs text-saffron-400/80 mb-4">
-          <Sparkles className="h-4 w-4" />
-          <span className="font-serif italic">占星師的話</span>
-        </div>
+        <div className="chapter-eyebrow mb-6">Notes · From the Astrologer</div>
 
-        <p className="font-serif text-xl md:text-3xl text-slate-100 leading-relaxed">
+        <p className="font-serif italic text-[22px] md:text-[32px] leading-[1.55] text-parchment-50 tracking-tight">
           填好左邊，你會看到一個沒人跟你講過的、關於你自己的故事。
         </p>
 
-        <p className="mt-5 text-slate-400 text-base leading-relaxed">
+        <div className="flex items-center justify-center gap-3 my-8 text-gold-400/60">
+          <span className="h-px w-12 bg-gold-500/40" />
+          <span className="font-serif">✦</span>
+          <span className="h-px w-12 bg-gold-500/40" />
+        </div>
+
+        <p className="font-body text-[16px] leading-[1.9] text-parchment-200/75">
           包括你朋友從來沒注意、但你自己心裡一直懷疑的那些事。
         </p>
 
-        <p className="mt-8 text-xs text-slate-500">
-          30 秒 · 免註冊 · 算完可以分享給朋友逼 TA 也算
+        <p className="mt-10 font-display text-[10px] uppercase tracking-[0.4em] text-gold-500/70">
+          30 秒 · 免註冊 · 算完可分享
         </p>
       </div>
     </div>
   )
 }
 
+// 章節編號：羅馬數字（I, II, III, ...）
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
+let _sectionCounter = 0
+function useSectionNumeral() {
+  _sectionCounter += 1
+  return ROMAN[_sectionCounter] || `§${_sectionCounter}`
+}
+
 function Section({ icon, badge, title, children, highlight }) {
+  // 注意：原本的 icon 參數繼續接受但不再渲染 — Section 內部自己用行星符號
   return (
-    <div className={`glass-panel p-6 ${highlight ? 'border-saffron-500/40 bg-saffron-500/5' : ''}`}>
-      <div className="flex items-center gap-2 text-sm text-saffron-400/80 font-serif italic mb-2">
-        {icon}{badge}
+    <div
+      className={`relative py-10 md:py-12 px-6 md:px-10 ${
+        highlight
+          ? 'border-y border-gold-400/35 bg-gold-500/[0.04]'
+          : 'border-y border-gold-500/15 bg-ink-900/30'
+      }`}
+    >
+      {/* 章節頁眉 */}
+      <div className="max-w-4xl mx-auto mb-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="chapter-eyebrow">{badge}</div>
+          <div className="chapter-eyebrow text-gold-500/60">❦</div>
+        </div>
+        <h3 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-tight mt-2 leading-[1.1]">
+          {title}
+        </h3>
+        <div className="flex items-center gap-3 mt-5 text-gold-400/50">
+          <span className="h-px w-12 bg-gold-500/30" />
+          <span className="font-serif text-xs">✦</span>
+          <span className="h-px flex-1 bg-gold-500/15" />
+        </div>
       </div>
-      <h3 className="font-serif text-2xl gradient-text mb-4">{title}</h3>
-      {children}
+
+      <div className="max-w-4xl mx-auto">
+        {children}
+      </div>
     </div>
   )
 }

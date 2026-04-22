@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { Compass, Heart, ArrowRight, Star } from 'lucide-react'
 import { useI18n } from '../i18n/I18nProvider.jsx'
 
 export default function Home() {
@@ -7,125 +6,197 @@ export default function Home() {
 
   return (
     <div className="relative">
-      {/* Hero — 雙主 CTA */}
-      <section className="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-24 md:pb-28">
-        <div className="grid items-center gap-12 md:grid-cols-2">
-          <div className="space-y-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-saffron-500/30 bg-saffron-500/10 px-3 py-1 text-xs font-medium text-saffron-400">
-              {t('home.hero.tagline')}
-            </div>
-            <h1 className="text-4xl md:text-6xl font-serif leading-tight text-balance">
+      {/* ─── HERO：命書開卷 ─── */}
+      <section className="relative mx-auto max-w-6xl px-6 pt-20 pb-24 md:pt-28 md:pb-32">
+        {/* 左上古籍標章 */}
+        <div className="absolute left-6 top-16 hidden md:flex flex-col items-start gap-2">
+          <span className="font-display text-[10px] uppercase tracking-[0.5em] text-gold-500">
+            Vol.&nbsp;I
+          </span>
+          <span className="font-serif italic text-xs text-gold-400/70">
+            Horoscopus Vedicus
+          </span>
+        </div>
+        {/* 右上頁碼 */}
+        <div className="absolute right-6 top-16 hidden md:block font-display text-[10px] uppercase tracking-[0.5em] text-gold-500">
+          MMXXVI · No. 01
+        </div>
+
+        <div className="grid items-center gap-12 md:grid-cols-12 mt-10 md:mt-16">
+          {/* 標題欄 — 佔 7 欄 */}
+          <div className="md:col-span-7 space-y-8">
+            {/* Eyebrow */}
+            <div className="chapter-eyebrow">{t('home.hero.tagline')}</div>
+
+            {/* 巨大標題 */}
+            <h1 className="font-serif text-[56px] leading-[1.03] md:text-[104px] md:leading-[0.98] text-parchment-50 tracking-tight">
               {t('home.hero.title1')}
               <br />
-              <span className="gradient-text">{t('home.hero.title2')}</span>
+              <span className="italic text-gold-300">{t('home.hero.title2')}</span>
             </h1>
-            <p className="text-lg text-slate-300 leading-relaxed max-w-xl">
+
+            {/* Ornament */}
+            <div className="flex items-center gap-3 text-gold-400/60">
+              <span className="h-px w-16 bg-gold-500/40" />
+              <span className="font-serif text-lg">✦</span>
+              <span className="h-px w-16 bg-gold-500/40" />
+            </div>
+
+            {/* 說明段 */}
+            <p className="font-body text-[17px] md:text-[19px] leading-[1.85] text-parchment-200/85 max-w-xl">
               {t('home.hero.description')}
             </p>
 
-            {/* 兩顆並列主 CTA — equal weight */}
-            <div className="grid gap-3 sm:grid-cols-2 max-w-xl">
-              <Link
-                to="/birth-chart"
-                className="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-saffron-500 to-saffron-400 text-cosmic-950 px-5 py-4 font-semibold shadow-lg shadow-saffron-500/20 hover:shadow-saffron-500/40 hover:scale-[1.02] transition-all"
-              >
-                <Compass className="h-5 w-5" />
-                <span className="whitespace-nowrap">{t('home.hero.cta.chart')}</span>
-                <ArrowRight className="h-4 w-4 opacity-60 group-hover:translate-x-0.5 transition" />
+            {/* CTAs：印章按鈕 */}
+            <div className="flex flex-col sm:flex-row gap-4 max-w-xl pt-2">
+              <Link to="/birth-chart" className="btn-primary flex-1">
+                {t('home.hero.cta.chart')}
               </Link>
-              <Link
-                to="/compatibility"
-                className="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-rose-400 via-vermilion-400 to-vermilion-500 text-white px-5 py-4 font-semibold shadow-lg shadow-vermilion-500/40 hover:shadow-vermilion-400/60 hover:scale-[1.02] transition-all"
-              >
-                <Heart className="h-5 w-5 fill-white/20" />
-                <span className="whitespace-nowrap">{t('home.hero.cta.compat')}</span>
-                <ArrowRight className="h-4 w-4 opacity-70 group-hover:translate-x-0.5 transition" />
+              <Link to="/compatibility" className="btn-sindoor flex-1">
+                {t('home.hero.cta.compat')}
               </Link>
             </div>
 
-            <p className="text-xs text-slate-500">{t('home.hero.note')}</p>
+            <p className="font-display text-[10px] uppercase tracking-[0.35em] text-gold-500/70">
+              {t('home.hero.note')}
+            </p>
           </div>
 
-          {/* Mandala visual */}
-          <div className="relative flex justify-center items-center">
-            <div className="relative h-80 w-80 md:h-96 md:w-96">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-saffron-500/20 via-vermilion-500/10 to-transparent blur-2xl" />
+          {/* Mandala 視覺 — 佔 5 欄 */}
+          <div className="md:col-span-5 relative flex justify-center items-center">
+            <div className="relative h-80 w-80 md:h-[420px] md:w-[420px]">
+              {/* 極淡金色光暈 */}
+              <div className="absolute inset-0 rounded-full bg-gradient-radial from-gold-500/10 via-transparent to-transparent blur-2xl" />
+
+              {/* 慢轉黃道 */}
               <div className="absolute inset-0 animate-spin-slow">
                 <svg viewBox="0 0 400 400" className="h-full w-full">
                   <defs>
                     <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#ffc266" />
-                      <stop offset="100%" stopColor="#e68a00" />
+                      <stop offset="0%" stopColor="#e8d9b0" />
+                      <stop offset="100%" stopColor="#8b6a35" />
                     </radialGradient>
                   </defs>
-                  <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,194,102,0.3)" strokeWidth="1" />
-                  <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255,194,102,0.4)" strokeWidth="1" />
-                  <circle cx="200" cy="200" r="110" fill="none" stroke="rgba(255,194,102,0.5)" strokeWidth="1" />
+                  {/* 外環 */}
+                  <circle cx="200" cy="200" r="186" fill="none" stroke="rgba(201,169,97,0.45)" strokeWidth="0.7" />
+                  <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(201,169,97,0.22)" strokeWidth="0.5" />
+                  <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(201,169,97,0.35)" strokeWidth="0.5" />
+                  <circle cx="200" cy="200" r="110" fill="none" stroke="rgba(201,169,97,0.45)" strokeWidth="0.5" />
+                  <circle cx="200" cy="200" r="64" fill="none" stroke="rgba(201,169,97,0.55)" strokeWidth="0.7" />
+
+                  {/* 12 宮分隔線 */}
                   {Array.from({ length: 12 }, (_, i) => {
                     const a = (i * 30 - 90) * (Math.PI / 180)
                     const x1 = 200 + Math.cos(a) * 110
                     const y1 = 200 + Math.sin(a) * 110
                     const x2 = 200 + Math.cos(a) * 180
                     const y2 = 200 + Math.sin(a) * 180
-                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,194,102,0.4)" strokeWidth="1" />
+                    return (
+                      <line
+                        key={i}
+                        x1={x1} y1={y1} x2={x2} y2={y2}
+                        stroke="rgba(201,169,97,0.35)" strokeWidth="0.6"
+                      />
+                    )
                   })}
-                  {['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'].map((sym, i) => {
+
+                  {/* 黃道 12 符號 */}
+                  {['\u2648','\u2649','\u264A','\u264B','\u264C','\u264D','\u264E','\u264F','\u2650','\u2651','\u2652','\u2653'].map((sym, i) => {
                     const a = (i * 30 - 75) * (Math.PI / 180)
                     const x = 200 + Math.cos(a) * 165
                     const y = 200 + Math.sin(a) * 165
-                    return <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fill="#ffc266" fontSize="16">{sym}</text>
+                    return (
+                      <text
+                        key={i}
+                        x={x} y={y}
+                        textAnchor="middle" dominantBaseline="middle"
+                        fill="#c9a961"
+                        fontSize="17"
+                        fontFamily="'EB Garamond', 'Noto Sans Symbols 2', serif"
+                        style={{ fontVariantEmoji: 'text' }}
+                      >
+                        {sym}{'\uFE0E'}
+                      </text>
+                    )
                   })}
-                  <circle cx="200" cy="200" r="55" fill="url(#sunGrad)" opacity="0.9" />
-                  <circle cx="200" cy="200" r="42" fill="#140b2e" />
-                  <text x="200" y="200" textAnchor="middle" dominantBaseline="middle" fill="#ffc266" fontSize="32" fontFamily="serif">ॐ</text>
+
+                  {/* 中央光源 */}
+                  <circle cx="200" cy="200" r="55" fill="url(#sunGrad)" opacity="0.85" />
+                  <circle cx="200" cy="200" r="42" fill="#0a0806" />
+                  <text
+                    x="200" y="210"
+                    textAnchor="middle"
+                    fill="#d9bf85"
+                    fontSize="36"
+                    fontFamily="EB Garamond, serif"
+                  >
+                    ॐ
+                  </text>
                 </svg>
               </div>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="absolute h-3 w-3 text-saffron-400 animate-twinkle"
-                  style={{
-                    top: `${15 + Math.random() * 70}%`,
-                    left: `${10 + Math.random() * 80}%`,
-                    animationDelay: `${i * 0.5}s`
-                  }}
-                />
-              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 吠陀簡介 — concepts prose only，無 feature grid */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="glass-panel p-8 md:p-12">
-          <div className="grid gap-8 md:grid-cols-2 items-center">
-            <div>
-              <h2 className="section-title">{t('home.concepts.title')}</h2>
-              <p className="mt-4 text-slate-300 leading-relaxed">
-                {t('home.concepts.body1')}
-              </p>
+      {/* Ornament rule */}
+      <div className="ornament-rule max-w-4xl mx-auto">
+        <span className="font-serif text-gold-400 text-lg">✦</span>
+      </div>
+
+      {/* ─── 吠陀概念章 — 古籍印刷風，翻白處理 ─── */}
+      <section className="manuscript-parchment my-20">
+        <div className="mx-auto max-w-5xl px-6 md:px-10 py-10">
+          <div className="text-center mb-8">
+            <div className="font-display text-[10px] uppercase tracking-[0.45em] text-gold-700 mb-3">
+              Chapter I · Introductio
             </div>
-            <div className="text-slate-300 leading-relaxed space-y-4 text-base md:text-lg">
+            <h2 className="font-serif text-4xl md:text-6xl text-ink-950 tracking-tight">
+              {t('home.concepts.title')}
+            </h2>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 text-ink-700 mb-10">
+            <span className="h-px w-16 bg-ink-700/40" />
+            <span className="font-serif text-lg">✦</span>
+            <span className="h-px w-16 bg-ink-700/40" />
+          </div>
+
+          <div className="grid gap-10 md:grid-cols-2 items-start">
+            <p className="font-body text-[17px] md:text-[18px] leading-[2] text-ink-900 drop-cap">
+              {t('home.concepts.body1')}
+            </p>
+            <div className="font-body text-[16px] md:text-[17px] leading-[2] text-ink-800 space-y-5">
               <p>{t('home.concepts.prose1')}</p>
-              <p>{t('home.concepts.prose2')}</p>
+              <p className="italic">{t('home.concepts.prose2')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 次要連結 — navigation-ish footer */}
-      <section className="mx-auto max-w-4xl px-6 pb-16">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-slate-400">
-          <span className="text-xs uppercase tracking-[0.25em] text-slate-500">
+      {/* ─── 次要連結 — 書末目錄感 ─── */}
+      <section className="mx-auto max-w-4xl px-6 pb-20">
+        <div className="text-center">
+          <div className="font-display text-[10px] uppercase tracking-[0.4em] text-gold-500/80 mb-5">
             {t('home.more.label')}
-          </span>
-          <Link to="/nakshatras" className="hover:text-saffron-400 transition">
-            {t('home.more.nakshatras')}
-          </Link>
-          <Link to="/planets" className="hover:text-saffron-400 transition">
-            {t('home.more.planets')}
-          </Link>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+            <Link
+              to="/nakshatras"
+              className="font-serif italic text-[17px] text-parchment-200/80
+                         border-b border-transparent hover:border-gold-400 hover:text-gold-200 transition"
+            >
+              {t('home.more.nakshatras')}
+            </Link>
+            <span className="text-gold-500/40">·</span>
+            <Link
+              to="/planets"
+              className="font-serif italic text-[17px] text-parchment-200/80
+                         border-b border-transparent hover:border-gold-400 hover:text-gold-200 transition"
+            >
+              {t('home.more.planets')}
+            </Link>
+          </div>
         </div>
       </section>
     </div>
