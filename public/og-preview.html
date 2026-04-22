@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>OG Image Preview (1200×630)</title>
+  <meta name="viewport" content="width=1200">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      background: #000;
+    }
+    body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    .og {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(255,194,102,0.2) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 90%, rgba(227,66,52,0.18) 0%, transparent 60%),
+        linear-gradient(180deg, #1a0e36 0%, #0a0618 100%);
+      color: #e2e8f0;
+      overflow: hidden;
+      padding: 72px 96px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .om {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffc266, #e34234);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: serif;
+      font-size: 30px;
+      color: #0a0618;
+      font-weight: 700;
+    }
+    .brand-label {
+      font-size: 22px;
+      color: #cbd5e1;
+      letter-spacing: 0.1em;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .quote-mark {
+      font-size: 160px;
+      font-family: Georgia, serif;
+      line-height: 0.6;
+      color: rgba(255,194,102,0.35);
+    }
+    .hero-text {
+      font-size: 84px;
+      font-weight: 600;
+      line-height: 1.1;
+      background: linear-gradient(90deg, #ffd580, #ffa733);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-family: "Cormorant Garamond", "Source Han Serif TC", Georgia, serif;
+    }
+    .hero-sub {
+      font-size: 30px;
+      color: #cbd5e1;
+      line-height: 1.4;
+      max-width: 900px;
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .url {
+      font-size: 22px;
+      color: #ffc266;
+      font-weight: 600;
+    }
+    .cta {
+      font-size: 24px;
+      color: #94a3b8;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <div class="brand">
+      <div class="om">ॐ</div>
+      <div class="brand-label">吠陀命盤 · Vedic</div>
+    </div>
+
+    <div class="hero">
+      <div class="quote-mark">"</div>
+      <div class="hero-text">你命盤跟你說的事</div>
+      <div class="hero-sub">
+        30 秒看完 · 愛情、事業、大運、稀有度<br/>
+        3000 年沒過時的吠陀占星
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="url">vedic-astrology.netlify.app</div>
+      <div class="cta">掃 QR 就能算你的</div>
+    </div>
+  </div>
+</body>
+</html>

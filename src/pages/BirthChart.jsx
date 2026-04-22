@@ -21,6 +21,7 @@ import MysticalTransition from '../components/MysticalTransition.jsx'
 import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
+import { useSectionViewTracker } from '../hooks/useSectionViewTracker.js'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
@@ -210,7 +211,14 @@ export default function BirthChart() {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     setActiveTab(id)
+    trackEvent('section_clicked', { id })
   }
+
+  // 追用戶讀到第幾個 section（IntersectionObserver 去重，每個 id 只送一次）
+  useSectionViewTracker(
+    ['self', 'note', 'love', 'career', 'health', 'fortune'],
+    !!chart
+  )
 
   // Raman-framework 混合策略：
   // • 西方 Tropical 用於「性格解讀」— 用戶熟悉的星座

@@ -68,9 +68,23 @@ npm run build    # 產 dist/
 └── package.json
 ```
 
-## TODO
+## 產生 og-image.png
 
-- `public/og-image.png`（1200×630）尚未製作 — 主視覺可參考命盤分享卡風格（saffron / vermilion gradient + 吠陀符號 + "看你命盤跟你說的事"）
+`public/og-preview.html` 是一個已經排好版的 1200×630 HTML template（saffron / vermilion gradient + ॐ 符號 + "你命盤跟你說的事"），瀏覽器開起來就能 screenshot 成 PNG：
+
+1. 本地跑 `npm run dev`，打開 http://localhost:5173/og-preview.html
+2. 把瀏覽器視窗拉到 1200×630（或 zoom 100% 後 screenshot `.og` 元素）
+3. 儲存為 `public/og-image.png`
+4. `npm run build` 並部署
+
+或用 puppeteer 自動化：
+
+```bash
+npx puppeteer screenshot \
+  --url http://localhost:5173/og-preview.html \
+  --selector ".og" \
+  --output public/og-image.png
+```
 
 ## 計算精度說明
 
