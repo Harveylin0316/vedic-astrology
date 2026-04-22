@@ -115,6 +115,7 @@ export default function BirthChart() {
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('self')
   const [closingCopied, setClosingCopied] = useState(false)
+  const [inviteCopied, setInviteCopied] = useState(false)
   // 整份解讀匯出用的 ref — 會包住所有章節 + 結尾
   const fullReadingRef = useRef(null)
 
@@ -1181,13 +1182,40 @@ export default function BirthChart() {
                             已複製連結
                           </>
                         ) : (
-                          '複製連結'
+                          '複製命盤連結'
                         )}
                       </button>
-                      <a href="/compatibility" className="btn-ghost">
-                        <ArrowRight className="h-4 w-4" />
-                        或問 TA 生辰，算你們合盤
-                      </a>
+
+                      {/* 合盤邀請：用當前生辰生成專屬邀請連結 */}
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          // 生成邀請連結 — 預填用戶的生辰
+                          const encoded = encodeBirthPayload(form)
+                          const origin = typeof window !== 'undefined' ? window.location.origin : ''
+                          const inviteUrl = `${origin}/compatibility?invite=${encoded}&rel=romantic`
+                          const ok = await copyToClipboard(inviteUrl)
+                          if (ok) {
+                            trackEvent('closing_invite_compat', { rarity: rarity?.topPercent })
+                            setInviteCopied(true)
+                            setTimeout(() => setInviteCopied(false), 3000)
+                          }
+                        }}
+                        className="btn-ghost"
+                        disabled={inviteCopied}
+                      >
+                        {inviteCopied ? (
+                          <>
+                            <Check className="h-4 w-4" />
+                            已複製 · 貼給 TA 就好
+                          </>
+                        ) : (
+                          <>
+                            <ArrowRight className="h-4 w-4" />
+                            邀 TA 合盤 · 一鍵專屬連結
+                          </>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
