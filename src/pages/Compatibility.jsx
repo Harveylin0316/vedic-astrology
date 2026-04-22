@@ -153,21 +153,28 @@ export default function Compatibility() {
       return
     }
     try {
-      const chartA = computeChartFor(you)
-      const chartB = computeChartFor(them)
+      // 邀請模式下：表單 state 中 `you` = 邀請人 A（預填）、`them` = 看的人 B
+      // 但敘述應以「B 為主角（你）」，所以送算時把兩人對調
+      // 讓 narrative 裡的「你」真正指向看頁面的這個人
+      const primary = inviteMode ? them : you    // 敘述主角（第二人稱「你」）
+      const secondary = inviteMode ? you : them  // 敘述對方（第三人稱「TA」）
+
+      const chartA = computeChartFor(primary)
+      const chartB = computeChartFor(secondary)
       const compat = computeCompatibility(chartA, chartB)
-      const nameA = (you.name || '').trim() || '你'
-      const nameB = (them.name || '').trim() || 'TA'
+      const nameA = (primary.name || '').trim() || '你'
+      const nameB = (secondary.name || '').trim() || 'TA'
       const narrative = buildCompatibilityNarrative(compat, chartA, chartB, nameA, nameB)
-      setPending({ compat, narrative, you: { ...you }, them: { ...them } })
+      setPending({ compat, narrative, you: { ...primary }, them: { ...secondary } })
       setShowTransition(true)
-      // 把兩人生辰編進 URL（永久連結）
-      const payload = encodeCompatPayload({ you, them, relationship })
+      // 把兩人生辰編進 URL（永久連結）— 已對調過，別人點開也正確
+      const payload = encodeCompatPayload({ you: primary, them: secondary, relationship })
       replaceUrlParam('d', payload)
       trackEvent('compute_compatibility', {
         relationship,
         category: compat.category,
-        score: compat.totalScore
+        score: compat.totalScore,
+        via_invite: inviteMode
       })
     } catch (err) {
       console.error(err)
