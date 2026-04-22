@@ -736,6 +736,28 @@ export default function BirthChart() {
                     {vedicCareer.narrative && vedicCareer.narrative.split('\n\n').map((para, i) => (
                       <p key={`narr-${i}`}>{para}</p>
                     ))}
+
+                    {/* Sub-Category（商業 / 政治圈細分型）— 只在 confidence=high 時顯示 */}
+                    {vedicCareer.playbook?.subCategory && (
+                      <div className="space-y-3">
+                        <div className="text-sm text-saffron-400/80 font-serif italic">
+                          你在商業／政治圈裡的細分型 —
+                        </div>
+                        <p>
+                          <span className="text-saffron-300 font-medium">{vedicCareer.playbook.subCategory.label}</span>
+                          ：{vedicCareer.playbook.subCategory.tagline}。
+                        </p>
+                        <p className="text-sm text-slate-300 leading-relaxed">
+                          {vedicCareer.playbook.subCategory.sweetSpot}。避開：{vedicCareer.playbook.subCategory.avoid}。
+                        </p>
+                        {vedicCareer.playbook.subCategory.timingAdvice && (
+                          <p className="text-sm text-saffron-200/90 italic leading-relaxed">
+                            {vedicCareer.playbook.subCategory.timingAdvice}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
                     {noteBody('money') && <p>{noteBody('money')}</p>}
                     {vedicCareer.activeCareerYogas?.find((y) => y.strength === 'strong') && (
                       <p>
@@ -871,6 +893,9 @@ export default function BirthChart() {
                         )}
                         {currentDasha && (
                           <> · 當前走 {zhPlanet(currentDasha.lord)} 大運{currentAD && ` / ${zhPlanet(currentAD.lord)} 小運`} — 這個主題現在正被放大</>
+                        )}
+                        {vedicCareer.playbook?.subCategory?.reasoning?.length > 0 && (
+                          <> · 偵測到「{vedicCareer.playbook.subCategory.label}」— 依據：{vedicCareer.playbook.subCategory.reasoning.slice(0, 2).join('、')}</>
                         )}
                       </p>
                     </div>

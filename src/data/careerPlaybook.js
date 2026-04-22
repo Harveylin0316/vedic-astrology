@@ -71,6 +71,7 @@ export const careerEnergyByPlanet = {
 }
 
 import { planetAsKarmesh } from './careerVedicData.js'
+import { careerSubCategoryLanguage } from './careerSubCategoryLanguage.js'
 
 // ═══════════════════════════════════════════════════════════════
 // 1. 身份（karmesh planet → 一句話職業人格）
@@ -213,6 +214,8 @@ export function synthesizeCareerPlaybook(vedicCareer) {
   const karakaOverrides = vedicCareer.karakaOverrides || []
   const activeYogas = vedicCareer.activeCareerYogas || []
   const strongYoga = activeYogas.find((y) => y.strength === 'strong')
+  // Sub-category 偵測結果（可能由 analyzeVedicCareer 預先算好塞進來）
+  const subCategoryDetection = vedicCareer.subCategoryDetection || null
 
   // 1. 身份
   const identity = careerIdentityByPlanet[karmeshPlanet]
@@ -311,6 +314,22 @@ export function synthesizeCareerPlaybook(vedicCareer) {
     actions.push(avoid)
   }
 
+  // 6. Sub-Category 展示物件（靠 analyzeVedicCareer 預先跑 detector 塞進來）
+  //    只在 confidence === 'high' + 有對應語言資料時才提供給 UI
+  let subCategory = null
+  if (subCategoryDetection?.primary && subCategoryDetection.confidence === 'high') {
+    const lang = careerSubCategoryLanguage[subCategoryDetection.primary]
+    if (lang) {
+      subCategory = {
+        key: subCategoryDetection.primary,
+        confidence: subCategoryDetection.confidence,
+        reasoning: subCategoryDetection.reasoning,
+        alternates: subCategoryDetection.alternates,
+        ...lang
+      }
+    }
+  }
+
   return {
     identity: identity
       ? {
@@ -326,6 +345,8 @@ export function synthesizeCareerPlaybook(vedicCareer) {
     karakaHint,
     avoid,
     dashaSignal,
-    actions
+    actions,
+    // Sub-category（商業 / 政治圈細分型）— 只在 high confidence 時才有
+    subCategory
   }
 }

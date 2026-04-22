@@ -31,6 +31,7 @@ import {
   buildKarakaOverrides
 } from '../data/careerMatrix.js'
 import { synthesizeCareerPlaybook } from '../data/careerPlaybook.js'
+import { detectCareerSubCategory } from '../data/careerSubCategoryDetector.js'
 import { computeDasamsa } from './vedicCalc.js'
 
 // ═══════════════════════════════════════════════
@@ -298,12 +299,36 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
 
   // ════ 最後一部分：Playbook（實操建議）════
   // 解決「看完不知道怎麼找工作」的痛點
+  //
+  // 先跑 sub-category detector（business / politics 子類別）— 把結果先組好
+  // 再塞進 playbook，這樣 playbook 可以直接 pick up，UI 也能拿到一致的物件。
+  const subCategoryDetection = detectCareerSubCategory({
+    karmesh: {
+      planet: karmeshPlanet,
+      house: karmeshGraha?.house,
+      dignity: karmeshDignity
+    },
+    lagnaLord: lagnaLord
+      ? {
+          planet: lagnaLord.planet,
+          house: lagnaLord.house,
+          dignity: lagnaLord.dignity
+        }
+      : null,
+    significators: significatorRanking,
+    karakaOverrides,
+    activeCareerYogas,
+    dasha: dashaImpact,
+    d10: d10Karmesh
+  })
+
   const playbook = synthesizeCareerPlaybook({
     karmesh: { planet: karmeshPlanet, house: karmeshGraha?.house },
     lagnaLord,
     dasha: dashaImpact,
     karakaOverrides,
-    activeCareerYogas
+    activeCareerYogas,
+    subCategoryDetection
   })
 
   return {
@@ -357,6 +382,8 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     // 第 6 部分
     dasha: dashaImpact,
     // 第 7 部分
-    d10: d10Karmesh
+    d10: d10Karmesh,
+    // Sub-category 偵測（business / politics 細分）— 也在 top-level 露出
+    subCategoryDetection
   }
 }
