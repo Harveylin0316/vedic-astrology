@@ -30,7 +30,10 @@
 const UI_SUPPRESSED_SUBCATS = new Set([
   // Round 4 validator 裡樣本量 < 5 的 sub-cat，不對 UI 輸出
   'politics-diplomat',
-  'government-judicial'
+  'government-judicial',
+  // Round 5：樣本量 < 5 的 arts sub-cat，不對 UI 輸出
+  'arts-creator-producer',       // N=2
+  'arts-visual-photographer'     // N=3
 ])
 
 // Sub-cat 粗分，給 UI 一個 fallback（某些盤只命中粗類但沒命中細類）
@@ -59,7 +62,21 @@ const POLITICS_SUBCATS = [
   'government-judicial'
 ]
 
-const ALL_DETECTABLE = [...BUSINESS_SUBCATS, ...POLITICS_SUBCATS]
+// Round 5 — arts sub-categories
+const ARTS_SUBCATS = [
+  'arts-performer-film-actor',
+  'arts-performer-musician-singer',
+  'arts-performer-musician-instrument',
+  'arts-performer-dancer',
+  'arts-performer-comedian',
+  'arts-creator-writer',
+  'arts-creator-director',
+  'arts-creator-producer',
+  'arts-visual-painter',
+  'arts-visual-photographer'
+]
+
+const ALL_DETECTABLE = [...BUSINESS_SUBCATS, ...POLITICS_SUBCATS, ...ARTS_SUBCATS]
 
 // ═════════════════════════════════════════════════════════════════
 // Context-gated yoga hints — 決定整體是否有政治傾向
@@ -765,6 +782,298 @@ function runAllDetectors(analysis, preseededPredicted = null) {
     if (alreadyPolitics && condB) {
       addWithReason('government-judicial', 'Jupiter 達摩宮 + Saturn/Mercury 好（司法）')
       predicted.add('law')
+    }
+  }
+
+  // ─── ARTS SUB-CATEGORIES (Round 5) ────────────────────────────
+  //
+  // 設計紀律：
+  // 1. arts detector 獨立跑、和 biz/politics detector 不互斥
+  //    （同一個人可能同時被偵測為 arts-performer-film-actor + business-tycoon-heir，
+  //     UI 排序會挑 trigger count 多者；這跟 biz/pol 對稱的作法一致）
+  // 2. arts trigger 不 backfill 粗類（不加 arts-performer / arts-creator / arts-visual）
+  //    — 粗類已經由 KARAKA_CATEGORY_HINTS (Venus) + derived Venus-Moon combo 走另一條路徑
+  // 3. 觸發閘 artsFlag：
+  //    - Venus 非 debilitated（Venus 是 arts/performer 的主 karaka）
+  //    - AND （karmesh 為 Venus/Moon/Mercury/Mars OR d10Lord 為 Venus/Moon/Mercury
+  //      OR 有 Malavya/Saraswati/Budha-Aditya yoga OR Venus 在 kendra/trikona
+  //      OR Ruchaka yoga — Mars Mahapurusha 也可以是運動員或 performer）
+  //    不滿足 artsFlag → arts sub-cat 不 fire，避開非藝術盤誤判
+
+  const addArts = (subKey, reason) => {
+    addWithReason(subKey, reason)
+  }
+
+  const venusNonDebilitated = venusDignity !== 'debilitated'
+  const karmeshArtCreator = ['Venus', 'Moon', 'Mercury', 'Mars', 'Jupiter'].includes(karmeshPlanet)
+  const d10ArtCreator = ['Venus', 'Moon', 'Mercury'].includes(d10Lord)
+  const hasSaraswati = yogas.has('saraswati')
+  const hasMalavyaL = hasMalavya
+  const hasBudhaAditya = yogas.has('budha-aditya')
+  const venusKendraL = venusHouse && [1, 4, 7, 10].includes(venusHouse)
+  const venusTrikonaL = venusHouse && [1, 5, 9].includes(venusHouse)
+  const moonKendraL = moonHouse && [1, 4, 7, 10].includes(moonHouse)
+  const moonStrongL = goodD.includes(moonDignity)
+  const venusStrongL = goodD.includes(venusDignity)
+  const mercStrongL = goodD.includes(mercDignity)
+  const jupStrongL = goodD.includes(jupDignity)
+  const satGoodL = goodD.includes(satDignity)
+
+  // Neecha Bhanga rescue: Venus debilitated in Virgo but Mercury exalted in same
+  //   sign cancels the debilitation classically. Detect: Venus & Mercury same
+  //   house + Mercury exalted. This rescues Amitabh Bachchan (AA-rated actor).
+  const venusMercSameHouse = venusHouse && mercHouse && venusHouse === mercHouse
+  const neechaBhangaVenus = venusDignity === 'debilitated' && venusMercSameHouse
+    && mercDignity === 'exalted'
+
+  const artsFlag =
+    (venusNonDebilitated || neechaBhangaVenus) &&
+    (
+      karmeshArtCreator ||
+      d10ArtCreator ||
+      hasSaraswati || hasMalavyaL || hasBudhaAditya ||
+      venusKendraL || venusTrikonaL ||
+      hasRuchaka
+    )
+
+  // 1. arts-performer-film-actor
+  {
+    const sunOrMoonPublic = (sunHouse && [1, 7, 10].includes(sunHouse))
+      || (moonHouse && [1, 4, 7, 10].includes(moonHouse))
+    const publicFace = venusKendraL && sunOrMoonPublic
+    const karmeshActor = ['Venus', 'Mars', 'Mercury', 'Moon'].includes(karmeshPlanet) && [1, 7, 10].includes(karmeshHouse)
+    const saturnSpot = satHouse && [1, 4, 10].includes(satHouse) && satGoodL && venusStrongL
+    // Neecha-Bhanga 救援：當 Venus 衰陷 + Mercury 同宮 exalted + D10 也主 Mercury/Venus/Moon
+    // → 演藝事業（Bollywood Amitabh Bachchan 型）
+    const neechaBhangaActor = neechaBhangaVenus && d10ArtCreator && hasBudhaAditya
+
+    if (artsFlag && publicFace) {
+      addArts('arts-performer-film-actor', `Venus 落 ${venusHouse} 宮（kendra）+ Sun/Moon 公眾宮（舞台存在感）`)
+    }
+    if (artsFlag && karmeshActor) {
+      addArts('arts-performer-film-actor', `10 宮主 ${karmeshPlanet} 落 ${karmeshHouse} 宮（表演事業）`)
+    }
+    if (artsFlag && hasMalavyaL) {
+      addArts('arts-performer-film-actor', 'Malavya Yoga（Venus Mahapurusha）— 表演偉人格')
+    }
+    if (artsFlag && saturnSpot) {
+      addArts('arts-performer-film-actor', `Saturn 強旺 ${satHouse} 宮 + Venus 強（深耕型演員）`)
+    }
+    if (neechaBhangaActor) {
+      addArts('arts-performer-film-actor', 'Neecha-Bhanga Venus（衰陷被水星 exalted 同宮救）+ D10 指演藝 + Budha-Aditya')
+    }
+  }
+
+  // 2. arts-performer-musician-singer
+  {
+    const jupInVoiceHouse = jupHouse === 2 && jupStrongL
+    const moonVenusCombo = moonStrongL && venusStrongL && venusHouse && [1, 2, 5, 7, 10, 11].includes(venusHouse)
+    const karmeshSinger = ['Moon', 'Venus', 'Jupiter', 'Mercury'].includes(karmeshPlanet) && [2, 5, 10, 11].includes(karmeshHouse)
+    const moonStrongPublic = moonKendraL && moonStrongL
+    const sunH11Ex = sunHouse === 11 && sunDignity === 'exalted'
+
+    if (artsFlag && jupInVoiceHouse) {
+      addArts('arts-performer-musician-singer', 'Jupiter 強旺 2 宮（古典聲音宮）')
+    }
+    if (artsFlag && moonVenusCombo) {
+      addArts('arts-performer-musician-singer', `Venus + Moon 雙強（聲音 + 情感）— Venus ${venusHouse} 宮`)
+    }
+    if (artsFlag && karmeshSinger) {
+      addArts('arts-performer-musician-singer', `10 宮主 ${karmeshPlanet} 落 ${karmeshHouse} 宮（聲音／情感事業）`)
+    }
+    if (artsFlag && moonStrongPublic) {
+      addArts('arts-performer-musician-singer', `Moon 強旺 ${moonHouse} 宮（公眾親和感）`)
+    }
+    if (artsFlag && sunH11Ex && karmeshPlanet === 'Jupiter' && karmeshHouse === 11) {
+      addArts('arts-performer-musician-singer', 'Sun exalted 11 + Jupiter karmesh 11（大舞台歌手）')
+    }
+  }
+
+  // 3. arts-performer-musician-instrument
+  {
+    const mercVenusTech = mercStrongL && venusStrongL
+      && mercHouse && [1, 3, 5, 10, 11].includes(mercHouse)
+    const ketuFifth = ketuHouse === 5
+    const satVenusDiscipline = satGoodL && venusStrongL
+      && venusHouse && [1, 5, 10].includes(venusHouse)
+
+    if (artsFlag && mercVenusTech) {
+      addArts('arts-performer-musician-instrument', `Mercury + Venus 雙強（技巧 + 美感）— Mercury ${mercHouse} 宮`)
+    }
+    if (artsFlag && ketuFifth) {
+      addArts('arts-performer-musician-instrument', 'Ketu 落 5 宮（靈感通道 / 即興）')
+    }
+    if (artsFlag && satVenusDiscipline) {
+      addArts('arts-performer-musician-instrument', 'Saturn 好 + Venus 強旺於 1/5/10（技術紀律）')
+    }
+    if (artsFlag && hasSaraswati) {
+      addArts('arts-performer-musician-instrument', 'Saraswati Yoga（水星金星木星三合）— 典型樂手格')
+    }
+  }
+
+  // 4. arts-performer-dancer
+  {
+    const marsVenusDancer = marsAny && venusStrongL
+      && venusHouse && [1, 3, 5, 10].includes(venusHouse)
+    const thirdHouseStrong = sigs.some((s) => s.graha?.house === 3 && ['Venus', 'Moon', 'Mars', 'Mercury'].includes(s.planet))
+    const fifthHouseStrong = sigs.some((s) => s.graha?.house === 5 && ['Venus', 'Moon', 'Jupiter', 'Sun'].includes(s.planet))
+    const marsDigbala = marsHouse === 10
+
+    if (artsFlag && marsVenusDancer) {
+      addArts('arts-performer-dancer', `Mars + Venus 雙強（體能 + 美感）— Venus ${venusHouse} 宮`)
+    }
+    if (artsFlag && thirdHouseStrong && venusStrongL) {
+      addArts('arts-performer-dancer', '3 宮有金／月／火／水 + Venus 強（體能表達）')
+    }
+    if (artsFlag && fifthHouseStrong && marsAny) {
+      addArts('arts-performer-dancer', '5 宮聚吉星（創造力）+ Mars 非陷落')
+    }
+    if (artsFlag && marsDigbala && venusStrongL) {
+      addArts('arts-performer-dancer', 'Mars 落 10 宮 digbala + Venus 強（舞台型）')
+    }
+  }
+
+  // 5. arts-performer-comedian
+  {
+    const mercJupStrong = mercStrongL && jupStrongL
+    const mercKendra2 = mercHouse && [1, 4, 7, 10].includes(mercHouse)
+    const jupPublicL = jupHouse && [1, 4, 7, 9, 10].includes(jupHouse)
+    const karmeshComedian = ['Mercury', 'Jupiter'].includes(karmeshPlanet) && [1, 3, 5, 10, 11].includes(karmeshHouse)
+
+    if (artsFlag && mercJupStrong && (mercKendra2 || jupPublicL)) {
+      addArts('arts-performer-comedian', 'Mercury + Jupiter 雙強（機智 + 智慧）')
+    }
+    if (artsFlag && hasBudhaAditya && moonStrongL) {
+      addArts('arts-performer-comedian', 'Budha-Aditya Yoga + Moon 強（講話有大眾親和力）')
+    }
+    if (artsFlag && karmeshComedian && moonKendraL) {
+      addArts('arts-performer-comedian', `10 宮主 ${karmeshPlanet} 落 ${karmeshHouse} 宮 + Moon 公眾`)
+    }
+  }
+
+  // 6. arts-creator-writer
+  {
+    const merc3rd = mercHouse === 3 && mercStrongL
+    const mercStrong1or10 = mercHouse && [1, 10].includes(mercHouse) && mercStrongL
+    const jup9th = jupHouse === 9 && jupStrongL
+    const ketuFifthL = ketuHouse === 5
+    const karmeshWriter = karmeshPlanet === 'Mercury' && [1, 3, 5, 10].includes(karmeshHouse)
+    const jupMercCombo = jupStrongL && mercStrongL
+
+    if (artsFlag && merc3rd) {
+      addArts('arts-creator-writer', 'Mercury 強旺 3 宮（寫作宮）')
+    }
+    if (artsFlag && mercStrong1or10) {
+      addArts('arts-creator-writer', `Mercury 強旺 ${mercHouse} 宮（表達導向）`)
+    }
+    if (artsFlag && jup9th) {
+      addArts('arts-creator-writer', 'Jupiter 強旺 9 宮（哲學 / 敘事深度）')
+    }
+    if (artsFlag && ketuFifthL && jupStrongL) {
+      addArts('arts-creator-writer', 'Ketu 5 宮（靈感）+ Jupiter 強（深度作品）')
+    }
+    if (artsFlag && hasSaraswati) {
+      addArts('arts-creator-writer', 'Saraswati Yoga（智慧 / 語言 / 藝術三合）')
+    }
+    if (artsFlag && karmeshWriter) {
+      addArts('arts-creator-writer', `10 宮主 Mercury 落 ${karmeshHouse} 宮（文字事業）`)
+    }
+    if (artsFlag && jupMercCombo && jupHouse && [5, 9].includes(jupHouse)) {
+      addArts('arts-creator-writer', `Jupiter + Mercury 雙強；Jupiter ${jupHouse} 宮（智慧敘事）`)
+    }
+  }
+
+  // 7. arts-creator-director
+  {
+    const venusJupBoth = venusStrongL && jupStrongL
+    const karmeshDirector = ['Venus', 'Jupiter', 'Mercury'].includes(karmeshPlanet) && [1, 5, 9, 10, 11].includes(karmeshHouse)
+    const malavyaAndHamsa = hasMalavyaL && yogas.has('mahapurusha-Jupiter')
+    const fifthHouseCreate = sigs.some((s) => s.graha?.house === 5
+      && ['Venus', 'Jupiter', 'Moon', 'Mercury'].includes(s.planet))
+    const sunKendra2 = sunHouse && [1, 4, 7, 10].includes(sunHouse)
+    const rahuCreate = rahuHouse && [5, 10, 11].includes(rahuHouse)
+    const karmeshTenth = karmeshHouse === 10 && goodD.includes(karmeshDignity)
+
+    if (artsFlag && venusJupBoth && karmeshTenth) {
+      addArts('arts-creator-director', '10 宮主強旺 + Venus + Jupiter 雙強（領導創作）')
+    }
+    if (artsFlag && karmeshDirector && (jupStrongL || venusStrongL)) {
+      addArts('arts-creator-director', `10 宮主 ${karmeshPlanet} 落 ${karmeshHouse} 宮 + Venus/Jupiter 強`)
+    }
+    if (artsFlag && malavyaAndHamsa) {
+      addArts('arts-creator-director', 'Malavya + Hamsa 雙偉人格（美感 + 智慧領導創作）')
+    }
+    if (artsFlag && fifthHouseCreate && sunKendra2) {
+      addArts('arts-creator-director', '5 宮聚吉星（視覺創造）+ Sun kendra（舞台主導）')
+    }
+    if (artsFlag && rahuCreate && karmeshTenth && venusNonDebilitated) {
+      addArts('arts-creator-director', `Rahu 落 ${rahuHouse} 宮（視覺突破）+ 10 宮主強旺`)
+    }
+  }
+
+  // 8. arts-creator-producer (UI_SUPPRESSED — N=2)
+  {
+    const mercSatBoth = mercStrongL && satGoodL
+    const eleventhStrong = sigs.some((s) => s.graha?.house === 11
+      && ['Venus', 'Mercury', 'Jupiter', 'Moon'].includes(s.planet))
+    const karmeshProducer = ['Mercury', 'Saturn'].includes(karmeshPlanet) && [10, 11].includes(karmeshHouse)
+
+    if (artsFlag && mercSatBoth && eleventhStrong) {
+      addArts('arts-creator-producer', 'Mercury + Saturn 雙強 + 11 宮有吉星（統籌型）')
+    }
+    if (artsFlag && karmeshProducer) {
+      addArts('arts-creator-producer', `10 宮主 ${karmeshPlanet} 落 ${karmeshHouse} 宮（幕後統籌）`)
+    }
+  }
+
+  // 9. arts-visual-painter
+  {
+    const venusFifth = venusHouse === 5 && venusStrongL
+    const venusFourth = venusHouse === 4 && venusStrongL
+    const ketuSolo = ketuHouse && [1, 5, 12].includes(ketuHouse)
+    const satCraft = satHouse && [2, 5, 10].includes(satHouse) && satGoodL
+    const karmeshPainter = karmeshPlanet === 'Venus' && [1, 4, 5, 10].includes(karmeshHouse)
+    const jupHamsa = yogas.has('mahapurusha-Jupiter')
+    const rahuArt = rahuHouse && [5, 9, 12].includes(rahuHouse) && venusStrongL
+
+    if (artsFlag && venusFifth) {
+      addArts('arts-visual-painter', 'Venus 強旺 5 宮（視覺創造）')
+    }
+    if (artsFlag && venusFourth) {
+      addArts('arts-visual-painter', 'Venus 強旺 4 宮（內在美感）')
+    }
+    if (artsFlag && ketuSolo && venusStrongL) {
+      addArts('arts-visual-painter', `Ketu 落 ${ketuHouse} 宮（獨立 / 脫俗）+ Venus 強`)
+    }
+    if (artsFlag && satCraft && venusStrongL) {
+      addArts('arts-visual-painter', `Saturn 強旺 ${satHouse} 宮（工藝耐力）+ Venus 強`)
+    }
+    if (artsFlag && karmeshPainter) {
+      addArts('arts-visual-painter', `10 宮主 Venus 落 ${karmeshHouse} 宮（純美感事業）`)
+    }
+    if (artsFlag && jupHamsa && venusStrongL && ketuSolo) {
+      addArts('arts-visual-painter', 'Hamsa Yoga + Venus 強 + Ketu 獨立位（聖者型視覺創作）')
+    }
+    if (artsFlag && rahuArt) {
+      addArts('arts-visual-painter', `Rahu 落 ${rahuHouse} 宮 + Venus 強（前衛視覺）`)
+    }
+  }
+
+  // 10. arts-visual-photographer (UI_SUPPRESSED — N=3)
+  {
+    const mercVenusPhoto = mercStrongL && venusStrongL
+    const rahuPhoto = rahuHouse && [5, 11].includes(rahuHouse)
+    const ketuObserver = ketuHouse && [1, 4, 12].includes(ketuHouse)
+    const karmeshPhoto = ['Mercury', 'Venus'].includes(karmeshPlanet) && [3, 5, 10, 11].includes(karmeshHouse)
+
+    if (artsFlag && mercVenusPhoto && rahuPhoto) {
+      addArts('arts-visual-photographer', `Mercury + Venus 雙強 + Rahu 落 ${rahuHouse} 宮（前衛視覺）`)
+    }
+    if (artsFlag && ketuObserver && venusStrongL) {
+      addArts('arts-visual-photographer', `Ketu 落 ${ketuHouse} 宮（獨立觀察者）+ Venus 強`)
+    }
+    if (artsFlag && karmeshPhoto) {
+      addArts('arts-visual-photographer', `10 宮主 ${karmeshPlanet} 落 ${karmeshHouse} 宮（影像網絡）`)
     }
   }
 

@@ -70,6 +70,10 @@ if (DOMAIN === 'politics') {
     c.startsWith('politics-') || c.startsWith('government-')
   ))
 }
+// Round 5：arts 子集
+if (DOMAIN === 'arts') {
+  dataset = dataset.filter((e) => e.categories.some((c) => c.startsWith('arts-')))
+}
 
 // ═════════════════════════════════════════════════════════════════
 // Category keyword dictionaries — map Chinese algorithm output to
@@ -166,6 +170,49 @@ const CATEGORY_KEYWORDS = {
   'arts-visual': {
     hard: ['畫家', '時尚', '設計師', '時尚設計', '時裝', '攝影', '精品', '藝術家', '美學', '品牌策略', '奢華', '珠寶', '室內', '動畫', '藝術'],
     soft: ['美感', '造型', '品味']
+  },
+  // Round 5 — arts sub-categories（不動 matrixText 關鍵字、改用 detector 加入）
+  // 這裡的關鍵字僅作為 fallback（playbook / narrative 剛好出現就吃 partial credit）；
+  // 主邏輯在 careerSubCategoryDetector.js 的 detectArtsSubCategory()
+  'arts-performer-film-actor': {
+    hard: ['電影演員', '動作巨星', '動作派演員'],
+    soft: ['演員', '表演', '演藝']
+  },
+  'arts-performer-musician-singer': {
+    hard: ['歌手', '流行音樂', '音樂天后'],
+    soft: ['音樂家', '聲音', '演唱']
+  },
+  'arts-performer-musician-instrument': {
+    hard: ['樂手', '作曲', '作曲家', '吉他手', '小號手', '鋼琴家', '大提琴家'],
+    soft: ['音樂家', '演奏']
+  },
+  'arts-performer-dancer': {
+    hard: ['舞者', '舞蹈', '編舞家', '芭蕾'],
+    soft: ['表演', '律動']
+  },
+  'arts-performer-comedian': {
+    hard: ['喜劇演員', '脫口秀', '喜劇'],
+    soft: ['演員', '機智']
+  },
+  'arts-creator-writer': {
+    hard: ['作家', '小說家', '推理小說家', '詩人', '編劇'],
+    soft: ['寫作', '文字']
+  },
+  'arts-creator-director': {
+    hard: ['導演', '電影導演', '編劇', '製片'],
+    soft: ['影像', '電影']
+  },
+  'arts-creator-producer': {
+    hard: ['製作人', '音樂製作人', '節目製作人'],
+    soft: ['幕後', '統籌']
+  },
+  'arts-visual-painter': {
+    hard: ['畫家', '印象派', '抽象表現派', '波普藝術家'],
+    soft: ['繪畫', '藝術家']
+  },
+  'arts-visual-photographer': {
+    hard: ['攝影師', '風景攝影師', '紀實攝影師', '肖像攝影師'],
+    soft: ['攝影', '影像']
   },
   'sports-athlete': {
     hard: ['運動員', '運動', '體育', '運動明星', '運動巨星', '籃球', '足球', '網球', '拳擊', '武術', '運動教練', '拳擊手', '運動相關', '健身', '體能', '競技'],
@@ -274,7 +321,21 @@ const CATEGORY_FAMILIES = {
   'biz-industrial': ['business-industrial'],
   'biz-media': ['business-media', 'media-personality', 'media-creator'],
   finance: ['finance', 'banking', 'business-investor', 'business-leader', 'business-finance'],
-  arts: ['arts-performer', 'arts-creator', 'arts-visual'],
+  arts: [
+    'arts-performer', 'arts-creator', 'arts-visual',
+    'arts-performer-film-actor', 'arts-performer-musician-singer',
+    'arts-performer-musician-instrument', 'arts-performer-dancer',
+    'arts-performer-comedian',
+    'arts-creator-writer', 'arts-creator-director', 'arts-creator-producer',
+    'arts-visual-painter', 'arts-visual-photographer'
+  ],
+  // Round 5 — arts sub-family for strict partial-match within arts sphere
+  'arts-acting': ['arts-performer-film-actor', 'arts-performer-comedian', 'arts-performer'],
+  'arts-music': ['arts-performer-musician-singer', 'arts-performer-musician-instrument', 'arts-performer'],
+  'arts-dance': ['arts-performer-dancer', 'arts-performer'],
+  'arts-words': ['arts-creator-writer', 'arts-creator'],
+  'arts-directing': ['arts-creator-director', 'arts-creator', 'arts-creator-producer'],
+  'arts-visual-craft': ['arts-visual-painter', 'arts-visual-photographer', 'arts-visual'],
   sports: ['sports-athlete', 'sports-coach'],
   politics: [
     'politics', 'government',
@@ -727,8 +788,49 @@ out('')
 
 // Round 3：category breakdown — 專注 business sub-category 細分
 if (CATEGORY_BREAKDOWN) {
-  // Round 4：若 domain=politics，改印 politics 子分類
-  if (DOMAIN === 'politics') {
+  // Round 5：若 domain=arts，改印 arts 子分類
+  if (DOMAIN === 'arts') {
+    out('Arts sub-category breakdown (Round 5):')
+    const artsSubCats = [
+      'arts-performer-film-actor',
+      'arts-performer-musician-singer',
+      'arts-performer-musician-instrument',
+      'arts-performer-dancer',
+      'arts-performer-comedian',
+      'arts-creator-writer',
+      'arts-creator-director',
+      'arts-creator-producer',
+      'arts-visual-painter',
+      'arts-visual-photographer'
+    ]
+    const validSubCatAccuracies = []
+    for (const sc of artsSubCats) {
+      const s = catStats[sc]
+      if (!s || s.total === 0) {
+        out(`  ${sc.padEnd(40)} (0 samples — skipped)`)
+        continue
+      }
+      const acc = ((s.full + s.partial * 0.5) / s.total) * 100
+      const warning = s.total < 5
+        ? '  ⚠️ 樣本 < 5，UI_SUPPRESSED 不計入均值'
+        : (s.total < 10 ? '  ⚠️ 樣本 < 10，誤差大' : '')
+      out(`  ${sc.padEnd(40)} ${s.full}F/${s.partial}P/${s.miss}M of ${s.total}  = ${acc.toFixed(0)}%${warning}`)
+      if (s.total >= 5) validSubCatAccuracies.push(acc)
+    }
+    const artsResults = valid.filter((r) => r.trueCats.some((c) => c.startsWith('arts-')))
+    const artsFull = artsResults.filter((r) => r.tier === 'full').length
+    const artsPartial = artsResults.filter((r) => r.tier === 'partial').length
+    const artsTotal = artsResults.length
+    if (artsTotal > 0) {
+      const artsAcc = ((artsFull + artsPartial * 0.5) / artsTotal) * 100
+      out(`  ${'── 整個 arts 領域 ──'.padEnd(40)} ${artsFull}F/${artsPartial}P/${artsTotal - artsFull - artsPartial}M of ${artsTotal}  = ${artsAcc.toFixed(1)}%`)
+    }
+    if (validSubCatAccuracies.length > 0) {
+      const subCatMean = validSubCatAccuracies.reduce((a, b) => a + b, 0) / validSubCatAccuracies.length
+      out(`  ${'── 有效 sub-cat 均值（n>=5）──'.padEnd(40)} = ${subCatMean.toFixed(1)}%`)
+    }
+    out('')
+  } else if (DOMAIN === 'politics') {
     out('Politics sub-category breakdown (Round 4):')
     const polSubCats = [
       'politics-head-state', 'politics-head-gov', 'politics-revolutionary',
