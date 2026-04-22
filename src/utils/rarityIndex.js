@@ -240,8 +240,10 @@ export function computeRarityIndex(chart) {
     signature: '27 Nakshatra × 4 Pada = 108 種組合'
   })
 
-  score = Math.min(100, Math.round(score))
-  const tier = scoreTier(score)
+  // 保留未 clamp 的原始分數給 tier 判斷（避免 clamp 100 的人全擠同一 tier）
+  const rawScore = score
+  const displayScore = Math.min(100, Math.round(rawScore))
+  const tier = scoreTier(rawScore)
 
   // 依 plain 標題去重 — 避免同一類 yoga 的不同 variant（如 mahapurusha-Mars / -Venus）被顯示多次
   const sorted = features.sort((a, b) => b.weight - a.weight)
@@ -255,22 +257,27 @@ export function computeRarityIndex(chart) {
   }
 
   return {
-    score,
+    score: displayScore,
+    rawScore,
     ...tier,
     features: deduped
   }
 }
 
-function scoreTier(score) {
-  // 門檻經過 2026 校準（3000 人實證樣本）：
-  //   - 原本宣稱的 topPercent 全面失真（傳奇級 0.3% 實測 30% → 修完 1.6%）
-  //   - 這版直接用實測頻率替代宣稱值，誠實度大幅提升
+// scoreTier 收未 clamp 的 rawScore — 讓「被 clamp 到 100」的人還能依原始分數再分級
+function scoreTier(rawScore) {
+  // 門檻經過 2026 三輪校準（3000 人實證樣本）：
+  //   - Round 1: 原宣稱值失真（傳奇 0.3% 實測 30%）
+  //   - Round 2: 修 dedup + 重配權重，傳奇降到 1.6%
+  //   - Round 3: 拉高 tier 門檻 + 擴大中段，讓真正金字塔成立
+  //   - Round 4: 用 raw 分判 tier — clamp 100 的人不再全擠進「傳奇」
+  //     目標：傳奇 <1% / 極稀有 3-5% / 非常稀有 10-15% / 稀有 25-35%
   //   - note 文案兼顧金字塔中下段用戶體感（避免「我很普通」的挫折感）
-  if (score >= 98) return { topPercent: 1.5, stars: 5, title: '傳奇級命盤', note: '60 個人裡不到 1 個跟你一樣' }
-  if (score >= 90) return { topPercent: 4, stars: 5, title: '極稀有', note: '25 個人裡才出現 1 個' }
-  if (score >= 80) return { topPercent: 9, stars: 4, title: '非常稀有', note: '大約 10 個人裡 1 個' }
-  if (score >= 70) return { topPercent: 20, stars: 4, title: '稀有', note: '5 個人裡 1 個' }
-  if (score >= 60) return { topPercent: 45, stars: 3, title: '有特色', note: '算是偏特別的那一群' }
-  if (score >= 50) return { topPercent: 85, stars: 2, title: '較為平均', note: '命盤沒有極端配置 — 你是那個平衡、可靠、不出亂子的類型' }
-  return { topPercent: 95, stars: 2, title: '樸實型', note: '本命走低調路線 — 不追求光環，人生靜水深流' }
+  if (rawScore >= 106) return { topPercent: 0.7, stars: 5, title: '傳奇級命盤', note: '140 個人裡不到 1 個跟你一樣' }
+  if (rawScore >= 92) return { topPercent: 3, stars: 5, title: '極稀有', note: '30 個人裡才出現 1 個' }
+  if (rawScore >= 80) return { topPercent: 8.5, stars: 4, title: '非常稀有', note: '大約 12 個人裡 1 個' }
+  if (rawScore >= 66) return { topPercent: 27, stars: 4, title: '稀有', note: '3-4 個人裡 1 個' }
+  if (rawScore >= 55) return { topPercent: 66, stars: 3, title: '有特色', note: '算是偏特別的那一群' }
+  if (rawScore >= 46) return { topPercent: 97, stars: 2, title: '較為平均', note: '命盤沒有極端配置 — 你是那個平衡、可靠、不出亂子的類型' }
+  return { topPercent: 100, stars: 2, title: '樸實型', note: '本命走低調路線 — 不追求光環，人生靜水深流' }
 }
