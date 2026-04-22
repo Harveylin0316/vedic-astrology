@@ -617,9 +617,23 @@ function predictCategories(analysis) {
 
 
   // 4. Playbook sweetSpot / modernExamples — secondary signal
-  const sweetSpot = analysis?.playbook?.sweetSpot || ''
-  const modernExamples = (analysis?.playbook?.modernExamples || []).join('  ')
-  const combinedPlaybookText = `${sweetSpot}  ${modernExamples}`
+  // v4：playbook 改成 { primary, secondary, avoidCareer } 三層；
+  //     舊扁平欄位（sweetSpot / modernExamples）已不存在於 root。
+  //     為了 validator 維持舊 keyword 命中率，這裡把三層裡的 examples/sweetSpot
+  //     全部攤平成一個大字串供 scan。
+  const pb = analysis?.playbook || {}
+  const pbSweetSpots = [
+    pb.primary?.sweetSpot,
+    pb.secondary?.sweetSpot,
+    pb.sweetSpot  // legacy fallback
+  ].filter(Boolean).join('  ')
+  const pbExamples = [
+    ...(pb.primary?.examples || []),
+    ...(pb.secondary?.examples || []),
+    ...(pb.avoidCareer?.examples || []),
+    ...(pb.modernExamples || []) // legacy fallback
+  ].join('  ')
+  const combinedPlaybookText = `${pbSweetSpots}  ${pbExamples}`
   for (const [cat, kws] of Object.entries(CATEGORY_KEYWORDS)) {
     if (set.has(cat)) continue
     for (const kw of kws.hard) {
