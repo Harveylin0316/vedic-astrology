@@ -4,13 +4,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // 標題：EB Garamond（古典書卷） + 繁中思源宋體
-        serif: ['"EB Garamond"', '"Cormorant Garamond"', '"Noto Serif TC"', 'Georgia', 'serif'],
-        // 內文：以繁中思源宋體為主
-        body: ['"Noto Serif TC"', '"EB Garamond"', 'Georgia', 'serif'],
-        // 小標／版權／標籤：Cinzel（古羅馬大寫），tracking 放大很優雅
-        display: ['"Cinzel"', '"EB Garamond"', 'serif'],
-        // 保留 sans 給表單輸入等工具 UI
+        // 展示標題：Fraunces（可變字體，專為 editorial 設計）
+        serif: ['"Fraunces"', '"Playfair Display"', '"EB Garamond"', '"Noto Serif TC"', 'Georgia', 'serif'],
+        // 巨型標題：Playfair Display Black
+        display: ['"Playfair Display"', '"Fraunces"', '"EB Garamond"', 'serif'],
+        // 小標／版權：Cinzel（古羅馬大寫）
+        caps: ['"Cinzel"', '"EB Garamond"', 'serif'],
+        // 內文：繁中思源宋
+        body: ['"Noto Serif TC"', '"Fraunces"', '"EB Garamond"', 'serif'],
+        // 梵語裝飾
+        devanagari: ['"Noto Serif Devanagari"', 'serif'],
+        // 保留 sans
         sans: ['Inter', 'system-ui', 'sans-serif']
       },
       colors: {

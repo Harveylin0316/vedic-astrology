@@ -8,36 +8,34 @@
   }
   body {
     @apply bg-ink-950 text-parchment-100 font-body antialiased;
-    /* 紙質感：極淡金色噪點 + 墨色底 — 近黑而非紫 */
     background-image:
       radial-gradient(circle at 22% 24%, rgba(201, 169, 97, 0.07) 0%, transparent 48%),
       radial-gradient(circle at 82% 76%, rgba(177, 45, 32, 0.05) 0%, transparent 48%),
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.78 0 0 0 0 0.66 0 0 0 0 0.38 0 0 0 0.018 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.78 0 0 0 0 0.66 0 0 0 0 0.38 0 0 0 0.022 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
     background-attachment: fixed;
     background-size: auto, auto, 300px 300px;
     min-height: 100vh;
+    font-feature-settings: "palt" 1, "kern" 1;
   }
   h1, h2, h3, h4 {
     @apply font-serif tracking-tight;
-    font-feature-settings: "dlig" 1, "liga" 1;
+    font-feature-settings: "dlig" 1, "liga" 1, "ss01" 1;
   }
-  /* 超大標題：雜誌 / 書卷感 */
+  /* 標題字級：激進放大 */
   h1 {
-    @apply text-5xl md:text-7xl leading-[1.05];
+    @apply text-6xl md:text-[8rem] leading-[0.95];
+    font-variation-settings: "opsz" 144, "wght" 700, "SOFT" 0;
   }
   h2 {
-    @apply text-3xl md:text-5xl leading-[1.1];
+    @apply text-4xl md:text-[5rem] leading-[1.0];
+    font-variation-settings: "opsz" 144, "wght" 600;
   }
   h3 {
-    @apply text-2xl md:text-3xl leading-tight;
+    @apply text-2xl md:text-4xl leading-tight;
+    font-variation-settings: "opsz" 48, "wght" 500;
   }
-  /* 內文節奏拉寬 */
   p {
     line-height: 1.85;
-  }
-  /* 中西文混排微調 */
-  body {
-    font-feature-settings: "palt" 1, "kern" 1;
   }
 }
 
@@ -100,15 +98,61 @@
 
   /* 章節標題大字 */
   .chapter-title {
-    @apply font-serif text-4xl md:text-6xl text-gold-200 leading-[1.05] tracking-tight;
+    @apply font-serif text-5xl md:text-[6rem] text-gold-200 leading-[0.95] tracking-tight;
   }
-  /* 章節編號：羅馬數字 */
+  /* 章節編號：羅馬數字（現在是小版） */
   .chapter-numeral {
-    @apply font-display text-xs md:text-sm uppercase tracking-[0.4em] text-gold-400;
+    @apply font-caps text-xs md:text-sm uppercase tracking-[0.4em] text-gold-400;
   }
   /* 小節小標 */
   .chapter-eyebrow {
-    @apply font-display text-[11px] uppercase tracking-[0.35em] text-gold-500;
+    @apply font-caps text-[11px] uppercase tracking-[0.35em] text-gold-500;
+  }
+
+  /* ─── 激進：左貼邊巨型羅馬數字（像 Vogue / Lost & Found magazine） ─── */
+  .giant-numeral {
+    @apply font-serif text-gold-400/15 select-none pointer-events-none;
+    font-size: clamp(180px, 28vw, 420px);
+    line-height: 0.8;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 50;
+    letter-spacing: -0.05em;
+  }
+
+  /* ─── 雜誌 hero：單欄極大字 ─── */
+  .magazine-hero-title {
+    @apply font-serif text-gold-200 leading-[0.92];
+    font-size: clamp(56px, 9.5vw, 168px);
+    font-weight: 600;
+    font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 30;
+    letter-spacing: -0.03em;
+  }
+  .magazine-hero-title em {
+    @apply italic text-gold-300;
+    font-style: italic;
+    font-weight: 500;
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 50;
+  }
+
+  /* 拉丁格言／引文 */
+  .epigraph {
+    @apply font-serif italic text-parchment-200/70;
+    font-size: clamp(14px, 1.5vw, 19px);
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+  }
+
+  /* Devanagari 梵語裝飾字 */
+  .sanskrit-decoration {
+    @apply font-devanagari text-gold-400/10 select-none pointer-events-none;
+    font-size: clamp(80px, 18vw, 260px);
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  /* 100vh 章節分頁 */
+  .section-page {
+    @apply relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24;
   }
   /* 內文用 serif */
   .prose-manuscript {
@@ -174,6 +218,93 @@
       linear-gradient(135deg, rgba(201, 169, 97, 0.15), rgba(139, 106, 53, 0.25));
   }
 }
+
+/* ─── Scroll-triggered reveal 動畫 ─── */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.2s ease-out;
+    filter: blur(6px);
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  /* Hero 標題逐字浮現 */
+  @keyframes heroCharIn {
+    0% { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+  .hero-char {
+    display: inline-block;
+    opacity: 0;
+    animation: heroCharIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* ─── 金色蠟封印章 ─── */
+.wax-seal {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(232, 217, 176, 0.6) 0%, transparent 35%),
+    radial-gradient(circle at 50% 50%, #c9a961 0%, #8b6a35 100%);
+  box-shadow:
+    inset 0 0 20px rgba(107, 81, 40, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif Devanagari', serif;
+  color: #6b5128;
+  font-size: 48px;
+  transform: rotate(-6deg);
+}
+
+/* ─── 印度紋樣：Mughal 拱門邊框（用 SVG mask） ─── */
+.mughal-arch {
+  position: relative;
+}
+.mughal-arch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 100' preserveAspectRatio='none'><path d='M0,100 L0,40 Q400,-20 800,40 L800,100 Z' fill='none' stroke='%23c9a961' stroke-width='0.5' opacity='0.4'/><path d='M0,100 L0,50 Q400,0 800,50 L800,100 Z' fill='none' stroke='%23c9a961' stroke-width='0.3' opacity='0.25'/></svg>");
+  background-repeat: no-repeat;
+  background-size: 100% 100px;
+  background-position: top center;
+  height: 100px;
+  top: 0;
+}
+
+/* ─── Paisley 佩斯利淡花紋（用於章節背景）─── */
+.bg-paisley {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><g fill='none' stroke='%23c9a961' stroke-width='0.6' opacity='0.07'><path d='M120 40 C 160 40 180 80 180 120 C 180 160 140 180 120 180 C 90 180 80 150 100 130 C 120 110 150 90 140 70 C 135 55 125 48 120 40Z'/><circle cx='120' cy='120' r='4'/></g></svg>");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+}
+
+/* ─── 邊角裝飾（四角 ornament ）─── */
+.corner-ornaments {
+  position: relative;
+}
+.corner-ornaments::before,
+.corner-ornaments::after {
+  content: '✦';
+  position: absolute;
+  font-family: 'EB Garamond', serif;
+  color: rgba(201, 169, 97, 0.35);
+  font-size: 18px;
+}
+.corner-ornaments::before { top: 12px; left: 12px; }
+.corner-ornaments::after { bottom: 12px; right: 12px; }
 
 /* ─── 滾動條：金箔色 ─── */
 ::-webkit-scrollbar {

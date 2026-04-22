@@ -27,6 +27,7 @@ import BirthChartShareCard from '../components/BirthChartShareCard.jsx'
 import ShareCardSection from '../components/ShareCardSection.jsx'
 import { trackEvent } from '../components/Analytics.jsx'
 import { useSectionViewTracker } from '../hooks/useSectionViewTracker.js'
+import { useScrollReveal } from '../hooks/useScrollReveal.js'
 import { computeRarityIndex } from '../utils/rarityIndex.js'
 import { renderSignatureSentences } from '../utils/sentenceTemplates.js'
 import { buildPersonaSignature } from '../data/personaLabels.js'
@@ -338,21 +339,45 @@ export default function BirthChart() {
           duration={1500}
         />
       )}
-      <div className="text-center mb-14 pt-6">
-        <div className="font-display text-[10px] uppercase tracking-[0.45em] text-gold-500 mb-4">
-          Vol.&nbsp;II · Natale Speculum
+      <div className="relative mb-20 pt-10 pb-14 overflow-hidden">
+        {/* 左貼邊巨型羅馬數字 II */}
+        <div
+          className="giant-numeral absolute left-[-30px] md:left-[-50px] top-[-10%] z-0"
+          aria-hidden="true"
+        >
+          II
         </div>
-        <h1 className="font-serif text-[42px] md:text-[72px] leading-[1.05] text-parchment-50 tracking-tight">
-          {t('chart.pageTitle')}
-        </h1>
-        <div className="flex items-center justify-center gap-3 mt-5 mb-5 text-gold-400/60">
-          <span className="h-px w-14 bg-gold-500/40" />
-          <span className="font-serif">✦</span>
-          <span className="h-px w-14 bg-gold-500/40" />
+        {/* Devanagari 浮動裝飾 */}
+        <div
+          className="sanskrit-decoration absolute right-[-40px] bottom-[-10%] z-0"
+          aria-hidden="true"
+        >
+          जन्म
         </div>
-        <p className="font-body italic text-parchment-200/70 max-w-xl mx-auto text-[15px] leading-[1.8]">
-          {t('chart.pageSubtitle')}
-        </p>
+
+        <div className="relative z-10 text-center max-w-4xl mx-auto">
+          <div className="font-caps text-[10px] md:text-xs uppercase tracking-[0.5em] text-gold-500 mb-6">
+            Vol.&nbsp;II &nbsp;·&nbsp; Natale Speculum
+          </div>
+          <h1
+            className="font-serif leading-[0.95] text-parchment-50 tracking-tight mb-8"
+            style={{
+              fontSize: 'clamp(48px, 9vw, 144px)',
+              fontWeight: 600,
+              fontVariationSettings: '"opsz" 144, "wght" 600, "SOFT" 30'
+            }}
+          >
+            {t('chart.pageTitle')}
+          </h1>
+          <div className="flex items-center justify-center gap-4 mb-6 text-gold-400/60">
+            <span className="h-px w-20 bg-gold-500/40" />
+            <span className="font-serif text-lg">✦</span>
+            <span className="h-px w-20 bg-gold-500/40" />
+          </div>
+          <p className="epigraph max-w-xl mx-auto">
+            {t('chart.pageSubtitle')}
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
@@ -644,7 +669,7 @@ export default function BirthChart() {
               {astrologerNote && (
                 <>
                   <div id="note" className="scroll-mt-28 -mt-6" />
-                  <Section icon={<Sparkle className="h-4 w-4" />} badge="占星師手記" title="命盤跟你說的事" highlight>
+                  <Section numeral="III" sanskrit="दृष्टि" badge="占星師手記 · Astrologer's Note" title="命盤跟你說的事" highlight>
                     <div className="max-w-3xl mx-auto">
                       <div className="relative rounded-2xl border border-saffron-500/20 bg-gradient-to-br from-saffron-500/[0.06] via-saffron-500/[0.02] to-white/[0.02] p-6 md:p-10">
                         {/* greeting */}
@@ -703,7 +728,7 @@ export default function BirthChart() {
               {/* 愛情章 */}
               <div id="love" className="scroll-mt-28 -mt-6" />
               {moon && (
-                <Section icon={<Heart className="h-4 w-4" />} badge="愛情" title={moon.theme} highlight>
+                <Section numeral="IV" sanskrit="प्रेम" badge="愛情 · Amor" title={moon.theme} highlight>
                   <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
                     {noteBody('intimacy') && <p>{noteBody('intimacy')}</p>}
                     {noteBody('family') && <p>{noteBody('family')}</p>}
@@ -737,7 +762,7 @@ export default function BirthChart() {
               {/* 事業章 */}
               <div id="career" className="scroll-mt-28 -mt-6" />
               {vedicCareer && (
-                <Section icon={<Briefcase className="h-4 w-4" />} badge="事業" title="你的事業命格" highlight>
+                <Section numeral="V" sanskrit="कर्म" badge="事業 · Karma" title="你的事業命格" highlight>
                   <div className="max-w-3xl mx-auto space-y-8 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
 
                     {/* ─── Layer 1：主判讀一句話（Hero）─── */}
@@ -1036,7 +1061,7 @@ export default function BirthChart() {
 
               {/* 健康章 */}
               <div id="health" className="scroll-mt-28 -mt-6" />
-              <Section icon={<ShieldCheck className="h-4 w-4" />} badge="健康" title="你的身體與精神的使用說明">
+              <Section numeral="VI" sanskrit="देह" badge="健康 · Corpus" title="你的身體與精神的使用說明">
                 <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
                   {noteBody('bodyWarning') && <p>{noteBody('bodyWarning')}</p>}
                   {currentDashaReading?.health && (
@@ -1070,7 +1095,7 @@ export default function BirthChart() {
               {/* 運勢章 */}
               <div id="fortune" className="scroll-mt-28 -mt-6" />
               {currentDasha && currentDashaReading && (
-                <Section icon={<Clock4 className="h-4 w-4" />} badge="運勢" title={`你現在正走：${currentDashaReading.name}（${currentDashaReading.nickname}）`}>
+                <Section numeral="VII" sanskrit="काल" badge="運勢 · Tempus" title={`你現在正走：${currentDashaReading.name}（${currentDashaReading.nickname}）`}>
                   <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
                     <p>
                       你今年大約<span className="text-saffron-300">{ageOf(now).toFixed(0)} 歲</span>，正在走<span className="text-saffron-300">{currentDashaReading.name}</span>這段大運 —— 也就是「{currentDashaReading.nickname}」的年代。{currentDashaReading.vibe} 這段還會持續<span className="text-saffron-300">約 {currentDasha.yearsRemaining.toFixed(1)} 年</span>，所以別急著下結論你自己「就是這樣」—— 是這段時期把你磨成這樣，下一段又會再翻一頁。
@@ -1196,41 +1221,76 @@ function WelcomePanel() {
   )
 }
 
-// 章節編號：羅馬數字（I, II, III, ...）
-const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
-let _sectionCounter = 0
-function useSectionNumeral() {
-  _sectionCounter += 1
-  return ROMAN[_sectionCounter] || `§${_sectionCounter}`
+// 章節編號：羅馬數字（III 開始因為 Vol. II 本身是 BirthChart 頁）
+const SECTION_NUMERALS = { 0: 'III', 1: 'IV', 2: 'V', 3: 'VI', 4: 'VII', 5: 'VIII' }
+// Devanagari 章節標記 — 依章節主題配
+const SECTION_SANSKRIT = {
+  '占星師手記': 'दृष्टि',   // drsti · vision
+  '愛情': 'प्रेम',          // prema · love
+  '事業': 'कर्म',          // karma · work
+  '健康': 'देह',            // deha · body
+  '運勢': 'काल'             // kala · time
 }
 
-function Section({ icon, badge, title, children, highlight }) {
-  // 注意：原本的 icon 參數繼續接受但不再渲染 — Section 內部自己用行星符號
+function Section({ icon, badge, title, children, highlight, numeral, sanskrit }) {
+  const revealRef = useScrollReveal()
   return (
     <div
-      className={`relative py-10 md:py-12 px-6 md:px-10 ${
+      ref={revealRef}
+      className={`reveal relative py-20 md:py-28 px-6 md:px-10 overflow-hidden ${
         highlight
-          ? 'border-y border-gold-400/35 bg-gold-500/[0.04]'
-          : 'border-y border-gold-500/15 bg-ink-900/30'
+          ? 'border-y border-gold-400/30 bg-gold-500/[0.03]'
+          : 'border-y border-gold-500/15 bg-ink-900/25'
       }`}
     >
-      {/* 章節頁眉 */}
-      <div className="max-w-4xl mx-auto mb-6">
-        <div className="flex items-center justify-between gap-4">
-          <div className="chapter-eyebrow">{badge}</div>
-          <div className="chapter-eyebrow text-gold-500/60">❦</div>
+      {/* 左貼邊巨型羅馬數字 */}
+      {numeral && (
+        <div
+          className="giant-numeral absolute left-[-20px] md:left-[-40px] top-[-8%] z-0"
+          aria-hidden="true"
+        >
+          {numeral}
         </div>
-        <h3 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-tight mt-2 leading-[1.1]">
+      )}
+
+      {/* Devanagari 浮動裝飾 */}
+      {sanskrit && (
+        <div
+          className="sanskrit-decoration absolute right-[-40px] bottom-[-10%] z-0 hidden md:block"
+          aria-hidden="true"
+        >
+          {sanskrit}
+        </div>
+      )}
+
+      {/* 章節頁眉 */}
+      <div className="relative z-10 max-w-4xl mx-auto mb-10 md:mb-14">
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <div className="chapter-eyebrow">{badge}</div>
+          <div className="font-caps text-[10px] tracking-[0.4em] text-gold-500/60">
+            {numeral && `Ch. ${numeral}`}
+          </div>
+        </div>
+
+        <h3
+          className="font-serif text-gold-200 tracking-tight leading-[0.95]"
+          style={{
+            fontSize: 'clamp(34px, 6vw, 84px)',
+            fontWeight: 500,
+            fontVariationSettings: '"opsz" 144, "wght" 500, "SOFT" 30'
+          }}
+        >
           {title}
         </h3>
-        <div className="flex items-center gap-3 mt-5 text-gold-400/50">
-          <span className="h-px w-12 bg-gold-500/30" />
-          <span className="font-serif text-xs">✦</span>
+
+        <div className="flex items-center gap-5 mt-8 text-gold-400/50">
+          <span className="h-px w-20 md:w-28 bg-gold-500/30" />
+          <span className="font-serif text-sm">✦</span>
           <span className="h-px flex-1 bg-gold-500/15" />
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="relative z-10 max-w-4xl mx-auto">
         {children}
       </div>
     </div>
