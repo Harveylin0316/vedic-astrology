@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vedic-astrology.netlify.app/sitemap.xml

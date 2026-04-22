@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Search, Moon } from 'lucide-react'
 import { nakshatras } from '../data/nakshatras.js'
+import { nakshatraSlug } from './NakshatraDetail.jsx'
 
 export default function Nakshatras() {
   const [q, setQ] = useState('')
@@ -67,18 +69,23 @@ export default function Nakshatras() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((n) => (
-          <div
+          <Link
             key={n.id}
-            className="glass-panel p-5 hover:border-saffron-500/40 hover:bg-white/10 transition"
+            to={`/nakshatras/${nakshatraSlug(n.name)}`}
+            className="block glass-panel p-5 hover:border-gold-300 hover:bg-gold-500/5 transition group"
           >
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-xs text-slate-500">Nakshatra {n.id}</div>
-                <h3 className="font-serif text-xl gradient-text">{n.name}</h3>
-                <div className="text-sm text-slate-400">{n.chinese}</div>
+                <div className="font-caps text-[9px] uppercase tracking-[0.35em] text-gold-500/70">
+                  Nakshatra&nbsp;{n.id}
+                </div>
+                <h3 className="font-serif text-2xl text-gold-200 mt-1 group-hover:text-gold-300 transition">
+                  {n.name}
+                </h3>
+                <div className="text-sm text-parchment-200/70 italic font-serif">{n.chinese}</div>
               </div>
-              <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-br from-saffron-500/20 to-vermilion-500/20 border border-saffron-500/30">
-                <Moon className="h-5 w-5 text-saffron-400" />
+              <div className="flex items-center justify-center h-12 w-12 rounded-full border border-gold-500/40 bg-ink-900">
+                <Moon className="h-5 w-5 text-gold-300" />
               </div>
             </div>
             <div className="mt-4 space-y-1.5 text-sm">
@@ -87,7 +94,10 @@ export default function Nakshatras() {
               <Row label="象徵" value={n.symbol} />
               <Row label="特質" value={n.trait} />
             </div>
-          </div>
+            <div className="mt-4 pt-3 border-t border-gold-500/15 font-caps text-[9px] uppercase tracking-[0.35em] text-gold-500/60 group-hover:text-gold-300 transition">
+              看詳細解讀 →
+            </div>
+          </Link>
         ))}
       </div>
     </div>
@@ -97,8 +107,8 @@ export default function Nakshatras() {
 function Row({ label, value }) {
   return (
     <div className="flex justify-between gap-3">
-      <span className="text-slate-500">{label}</span>
-      <span className="text-slate-200 text-right">{value}</span>
+      <span className="font-caps text-[10px] uppercase tracking-[0.25em] text-gold-500/70">{label}</span>
+      <span className="text-parchment-200 text-right font-serif">{value}</span>
     </div>
   )
 }

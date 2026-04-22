@@ -14,6 +14,7 @@ import Compatibility from './pages/Compatibility.jsx'
 
 // 次要路徑 lazy — 80% 流量只走主要三條路徑，這些按需載入
 const Nakshatras = lazy(() => import('./pages/Nakshatras.jsx'))
+const NakshatraDetail = lazy(() => import('./pages/NakshatraDetail.jsx'))
 const Planets = lazy(() => import('./pages/Planets.jsx'))
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 
@@ -43,6 +44,14 @@ export default function App() {
             element={
               <Suspense fallback={<FallbackLoader />}>
                 <Nakshatras />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/nakshatras/:slug"
+            element={
+              <Suspense fallback={<FallbackLoader />}>
+                <NakshatraDetail />
               </Suspense>
             }
           />
