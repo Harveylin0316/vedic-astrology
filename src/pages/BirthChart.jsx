@@ -722,20 +722,174 @@ export default function BirthChart() {
               <div id="career" className="scroll-mt-28 -mt-6" />
               {vedicCareer && (
                 <Section icon={<Briefcase className="h-4 w-4" />} badge="事業" title="你的事業命格" highlight>
-                  <div className="max-w-3xl mx-auto space-y-5 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
-                    {vedicCareer.narrative && vedicCareer.narrative.split('\n\n').map((para, i) => (
-                      <p key={`narr-${i}`}>{para}</p>
-                    ))}
+                  <div className="max-w-3xl mx-auto space-y-8 font-serif text-[15px] md:text-base text-slate-100 leading-[1.95]">
+
+                    {/* ─── Layer 1：主判讀一句話（Hero）─── */}
+                    {vedicCareer.narrative?.mainStatement && (
+                      <div className="text-center py-4">
+                        <p className="font-serif text-2xl md:text-3xl text-saffron-200 leading-snug tracking-wide">
+                          {vedicCareer.narrative.mainStatement}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* ─── Layer 2 / 3 / 4：三層金字塔 ─── */}
+                    {vedicCareer.narrative?.tiers?.map((tier, idx) => {
+                      if (tier.layer === 'primary') {
+                        const p = vedicCareer.playbook?.primary
+                        return (
+                          <div
+                            key={`tier-${idx}`}
+                            className="relative rounded-2xl p-[1px] bg-gradient-to-br from-saffron-400/70 via-saffron-500/30 to-saffron-400/50"
+                          >
+                            <div className="rounded-2xl bg-slate-950/85 p-6 md:p-7 space-y-4 not-italic">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs uppercase tracking-[0.25em] text-saffron-300 font-medium">
+                                  ★ PRIMARY · 主軸
+                                </span>
+                              </div>
+                              <div>
+                                <div className="text-sm text-saffron-400/80 font-serif italic">
+                                  你該走的方向
+                                </div>
+                                <p className="font-serif text-xl md:text-2xl text-saffron-100 mt-1">
+                                  {tier.identity}
+                                </p>
+                                {tier.reading && (
+                                  <p className="text-[15px] text-slate-200 mt-2 leading-relaxed">
+                                    {tier.reading}
+                                  </p>
+                                )}
+                              </div>
+                              {p?.examples?.length > 0 && (
+                                <div>
+                                  <div className="text-xs text-slate-400 mb-1.5">職業範例</div>
+                                  <p className="text-[15px] text-slate-100 leading-relaxed">
+                                    {p.examples.join('、')}
+                                  </p>
+                                </div>
+                              )}
+                              {p?.sweetSpot && (
+                                <div>
+                                  <div className="text-xs text-slate-400 mb-1.5">甜蜜點</div>
+                                  <p className="text-[15px] text-saffron-200/95 leading-relaxed">
+                                    {p.sweetSpot}
+                                  </p>
+                                </div>
+                              )}
+                              <div className="pt-3 border-t border-saffron-500/20">
+                                <div className="text-xs text-saffron-400/70 font-serif italic mb-1">為什麼</div>
+                                <p className="text-xs text-slate-400 leading-relaxed">
+                                  {tier.why}
+                                  {tier.keyFacts?.length > 0 && ` · ${tier.keyFacts.join('、')}`}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      if (tier.layer === 'secondary') {
+                        const s = vedicCareer.playbook?.secondary
+                        return (
+                          <div
+                            key={`tier-${idx}`}
+                            className="rounded-2xl border border-slate-500/30 bg-slate-900/40 p-6 md:p-7 space-y-4 not-italic"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs uppercase tracking-[0.25em] text-slate-400 font-medium">
+                                ◆ SECONDARY · 副軸
+                              </span>
+                            </div>
+                            <div>
+                              <div className="text-sm text-slate-400 font-serif italic">
+                                但你執行起來偏：
+                              </div>
+                              <p className="font-serif text-lg md:text-xl text-slate-100 mt-1">
+                                {tier.identity}
+                              </p>
+                            </div>
+                            {s?.integration && (
+                              <div>
+                                <div className="text-xs text-slate-400 mb-1.5">整合建議</div>
+                                <p className="text-[15px] text-slate-200 leading-relaxed">
+                                  {s.integration}
+                                </p>
+                              </div>
+                            )}
+                            {s?.examples?.length > 0 && (
+                              <div>
+                                <div className="text-xs text-slate-400 mb-1.5">帶這股勁的版本（仍在主軸裡挑）</div>
+                                <p className="text-[14px] text-slate-300 leading-relaxed">
+                                  {s.examples.join('、')}
+                                </p>
+                              </div>
+                            )}
+                            <div className="pt-3 border-t border-slate-500/20">
+                              <div className="text-xs text-slate-500 font-serif italic mb-1">為什麼</div>
+                              <p className="text-xs text-slate-500 leading-relaxed">
+                                {tier.why}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      if (tier.layer === 'avoid') {
+                        const a = vedicCareer.playbook?.avoidCareer
+                        return (
+                          <div
+                            key={`tier-${idx}`}
+                            className="rounded-2xl border border-amber-500/20 bg-slate-950/40 p-5 md:p-6 space-y-3 not-italic"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs uppercase tracking-[0.25em] text-amber-400/80 font-medium">
+                                ⚠ AVOID · 不要當主業
+                              </span>
+                            </div>
+                            <p className="text-sm text-slate-300 leading-relaxed">
+                              <span className="text-amber-200/90 font-medium">{tier.identity}</span>
+                              <span className="text-slate-400"> 是你的調味料、不是主業</span>
+                            </p>
+                            {a?.examples?.length > 0 && (
+                              <p className="text-sm text-slate-400 leading-relaxed">
+                                例如：{a.examples.join('、')}
+                              </p>
+                            )}
+                            <p className="text-xs text-slate-500 italic leading-relaxed">
+                              {tier.why}
+                            </p>
+                          </div>
+                        )
+                      }
+
+                      return null
+                    })}
+
+                    {/* Yoga 加權補充 */}
+                    {vedicCareer.narrative?.yogaAddendum?.yogas?.length > 0 && (
+                      <div className="rounded-xl border border-saffron-500/20 bg-slate-900/30 p-5 space-y-2 not-italic">
+                        <div className="text-xs uppercase tracking-[0.25em] text-saffron-400/80 font-medium">
+                          ✦ YOGA · 你盤上藏的格局
+                        </div>
+                        {vedicCareer.narrative.yogaAddendum.yogas.map((y, yi) => (
+                          <p key={`yoga-${yi}`} className="text-sm text-slate-200 leading-relaxed">
+                            <span className="text-saffron-200 font-medium">「{y.name}」</span>
+                            {' — '}{y.implication}
+                          </p>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Sub-Category（商業 / 政治圈細分型）— 只在 confidence=high 時顯示 */}
                     {vedicCareer.playbook?.subCategory && (
-                      <div className="space-y-3">
-                        <div className="text-sm text-saffron-400/80 font-serif italic">
-                          你在商業／政治圈裡的細分型 —
+                      <div className="rounded-xl border border-saffron-500/15 bg-slate-900/30 p-5 space-y-3 not-italic">
+                        <div className="text-xs uppercase tracking-[0.25em] text-saffron-400/80 font-medium">
+                          ★ 細分型 · 在這圈裡你是哪一款
                         </div>
-                        <p>
+                        <p className="text-base">
                           <span className="text-saffron-300 font-medium">{vedicCareer.playbook.subCategory.label}</span>
-                          ：{vedicCareer.playbook.subCategory.tagline}。
+                          <span className="text-slate-300">：{vedicCareer.playbook.subCategory.tagline}。</span>
                         </p>
                         <p className="text-sm text-slate-300 leading-relaxed">
                           {vedicCareer.playbook.subCategory.sweetSpot}。避開：{vedicCareer.playbook.subCategory.avoid}。
@@ -748,102 +902,29 @@ export default function BirthChart() {
                       </div>
                     )}
 
-                    {noteBody('money') && <p>{noteBody('money')}</p>}
-                    {vedicCareer.activeCareerYogas?.find((y) => y.strength === 'strong') && (
-                      <p>
-                        另外你這張盤其實藏了一個格局 ——「{vedicCareer.activeCareerYogas.find((y) => y.strength === 'strong').verdict}」。
-                        {vedicCareer.activeCareerYogas.find((y) => y.strength === 'strong').careerImplication}
-                      </p>
-                    )}
+                    {noteBody('money') && <p className="pt-2">{noteBody('money')}</p>}
 
-                    {/* Playbook — 那現在實際該怎麼找工作？ */}
+                    {/* ─── Timing & Actions（playbook 收尾）─── */}
                     {vedicCareer.playbook && (
-                      <div className="pt-6 mt-4 border-t border-saffron-500/25 space-y-6 not-italic">
+                      <div className="pt-6 mt-2 border-t border-saffron-500/25 space-y-6 not-italic">
                         <h4 className="font-serif text-xl md:text-2xl text-saffron-200">
-                          那，現在實際該怎麼走？
+                          現在實際該怎麼動？
                         </h4>
 
-                        {/* 身份 */}
-                        {vedicCareer.playbook.identity && (
-                          <div>
-                            <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
-                              你在職場裡是哪種人
-                            </div>
-                            <p className="text-base md:text-lg text-slate-100 leading-snug">
-                              <span className="font-serif text-saffron-300">
-                                {vedicCareer.playbook.identity.label}
-                              </span>
-                              {vedicCareer.playbook.identity.houseContext && (
-                                <span className="text-slate-300">
-                                  {' '}·{' '}{vedicCareer.playbook.identity.houseContext}
-                                </span>
-                              )}
-                            </p>
-                            <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-                              {vedicCareer.playbook.identity.why}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* 工作能量特徵（不再是職業列表） */}
-                        {vedicCareer.playbook.energyPattern && (
-                          <div>
-                            <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
-                              你工作時需要的能量
-                            </div>
-                            <p className="text-base text-slate-100 leading-relaxed">
-                              {vedicCareer.playbook.energyPattern}
-                            </p>
-                            {vedicCareer.playbook.sweetSpot && (
-                              <p className="text-sm text-saffron-200/90 mt-2 leading-relaxed">
-                                甜蜜點：{vedicCareer.playbook.sweetSpot}
-                              </p>
-                            )}
-                            {vedicCareer.playbook.modernExamples?.length > 0 && (
-                              <div className="mt-3">
-                                <div className="text-xs text-slate-400 mb-1.5">現代工作舉例（能量對得上就算）：</div>
-                                <p className="text-sm text-slate-200 leading-relaxed">
-                                  {vedicCareer.playbook.modernExamples.join('、')}
-                                </p>
-                              </div>
-                            )}
-                            {vedicCareer.playbook.karakaHint && (
-                              <p className="text-xs text-slate-400 mt-3 leading-relaxed">
-                                {vedicCareer.playbook.karakaHint}
-                              </p>
-                            )}
-                            <p className="text-xs text-slate-500 italic mt-3 leading-relaxed">
-                              ※ 古典用「建築師／藝術家」這些詞，不是字面要你蓋房子或畫畫 — 而是在描述你工作時需要的「能量」。讀到某個職稱沒共鳴很正常，重點是能量匹配。
-                            </p>
-                          </div>
-                        )}
-
-                        {/* 避開 */}
-                        {vedicCareer.playbook.avoid && (
-                          <div>
-                            <div className="text-sm text-amber-400/90 font-serif italic mb-2">
-                              千萬別進這種環境
-                            </div>
-                            <p className="text-base text-slate-100 leading-relaxed">
-                              {vedicCareer.playbook.avoid}
-                            </p>
-                          </div>
-                        )}
-
                         {/* 當前大運時機 */}
-                        {vedicCareer.playbook.dashaSignal && (
+                        {vedicCareer.playbook.timing && (
                           <div>
                             <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
                               現在這段時期的時機信號
                             </div>
                             <p className="text-base text-slate-100 leading-relaxed">
-                              你正在走 <span className="text-saffron-300 font-medium">{vedicCareer.playbook.dashaSignal.lord}</span> 大運 ·{' '}
-                              <span className="text-saffron-300">{vedicCareer.playbook.dashaSignal.phase}</span>
-                              {vedicCareer.playbook.dashaSignal.isKarmesh && (
+                              你正在走 <span className="text-saffron-300 font-medium">{vedicCareer.playbook.timing.lord}</span> 大運 ·{' '}
+                              <span className="text-saffron-300">{vedicCareer.playbook.timing.phase}</span>
+                              {vedicCareer.playbook.timing.isKarmesh && (
                                 <span className="text-emerald-400">（10 宮主大運 = 事業最強時刻）</span>
                               )}
                               <br />
-                              <span className="text-slate-300">— {vedicCareer.playbook.dashaSignal.signal}</span>
+                              <span className="text-slate-300">— {vedicCareer.playbook.timing.signal}</span>
                             </p>
                           </div>
                         )}
@@ -868,6 +949,10 @@ export default function BirthChart() {
                             </ol>
                           </div>
                         )}
+
+                        <p className="text-xs text-slate-500 italic leading-relaxed">
+                          ※ 古典用「建築師／藝術家」這些詞，不是字面要你蓋房子或畫畫 — 而是在描述你工作時需要的「能量」。讀到某個職稱沒共鳴很正常，重點是能量匹配。
+                        </p>
                       </div>
                     )}
 

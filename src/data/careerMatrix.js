@@ -646,9 +646,240 @@ export function buildKarakaOverrides({ amatyakaraka, significators, computeDigni
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 合成 Narrative：把所有關鍵發現揉成一段「具體到你命盤」的描述
+// Priority Pyramid Resolver — 從 vedicCareer 分析結果決定 primary/secondary/avoid
 // ═══════════════════════════════════════════════════════════════
-// v3: 新增 Karaka Override + D10 交叉驗證的 narrative 片段
+//
+// 核心判讀邏輯（BPHS + 現代事業實操）：
+//
+// PRIMARY（主軸）：永遠是 karmesh（10 宮主）— 這是 BPHS 核心、事業潛能方向
+//
+// SECONDARY（副軸 / 執行風格）— 只在這些情況出現：
+//   a) D10 10 宮主 ≠ D1 10 宮主 — D10 是「實踐層」override；說明你「執行起來」的樣子
+//   b) Karaka override 強到 strong，且與 karmesh 方向本質不同
+//   c) 當前 Dasha 是另一顆強 karaka（非 karmesh），且過了 karmesh Dasha
+//
+// AVOID（避開 / 調味料）— 只在 Lagna Lord 在 dushthana（6/8/12）時出現：
+//   Lagna Lord 代表「命主本人想做的方向」— 若落 dushthana（隱性／損耗宮），
+//   該方向是幕後／調味料，不該當主業核心。
+//   反之若 Lagna Lord 在吉宮（1/5/9/10/4/7/11），則反而可能升格為 secondary。
+//
+// ═══════════════════════════════════════════════════════════════
+//
+// 方向分類（用來判「兩顆星方向本質是否不同」）
+// 回傳同類 → 不算衝突；回傳不同類 → 才有 secondary 價值
+const planetDirection = {
+  Sun: 'authority',
+  Moon: 'public',
+  Mars: 'warrior',
+  Mercury: 'intellect',
+  Jupiter: 'wisdom',
+  Venus: 'aesthetic',
+  Saturn: 'structure',
+  Rahu: 'breakout',
+  Ketu: 'depth'
+}
+
+export function resolvePrimarySecondary(analysis) {
+  const {
+    karmesh,
+    lagnaLord,
+    karakaOverrides = [],
+    d10,
+    dasha,
+    dignityDetails,
+    karmeshContext = {}
+  } = analysis || {}
+
+  if (!karmesh?.planet) return { primary: null, secondary: null, avoid: null }
+
+  const karmeshPlanet = karmesh.planet
+  const karmeshHouse = karmesh.house
+  const karmeshDirection = planetDirection[karmeshPlanet]
+
+  // ─── PRIMARY ─────────────────────────────────────────
+  const primaryReading = selectKarmeshReading(karmeshPlanet, karmeshHouse, karmeshContext)
+  const primaryKeyFacts = [`${karmeshPlanet} 10 宮主`, `落第 ${karmeshHouse} 宮`]
+  const dignityNote = (() => {
+    if (!dignityDetails) return null
+    if (dignityDetails.dignity === 'exalted') return `旺於 ${karmesh.rashi?.chinese}（自然發光）`
+    if (dignityDetails.dignity === 'own') return `本宮 ${karmesh.rashi?.chinese}（力量穩固）`
+    if (dignityDetails.dignity === 'debilitated' && dignityDetails.neechaBhanga) return 'Neecha Bhanga 解消（低谷翻盤）'
+    if (dignityDetails.dignity === 'debilitated') return `陷於 ${karmesh.rashi?.chinese}（需額外支持）`
+    return null
+  })()
+  if (dignityNote) primaryKeyFacts.push(dignityNote)
+  if (dignityDetails?.moolatrikona) primaryKeyFacts.push('Moolatrikona 根本位')
+  if (dignityDetails?.digbala) primaryKeyFacts.push('Digbala 能見度加成')
+
+  const primary = {
+    layer: 'primary',
+    label: '主軸 · 最該走的方向',
+    planet: karmeshPlanet,
+    house: karmeshHouse,
+    reading: primaryReading,
+    direction: karmeshDirection,
+    why: `10 宮主 ${karmeshPlanet} 落第 ${karmeshHouse} 宮${karmesh.rashi?.chinese ? ` × ${karmesh.rashi.chinese}` : ''}`,
+    keyFacts: primaryKeyFacts
+  }
+
+  // ─── SECONDARY ───────────────────────────────────────
+  // 優先順序：D10 不一致 > karaka override 強且方向不同 > dasha override
+  let secondary = null
+
+  // Case a: D10 override
+  if (d10 && !d10.agreement && d10.tenthLord && d10.tenthLord !== karmeshPlanet) {
+    const d10Direction = planetDirection[d10.tenthLord]
+    if (d10Direction && d10Direction !== karmeshDirection) {
+      secondary = {
+        layer: 'secondary',
+        label: '副軸 · 你執行起來的樣子',
+        planet: d10.tenthLord,
+        direction: d10Direction,
+        source: 'd10',
+        why: `D10（事業實踐專盤）10 宮主是 ${d10.tenthLord} — 你「想做的」是 ${karmeshPlanet}，但「實際做成」是靠 ${d10.tenthLord} 那股勁`,
+        keyFacts: [`D10 10 宮主 ${d10.tenthLord}`, `D1 10 宮主 ${karmeshPlanet}（潛能層 vs 實踐層）`],
+        integrationAdvice: `在主軸裡挑「能讓 ${d10.tenthLord} 那股能量發揮」的版本 — 不是換軌道，是換版本`
+      }
+    }
+  }
+
+  // Case b: Karaka override（只有當還沒被 D10 覆蓋時）
+  if (!secondary && karakaOverrides.length) {
+    const topOverride = karakaOverrides[0]
+    const ovPlanet = topOverride.id?.replace('karaka-override-', '')
+    const ovPlanetKey = ovPlanet ? ovPlanet.charAt(0).toUpperCase() + ovPlanet.slice(1) : null
+    const ovDirection = planetDirection[ovPlanetKey]
+    // 必須方向不同 + 不是 karmesh 本尊 + 不是 Lagna Lord 本尊（避免重複）
+    if (
+      ovPlanetKey &&
+      ovPlanetKey !== karmeshPlanet &&
+      ovDirection &&
+      ovDirection !== karmeshDirection
+    ) {
+      secondary = {
+        layer: 'secondary',
+        label: '副軸 · 你的靈魂能量',
+        planet: ovPlanetKey,
+        direction: ovDirection,
+        source: 'karaka',
+        why: topOverride.source || `Karaka ${ovPlanetKey} 強到壓過常規判讀`,
+        keyFacts: [`Karaka Override: ${topOverride.category}`],
+        integrationAdvice: `把 ${topOverride.category} 當副業或長線目標 — 不搶主軸位置，但不能不做`
+      }
+    }
+  }
+
+  // Case c: Dasha override（當前走非 karmesh 的強 karaka Dasha）
+  if (!secondary && dasha?.lord && !dasha.isKarmesh) {
+    const dashaDir = planetDirection[dasha.lord]
+    if (dashaDir && dashaDir !== karmeshDirection) {
+      secondary = {
+        layer: 'secondary',
+        label: '副軸 · 當前大運的執行色彩',
+        planet: dasha.lord,
+        direction: dashaDir,
+        source: 'dasha',
+        why: `你正在走 ${dasha.lord} 大運 — 這個主題現在被放大`,
+        keyFacts: [`當前 ${dasha.lord} 大運`],
+        integrationAdvice: `這幾年選工作時，在主軸裡挑帶 ${dasha.lord} 調性的版本會特別順`
+      }
+    }
+  }
+
+  // ─── AVOID ───────────────────────────────────────────
+  let avoid = null
+  if (lagnaLord?.planet && lagnaLord.planet !== karmeshPlanet) {
+    const ll = lagnaLord
+    const llHouse = ll.house
+    const isDushthana = [6, 8, 12].includes(llHouse)
+    const llDirection = planetDirection[ll.planet]
+
+    if (isDushthana && llDirection && llDirection !== karmeshDirection) {
+      const llReading = selectKarmeshReading(ll.planet, llHouse, karmeshContext)
+      const houseHint = llHouse === 12 ? '海外／幕後／隱性' : llHouse === 8 ? '深挖／研究／遺產' : '服務／麻煩／日常'
+      avoid = {
+        layer: 'avoid',
+        label: '不要當主業 · 這只是調味料',
+        planet: ll.planet,
+        direction: llDirection,
+        why: `命主星 ${ll.planet} 落第 ${llHouse} 宮（${houseHint}） — 這個方向對你是幕後／調味料，不是主業核心`,
+        keyFacts: [`Lagna Lord ${ll.planet} in ${llHouse}th`, houseHint],
+        reading: llReading
+      }
+    }
+    // 若 Lagna Lord 在吉宮且尚未被指派為 secondary，且方向不同於 karmesh，可升格
+    else if (
+      !secondary &&
+      [1, 4, 5, 7, 9, 10, 11].includes(llHouse) &&
+      llDirection &&
+      llDirection !== karmeshDirection
+    ) {
+      const llReading = selectKarmeshReading(ll.planet, llHouse, karmeshContext)
+      secondary = {
+        layer: 'secondary',
+        label: '副軸 · 命主星加乘',
+        planet: ll.planet,
+        direction: llDirection,
+        source: 'lagna-lord',
+        why: `命主星 ${ll.planet} 落第 ${llHouse} 宮（吉宮） — 你「想做的」方向不同於 10 宮主指的「會成就你的」方向`,
+        keyFacts: [`Lagna Lord ${ll.planet} in ${llHouse}th`],
+        integrationAdvice: `可以把 ${ll.planet} 的能量當副線推 — 不一定要正職`,
+        reading: llReading
+      }
+    }
+  }
+
+  return { primary, secondary, avoid }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 合成一句話主判讀（Main Statement）— 依據 pyramid 組成
+// ═══════════════════════════════════════════════════════════════
+const identityShortByPlanet = {
+  Sun: '權威登台者',
+  Moon: '公眾滋養者',
+  Mars: '戰士型執行者',
+  Mercury: '智慧商業者',
+  Jupiter: '智者導師型',
+  Venus: '美感表演者',
+  Saturn: '長期建設者',
+  Rahu: '破格創新者',
+  Ketu: '深度幕後者'
+}
+
+const flavorShortByPlanet = {
+  Sun: '權威感',
+  Moon: '大眾親和',
+  Mars: '戰士精神',
+  Mercury: '商業嗅覺',
+  Jupiter: '智慧指引',
+  Venus: '美感',
+  Saturn: '長期扎根',
+  Rahu: '破格能量',
+  Ketu: '幕後深度'
+}
+
+export function synthesizeMainStatement(pyramid) {
+  const { primary, secondary, avoid } = pyramid || {}
+  if (!primary?.planet) return null
+  const pId = identityShortByPlanet[primary.planet] || primary.planet
+  if (secondary?.planet && avoid?.planet) {
+    return `你是用「${pId}」的身份走，執行力靠「${flavorShortByPlanet[secondary.planet] || secondary.planet}」，${flavorShortByPlanet[avoid.planet] || avoid.planet}是調味料不是主業。`
+  }
+  if (secondary?.planet) {
+    return `你是用「${pId}」的身份走，執行風格帶著「${flavorShortByPlanet[secondary.planet] || secondary.planet}」的勁。`
+  }
+  if (avoid?.planet) {
+    return `你就是「${pId}」— 訊號乾淨明確。${flavorShortByPlanet[avoid.planet] || avoid.planet}只是幕後調味料。`
+  }
+  return `你就是「${pId}」— 訊號乾淨明確，沒有分歧的路線，照這條走。`
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 合成 Narrative（新版三層架構）
+// ═══════════════════════════════════════════════════════════════
+// v4：改成 primary / secondary / avoid 三層優先級結構
+// 回傳 { mainStatement, tiers[] } — UI 用來渲染三層
 export function synthesizeCareerNarrative(analysis) {
   const {
     karmesh,
@@ -657,74 +888,88 @@ export function synthesizeCareerNarrative(analysis) {
     dignityDetails,
     karmeshContext,
     karakaOverrides,
-    d10
+    d10,
+    dasha
   } = analysis
   if (!karmesh?.planet) return null
 
-  const parts = []
+  const pyramid = resolvePrimarySecondary({
+    karmesh,
+    lagnaLord,
+    karakaOverrides,
+    d10,
+    dasha,
+    dignityDetails,
+    karmeshContext
+  })
 
-  // Part 1: 本質 — 10 宮主 × 落宮 組合（多語境版）
-  const matrixKey = selectKarmeshReading(karmesh.planet, karmesh.house, karmeshContext || {})
-  if (matrixKey) {
-    parts.push(`你的事業核心配置是「${karmesh.planet} 作為 10 宮主，落第 ${karmesh.house} 宮」— ${matrixKey}。`)
+  const mainStatement = synthesizeMainStatement(pyramid)
+
+  const tiers = []
+
+  // ─── Primary tier ───
+  if (pyramid.primary) {
+    const p = pyramid.primary
+    const identity = identityShortByPlanet[p.planet] || p.planet
+    tiers.push({
+      layer: 'primary',
+      label: p.label,
+      identity,
+      planet: p.planet,
+      house: p.house,
+      reading: p.reading,
+      why: p.why,
+      keyFacts: p.keyFacts
+    })
   }
 
-  // Part 2: 尊嚴細節
-  if (dignityDetails) {
-    const strongMods = []
-    if (dignityDetails.dignity === 'exalted') strongMods.push(`此行星旺於 ${karmesh.rashi?.chinese}，是「自然發光」的配置`)
-    else if (dignityDetails.dignity === 'own') strongMods.push(`此行星在本宮 ${karmesh.rashi?.chinese}，力量穩固`)
-    else if (dignityDetails.dignity === 'debilitated' && !dignityDetails.neechaBhanga) {
-      strongMods.push(`此行星陷於 ${karmesh.rashi?.chinese}，需其他支持才能翻轉`)
-    }
-    if (dignityDetails.moolatrikona) strongMods.push('且位於 Moolatrikona 根本位 — 更具穩定力')
-    if (dignityDetails.digbala) strongMods.push('此外落於 Digbala（方向力）最強宮位 — 能見度倍增')
-    if (dignityDetails.neechaBhanga) strongMods.push('但 Neecha Bhanga 解消 — 低谷反而翻盤')
-    if (strongMods.length) parts.push(strongMods.join('；') + '。')
+  // ─── Secondary tier ───
+  if (pyramid.secondary) {
+    const s = pyramid.secondary
+    const identity = identityShortByPlanet[s.planet] || s.planet
+    tiers.push({
+      layer: 'secondary',
+      label: s.label,
+      identity,
+      planet: s.planet,
+      source: s.source,
+      reading: s.reading || null,
+      why: s.why,
+      keyFacts: s.keyFacts,
+      integrationAdvice: s.integrationAdvice
+    })
   }
 
-  // Part 3: Lagna Lord 加乘
-  if (lagnaLord?.planet && lagnaLord.planet !== karmesh.planet) {
-    const llMatrixKey = selectKarmeshReading(lagnaLord.planet, lagnaLord.house, karmeshContext || {})
-    if (llMatrixKey) {
-      // 保留完整 reading（舊版 split('—')[1] 會把「大型企業／政府高層／長期統帥」等關鍵詞
-      // 截掉，造成 politics/government 訊號丟失）
-      parts.push(
-        `你的命主星 ${lagnaLord.planet} 落第 ${lagnaLord.house} 宮，為事業判讀加第二層重量 — 若把命主星當事業副主看：${llMatrixKey}。`
-      )
-    }
+  // ─── Avoid tier ───
+  if (pyramid.avoid) {
+    const a = pyramid.avoid
+    const identity = identityShortByPlanet[a.planet] || a.planet
+    tiers.push({
+      layer: 'avoid',
+      label: a.label,
+      identity,
+      planet: a.planet,
+      reading: a.reading,
+      why: a.why,
+      keyFacts: a.keyFacts
+    })
   }
 
-  // Part 4: Yoga 重要加權
-  if (activeCareerYogas?.length) {
-    const strongOnes = activeCareerYogas.filter((y) => y.strength === 'strong').slice(0, 2)
-    if (strongOnes.length) {
-      parts.push(
-        `更關鍵的是：你的命盤有 ${strongOnes.map((y) => y.verdict.split('—')[0].trim()).join(' + ')}，這會 override 單點分析 — ${strongOnes[0].careerImplication}。`
-      )
-    }
-  }
+  // ─── Yoga 加權（如果有 strong yoga，併入 primary 的 extra 說明）───
+  const strongYogas = activeCareerYogas?.filter((y) => y.strength === 'strong').slice(0, 2) || []
+  const yogaAddendum = strongYogas.length
+    ? {
+        yogas: strongYogas.map((y) => ({
+          name: y.verdict.split('—')[0].trim(),
+          implication: y.careerImplication
+        }))
+      }
+    : null
 
-  // Part 5（v3 NEW）：Karaka Override — 當自然本命星強到壓過 10 宮主時
-  if (karakaOverrides?.length) {
-    const top = karakaOverrides[0]
-    parts.push(
-      `Karaka 加權 — ${top.source}。這代表：${top.implication}`
-    )
+  return {
+    mainStatement,
+    tiers,
+    yogaAddendum,
+    pyramid // 完整結構也傳回，讓 playbook 可直接 pick up
   }
-
-  // Part 6（v3 NEW）：D10 交叉驗證
-  if (d10) {
-    if (d10.agreement) {
-      parts.push(
-        `D10（事業專盤）與 D1 方向一致：${karmesh.planet} 兩盤都主事業 — 你「想做的」跟「實際會做的」方向同軌，事業動力集中。`
-      )
-    } else {
-      parts.push(
-        `D10（事業專盤）與 D1 方向分歧：D1 潛能指向 ${karmesh.planet}，但 D10 實踐是 ${d10.tenthLord} 主導 — 你可能「想做 A 但最後靠 B 成功」，兩條路線都是你的真相。`
-      )
-    }
-  }
-
-  return parts.join('\n\n')
 }

@@ -72,6 +72,7 @@ export const careerEnergyByPlanet = {
 
 import { planetAsKarmesh } from './careerVedicData.js'
 import { careerSubCategoryLanguage } from './careerSubCategoryLanguage.js'
+import { resolvePrimarySecondary } from './careerMatrix.js'
 
 // ═══════════════════════════════════════════════════════════════
 // 1. 身份（karmesh planet → 一句話職業人格）
@@ -200,77 +201,95 @@ export const dashaCareerSignal = {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 5. 合成 Playbook
+// 5. 合成 Playbook（v4：三層優先級架構 — primary / secondary / avoidCareer）
 // ═══════════════════════════════════════════════════════════════
+//
+// 改動核心：不再把 karmesh + lagnaLord + karaka + D10 平鋪並列，而是依 pyramid
+// 判讀後分三層呈現：
+//   - primary（主軸）     — karmesh 能量、職業範例、甜蜜點
+//   - secondary（副軸）   — 執行風格（可能 null）
+//   - avoidCareer（避開） — 不該當主業的方向（可能 null）
 export function synthesizeCareerPlaybook(vedicCareer) {
   if (!vedicCareer) return null
 
   const karmeshPlanet = vedicCareer.karmesh?.planet
   const karmeshHouse = vedicCareer.karmesh?.house
-  const lagnaLordPlanet = vedicCareer.lagnaLord?.planet
-  const lagnaLordHouse = vedicCareer.lagnaLord?.house
+  const lagnaLord = vedicCareer.lagnaLord
   const currentDashaLord = vedicCareer.dasha?.lord
   const dashaIsKarmesh = vedicCareer.dasha?.isKarmesh
   const karakaOverrides = vedicCareer.karakaOverrides || []
   const activeYogas = vedicCareer.activeCareerYogas || []
   const strongYoga = activeYogas.find((y) => y.strength === 'strong')
-  // Sub-category 偵測結果（可能由 analyzeVedicCareer 預先算好塞進來）
   const subCategoryDetection = vedicCareer.subCategoryDetection || null
 
-  // 1. 身份
+  // 使用 pyramid resolver 判讀（若上游已算好則直接用，否則現場算）
+  const pyramid = vedicCareer.pyramid || resolvePrimarySecondary({
+    karmesh: { planet: karmeshPlanet, house: karmeshHouse, rashi: vedicCareer.karmesh?.rashi },
+    lagnaLord,
+    karakaOverrides,
+    d10: vedicCareer.d10,
+    dasha: vedicCareer.dasha,
+    dignityDetails: vedicCareer.karmesh?.dignityDetails,
+    karmeshContext: vedicCareer.karmeshContext || {}
+  })
+
+  // ─── 1. 身份（依 primary planet）───
   const identity = careerIdentityByPlanet[karmeshPlanet]
   const houseContext = careerHouseModifier[karmeshHouse]
 
-  // 2. 工作能量特徵（替代舊的「硬塞職業列表」）
+  // ─── 2. PRIMARY（主軸）──────────────────────────────
   const karmeshEnergy = careerEnergyByPlanet[karmeshPlanet]
-  const lagnaLordEnergy =
-    lagnaLordPlanet && lagnaLordPlanet !== karmeshPlanet
-      ? careerEnergyByPlanet[lagnaLordPlanet]
-      : null
-
-  const energyPattern = karmeshEnergy
-    ? lagnaLordEnergy
-      ? `${karmeshEnergy.energy}，而且同時${lagnaLordEnergy.energy}`
-      : karmeshEnergy.energy
+  const primary = karmeshEnergy
+    ? {
+        energy: karmeshEnergy.energy,
+        examples: karmeshEnergy.modernExamples.slice(0, 5),
+        sweetSpot: karmeshEnergy.sweetSpot,
+        why: pyramid.primary?.why || `10 宮主 ${karmeshPlanet} 落第 ${karmeshHouse} 宮`,
+        keyFacts: pyramid.primary?.keyFacts || []
+      }
     : null
 
-  const sweetSpot = karmeshEnergy
-    ? lagnaLordEnergy
-      ? `「${karmeshEnergy.sweetSpot}」× 「${lagnaLordEnergy.sweetSpot}」的交集`
-      : `「${karmeshEnergy.sweetSpot}」`
-    : null
-
-  // 現代範例 — 從兩顆行星的 modernExamples 各抽，若有 karaka override 則強制
-  // 塞入對應 karaka 的代表範例（讓 Lincoln/JFK 的 government 訊號、Messi/Ronaldo
-  // 的 sports 訊號在 playbook 裡出現）
-  const exampleSet = []
-  const seenEx = new Set()
-  const pushEx = (s) => {
-    if (!s || seenEx.has(s)) return
-    seenEx.add(s)
-    exampleSet.push(s)
-  }
-  if (karmeshEnergy) karmeshEnergy.modernExamples.slice(0, 3).forEach(pushEx)
-  if (lagnaLordEnergy) lagnaLordEnergy.modernExamples.slice(0, 2).forEach(pushEx)
-  // karaka override 加入對應行星的代表範例（確保 override 訊號反映在 playbook）
-  for (const ov of karakaOverrides.slice(0, 2)) {
-    const planet = ov.id?.replace('karaka-override-', '')
-    const planetKey = planet && planet.charAt(0).toUpperCase() + planet.slice(1)
-    const ovEnergy = planetKey && careerEnergyByPlanet[planetKey]
-    if (ovEnergy) ovEnergy.modernExamples.slice(0, 2).forEach(pushEx)
+  // ─── 3. SECONDARY（副軸 · 可能 null）──────────────────
+  let secondary = null
+  if (pyramid.secondary?.planet) {
+    const sPlanet = pyramid.secondary.planet
+    const sEnergy = careerEnergyByPlanet[sPlanet]
+    if (sEnergy) {
+      // integration：挑能融合兩顆能量的職業 — 從 secondary 範例裡挑 2-3 個
+      const integrationExamples = sEnergy.modernExamples.slice(0, 3)
+      secondary = {
+        planet: sPlanet,
+        energy: sEnergy.energy,
+        examples: integrationExamples,
+        integration: pyramid.secondary.integrationAdvice ||
+          `在主軸職位裡挑有 ${sEnergy.sweetSpot} 的版本`,
+        why: pyramid.secondary.why,
+        source: pyramid.secondary.source,
+        keyFacts: pyramid.secondary.keyFacts || []
+      }
+    }
   }
 
-  // Karaka override 加一句話（不塞進範例列表，避免又像職稱 filter）
-  const karakaHint = karakaOverrides[0]?.category
-    ? `另外你命盤還壓著「${karakaOverrides[0].category}」身份 — 把它當副業或長線目標都可以。`
-    : null
+  // ─── 4. AVOID CAREER（避開當主業 · 可能 null）─────────
+  let avoidCareer = null
+  if (pyramid.avoid?.planet) {
+    const aPlanet = pyramid.avoid.planet
+    const aEnergy = careerEnergyByPlanet[aPlanet]
+    if (aEnergy) {
+      avoidCareer = {
+        planet: aPlanet,
+        // 避開範例：挑 3-4 個該行星的代表職業當「不要當主業」清單
+        examples: aEnergy.modernExamples.slice(0, 4),
+        why: pyramid.avoid.why,
+        keyFacts: pyramid.avoid.keyFacts || []
+      }
+    }
+  }
 
-  const modernExamples = exampleSet.slice(0, 6)
-
-  // 3. 避開
+  // ─── 5. 舊版「避開 environment」文本（保留作輔助說明）───
   const avoid = careerAvoidByPlanet[karmeshPlanet]
 
-  // 4. 當前大運訊號
+  // ─── 6. 當前大運時機訊號 ─────────────────────────────
   const dashaSignal = currentDashaLord
     ? {
         lord: currentDashaLord,
@@ -279,43 +298,53 @@ export function synthesizeCareerPlaybook(vedicCareer) {
       }
     : null
 
-  // 5. Action items（3 條具體）
+  const timing = dashaSignal ? {
+    lord: dashaSignal.lord,
+    phase: dashaSignal.phase,
+    signal: dashaSignal.signal,
+    isKarmesh: dashaSignal.isKarmesh,
+    moveFriendly: dashaSignal.moveFriendly
+  } : null
+
+  // ─── 7. Action items（新架構：對齊 primary / secondary / avoid）───
   const actions = []
 
-  // Action 1: 鎖定能量特徵（不再用職業列表）
-  if (sweetSpot) {
+  // Action 1：鎖定主軸甜蜜點
+  if (primary) {
     actions.push(
-      `篩選職缺時不要只看「職稱」，要看「能量匹配」— 鎖定 ${sweetSpot} 的工作。職稱可以差很多，但那個感覺對才是對。`
+      `主軸先鎖死 — 找「${primary.sweetSpot}」類型的職位（${primary.examples.slice(0, 3).join('／')}）。職稱不同沒差，能量對就算。`
     )
   }
 
-  // Action 2: 當前大運行動
-  if (dashaSignal) {
+  // Action 2：副軸融合建議（若有）或大運
+  if (secondary) {
+    actions.push(
+      `在主軸裡挑帶 ${secondary.planet} 調性的版本 — ${secondary.integration}。例：${secondary.examples.slice(0, 2).join('、')} 方向的主軸職位。`
+    )
+  } else if (dashaSignal) {
     const prefix = dashaSignal.isKarmesh
-      ? `你正在走自己的 10 宮主大運（${currentDashaLord}）— 事業最強時刻。`
+      ? `你正在走自己 10 宮主（${currentDashaLord}）大運 — 事業最強時刻。`
       : `你正在走 ${currentDashaLord} 大運 — ${dashaSignal.phase}。`
     actions.push(`${prefix}${dashaSignal.signal}`)
   }
 
-  // Action 3: 依據 yoga / karaka override / lagnaLord 給具體建議
-  if (strongYoga) {
+  // Action 3：避開／yoga 加成
+  if (avoidCareer) {
     actions.push(
-      `你命盤啟動了「${strongYoga.verdict.split('—')[0].trim()}」 — ${strongYoga.careerImplication} · 這是你比同齡人多的「天賦加成」，找工作時要挑能用到這個的位置。`
+      `別把「${avoidCareer.examples.slice(0, 2).join('／')}」當主業 — ${avoidCareer.why.split('—')[1]?.trim() || '那是調味料不是主食'}。`
     )
-  } else if (karakaOverrides[0]) {
+  } else if (strongYoga) {
     actions.push(
-      `你的事業靈魂星指向 ${karakaOverrides[0].category} — 即使 10 宮主沒直接指這個方向，靈魂層面你要的是這個。把它當副業或長期目標。`
+      `你命盤啟動了「${strongYoga.verdict.split('—')[0].trim()}」 — ${strongYoga.careerImplication}。找工作時挑能用到這個的位置。`
     )
-  } else if (lagnaLordEnergy) {
-    actions.push(
-      `你的命主星給你加的是「${lagnaLordEnergy.sweetSpot}」這層能量 — 可以當副線同時推，不一定要選正職。`
-    )
+  } else if (dashaSignal && !secondary) {
+    // 如果 action 2 已經用過 dasha，這裡就給 avoid
+    actions.push(avoid)
   } else {
     actions.push(avoid)
   }
 
-  // 6. Sub-Category 展示物件（靠 analyzeVedicCareer 預先跑 detector 塞進來）
-  //    只在 confidence === 'high' + 有對應語言資料時才提供給 UI
+  // ─── 8. Sub-Category（保留）───
   let subCategory = null
   if (subCategoryDetection?.primary && subCategoryDetection.confidence === 'high') {
     const lang = careerSubCategoryLanguage[subCategoryDetection.primary]
@@ -331,6 +360,7 @@ export function synthesizeCareerPlaybook(vedicCareer) {
   }
 
   return {
+    // 身份（延用舊結構讓 UI 漸進 migrate）
     identity: identity
       ? {
           label: identity.label,
@@ -338,15 +368,18 @@ export function synthesizeCareerPlaybook(vedicCareer) {
           why: identity.why
         }
       : null,
-    // 能量特徵 + 現代翻譯 + 甜蜜點（取代舊的 industries 列表）
-    energyPattern,
-    modernExamples,
-    sweetSpot,
-    karakaHint,
+    // 新架構：三層
+    primary,
+    secondary,
+    avoidCareer,
+    timing,
+    // 舊 field 向後相容（UI 轉完可以移除）
+    energyPattern: primary?.energy || null,
+    modernExamples: primary?.examples || [],
+    sweetSpot: primary?.sweetSpot ? `「${primary.sweetSpot}」` : null,
     avoid,
     dashaSignal,
     actions,
-    // Sub-category（商業 / 政治圈細分型）— 只在 high confidence 時才有
     subCategory
   }
 }

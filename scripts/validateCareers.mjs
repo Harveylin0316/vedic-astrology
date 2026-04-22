@@ -632,7 +632,26 @@ function predictCategories(analysis) {
   }
 
   // 5. Narrative scan — last-resort fallback, only picks up super explicit matches
-  const narrative = analysis?.narrative || ''
+  // v4：narrative 改成 { mainStatement, tiers[], yogaAddendum } 物件結構
+  // 為兼容舊 validator，把物件裡的文字內容平攤成單一字串供 keyword 掃描
+  const nar = analysis?.narrative
+  let narrative = ''
+  if (typeof nar === 'string') narrative = nar
+  else if (nar) {
+    const pieces = []
+    if (nar.mainStatement) pieces.push(nar.mainStatement)
+    for (const t of (nar.tiers || [])) {
+      if (t.identity) pieces.push(t.identity)
+      if (t.reading) pieces.push(t.reading)
+      if (t.why) pieces.push(t.why)
+      if (t.integrationAdvice) pieces.push(t.integrationAdvice)
+    }
+    for (const y of (nar.yogaAddendum?.yogas || [])) {
+      if (y.name) pieces.push(y.name)
+      if (y.implication) pieces.push(y.implication)
+    }
+    narrative = pieces.join(' | ')
+  }
   for (const [cat, kws] of Object.entries(CATEGORY_KEYWORDS)) {
     if (set.has(cat)) continue
     for (const kw of kws.hard) {

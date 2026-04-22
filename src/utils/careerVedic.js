@@ -282,7 +282,7 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     combinationReading = selectKarmeshReading(karmeshPlanet, karmeshGraha.house, karmeshContext)
   }
 
-  // ════ 第 9 部分：Narrative Synthesis — 最關鍵的一段文字（含 Karaka Override + D10）════
+  // ════ 第 9 部分：Narrative Synthesis — 新架構：三層優先級 pyramid ════
   const narrative = synthesizeCareerNarrative({
     karmesh: {
       planet: karmeshPlanet,
@@ -294,7 +294,8 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
     dignityDetails: karmeshDignityDetails,
     karmeshContext,
     karakaOverrides,
-    d10: d10Karmesh
+    d10: d10Karmesh,
+    dasha: dashaImpact
   })
 
   // ════ 最後一部分：Playbook（實操建議）════
@@ -323,12 +324,21 @@ export function analyzeVedicCareer(chart, currentDashaLord = null, currentADLord
   })
 
   const playbook = synthesizeCareerPlaybook({
-    karmesh: { planet: karmeshPlanet, house: karmeshGraha?.house },
+    karmesh: {
+      planet: karmeshPlanet,
+      house: karmeshGraha?.house,
+      rashi: karmeshGraha?.rashi,
+      dignityDetails: karmeshDignityDetails
+    },
     lagnaLord,
     dasha: dashaImpact,
     karakaOverrides,
     activeCareerYogas,
-    subCategoryDetection
+    subCategoryDetection,
+    d10: d10Karmesh,
+    karmeshContext,
+    // 複用已經在 narrative 階段算好的 pyramid
+    pyramid: narrative?.pyramid || null
   })
 
   return {
