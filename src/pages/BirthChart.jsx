@@ -654,12 +654,12 @@ export default function BirthChart() {
                 title="下載你的命盤卡"
                 shareTitle={
                   rarity
-                    ? `我是 Top ${rarity.topPercent}% 的「${rarity.title}」`
+                    ? `我的命盤是「${rarity.title}」`
                     : '我的吠陀命盤'
                 }
                 shareText={
                   rarity
-                    ? `剛算完吠陀命盤，全人口只有 ${rarity.topPercent}% 長這樣。\n你也算一下看看是哪種？→ ${typeof window !== 'undefined' ? window.location.href : ''}`
+                    ? `剛算完吠陀命盤，命格類型是「${rarity.title}」。\n你的呢？→ ${typeof window !== 'undefined' ? window.location.href : ''}`
                     : `剛算了自己的吠陀命盤，你也來算看看 → ${typeof window !== 'undefined' ? window.location.href : ''}`
                 }
               >
@@ -1380,7 +1380,7 @@ function RarityCard({ rarity }) {
       <div className="relative">
         <div className="flex items-center gap-2 text-sm text-saffron-400/80 font-serif italic mb-3">
           <Sparkles className="h-4 w-4" />
-          命盤稀有度指數
+          命盤戲劇強度指數
         </div>
 
         <div className="grid md:grid-cols-[auto_1fr] gap-6 items-center">
@@ -1418,27 +1418,27 @@ function RarityCard({ rarity }) {
             </div>
           </div>
 
-          {/* 右：tier 標題 + Top X% + 比喻 + 特徵 */}
+          {/* 右：tier 標題 + 人口分佈 + 關鍵配置 */}
           <div className="flex-1">
             <h3 className="font-serif text-3xl md:text-4xl gradient-text">{rarity.title}</h3>
             <div className="mt-1 text-lg text-saffron-400">
-              位於全人口 <strong className="font-serif text-2xl">Top {rarity.topPercent}%</strong>
+              這種命格約 <strong className="font-serif text-2xl">{rarity.topPercent}%</strong> 的人
             </div>
             <p className="mt-2 text-sm text-slate-300 leading-relaxed">{rarity.note}。</p>
 
-            {/* 人口比較 */}
+            {/* 命盤結構說明 */}
             <div className="mt-3 rounded-xl border border-saffron-500/20 bg-saffron-500/5 p-3">
               <div className="text-sm text-saffron-400/80 font-serif italic mb-1.5">
-                放在世界人口裡比比看
+                這代表什麼
               </div>
               <div className="text-sm text-slate-200 leading-relaxed">{comparison}</div>
             </div>
 
-            {/* 關鍵配置（去重取 top 4，不再用花俏的分級邊框） */}
+            {/* 關鍵配置 */}
             {uniqueFeatures.length > 0 && (
               <div className="mt-4">
                 <div className="text-sm text-saffron-400/80 font-serif italic mb-2">
-                  讓你與眾不同的 {uniqueFeatures.length} 個關鍵配置
+                  命盤上的 {uniqueFeatures.length} 個顯眼配置
                 </div>
                 <div className="space-y-2">
                   {uniqueFeatures.map((f, i) => (
@@ -1470,34 +1470,34 @@ function RarityCard({ rarity }) {
         </div>
 
         <p className="text-xs text-slate-500 italic leading-relaxed mt-6 pt-5 border-t border-white/5">
-          ※ 稀有度 ≠「命好 / 命不好」。這是掃了你盤上 23 種古典吠陀配置（五大偉人瑜伽、財富瑜伽、逆轉型瑜伽、雙光合宿等）依人口頻率算的。低分是「均衡型」— 日子反而平穩。
+          ※ 戲劇強度 ≠「命好 / 命不好」。這是掃了你盤上 23 種古典吠陀配置 + 10 種事業結構訊號（五大偉人瑜伽、財富瑜伽、karmesh dignity、D10 一致性等），依人口頻率算的結構鋒利度。高分 = 命盤極端配置多、人生張力強；低分 = 命盤結構均勻、走穩定路線（Churchill、Mandela、Jobs 都在中下段，命盤一樣也成就傳奇）。
         </p>
       </div>
     </div>
   )
 }
 
-// 依據 topPercent 挑合適的人口對比（全部是真實全球統計）
+// 依據 topPercent 描述「命格戲劇強度」— 不用稀有度比較，改描述結構性質
 function buildRarityComparison(topPercent) {
-  // 真實參考：
-  //   雙胞胎 ~1.2% · 紅髮 ~2% · 綠眼 ~2% · O 型陰性血 ~6.6% ·
-  //   AB 型血 ~4% · 左撇子 ~10% · 藍眼 ~8-10%
-  if (topPercent <= 0.5) {
-    return '你比「雙胞胎出生者」（約 1.2%）還稀有。在 1000 個人裡，大概只有 3-5 個人的命盤配置跟你類似。'
+  if (topPercent <= 1) {
+    return '命盤有多處極端配置並存 — 旺陷同時出現、yoga 密集、結構張力大。這是愛因斯坦、貝多芬這類「人生如戲」型。張力大，但也意味著內在容易撕裂。'
   }
-  if (topPercent <= 2) {
-    return `你的命盤稀有度跟「紅髮」（全球約 2%）、「綠眼睛」（約 2%）同級。100 個朋友裡，大概只有 1-2 個人會有類似配置。`
+  if (topPercent <= 3) {
+    return '命盤有 2-3 個極端配置並存 — 性格鮮明到讓人一眼認出。不是溫和型，是「遠遠就能看見輪廓」的人。'
   }
-  if (topPercent <= 5) {
-    return '你的稀有度大致跟「AB 型血」（全球約 4%）同等級。20 個人裡會有 1 個人跟你配置相近。'
-  }
-  if (topPercent <= 10) {
-    return '你的稀有度接近「左撇子」（約 10% 全球人口）。10 個人裡會有 1 個人配置類似 — 不是罕見，但也明顯有特色。'
+  if (topPercent <= 8) {
+    return '命盤有數個強弱對比 — 走的是非常規路線、不隨大流。人生通常會經歷幾次大幅轉折，但每次都往同一主題收斂。'
   }
   if (topPercent <= 20) {
-    return '你的配置較有特色但非極罕見。每 5 個人裡大概有 1 個類似 — 像是「藍眼睛 + 某個血型」這種程度的組合。'
+    return '命盤有明確個性輪廓 — 在朋友圈裡你是那個「有明確方向」的人。不是最戲劇的，但絕對不是路人型。'
   }
-  return '你的命盤屬於均衡型。這不代表平庸 — 反而是少了極端配置所以「日子比較穩」的類型。'
+  if (topPercent <= 55) {
+    return '命盤結構走中間路線 — 有 1-2 個鮮明配置 + 多處平衡配置。你是那種「看似普通、但認識久了會發現很有內容」的類型。Bill Gates、Jobs、Taylor Swift 都在這段。'
+  }
+  if (topPercent <= 92) {
+    return '命盤結構均勻 · 沒有極端配置。這不代表命差 — 反而是少了戲劇性衝突的版本，人生多半穩定、做事可靠、能走長遠。Nelson Mandela、John Lennon、Marilyn Monroe 都是這類。'
+  }
+  return '命盤低調、淡雅 · 走「不爭型」路線。Churchill、Sam Walton、Jack Dorsey 都是這類 — 命盤不戲劇，但成就可以驚人。命盤只是結構，人生靠自己走出來。'
 }
 
 

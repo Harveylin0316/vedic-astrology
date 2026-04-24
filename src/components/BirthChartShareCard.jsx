@@ -259,10 +259,10 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
             <div style={{ flex: 1 }}>
               <div
                 style={{
-                  fontSize: '58px',
+                  fontSize: '44px',
                   fontFamily: '"Cormorant Garamond", Georgia, serif',
                   fontWeight: 700,
-                  lineHeight: 1,
+                  lineHeight: 1.05,
                   background: 'linear-gradient(135deg, #ffd580 0%, #ffa733 40%, #e34234 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -271,19 +271,18 @@ const BirthChartShareCard = forwardRef(function BirthChartShareCard(
                   letterSpacing: '-0.01em'
                 }}
               >
-                Top {rarity.topPercent}%
+                {rarity.title}
               </div>
               <div
                 style={{
-                  marginTop: '6px',
-                  fontSize: '15px',
-                  color: '#cbd5e1',
-                  letterSpacing: '0.02em'
+                  marginTop: '10px',
+                  fontSize: '14px',
+                  color: '#94a3b8',
+                  letterSpacing: '0.02em',
+                  lineHeight: 1.45
                 }}
               >
-                {rarity.title}
-                <span style={{ color: '#64748b' }}> · </span>
-                <span style={{ color: '#94a3b8' }}>{rarity.note}</span>
+                {rarity.note}
               </div>
             </div>
           )}

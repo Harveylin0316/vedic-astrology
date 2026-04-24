@@ -382,19 +382,25 @@ function addCareerPowerSignals(vc, features, addScore) {
 }
 
 // scoreTier 收未 clamp 的 rawScore — 讓「被 clamp 到 100」的人還能依原始分數再分級
+//
+// 【Round 7 · framing 改寫】
+// 實證（391 celebrity vs 3000 random）顯示：命盤稀有度跟事業成功沒有
+// 統計相關（Bill Gates「有特色」、Churchill「樸實型」）。
+//
+// 因此 tier 的意義從「你有多稀有/特別」改為「你命盤的戲劇強度 /
+// 結構鋒利度」—— 不是 comparative 而是 descriptive。
+//
+// - 鋒利型 = 命盤充滿極端配置（旺陷並存、yoga 密集）· 人生張力大
+// - 平衡型 = 命盤結構均勻 · 走穩定路線（Churchill / Bill Gates 屬這一類）
+//
+// 新 framing 讓 Churchill「平衡型」跟 Einstein「極致型」都是**正面描述**，
+// 不再隱含「誰比誰成功」。
 function scoreTier(rawScore) {
-  // 門檻經過 2026 三輪校準（3000 人實證樣本）：
-  //   - Round 1: 原宣稱值失真（傳奇 0.3% 實測 30%）
-  //   - Round 2: 修 dedup + 重配權重，傳奇降到 1.6%
-  //   - Round 3: 拉高 tier 門檻 + 擴大中段，讓真正金字塔成立
-  //   - Round 4: 用 raw 分判 tier — clamp 100 的人不再全擠進「傳奇」
-  //     目標：傳奇 <1% / 極稀有 3-5% / 非常稀有 10-15% / 稀有 25-35%
-  //   - note 文案兼顧金字塔中下段用戶體感（避免「我很普通」的挫折感）
-  if (rawScore >= 106) return { topPercent: 0.6, stars: 5, title: '傳奇級命盤', note: '160 個人裡不到 1 個跟你一樣' }
-  if (rawScore >= 92) return { topPercent: 2, stars: 5, title: '極稀有', note: '50 個人裡才出現 1 個' }
-  if (rawScore >= 80) return { topPercent: 6, stars: 4, title: '非常稀有', note: '大約 16 個人裡 1 個' }
-  if (rawScore >= 66) return { topPercent: 18, stars: 4, title: '稀有', note: '5-6 個人裡 1 個' }
-  if (rawScore >= 55) return { topPercent: 51, stars: 3, title: '有特色', note: '算是偏特別的那一群' }
-  if (rawScore >= 46) return { topPercent: 91, stars: 2, title: '較為平均', note: '命盤沒有極端配置 — 你是那個平衡、可靠、不出亂子的類型' }
-  return { topPercent: 100, stars: 2, title: '樸實型', note: '本命走低調路線 — 不追求光環，人生靜水深流' }
+  if (rawScore >= 106) return { topPercent: 0.6, stars: 5, title: '極致鋒利型', note: '命盤多處極端配置並存 · 結構張力罕見地高' }
+  if (rawScore >= 92)  return { topPercent: 2,   stars: 5, title: '烈性命格',   note: '數個極端配置並存 · 命盤個性非常鮮明' }
+  if (rawScore >= 80)  return { topPercent: 6,   stars: 4, title: '對比鮮明型', note: '強弱對比明顯 · 命盤走非常規路線' }
+  if (rawScore >= 66)  return { topPercent: 18,  stars: 4, title: '鮮明型',     note: '命盤個性輪廓清晰 · 不會被歸為路人型' }
+  if (rawScore >= 55)  return { topPercent: 51,  stars: 3, title: '有輪廓型',   note: '命盤有明確主題 · 跟多數人走不同節奏' }
+  if (rawScore >= 46)  return { topPercent: 91,  stars: 2, title: '平衡型',     note: '命盤結構均勻 · 你是那種平衡、可靠、不出亂子的類型' }
+  return                       { topPercent: 100, stars: 2, title: '淡雅型',     note: '本命走低調路線 · 命盤如水，不追光環' }
 }

@@ -52,8 +52,8 @@ export default function ViralTriptych({ chart, persona, rarity, vedicCareer, ast
   })()
 
   const rarityHook = rarity?.title
-    ? `我是 ${rarity.title}`
-    : '你這種命盤組合比你想的稀有'
+    ? `我的命盤：${rarity.title}`
+    : '你的命盤結構藏著你不知道的輪廓'
   const rarityFeatures = (rarity?.features || [])
     .slice(0, 3)
     .map((f) => f.plain || f.name)
@@ -256,9 +256,9 @@ const VARIANT_META = {
     accentSoft: 'rgba(201,169,97,0.15)'
   },
   rarity: {
-    eyebrow: 'RARITAS',
-    title: '稀有度 · Raritas',
-    sanskrit: 'दुर्लभ',
+    eyebrow: 'STRUCTURA',
+    title: '命格 · Structura',
+    sanskrit: 'लक्षण',
     accent: '#e8d9b0',
     accentSoft: 'rgba(232,217,176,0.18)'
   }
